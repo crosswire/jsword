@@ -20,16 +20,20 @@
  */
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.versification.system.*;
-import org.junit.Assert;
-import org.crosswire.common.config.ConfigException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.crosswire.common.config.ConfigException;
+import org.crosswire.jsword.versification.system.SystemGerman;
+import org.crosswire.jsword.versification.system.SystemLeningrad;
+import org.crosswire.jsword.versification.system.SystemSynodal;
+import org.crosswire.jsword.versification.system.SystemVulg;
+import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * JUnit Test

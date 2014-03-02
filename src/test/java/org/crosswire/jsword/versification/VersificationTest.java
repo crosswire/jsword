@@ -24,20 +24,35 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.SystemCatholic;
+import org.crosswire.jsword.versification.system.SystemCatholic2;
+import org.crosswire.jsword.versification.system.SystemGerman;
+import org.crosswire.jsword.versification.system.SystemKJV;
+import org.crosswire.jsword.versification.system.SystemKJVA;
+import org.crosswire.jsword.versification.system.SystemLeningrad;
+import org.crosswire.jsword.versification.system.SystemLuther;
 import org.crosswire.jsword.versification.system.SystemMT;
+import org.crosswire.jsword.versification.system.SystemNRSV;
+import org.crosswire.jsword.versification.system.SystemNRSVA;
+import org.crosswire.jsword.versification.system.SystemSynodal;
+import org.crosswire.jsword.versification.system.SystemSynodalProt;
+import org.crosswire.jsword.versification.system.SystemVulg;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * JUnit Test.
@@ -46,12 +61,33 @@ import org.junit.Test;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class VersificationParentTst {
+@RunWith(Parameterized.class)
+public class VersificationTest {
     private Versification v11n;
     private CaseType storedCase;
 
-    public VersificationParentTst(String v11nName) {
+    public VersificationTest(String v11nName) {
         this.v11n = Versifications.instance().getVersification(v11nName);
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        Object[][] data = new Object[][]{
+                {SystemCatholic.V11N_NAME},
+                {SystemCatholic2.V11N_NAME},
+                {SystemGerman.V11N_NAME},
+                {SystemKJV.V11N_NAME},
+                {SystemKJVA.V11N_NAME},
+                {SystemLeningrad.V11N_NAME},
+                {SystemLuther.V11N_NAME},
+                {SystemMT.V11N_NAME},
+                {SystemNRSV.V11N_NAME},
+                {SystemNRSVA.V11N_NAME},
+                {SystemSynodal.V11N_NAME},
+                {SystemSynodalProt.V11N_NAME},
+                {SystemVulg.V11N_NAME}
+        };
+        return Arrays.asList(data);
     }
 
     @Before
@@ -282,211 +318,6 @@ public class VersificationParentTst {
         }
 
         assertEquals(null, v11n.getBook("1"));
-    }
-
-    @Test
-    public void testLoadEnglish() {
-        new BibleNames(v11n, Locale.ENGLISH);
-    }
-
-    @Test
-    public void testLoadAF() {
-        new BibleNames(v11n, new Locale("af"));
-    }
-
-    @Test
-    public void testLoadEgyptianArabic() {
-        new BibleNames(v11n, new Locale("ar", "EG"));
-    }
-
-    @Test
-    public void testLoadBG() {
-        new BibleNames(v11n, new Locale("bg"));
-    }
-
-    @Test
-    public void testLoadCS() {
-        new BibleNames(v11n, new Locale("cs"));
-    }
-
-    @Test
-    public void testLoadCY() {
-        new BibleNames(v11n, new Locale("cy"));
-    }
-
-    @Test
-    public void testLoadDanish() {
-        new BibleNames(v11n, new Locale("da"));
-    }
-
-    @Test
-    public void testLoadGerman() {
-        new BibleNames(v11n, new Locale("de"));
-    }
-
-    @Test
-    public void testLoadSpanish() {
-        new BibleNames(v11n, new Locale("es"));
-    }
-
-    @Test
-    public void testLoadET() {
-        new BibleNames(v11n, new Locale("et"));
-    }
-
-    @Test
-    public void testLoadFarsi() {
-        new BibleNames(v11n, new Locale("fa"));
-    }
-
-    @Test
-    public void testLoadFinnish() {
-        new BibleNames(v11n, new Locale("fi"));
-    }
-
-    @Test
-    public void testLoadFO() {
-        new BibleNames(v11n, new Locale("fo"));
-    }
-
-    @Test
-    public void testLoadFrench() {
-        new BibleNames(v11n, new Locale("fr"));
-    }
-
-    @Test
-    public void testLoadHebrew() {
-        new BibleNames(v11n, new Locale("he"));
-    }
-
-    @Test
-    public void testLoadHU() {
-        new BibleNames(v11n, new Locale("hu"));
-    }
-
-    @Test
-    public void testLoadID() {
-        new BibleNames(v11n, new Locale("id"));
-    }
-
-    @Test
-    public void testLoadIN() {
-        new BibleNames(v11n, new Locale("in"));
-    }
-
-    @Test
-    public void testLoadItalian() {
-        new BibleNames(v11n, new Locale("it"));
-    }
-
-    @Test
-    public void testLoadIW() {
-        new BibleNames(v11n, new Locale("iw"));
-    }
-
-    @Test
-    public void testLoadKO() {
-        new BibleNames(v11n, new Locale("ko"));
-    }
-
-    @Test
-    public void testLoadLA() {
-        new BibleNames(v11n, new Locale("la"));
-    }
-
-    @Test
-    public void testLoadLT() {
-        new BibleNames(v11n, new Locale("lt"));
-    }
-
-    @Test
-    public void testLoadNB() {
-        new BibleNames(v11n, new Locale("nb"));
-    }
-
-    @Test
-    public void testLoadDutch() {
-        new BibleNames(v11n, new Locale("nl"));
-    }
-
-    @Test
-    public void testLoadNN() {
-        new BibleNames(v11n, new Locale("nn"));
-    }
-
-    @Test
-    public void testLoadPL() {
-        new BibleNames(v11n, new Locale("pl"));
-    }
-
-    @Test
-    public void testLoadBrazillianPortuguese() {
-        new BibleNames(v11n, new Locale("pt", "BR"));
-    }
-
-    @Test
-    public void testLoadPortuguese() {
-        new BibleNames(v11n, new Locale("pt"));
-    }
-
-    @Test
-    public void testLoadRo() {
-        new BibleNames(v11n, new Locale("ro"));
-    }
-
-    @Test
-    public void testLoadRU() {
-        new BibleNames(v11n, new Locale("ru"));
-    }
-
-    @Test
-    public void testLoadSK() {
-        new BibleNames(v11n, new Locale("sk"));
-    }
-
-    @Test
-    public void testLoadSL() {
-        new BibleNames(v11n, new Locale("sl"));
-    }
-
-    @Test
-    public void testLoadSwedish() {
-        new BibleNames(v11n, new Locale("sv"));
-    }
-
-    @Test
-    public void testLoadThai() {
-        new BibleNames(v11n, new Locale("th"));
-    }
-
-    @Test
-    public void testLoadTR() {
-        new BibleNames(v11n, new Locale("tr"));
-    }
-
-    @Test
-    public void testLoadUkranian() {
-        new BibleNames(v11n, new Locale("uk"));
-    }
-
-    @Test
-    public void testLoadVietnamese() {
-        new BibleNames(v11n, new Locale("vi"));
-    }
-
-    @Test
-    public void testLoadChineseTraditional() {
-        new BibleNames(v11n, new Locale("zh", "CN"));
-    }
-
-    @Test
-    public void testLoadChineseSimplified() {
-        new BibleNames(v11n, new Locale("zh"));
-    }
-
-    @Test
-    public void testLoadSwahili() {
-        new BibleNames(v11n, new Locale("sw"));
     }
 
     @Test

@@ -22,15 +22,11 @@ package org.crosswire.jsword.versification;
 
 import java.io.PrintStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.ReferenceSystem;
-import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -182,8 +178,6 @@ public class Versification implements ReferenceSystem, Serializable {
         }
 //        Versification.dump(System.out, this.osisName, this.bookList, this.lastVerse);
 //        Versification.dump(System.out, this.osisName, this.bookList, this.chapterStarts);
-
-        initBookLookup();
     }
 
     /**
@@ -276,7 +270,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The requested BookName or null if not in this versification
      */
     public BookName getBookName(BibleBook book) {
-        return getLocalizedBibleNames().getBookName(book);
+        if (containsBook(book)) {
+            return BibleNames.instance().getBookName(book);
+        }
+        return null;
     }
 
     /**
@@ -284,31 +281,40 @@ public class Versification implements ReferenceSystem, Serializable {
      * setBookCase() and isFullBookName())
      *
      * @param book the desired book
-     * @return The full name of the book or blank if not in this versification
+     * @return The full name of the book or null if not in this versification
      */
     public String getPreferredName(BibleBook book) {
-        return getLocalizedBibleNames().getPreferredName(book);
-    }
+        if (containsBook(book)) {
+            return BibleNames.instance().getPreferredName(book);
+        }
+        return null;
+      }
 
     /**
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
      *
-     * @return The full name of the book or blank if not in this versification
+     * @return The full name of the book or null if not in this versification
      */
     public String getLongName(BibleBook book) {
-        return getLocalizedBibleNames().getLongName(book);
-    }
+        if (containsBook(book)) {
+            return BibleNames.instance().getLongName(book);
+        }
+        return null;
+      }
 
     /**
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
      *
-     * @return The short name of the book or blank if not in this versification
+     * @return The short name of the book or null if not in this versification
      */
     public String getShortName(BibleBook book) {
-        return getLocalizedBibleNames().getShortName(book);
-    }
+        if (containsBook(book)) {
+            return BibleNames.instance().getShortName(book);
+        }
+        return null;
+      }
 
     /**
      * Get a book from its name.
@@ -318,19 +324,8 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The BibleBook, On error null
      */
     public BibleBook getBook(String find) {
-        BibleBook book = null;
-        if (containsLetter(find)) {
-            book = BibleBook.fromOSIS(find);
-
-            if (book == null) {
-                book = getLocalizedBibleNames().getBook(find);
-            }
-
-            if (book == null && englishBibleNames != null) {
-                book = englishBibleNames.getBook(find);
-            }
-        }
-       if (containsBook(book)) {
+        BibleBook book = BibleNames.instance().getBook(find);
+        if (containsBook(book)) {
             return book;
         }
         return null;
@@ -347,7 +342,8 @@ public class Versification implements ReferenceSystem, Serializable {
     public boolean isBook(String find) {
         return getBook(find) != null;
     }
-/**
+
+    /**
      * Get the last valid chapter number for a book.
      *
      * @param book
@@ -401,73 +397,6 @@ public class Versification implements ReferenceSystem, Serializable {
         Verse last = new Verse(this, book, chapter, getLastVerse(book, chapter));
         return new VerseRange(this, first, last);
     }
-
-//    /**
-//     * Create a new Verse being the last verse in the current book
-//     *
-//     * @param verse the verse that designates the book 
-//     * @return The last verse in this book of the given verse
-//     */
-//    public Verse getLastVerseInBook(Verse verse) {
-//        BibleBook book = verse.getBook();
-//        int lastchap = getLastChapter(book);
-//        int lastverse = getLastVerse(book, lastchap);
-//
-//        return new Verse(this, book, lastchap, lastverse);
-//    }
-//
-//    /**
-//     * Create a new Verse being the last verse in the current book
-//     *
-//     * @param verse the verse that designates the book and chapter
-//     * @return The last verse in this book
-//     */
-//    public Verse getLastVerseInChapter(Verse verse) {
-//        BibleBook book = verse.getBook();
-//        int chapter = verse.getChapter();
-//        int lastverse = getLastVerse(book, chapter);
-//
-//        return new Verse(this, book, chapter, lastverse);
-//    }
-//
-//    /**
-//     * Create a new Verse for the book introduction
-//     *
-//     * @param verse the verse that designates the book 
-//     * @return The introduction in this book
-//     */
-//    public Verse getBookIntro(Verse verse) {
-//        return new Verse(this, verse.getBook(), 0, 0);
-//    }
-//
-//    /**
-//     * Create a new Verse being the first verse in the current book
-//     *
-//     * @param verse the verse that designates the book 
-//     * @return The first verse in this book
-//     */
-//    public Verse getFirstVerseInBook(Verse verse) {
-//        return new Verse(this, verse.getBook(), 1, 1);
-//    }
-//
-//    /**
-//     * Create a new Verse being the introduction in the current chapter
-//     *
-//     * @return The introduction in this chapter
-//     */
-//    public Verse getChapterIntro(Verse verse) {
-//        return new Verse(this, verse.getBook(), verse.getChapter(), 0);
-//    }
-//
-//    /**
-//     * Create a new Verse being the first verse in the current chapter
-//     *
-//     * @param verse the verse that designates the book and chapter
-//     * @return The first verse in this chapter
-//     */
-//    public Verse getFirstVerseInChapter(Verse verse) {
-//        return new Verse(this, verse.getBook(), verse.getChapter(), 1);
-//    }
 
     /**
      * An introduction is a Verse that has a verse number of 0.
@@ -1275,56 +1204,6 @@ public class Versification implements ReferenceSystem, Serializable {
         out.println("    private int ntMaxOrdinal = " + (ordinal - 1) + ";");
     }
 
-    /**
-     * Gets the localized bible names, based on the {@link LocaleProviderManager}
-     *
-     * @return the localized bible names
-     */
-    private BibleNames getLocalizedBibleNames() {
-        //get the current Locale
-        return getBibleNamesForLocale(LocaleProviderManager.getLocale());
-    }
-
-    /**
-     * Gets the bible names for a specific locale.
-     *
-     * @param locale the locale
-     * @return the bible names for locale
-     */
-    private BibleNames getBibleNamesForLocale(Locale locale) {
-        BibleNames bibleNames = localizedBibleNames.get(locale);
-        if (bibleNames == null) {
-            bibleNames = new BibleNames(this, locale);
-            localizedBibleNames.put(locale, bibleNames);
-        }
-
-        return bibleNames;
-    }
-
-    /**
-     * Load up the resources for Bible book and section names.
-     */
-    private void initBookLookup() {
-        //Always load up the English Locale Bible names as we can't guarantee how many different locales we are supporting.
-        englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH);
-    }
-
-    /**
-     * This is simply a convenience function to wrap Character.isLetter()
-     *
-     * @param text
-     *            The string to be parsed
-     * @return true if the string contains letters
-     */
-    private static boolean containsLetter(String text) {
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isLetter(text.charAt(i))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /** The OSIS name of the reference system. */
     private String name;
@@ -1345,12 +1224,6 @@ public class Versification implements ReferenceSystem, Serializable {
      * Constant for the ordinal number of the first verse in each chapter.
      */
     private int[][] chapterStarts;
-
-    /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */
-    private transient Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale, BibleNames>();
-
-    /** English BibleNames, or null when using the program's default locale */
-    private static BibleNames englishBibleNames;
 
     /**
      * Serialization ID
