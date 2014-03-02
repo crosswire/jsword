@@ -246,61 +246,30 @@ public final class Verse implements VerseKey<Verse> {
     @Override
     public boolean equals(Object obj) {
         // Since this can not be null
-        if (obj == null) {
+        if (!(obj instanceof Verse)) {
             return false;
         }
 
-        if (obj instanceof Verse) {
-            Verse that = (Verse) obj;
+        Verse that = (Verse) obj;
 
-            // The real tests
-            return this.ordinal == that.ordinal
-                    && this.v11n.equals(that.v11n)
-                    && bothNullOrEqual(this.subIdentifier, that.subIdentifier);
-        }
-
-        // TODO(DMS): Remove this. Doing this now breaks V11N Mapping code.
-        //I think omitting this breaks reciprocity.
-        if (obj instanceof Passage) {
-            //then we compare if we have a simple cardinality of 1 and the same v11n
-            final Passage passage = (Passage) obj;
-            return passage.getCardinality() == 1
-                && passage.getVersification().equals(this.v11n)
-                && passage.equals(this);
-        }
-
-        return false;
+        // The real tests
+        return this.ordinal == that.ordinal
+                && this.v11n.equals(that.v11n)
+                && bothNullOrEqual(this.subIdentifier, that.subIdentifier);
     }
 
     @Override
     public int hashCode() {
-        return getOsisID().hashCode();
-        // TODO(DMS): Change to this.
-        /*
         int result = 31 + ordinal;
         result = 31 * result + ((v11n == null) ? 0 : v11n.hashCode());
         return 31 * result + ((subIdentifier == null) ? 0 : subIdentifier.hashCode());
-        */
     }
 
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
-        Verse that = (Verse) obj;
-
-        int thatStart = that.ordinal;
-        int thisStart = this.ordinal;
-
-        if (thatStart > thisStart) {
-            return -1;
-        }
-
-        if (thatStart < thisStart) {
-            return 1;
-        }
-
-        return 0;
+        return this.ordinal - ((Verse) obj).ordinal;
     }
 
     /* (non-Javadoc)

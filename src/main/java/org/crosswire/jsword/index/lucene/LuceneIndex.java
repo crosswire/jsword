@@ -496,7 +496,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * the underlying Lucene functionality.
      * 
      * Note: by using this method, you need to ensure you don't close the searcher while it is being used.
-     * See {@link IndexManager#closeAllIndexes()} for more information
+     * See {@link org.crosswire.jsword.index.IndexManager#closeAllIndexes()} for more information
      */
     public Searcher getSearcher() {
         return searcher;

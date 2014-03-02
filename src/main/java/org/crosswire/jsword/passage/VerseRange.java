@@ -359,72 +359,28 @@ public final class VerseRange implements VerseKey<VerseRange> {
 
     @Override
     public boolean equals(Object obj) {
-        // Since this can not be null
-        if (obj == null) {
+        if (!(obj instanceof VerseRange)) {
             return false;
         }
-
-        // Check that that is the same as this
-        // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass())) {
-            return false;
-        }
-
         VerseRange vr = (VerseRange) obj;
-
-        // The real tests
-        if (!vr.getStart().equals(getStart())) {
-            return false;
-        }
-
-        if (vr.getCardinality() != getCardinality()) {
-            return false;
-        }
-
-        // We don't really need to check this one too.
-        // if (!vr.getEnd().equals(getEnd())) return false;
-
-        return true;
+        return verseCount == vr.verseCount && start.equals(vr.start) && v11n.equals(vr.v11n);
     }
 
     @Override
     public int hashCode() {
-        return (start.getOrdinal() << 16) + verseCount;
+        int result = start.hashCode();
+        result = 31 * result + verseCount;
+        return 31 * result + ((v11n == null) ? 0 : v11n.hashCode());
     }
 
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
-        // This ensures a ClassCastException without further test
-        Verse that = null;
-        if (obj instanceof Verse) {
-            that = (Verse) obj;
-        } else {
-            that = ((VerseRange) obj).getStart();
-        }
+        VerseRange that = (VerseRange) obj;
 
-        int start_compare = getStart().compareTo(that);
-        if (start_compare != 0) {
-            return start_compare;
-        }
-
-        // So the start verses are the same, but the Verse(Range)s may not
-        // be equal() since they have lengths
-        int that_length = 1;
-        if (obj instanceof VerseRange) {
-            that_length = ((VerseRange) obj).getCardinality();
-        }
-
-        if (that_length == getCardinality()) {
-            return 0;
-        }
-
-        if (that_length < getCardinality()) {
-            return 1;
-        }
-
-        return -1;
+        int result = start.compareTo(that.start);
+        return result == 0 ? this.verseCount - that.verseCount : result;
     }
 
     /**

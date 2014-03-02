@@ -250,8 +250,8 @@ public class VerseTest {
 
     @Test
     public void testCompareTo() {
-        assertEquals(gen11.compareTo(rev99), -1);
-        assertEquals(rev99.compareTo(gen11), 1);
+        assertTrue(gen11.compareTo(rev99) < 0);
+        assertTrue(rev99.compareTo(gen11) > 0);
         assertEquals(gen11.compareTo(gen11), 0);
     }
 

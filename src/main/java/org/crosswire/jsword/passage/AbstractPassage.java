@@ -114,13 +114,7 @@ public abstract class AbstractPassage implements Passage {
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
-        if (!(obj instanceof Passage)) {
-            log.warn("Can't compare a Passage to a {}", obj.getClass().getName());
-            return -1;
-        }
-
         Passage thatref = (Passage) obj;
-
         if (thatref.countVerses() == 0) {
             if (countVerses() == 0) {
                 return 0;
@@ -160,28 +154,19 @@ public abstract class AbstractPassage implements Passage {
 
     @Override
     public boolean equals(Object obj) {
-        // Since this can not be null
-        if (obj == null) {
-            return false;
-        }
-
         // This is cheating because I am supposed to say:
         // <code>!obj.getClass().equals(this.getClass())</code>
         // However I think it is entirely valid for a RangedPassage
         // to equal a DistinctPassage since the point of the Factory
         // is that the user does not need to know the actual type of the
         // Object he is using.
-        if (obj instanceof Passage) {
-            // The real test
-            //FIXME: this is not really true since the versification any longer.
-            return ((Passage) obj).getName().equals(getName());
+        if (!(obj instanceof Passage)) {
+            return false;
         }
-
-        if (obj instanceof Verse) {
-            return ((Verse) obj).getName().equals(getName());
-        }
-
-        return false;
+        Passage that = (Passage) obj;
+        // The real test
+        // FIXME: this is not really true since the versification any longer.
+        return that.getOsisRef().equals(getOsisRef());
     }
 
     @Override

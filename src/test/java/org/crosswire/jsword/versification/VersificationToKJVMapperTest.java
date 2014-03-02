@@ -35,6 +35,7 @@ import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -180,20 +181,6 @@ public class VersificationToKJVMapperTest {
         assertEquals("", unmap("Gen.1.2"));
         assertEquals("", unmap("Gen.1.3"));
         assertEquals("Gen.1.4", unmap("Gen.1.4"));
-    }
-
-    /**
-     * Checks that we have the same hashcode and equals methods
-     */
-    @Test
-    public void testVerseAndPassageHaveSameHashCode() throws NoSuchKeyException {
-        Versification kjv = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
-        Verse v = VerseFactory.fromString(kjv, "Gen.1.2");
-        Key p = PassageKeyFactory.instance().getKey(kjv, "Gen.1.2");
-
-        assertEquals(v, p);
-        assertEquals(p, v);
-        assertEquals(v.hashCode(), p.hashCode());
     }
 
     /**

@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * An interface that allows us to download from a specific source of Bible data.
  * It is important that implementor of this interface define equals() and
- * hashcode() properly.
+ * hashCode() properly.
  * 
  * <p>
  * To start with I only envisage that we use Sword sourced Bible data however

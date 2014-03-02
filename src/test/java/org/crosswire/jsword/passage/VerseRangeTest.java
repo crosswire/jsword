@@ -483,19 +483,19 @@ public class VerseRangeTest {
 
     @Test
     public void testCompareTo() {
-        assertEquals(1, rev99_1.compareTo(gen11_1));
-        assertEquals(-1, gen11_1.compareTo(rev99_1));
-        assertEquals(0, gen11_1.compareTo(gen11_1));
-        assertEquals(-1, gen11_1.compareTo(gen11_2));
-        assertEquals(-1, gen11_1.compareTo(gen11_9));
-        assertEquals(-1, gen11_1.compareTo(gen11_a));
-        assertEquals(1, gen11_1.compareTo(gen_all));
-        assertEquals(1, gen12_1.compareTo(gen11_1));
-        assertEquals(1, gen12_1.compareTo(gen11_2));
-        assertEquals(1, gen12_1.compareTo(gen_rev));
-        assertEquals(0, gen12_1.compareTo(gen12_1));
-        assertEquals(-1, gen12_1.compareTo(rev99_1));
-        assertEquals(-1, gen12_1.compareTo(rev99_9));
+        assertTrue(rev99_1.compareTo(gen11_1) > 0);
+        assertTrue(gen11_1.compareTo(rev99_1) < 0);
+        assertTrue(gen11_1.compareTo(gen11_1) == 0);
+        assertTrue(gen11_1.compareTo(gen11_2) < 0);
+        assertTrue(gen11_1.compareTo(gen11_9) < 0);
+        assertTrue(gen11_1.compareTo(gen11_a) < 0);
+        assertTrue(gen11_1.compareTo(gen_all) > 0);
+        assertTrue(gen12_1.compareTo(gen11_1) > 0);
+        assertTrue(gen12_1.compareTo(gen11_2) > 0);
+        assertTrue(gen12_1.compareTo(gen_rev) > 0);
+        assertTrue(gen12_1.compareTo(gen12_1) == 0);
+        assertTrue(gen12_1.compareTo(rev99_1) < 0);
+        assertTrue(gen12_1.compareTo(rev99_9) < 0);
         try {
             gen12_1.compareTo(null);
             fail();

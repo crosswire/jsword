@@ -96,7 +96,7 @@ public final class PassageKeyFactory {
 
     /**
      * Get a Passage containing all the Verses in this Versification.
-     * This differs from {@link Book#getGlobalKeyList} which gets the
+     * This differs from {@link org.crosswire.jsword.book.Book#getGlobalKeyList} which gets the
      * verses in the Book, which may be a small part of the whole.
      * 
      * @param v11n
