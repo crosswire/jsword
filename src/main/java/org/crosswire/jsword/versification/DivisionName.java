@@ -262,7 +262,7 @@ public enum DivisionName {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.REV.ordinal();
+            return bookNum >= BibleBook.MATT.ordinal() && bookNum <= BibleBook.REV.ordinal();
         }
 
         @Override
