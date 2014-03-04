@@ -430,7 +430,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             }
 
             if (includeXrefs) {
-                addField(doc, xrefField, OSISUtil.getReferences(v11n, osis));
+                // We pass book and key because the xref may not be valid and it needs to be reported.
+                addField(doc, xrefField, OSISUtil.getReferences(this.book, subkey, v11n, osis));
             }
 
             if (includeNotes) {

@@ -773,10 +773,13 @@ public final class OSISUtil {
 
     /**
      * A space separate string containing osisID from the reference element.
-     * 
+     * We pass book and key because the xref may not be valid and it needs to be reported.
+     *
+     * @param book the book to which the references refer
+     * @param key the verse containing the cross references
      * @return The references in the text
      */
-    public static String getReferences(Versification v11n, Element root) {
+    public static String getReferences(Book book, Key key, Versification v11n, Element root) {
         PassageKeyFactory keyf = PassageKeyFactory.instance();
         Key collector = keyf.createEmptyKeyList(v11n);
 
@@ -785,10 +788,9 @@ public final class OSISUtil {
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
             if (attr != null) {
                 try {
-                    Key key = keyf.getKey(v11n, attr);
-                    collector.addAll(key);
+                    collector.addAll(keyf.getKey(v11n, attr));
                 } catch (NoSuchKeyException e) {
-                    log.warn("Unable to parse: {}", attr, e);
+                    DataPolice.report(book, key, "Unable to parse: " + attr + " - No such reference:" + e.getMessage());
                 }
             }
         }
