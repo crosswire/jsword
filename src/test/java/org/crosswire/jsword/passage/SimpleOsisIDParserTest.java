@@ -79,6 +79,6 @@ public class SimpleOsisIDParserTest {
     
     @Test
     public void testVerseWithPart() {
-        assertEquals("3Jo.14", SimpleOsisParser.parseOsisID(testV11n, "3Jo.14!a"));
+        assertEquals("3John.1.14!a", SimpleOsisParser.parseOsisID(testV11n, "3John.1.14!a").getOsisID());
     }
 }
