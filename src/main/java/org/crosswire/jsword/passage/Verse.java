@@ -212,17 +212,34 @@ public final class Verse implements VerseKey<Verse> {
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
+        final StringBuilder buf = getVerseIdentifier();
+        if (subIdentifier != null && subIdentifier.length() > 0) {
+            buf.append(VERSE_OSIS_SUB_PREFIX);
+            buf.append(subIdentifier);
+        }
+        return buf.toString();
+    }
+
+   
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
+     */
+    public String getOsisIDNoSubIdentifier() {
+        return getVerseIdentifier().toString();
+    }
+
+    /**
+     * Gets the common name of the verse, excluding any !abc sub-identifier
+     * @return the verse OSIS-ID, excluding the sub-identifier
+     */
+    private StringBuilder getVerseIdentifier() {
         StringBuilder buf = new StringBuilder();
         buf.append(book.getOSIS());
         buf.append(Verse.VERSE_OSIS_DELIM);
         buf.append(chapter);
         buf.append(Verse.VERSE_OSIS_DELIM);
         buf.append(verse);
-        if (subIdentifier != null && subIdentifier.length() > 0) {
-            buf.append(VERSE_OSIS_SUB_PREFIX);
-            buf.append(subIdentifier);
-        }
-        return buf.toString();
+        return buf;
     }
 
     @Override

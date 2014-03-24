@@ -82,14 +82,21 @@ public enum AccuracyType {
             BibleBook book = v11n.getBook(parts[0]);
             int chapter = 1;
             int verse = 1;
-            if (parts.length == 3) {
+            final String subIdentifier = getSubIdentifier(parts);
+            final boolean hasSub = subIdentifier != null;
+            
+            //can be of form, BCV, BCV!sub, BV, BV!a
+            //we only have a chapter and verse number if
+            // a- BCV (3 parts) or b- BCV!sub (4 parts)
+            // however, we have 3 parts if BV!a
+            if (hasSub && parts.length == 4 || !hasSub && parts.length == 3) {
                 chapter = getChapter(v11n, book, parts[1]);
                 verse = getVerse(v11n, book, chapter, parts[2]);
             } else {
                 // Some books only have 1 chapter
                 verse = getVerse(v11n, book, chapter, parts[1]);
             }
-            return new Verse(v11n, book, chapter, verse, getSubIdentifier(parts));
+            return new Verse(v11n, book, chapter, verse, subIdentifier);
         }
 
         @Override
