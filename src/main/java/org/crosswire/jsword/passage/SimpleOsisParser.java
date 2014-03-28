@@ -100,16 +100,6 @@ public final class SimpleOsisParser {
             return null;
         }
 
-// All OSIS ids have chapter 1 for all books that even have a single chapter.
-// So 3 John 14 would be 3John.1.14
-//        if (b.isShortBook()) {
-//            if (verseParts.length != 2) {
-//                return null;
-//            }
-//
-//            return new Verse(v11n, b, 1, Integer.parseInt(verseParts[1]));
-//        }
-
         if (verseParts.length != 3) {
             return null;
         }

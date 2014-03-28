@@ -166,6 +166,13 @@ public final class Versifications {
     }
 
     /**
+     * @return number of versifications
+     */
+    public int size() {
+        return known.size();
+    }
+    
+    /**
      * This class is a singleton, enforced by a private constructor.
      */
     private Versifications() {
