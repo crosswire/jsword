@@ -503,7 +503,7 @@ public final class Defaults {
      * Determine whether this Book become the default. It should, only if there
      * is not one.
      */
-    protected static void checkPreferable(Book book) {
+    private static void checkPreferable(Book book) {
         assert book != null;
 
         bibleDeft.setDefaultConditionally(book);

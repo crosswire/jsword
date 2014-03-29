@@ -178,7 +178,7 @@ public interface Passage extends VerseKey<Passage> {
     VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException;
 
     /**
-     * Like verseElements() that iterates over VerseRanges instead of Verses.
+     * Like iterator() that iterates over VerseRanges instead of Verses.
      * Exactly the same data will be traversed, however using rangeIterator()
      * will usually give fewer iterations (and never more)
      * 
@@ -201,7 +201,7 @@ public interface Passage extends VerseKey<Passage> {
      * Add this Verse/VerseRange to this Passage
      * 
      * @param that
-     *            The Verses to be removed from this Passage
+     *            The Verses to be added from this Passage
      */
     void add(Key that);
 
