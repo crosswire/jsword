@@ -34,9 +34,12 @@ import org.crosswire.jsword.passage.PreferredKey;
  */
 public class SwordDailyDevotion extends SwordDictionary implements PreferredKey {
     /**
-     * Simple ctor
+     * Construct an SwordDailyDevotion given the BookMetaData and the AbstractBackend.
+     * 
+     * @param bmd the metadata that describes the book
+     * @param backend the means by which the resource is accessed
      */
-    public SwordDailyDevotion(SwordBookMetaData sbmd, AbstractBackend backend) {
+    public SwordDailyDevotion(SwordBookMetaData sbmd, Backend backend) {
         super(sbmd, backend);
     }
 

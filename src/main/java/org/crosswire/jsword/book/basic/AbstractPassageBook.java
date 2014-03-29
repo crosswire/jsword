@@ -28,6 +28,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.Backend;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -54,8 +55,14 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractPassageBook extends AbstractBook {
 
-    public AbstractPassageBook(BookMetaData bmd) {
-        super(bmd);
+    /**
+     * Construct an AbstractPassageBook given the BookMetaData and the AbstractBackend.
+     * 
+     * @param bmd the metadata that describes the book
+     * @param backend the means by which the resource is accessed
+     */
+    public AbstractPassageBook(BookMetaData bmd, Backend backend) {
+        super(bmd, backend);
         this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
     }
 

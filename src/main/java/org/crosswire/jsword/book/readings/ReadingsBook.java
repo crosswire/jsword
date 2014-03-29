@@ -70,7 +70,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
      * Constructor for ReadingsBook.
      */
     public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type) {
-        super(null); // set the book metadata later
+        super(null, null); // set the book metadata later and no backend
 
         hash = new TreeMap<Key, String>();
 

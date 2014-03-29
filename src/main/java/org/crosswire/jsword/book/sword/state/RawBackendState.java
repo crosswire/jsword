@@ -34,6 +34,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.book.sword.SwordUtil;
+import org.crosswire.jsword.versification.Testament;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -115,14 +116,6 @@ public class RawBackendState extends AbstractOpenFileState {
         }
     }
 
-    public void releaseIndex() {
-        IOUtil.close(ntIdxRaf);
-        IOUtil.close(otIdxRaf);
-
-        ntIdxRaf = null;
-        otIdxRaf = null;
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
@@ -152,17 +145,23 @@ public class RawBackendState extends AbstractOpenFileState {
     }
 
     /**
-     * @return the otIdxRaf
+     * Get the index file for the given testament.
+     * 
+     * @param testament the testament for the file
+     * @return the requested file for the testament
      */
-    public RandomAccessFile getOtIdxRaf() {
-        return otIdxRaf;
+    public RandomAccessFile getIdxRaf(Testament testament) {
+        return testament == Testament.NEW ? ntIdxRaf : otIdxRaf;
     }
 
     /**
-     * @return the ntIdxRaf
+     * Get the text file for the given testament.
+     * 
+     * @param testament the testament for the file
+     * @return the requested file for the testament
      */
-    public RandomAccessFile getNtIdxRaf() {
-        return ntIdxRaf;
+    public RandomAccessFile getTextRaf(Testament testament) {
+        return testament == Testament.NEW ? ntTextRaf : otTextRaf;
     }
 
     /**
@@ -180,31 +179,23 @@ public class RawBackendState extends AbstractOpenFileState {
     }
 
     /**
-     * @return the ntTextFile
+     * Get the text file for the given testament.
+     * 
+     * @param testament the testament for the file
+     * @return the requested file for the testament
      */
-    public File getNtTextFile() {
-        return ntTextFile;
+    public File getTextFile(Testament testament) {
+        return testament == Testament.NEW ? ntTextFile : otTextFile;
     }
 
     /**
-     * @return the otTextFile
+     * Get the index file for the given testament.
+     * 
+     * @param testament the testament for the file
+     * @return the requested file for the testament
      */
-    public File getOtTextFile() {
-        return otTextFile;
-    }
-
-    /**
-     * @return the ntIdxFile
-     */
-    public File getNtIdxFile() {
-        return ntIdxFile;
-    }
-
-    /**
-     * @return the otIdxFile
-     */
-    public File getOtIdxFile() {
-        return otIdxFile;
+    public File getIdxFile(Testament testament) {
+        return testament == Testament.NEW ? ntIdxFile : otIdxFile;
     }
 
     /**

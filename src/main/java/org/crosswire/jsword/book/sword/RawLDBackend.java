@@ -33,7 +33,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.icu.DateFormatter;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
@@ -89,14 +88,14 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
 //            if (raw.startsWith("@LINK")) {
 //                return readRawContent(state, raw.substring(6).trim());
 //            }
-            return getRawText(state, entry);
+            return getRawText(entry);
         }
         // TRANSLATOR: Error condition: Indicates that something could not
         // be found in the book. {0} is a placeholder for the unknown key.
         throw new IOException(JSMsg.gettext("Key not found {0}", key));
     }
 
-    protected String getRawText(RawLDBackendState state, DataEntry entry) {
+    protected String getRawText(DataEntry entry) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
         byte[] cipherKeyBytes = null;
         if (cipherKeyString != null) {
@@ -126,7 +125,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (IOException e) {
             return 0;
         } finally {
-            IOUtil.close(state);
+            OpenFileStateManager.release(state);
         }
     }
 
@@ -148,7 +147,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (IOException e) {
             // fall through FIXM(CJB) Log?
         } finally {
-            IOUtil.close(state);
+            OpenFileStateManager.release(state);
         }
         throw new ArrayIndexOutOfBoundsException(index);
     }
@@ -166,7 +165,41 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (BookException e) {
             return -getCardinality() - 1;
         } finally {
-            IOUtil.close(state);
+            OpenFileStateManager.release(state);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#size(org.crosswire.jsword.passage.Key)
+     */
+    @Override
+    public int getRawTextLength(Key key) {
+        RawLDBackendState state = null;
+        try {
+            state = initState();
+            int entry = search(state, key.getName());
+            // Read the offset and size for this key from the index
+            byte[] buffer = SwordUtil.readRAF(state.getIdxRaf(), entry * entrysize, entrysize);
+            int entrySize = 0;
+            switch (datasize) {
+            case 2:
+                entrySize = SwordUtil.decodeLittleEndian16(buffer, 4);
+                break;
+            case 4:
+                entrySize = SwordUtil.decodeLittleEndian32(buffer, 4);
+                break;
+            default:
+                assert false : datasize;
+            }
+
+            return entrySize;
+     
+        } catch (IOException e) {
+            return 0;
+        } catch (BookException e) {
+            return 0;
+        } finally {
+            OpenFileStateManager.release(state);
         }
     }
 

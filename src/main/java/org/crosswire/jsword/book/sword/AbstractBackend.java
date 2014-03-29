@@ -27,20 +27,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.crypt.Sapphire;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Content;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  */
-public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T> {
+public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T>, Backend<T> {
 
     /**
      * Default constructor for the sake of serialization.
@@ -72,18 +70,15 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         bmd = sbmd;
     }
 
-    /**
-     * @return Returns the Sword BookMetaData.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#getBookMetaData()
      */
     public SwordBookMetaData getBookMetaData() {
         return bmd;
     }
 
-    /**
-     * Decipher the data in place, if it is enciphered and there is a key to
-     * unlock it.
-     *
-     * @param data the data to unlock
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#decipher(byte[])
      */
     public void decipher(byte[] data) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
@@ -97,19 +92,16 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         }
     }
 
-    /**
-     * Encipher the data in place, if there is a key to unlock it.
-     *
-     * @param data
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#encipher(byte[])
      */
     public void encipher(byte[] data) {
         // Enciphering and deciphering are the same!
         decipher(data);
     }
 
-    /**
-     * Initialize a AbstractBackend before use. This method needs to call
-     * addKey() a number of times on GenBookBackend
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#readIndex()
      */
     public Key readIndex() {
         // TODO(dms): Eliminate readIndex by deriving GenBookBackend from
@@ -117,33 +109,63 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         return null;
     }
 
-    /**
-     * Determine whether this Book contains the key in question
-     *
-     * @param key The key whose presence is desired.
-     * @return true if the Book contains the key
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#contains(org.crosswire.jsword.passage.Key)
      */
     public abstract boolean contains(Key key);
 
-    /**
-     * Gets the fast global key list, and if this operation is not supported, throws a {@link UnsupportedOperationException}
-     *
-     * @return the fast global key list
-     * @throws BookException the book exception if for some reason the book failed to be read properly.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#getRawText(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawText(Key key) throws BookException {
+        T state = null;
+        try {
+            state = initState();
+            return readRawContent(state, key);
+        } catch (IOException e) {
+            throw new BookException("Unable to obtain raw content from backend", e);
+        } finally {
+            OpenFileStateManager.release(state);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(Key alias, Key source) throws BookException {
+        T state = null;
+        try {
+            state = initState();
+            setAliasKey(state, alias, source);
+        } catch (IOException e) {
+            throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
+        } finally {
+            OpenFileStateManager.release(state);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#size(org.crosswire.jsword.passage.Key)
+     */
+    public int getRawTextLength(Key key) {
+        try {
+            String raw = getRawText(key);
+            return raw == null ? 0 : raw.length();
+        } catch (BookException e) {
+            return 0;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#getGlobalKeyList()
      */
     public Key getGlobalKeyList() throws BookException {
         //by default, this is not implemented
         throw new UnsupportedOperationException("Fast global key list unsupported in this backend");
     }
 
-    /**
-     * Get the text allotted for the given entry
-     *
-     * @param key       The key to fetch
-     * @param processor processor that executes before/after the content is read from
-     *                  disk or another kind of backend
-     * @return String The data for the verse in question
-     * @throws BookException If the data can not be read.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#readToOsis(org.crosswire.jsword.passage.Key, org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor)
      */
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
@@ -170,7 +192,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
             return content;
         } finally {
-            IOUtil.close(openFileState);
+            OpenFileStateManager.release(openFileState);
         }
     }
 
@@ -202,45 +224,44 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      */
     private Verse readPassageOsis(Key key, RawTextToXmlProcessor processor, final List<Content> content, T openFileState) throws BookException {
         Verse currentVerse = null;
-            final Passage ref = KeyUtil.getPassage(key);
-            final Iterator<VerseRange> rit = ref.rangeIterator(RestrictionType.CHAPTER);
-            while (rit.hasNext()) {
-                VerseRange range = rit.next();
-                processor.preRange(range, content);
+        final Passage ref = KeyUtil.getPassage(key);
+        final Iterator<VerseRange> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+        while (rit.hasNext()) {
+            VerseRange range = rit.next();
+            processor.preRange(range, content);
 
-                // FIXME(CJB): can this now be optimized since we can calculate
-                // the buffer size of what to read?
-                // now iterate through all verses in range
-                for (Key verseInRange : range) {
-                    currentVerse = KeyUtil.getVerse(verseInRange);
-                    try {
-                        String rawText = readRawContent(openFileState, currentVerse);
-                        processor.postVerse(verseInRange, content, rawText);
-                    } catch (IOException e) {
-                        //some versifications have more verses than modules contain - so can't throw
-                        //an error here...
-                        LOGGER.debug(e.getMessage(), e);
-                    }
+            // FIXME(CJB): can this now be optimized since we can calculate
+            // the buffer size of what to read?
+            // now iterate through all verses in range
+            for (Key verseInRange : range) {
+                currentVerse = KeyUtil.getVerse(verseInRange);
+                try {
+                    String rawText = readRawContent(openFileState, currentVerse);
+                    processor.postVerse(verseInRange, content, rawText);
+                } catch (IOException e) {
+                    //some versifications have more verses than modules contain - so can't throw
+                    //an error here...
+                    LOGGER.debug(e.getMessage(), e);
                 }
             }
-
-            return currentVerse;
         }
 
-        /**
-         * If non-null, currentKey is used to throw the exception, other, masterKey
-         * is used instead, which will be more general.
-         *
-         * @param masterKey
-         *            the key containing currentKey
-         * @param currentKey
-         *            the currentKey
-         * @param e
-         *            the exception that occured
-         * @throws BookException
-         *             always thrown, a {@link BookException}
-         */
+        return currentVerse;
+    }
 
+    /**
+     * If non-null, currentKey is used to throw the exception, other, masterKey
+     * is used instead, which will be more general.
+     *
+     * @param masterKey
+     *            the key containing currentKey
+     * @param currentKey
+     *            the currentKey
+     * @param e
+     *            the exception that occured
+     * @throws BookException
+     *             always thrown, a {@link BookException}
+     */
     private void throwFailedKeyException(Key masterKey, Key currentKey, IOException e) throws BookException {
         // TRANSLATOR: Common error condition: The file could not be read.
         // There can be many reasons.
@@ -251,11 +272,8 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         throw new BookException(JSMsg.gettext("Error reading {0}", currentKey.getName()), e);
     }
 
-    /**
-     * Create the directory to hold the Book if it does not exist.
-     *
-     * @throws IOException
-     * @throws BookException
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#create()
      */
     public void create() throws IOException, BookException {
         File dataPath = new File(SwordUtil.getExpandedDataPath(getBookMetaData()));
@@ -264,36 +282,20 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         }
     }
 
-    /**
-     * Returns whether this AbstractBackend is implemented.
-     *
-     * @return true if this AbstractBackend is implemented.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#isSupported()
      */
     public boolean isSupported() {
         return true;
     }
 
-    /**
-     * A Backend is writable if the file system allows the underlying files to
-     * be opened for writing and if the backend has implemented writing.
-     * Ultimately, all drivers should allow writing. At this time writing is not
-     * supported by backends, so abstract implementations should return false
-     * and let specific implementations return true otherwise.
-     *
-     * @return true if the book is writable
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.Backend#isWritable()
      */
     public boolean isWritable() {
         return false;
     }
 
-    public Versification getVersification() {
-        if (this.versificationSystem == null) {
-            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
-        }
-        return versificationSystem;
-    }
-
     private SwordBookMetaData bmd;
-    private Versification versificationSystem;
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBackend.class);
 }

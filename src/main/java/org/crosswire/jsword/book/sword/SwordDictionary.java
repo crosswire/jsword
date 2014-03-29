@@ -20,21 +20,16 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.activate.Activator;
-import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
-import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -51,41 +46,33 @@ import org.jdom2.Element;
  */
 public class SwordDictionary extends AbstractBook {
     /**
-     * Start and to as much checking as we can without using memory. (i.e.
-     * actually reading the indexes)
+     * Construct an SwordDictionary given the BookMetaData and the AbstractBackend.
+     * 
+     * @param bmd the metadata that describes the book
+     * @param backend the means by which the resource is accessed
      */
-    protected SwordDictionary(SwordBookMetaData sbmd, AbstractBackend backend) {
-        super(sbmd);
+    protected SwordDictionary(SwordBookMetaData sbmd, Backend backend) {
+        super(sbmd, backend);
 
-        this.backend = (AbstractKeyBackend) backend;
+        if (!(backend instanceof AbstractKeyBackend)) {
+            throw new IllegalArgumentException("AbstractBackend must be an AbstractKeyBackened");
+        }
+
         this.filter = sbmd.getFilter();
-        active = false;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
     public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty) throws BookException {
-
         assert key != null;
-        assert backend != null;
 
         List<Content> content = new ArrayList<Content>();
         Element title = OSISUtil.factory().createGeneratedTitle();
         title.addContent(key.getName());
         content.add(title);
 
-        OpenFileState state = null;
-        String txt = null;
-        try {
-            state = backend.initState();
-            txt = backend.readRawContent(state, key);
-        } catch (IOException e) {
-            throw new BookException(e.getMessage(), e);
-        } finally {
-            IOUtil.close(state);
-        }
-
+        String txt = getBackend().getRawText(key);
         List<Content> osisContent = filter.toOSIS(this, key, txt);
         content.addAll(osisContent);
 
@@ -96,21 +83,14 @@ public class SwordDictionary extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
-        OpenFileState state = null;
-        try {
-            state = backend.initState();
-            return backend.readRawContent(state, key);
-        } catch (IOException e) {
-           throw new BookException("Unable to obtain raw content from backend", e);
-        } finally {
-            IOUtil.close(state);
-        }
+        return getBackend().getRawText(key);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
+        Backend backend = getBackend();
         return backend != null && backend.contains(key);
     }
 
@@ -119,19 +99,16 @@ public class SwordDictionary extends AbstractBook {
      */
     @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
-        checkActive();
-
         assert key != null;
-        assert backend != null;
 
-        return backend.readToOsis(key, processor);
+        return getBackend().readToOsis(key, processor);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
-        return backend.isWritable();
+        return getBackend().isWritable();
     }
 
     /* (non-Javadoc)
@@ -152,9 +129,7 @@ public class SwordDictionary extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
-        checkActive();
-
-        return backend;
+        return (AbstractKeyBackend) getBackend();
     }
 
     /* (non-Javadoc)
@@ -172,16 +147,16 @@ public class SwordDictionary extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
     public Key getKey(String text) throws NoSuchKeyException {
-        checkActive();
+        AbstractKeyBackend keyBackend = (AbstractKeyBackend) getBackend();
 
-        int pos = backend.indexOf(new DefaultLeafKeyList(text));
+        int pos = keyBackend.indexOf(new DefaultLeafKeyList(text));
         if (pos < 0) {
-            if (backend.getCardinality() > -pos - 1) {
-                return backend.get(-pos - 1);
+            if (keyBackend.getCardinality() > -pos - 1) {
+                return keyBackend.get(-pos - 1);
             }
-            return backend.get(backend.getCardinality() - 1);
+            return keyBackend.get(keyBackend.getCardinality() - 1);
         }
-        return backend.get(pos);
+        return keyBackend.get(pos);
     }
 
     /* (non-Javadoc)
@@ -190,40 +165,6 @@ public class SwordDictionary extends AbstractBook {
     public Key createEmptyKeyList() {
         return new DefaultKeyList();
     }
-
-    @Override
-    public final void activate(Lock lock) {
-        super.activate(lock);
-        active = true;
-
-        // We don't need to activate the backend because it should be capable
-        // of doing it for itself.
-    }
-
-    @Override
-    public final void deactivate(Lock lock) {
-        super.deactivate(lock);
-        active = false;
-    }
-
-    /**
-     * Helper method so we can quickly activate ourselves on access
-     */
-    private void checkActive() {
-        if (!active) {
-            Activator.activate(this);
-        }
-    }
-
-    /**
-     * Are we active
-     */
-    private boolean active;
-
-    /**
-     * To read the data from the disk
-     */
-    private AbstractKeyBackend backend;
 
     /**
      * The filter to use to convert to OSIS.
