@@ -236,13 +236,6 @@ public class VersificationToKJVMapper {
                 }
 
                 Verse rightVerse = (Verse) kjvIter.next();
-
-                // Identity mapping is the default
-                // We might want to report this
-                if (leftVerse.getVerse() == rightVerse.getVerse()) {
-                    continue;
-                }
-
                 QualifiedKey kjvKey = new QualifiedKey(rightVerse);
 
                 // When the lists are of lengths differing by one
