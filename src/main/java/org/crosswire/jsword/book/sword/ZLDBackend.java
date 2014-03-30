@@ -47,11 +47,17 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
         super(sbmd, 4);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.RawLDBackend#initState()
+     */
     @Override
     public ZLDBackendState initState() throws BookException {
         return OpenFileStateManager.getZLDBackendState(getBookMetaData());
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.RawLDBackend#getEntry(org.crosswire.jsword.book.sword.state.RawLDBackendState, org.crosswire.jsword.book.sword.DataEntry)
+     */
     @Override
     protected DataEntry getEntry(RawLDBackendState fileState, DataEntry entry) {
         ZLDBackendState state = null;

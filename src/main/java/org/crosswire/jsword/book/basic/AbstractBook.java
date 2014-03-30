@@ -33,6 +33,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.Backend;
 import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.index.IndexStatus;
@@ -57,12 +58,14 @@ import org.jdom2.Document;
  */
 public abstract class AbstractBook implements Book {
     /**
-     * Construct an AbstractBook given the BookMetaData.
+     * Construct an AbstractBook given the BookMetaData and the AbstractBackend.
      * 
      * @param bmd the metadata that describes the book
+     * @param backend the means by which the resource is accessed
      */
-    public AbstractBook(BookMetaData bmd) {
+    public AbstractBook(BookMetaData bmd, Backend backend) {
         this.bmd = bmd;
+        this.backend = backend;
         this.listeners = new CopyOnWriteArrayList<IndexStatusListener>();
     }
 
@@ -78,6 +81,13 @@ public abstract class AbstractBook implements Book {
      */
     public final void setBookMetaData(BookMetaData bmd) {
         this.bmd = bmd;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getBookMetaData()
+     */
+    public final Backend getBackend() {
+        return backend;
     }
 
     /* (non-Javadoc)
@@ -433,6 +443,12 @@ public abstract class AbstractBook implements Book {
      * The meta data for this book
      */
     private BookMetaData bmd;
+
+    /**
+     * To read the data from the Book
+     */
+    private Backend backend;
+
 
     /**
      * The list of property change listeners

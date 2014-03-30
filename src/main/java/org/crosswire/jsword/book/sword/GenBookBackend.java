@@ -54,15 +54,43 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
         return OpenFileStateManager.getGenBookBackendState(getBookMetaData());
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
+     */
     @Override
     public boolean contains(Key key) {
+        return getRawTextLength(key) > 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#size(org.crosswire.jsword.passage.Key)
+     */
+    @Override
+    public int getRawTextLength(Key key) {
         try {
-            return null != find(key);
+            TreeNode node = find(key);
+
+            if (node == null) {
+                return 0;
+            }
+
+            byte[] userData = node.getUserData();
+
+            // Some entries may be empty.
+            if (userData.length == 8) {
+                return SwordUtil.decodeLittleEndian32(userData, 4);
+            }
+
+            return 0;
+
         } catch (IOException e) {
-            return false;
+            return 0;
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.StatefulFileBackedBackend#readRawContent(org.crosswire.jsword.book.sword.state.OpenFileState, org.crosswire.jsword.passage.Key)
+     */
     public String readRawContent(GenBookBackendState state, Key key) throws IOException, BookException {
         TreeNode node = find(key);
 

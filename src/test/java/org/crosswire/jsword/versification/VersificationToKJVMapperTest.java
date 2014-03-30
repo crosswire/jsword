@@ -24,18 +24,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.SimpleOsisParser;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

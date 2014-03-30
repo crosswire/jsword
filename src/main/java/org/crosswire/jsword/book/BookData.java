@@ -171,7 +171,7 @@ public class BookData implements BookProvider {
         } else {
             Element table = OSISUtil.factory().createTable();
             Element row = OSISUtil.factory().createRow();
-            Element cell = null;
+            Element cell = OSISUtil.factory().createCell();
 
             table.addContent(row);
 
@@ -489,6 +489,10 @@ public class BookData implements BookProvider {
      * Used purely to avoid having too many generic/array notations entangled in the code
      */
     class BookVerseContent extends TreeMap<Verse, List<Content>> {
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = -6508118172314227362L;
     }
 
     /**
