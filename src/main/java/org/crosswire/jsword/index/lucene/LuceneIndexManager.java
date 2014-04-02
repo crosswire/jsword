@@ -50,6 +50,10 @@ import org.slf4j.LoggerFactory;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
+/*
+//todo OPEN questions
+    use org.apache.lucene.util.Version when upgrading Lucene;
+ */
 public class LuceneIndexManager implements IndexManager {
     /**
      * Create a LuceneIndexManager with a default IndexPolicy.
@@ -63,6 +67,7 @@ public class LuceneIndexManager implements IndexManager {
      */
     public boolean isIndexed(Book book) {
         try {
+            if(book==null) return false;
             URI storage = getStorageArea(book);
             return NetUtil.isDirectory(storage);
         } catch (IOException ex) {
@@ -90,6 +95,49 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
+    /** (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#needsReindexing(org.crosswire.jsword.book.Book)
+     */
+
+    /*
+            todo IndexVersion: for new index, store InstalledVersion as getLatestIndexVersion(book)
+               For any newly created index:
+                  store PerBook prop:  Installed.Index.Version.Book.xxx = getLatestIndexVersion(book)
+            todo Default Installed version Installed.Index.Version [value of getLatestIndexVersion()] in prop file, say ({IndexFolder}/JSword/lucene/js.index.installed.metadata )
+                  Question: At what point can jsword add/update value of Installed.Index.Version : Options:
+                    1. If
+
+     */
+    public boolean needsReindexing(Book book) {
+        // step 1: check for existing index
+        if (!isIndexed(book)) {
+            return true;
+        }
+
+        boolean reindex = false;
+
+        // step 2: check for index version
+        try {
+            // need hard casting because it is only implemented on LuceneIndex, not the Index interface
+            //LuceneIndex index = (LuceneIndex)getIndex(book);
+
+            //should Clients use IndexStatus.INVALID
+
+
+            float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
+            if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
+                reindex = true;
+                log.info(book.getName()+": needs reindexing, Installed index version @"+installedV);
+            }
+            
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            reindex = true;
+        }
+
+        return reindex;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.IndexManager#closeAllIndexes()
      */
@@ -110,6 +158,10 @@ public class LuceneIndexManager implements IndexManager {
         try {
             URI storage = getStorageArea(book);
             Index index = new LuceneIndex(book, storage, this.policy);
+
+            //todo update Installed IndexVersion for newly created index
+            // todo implement: Installed.Index.Version.Book.XXX value add/update in metadata file after creation, use value getLatestIndexVersion(book)
+
             // We were successful if the directory exists.
             if (NetUtil.getAsFile(storage).exists()) {
                 finalStatus = IndexStatus.DONE;
@@ -132,6 +184,7 @@ public class LuceneIndexManager implements IndexManager {
             URI storage = getStorageArea(book);
             File zip = NetUtil.getAsFile(tempDest);
             IOUtil.unpackZip(zip, NetUtil.getAsFile(storage));
+            //todo Index.Version management??
         } catch (IOException ex) {
             // TRANSLATOR: The search index could not be moved to it's final location.
             throw new BookException(JSMsg.gettext("Installation failed."), ex);

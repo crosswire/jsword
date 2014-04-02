@@ -48,6 +48,22 @@ public interface IndexManager {
     Index getIndex(Book book) throws BookException;
 
     /**
+     * Detect or checking whether this book needs reindexing.
+     * It is safe methods, you can always call it whether the book
+     * is already indexed or not.
+     * This check for <br>
+     * <pre>
+     * - isIndexed(Book book)
+     * - Is index valid, eg index version changed incompatibly (due to internal structure change or search engine update)
+     * -
+     * </pre>
+     * 
+     * @param book the Book
+     * @return true if no index present or current index is of incompatible/older version
+     */
+    boolean needsReindexing(Book book);
+
+    /**
      * Read from the given source version to generate ourselves. On completion
      * of this method the index should be usable.
      * 

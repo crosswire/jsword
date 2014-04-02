@@ -97,6 +97,26 @@ public class BookIndexer {
         done = state;
     }
 
+    public void reindexIfNeeded() throws BookException {
+
+        if(indexManager.needsReindexing(book)) {
+            createIndex();
+        }
+    }
+
+
+    /* //todo static function: Demo of how clients can reindex, after a new install on a computer. If reindex All successful, update Installed.Index.DefaultVersion prop on the client computer
+    (jsword will reindex only if Latest.Index.Version mandates it, after comparing with Installed.Index.Version)
+    public static void reindexAllBooksIfNeeded() throws Exception {
+
+        Books myBooks = Books.installed();
+
+        for(Book insBook: myBooks.getBooks()) {
+            //reindex if needsReindexing(insBook) true
+            //manage all Installed.Index.Version property values in  metadata file
+        }
+    }*/
+
     protected Book book;
     protected IndexManager indexManager;
     private IndexStatusListener isl;
