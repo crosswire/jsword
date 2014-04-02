@@ -24,6 +24,7 @@ import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.SystemCatholic2;
 import org.crosswire.jsword.versification.system.SystemKJV;
+import org.crosswire.jsword.versification.system.SystemSynodal;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
 
@@ -41,6 +42,7 @@ public class VersificationsMapperTest {
     private static final Versification KJV = Versifications.instance().getVersification(SystemKJV.V11N_NAME);
     private static final Versification CATHOLIC = Versifications.instance().getVersification(SystemCatholic.V11N_NAME);
     private static final Versification CATHOLIC2 = Versifications.instance().getVersification(SystemCatholic2.V11N_NAME);
+    private static final Versification SYNODAL = Versifications.instance().getVersification(SystemSynodal.V11N_NAME);
 
     @Test
     public void testTwoStepVersification() throws NoSuchVerseException {
@@ -74,6 +76,16 @@ public class VersificationsMapperTest {
     public void testSingleStepFromKJV() throws NoSuchVerseException {
         doTest(KJV, "Exod.1.2", CATHOLIC, "Gen.1.1");
         doTest(KJV, "Exod.1.3", CATHOLIC, "Gen.1.2-Gen.1.3");
+    }
+
+    @Test
+    public void testMapVerseZero() throws NoSuchVerseException {
+        doTest(KJV, "Gen.1.0", KJV, "Gen.1.0");
+        doTest(KJV, "Gen.1.0", SYNODAL, "Gen.1.0");
+        doTest(KJV, "Ps.50.0", KJV, "Ps.50.0");
+        doTest(KJV, "Ps.50.0", CATHOLIC, "Ps.50.0");
+        doTest(KJV, "Ps.50.0", SYNODAL, "Ps.49.1");
+        doTest(SYNODAL, "Ps.49.1", KJV, "Ps.50.0-Ps.50.1");
     }
 
     /**
