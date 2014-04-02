@@ -217,6 +217,12 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void addAll(Key key) {
+        //check for key empty. This avoids the AIOBounds with that.getVerseAt, during event firing
+        if(key.isEmpty()) {
+            //nothing to add
+            return;
+        }
+        
         optimizeWrites();
 
         if (key instanceof BitwisePassage) {
