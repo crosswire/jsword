@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.CWProject;
@@ -52,6 +52,7 @@ import org.crosswire.jsword.book.BookSet;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.sword.ConfigEntry;
+import org.crosswire.jsword.book.sword.NullBackend;
 import org.crosswire.jsword.book.sword.SwordBook;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
@@ -370,7 +371,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                         SwordBookMetaData sbmd = new SwordBookMetaData(buffer, internal);
                         sbmd.setDriver(fake);
-                        Book book = new SwordBook(sbmd, null);
+                        Book book = new SwordBook(sbmd, new NullBackend());
                         entries.put(book.getInitials() + book.getName(), book);
                     } catch (IOException ex) {
                         log.error("Failed to load config for entry: {}", internal, ex);

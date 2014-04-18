@@ -122,45 +122,33 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     }
 
     /**
-     * @return the otCompRaf
+     * Get the compression file for the given testament.
+     * 
+     * @param testament the testament for the index
+     * @return the index for the testament
      */
-    public RandomAccessFile getOtCompRaf() {
-        return otCompRaf;
+    public RandomAccessFile getCompRaf(Testament testament) {
+        return testament == Testament.NEW ? ntCompRaf : otCompRaf;
     }
 
     /**
-     * @return the ntCompRaf
+     * Get the text file for the given testament.
+     * 
+     * @param testament the testament for the index
+     * @return the index for the testament
      */
-    public RandomAccessFile getNtCompRaf() {
-        return ntCompRaf;
+    public RandomAccessFile getTextRaf(Testament testament) {
+        return testament == Testament.NEW ? ntTextRaf : otTextRaf;
     }
 
     /**
-     * @return the otTextRaf
+     * Get the index file for the given testament.
+     * 
+     * @param testament the testament for the index
+     * @return the index for the testament
      */
-    public RandomAccessFile getOtTextRaf() {
-        return otTextRaf;
-    }
-
-    /**
-     * @return the ntTextRaf
-     */
-    public RandomAccessFile getNtTextRaf() {
-        return ntTextRaf;
-    }
-
-    /**
-     * @return the otIdxRaf
-     */
-    public RandomAccessFile getOtIdxRaf() {
-        return otIdxRaf;
-    }
-
-    /**
-     * @return the ntIdxRaf
-     */
-    public RandomAccessFile getNtIdxRaf() {
-        return ntIdxRaf;
+    public RandomAccessFile getIdxRaf(Testament testament) {
+        return testament == Testament.NEW ? ntIdxRaf : otIdxRaf;
     }
 
     /**

@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
@@ -85,13 +84,8 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     protected String getEntry(RawBackendState state, String name, Testament testament, long index) throws IOException {
         RandomAccessFile idxRaf;
         RandomAccessFile txtRaf;
-        if (testament == Testament.NEW) {
-            idxRaf = state.getNtIdxRaf();
-            txtRaf = state.getNtTextRaf();
-        } else {
-            idxRaf = state.getOtIdxRaf();
-            txtRaf = state.getOtTextRaf();
-        }
+        idxRaf = state.getIdxRaf(testament);
+        txtRaf = state.getTextRaf(testament);
 
         DataIndex dataIndex = getIndex(idxRaf, index);
         int size = dataIndex.getSize();
@@ -127,18 +121,9 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
 
-        RandomAccessFile idxRaf;
-        RandomAccessFile txtRaf;
-        File txtFile;
-        if (testament == Testament.NEW) {
-            idxRaf = state.getNtIdxRaf();
-            txtRaf = state.getNtTextRaf();
-            txtFile = state.getNtTextFile();
-        } else {
-            idxRaf = state.getOtIdxRaf();
-            txtRaf = state.getOtTextRaf();
-            txtFile = state.getOtTextFile();
-        }
+        RandomAccessFile idxRaf = state.getIdxRaf(testament);
+        RandomAccessFile txtRaf = state.getTextRaf(testament);
+        File txtFile = state.getTextFile(testament);
 
         DataIndex dataIndex = getIndex(idxRaf, index);
         File dataFile;
@@ -164,7 +149,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         int aliasIndex = aliasVerse.getOrdinal();
         Testament testament = v11n.getTestament(aliasIndex);
         aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
-        RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
+        RandomAccessFile idxRaf = state.getIdxRaf(testament);
 
         int sourceOIndex = sourceVerse.getOrdinal();
         sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
@@ -294,7 +279,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             prepopulateIndexFiles(state);
             prepopulateIncfile(state);
         } finally {
-            IOUtil.close(state);
+            OpenFileStateManager.release(state);
         }
     }
 
@@ -331,7 +316,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         Versification v11n = Versifications.instance().getVersification(v11nName);
         int otCount = v11n.getCount(Testament.OLD);
         int ntCount = v11n.getCount(Testament.NEW) + 1;
-        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(state.getOtIdxFile(), false));
+        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.OLD), false));
         try {
             for (int i = 0; i < otCount; i++) {
                 writeInitialIndex(otIdxBos);
@@ -340,7 +325,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             otIdxBos.close();
         }
 
-        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(state.getNtIdxFile(), false));
+        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.NEW), false));
         try {
             for (int i = 0; i < ntCount; i++) {
                 writeInitialIndex(ntIdxBos);

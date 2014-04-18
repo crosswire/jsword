@@ -59,6 +59,7 @@ public final class IOUtil {
      * @throws IOException
      *             If there is an file error
      */
+    @SuppressWarnings("resource")
     public static void unpackZip(File file, File destdir) throws IOException {
         // unpack the zip.
         byte[] dbuf = new byte[4096];

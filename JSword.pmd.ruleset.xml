@@ -52,7 +52,7 @@
   <!-- <rule ref="rulesets/java/codesize.xml/NcssConstructorCount"/> 1.0.8 -->
   <!-- <rule ref="rulesets/java/codesize.xml/TooManyMethods"/> 1.0.8 better handled by CheckStyle -->
 
-  <rule ref="rulesets/java/comments.xml/CommentRequired"/>
+  <!-- <rule ref="rulesets/java/comments.xml/CommentRequired"/> too noisy -->
   <!-- <rule ref="rulesets/java/comments.xml/CommentSize"/> bad implementation. Finds all of our license headers. -->
   <!-- <rule ref="rulesets/java/comments.xml/CommentContent"/> doesn't work -->
 

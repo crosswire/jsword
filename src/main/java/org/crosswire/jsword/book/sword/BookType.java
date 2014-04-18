@@ -41,12 +41,12 @@ public enum BookType {
     RAW_TEXT ("RawText", BookCategory.BIBLE, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
     },
@@ -56,12 +56,12 @@ public enum BookType {
      */
     Z_TEXT ("zText", BookCategory.BIBLE, KeyType.VERSE) {
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
@@ -73,12 +73,12 @@ public enum BookType {
     RAW_COM ("RawCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
     },
@@ -86,12 +86,12 @@ public enum BookType {
     RAW_COM4 ("RawCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 4);
         }
     },
@@ -102,12 +102,12 @@ public enum BookType {
     Z_COM ("zCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
@@ -119,12 +119,12 @@ public enum BookType {
     HREF_COM ("HREFCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
     },
@@ -135,12 +135,12 @@ public enum BookType {
     RAW_FILES ("RawFiles", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawFileBackend(sbmd, 2);
         }
     },
@@ -151,7 +151,7 @@ public enum BookType {
     RAW_LD ("RawLD", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
@@ -159,7 +159,7 @@ public enum BookType {
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 2);
         }
     },
@@ -170,7 +170,7 @@ public enum BookType {
     RAW_LD4 ("RawLD4", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
@@ -178,7 +178,7 @@ public enum BookType {
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 4);
         }
     },
@@ -189,7 +189,7 @@ public enum BookType {
     Z_LD ("zLD", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
@@ -197,7 +197,7 @@ public enum BookType {
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new ZLDBackend(sbmd);
         }
     },
@@ -208,12 +208,12 @@ public enum BookType {
     RAW_GEN_BOOK ("RawGenBook", BookCategory.GENERAL_BOOK, KeyType.TREE) {
 
         @Override
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordGenBook(sbmd, backend);
         }
 
         @Override
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new GenBookBackend(sbmd);
         }
     };
@@ -284,12 +284,12 @@ public enum BookType {
     /**
      * Create a Book with the given backend
      */
-    protected abstract Book getBook(SwordBookMetaData sbmd, AbstractBackend backend);
+    protected abstract Book getBook(SwordBookMetaData sbmd, Backend backend);
 
     /**
      * Create a the appropriate backend for this type of book
      */
-    protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException;
+    protected abstract Backend getBackend(SwordBookMetaData sbmd) throws BookException;
 
     /**
      * The name of the BookType

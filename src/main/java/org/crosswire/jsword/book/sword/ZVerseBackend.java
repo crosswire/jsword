@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.common.compress.CompressorType;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
@@ -140,7 +139,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         this.blockType = blockType;
     }
 
-    /* This method assumes single keeps. It is the responsibility of the caller to provide the iteration. 
+    /* This method assumes single keys. It is the responsibility of the caller to provide the iteration. 
      * 
      * FIXME: this could be refactored to push the iterations down, but no performance benefit would be gained since we have a manager that keeps the file accesses open
      * (non-Javadoc)
@@ -148,6 +147,14 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      */
     @Override
     public boolean contains(Key key) {
+        return getRawTextLength(key) > 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#size(org.crosswire.jsword.passage.Key)
+     */
+    @Override
+    public int getRawTextLength(Key key) {
         ZVerseBackendState rafBook = null;
         try {
             rafBook = initState();
@@ -160,11 +167,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
 
-            RandomAccessFile idxRaf = testament == Testament.NEW ? rafBook.getNtIdxRaf() : rafBook.getOtIdxRaf();
+            RandomAccessFile idxRaf = rafBook.getIdxRaf(testament);
 
             // If Bible does not contain the desired testament, then false
             if (idxRaf == null) {
-                return false;
+                return 0;
             }
 
             // 10 because the index is 10 bytes long for each verse
@@ -174,27 +181,27 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             // Some Bibles have different versification, so the requested verse
             // may not exist.
             if (temp == null || temp.length == 0) {
-                return false;
+                return 0;
             }
 
-            // The data is little endian - extract the blockNum, verseStart and
-            // verseSize
-            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
-
-            return verseSize > 0;
+            // The data is little endian - extract the verseSize
+            return SwordUtil.decodeLittleEndian16(temp, 8);
 
         } catch (IOException e) {
-            return false;
+            return 0;
         } catch (BookException e) {
             // FIXME(CJB): fail silently as before, but i don't think this is
             // correct behaviour - would cause API changes
             log.error("Unable to ascertain key validity", e);
-            return false;
+            return 0;
         } finally {
-            IOUtil.close(rafBook);
+            OpenFileStateManager.release(rafBook);
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getGlobalKeyList()
+     */
     @Override
     public Key getGlobalKeyList() throws BookException {
         ZVerseBackendState rafBook = null;
@@ -213,7 +220,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             passage.raiseNormalizeProtection();
 
             for (Testament currentTestament : testaments) {
-                RandomAccessFile idxRaf = currentTestament == Testament.NEW ? rafBook.getNtIdxRaf() : rafBook.getOtIdxRaf();
+                RandomAccessFile idxRaf = rafBook.getIdxRaf(currentTestament);
 
                 // If Bible does not contain the desired testament, then false
                 if (idxRaf == null) {
@@ -246,14 +253,20 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         } catch (IOException e) {
             throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
-            IOUtil.close(rafBook);
+            OpenFileStateManager.release(rafBook);
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.StatefulFileBackedBackend#initState()
+     */
     public ZVerseBackendState initState() throws BookException {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.StatefulFileBackedBackend#readRawContent(org.crosswire.jsword.book.sword.state.OpenFileState, org.crosswire.jsword.passage.Key)
+     */
     public String readRawContent(ZVerseBackendState rafBook, Key key) throws IOException {
 
         SwordBookMetaData bookMetaData = getBookMetaData();
@@ -271,15 +284,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         final RandomAccessFile compRaf;
         final RandomAccessFile textRaf;
 
-        if (testament == Testament.OLD) {
-            idxRaf = rafBook.getOtIdxRaf();
-            compRaf = rafBook.getOtCompRaf();
-            textRaf = rafBook.getOtTextRaf();
-        } else {
-            idxRaf = rafBook.getNtIdxRaf();
-            compRaf = rafBook.getNtCompRaf();
-            textRaf = rafBook.getNtTextRaf();
-        }
+        idxRaf = rafBook.getIdxRaf(testament);
+        compRaf = rafBook.getCompRaf(testament);
+        textRaf = rafBook.getTextRaf(testament);
 
         // If Bible does not contain the desired testament, return nothing.
         if (idxRaf == null) {
@@ -390,7 +397,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             int verseStart = -1;
             int verseSize = -1;
             if (temp != null && temp.length > 0) {
-                // The data is little endian - extract the blockNum, verseStar and verseSize
+                // The data is little endian - extract the blockNum, verseStart and verseSize
                 blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
                 verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
                 verseSize = SwordUtil.decodeLittleEndian16(temp, 8);

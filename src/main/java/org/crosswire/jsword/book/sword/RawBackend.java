@@ -23,7 +23,6 @@ package org.crosswire.jsword.book.sword;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
@@ -66,6 +65,14 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
      */
     @Override
     public boolean contains(Key key) {
+        return getRawTextLength(key) > 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#size(org.crosswire.jsword.passage.Key)
+     */
+    @Override
+    public int getRawTextLength(Key key) {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);
@@ -76,20 +83,20 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
             initState = initState();
-            RandomAccessFile idxRaf = testament == Testament.NEW ? initState.getNtIdxRaf() : initState.getOtIdxRaf();
+            RandomAccessFile idxRaf = initState.getIdxRaf(testament);
 
             // If this is a single testament Bible, return nothing.
             if (idxRaf == null) {
-                return false;
+                return 0;
             }
 
             DataIndex dataIndex = getIndex(idxRaf, index);
 
-            return dataIndex.getSize() > 0;
+            return dataIndex.getSize();
         } catch (IOException ex) {
-            return false;
+            return 0;
         } catch (BookException e) {
-            return false;
+            return 0;
         } finally {
             OpenFileStateManager.release(initState);
         }
@@ -113,7 +120,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             passage.raiseNormalizeProtection();
 
             for (Testament currentTestament : testaments) {
-                RandomAccessFile idxRaf = currentTestament == Testament.NEW ? rafBook.getNtIdxRaf() : rafBook.getOtIdxRaf();
+                RandomAccessFile idxRaf = rafBook.getIdxRaf(currentTestament);
 
                 // If Bible does not contain the desired testament, then false
                 if (idxRaf == null) {
@@ -158,7 +165,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (IOException e) {
             throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
-            IOUtil.close(rafBook);
+            OpenFileStateManager.release(rafBook);
         }
     }
 
@@ -185,13 +192,6 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         RawBackendState initState = null;
         try {
             initState = initState();
-            RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
-
-            // If this is a single testament Bible, return nothing.
-            if (idxRaf == null) {
-                return "";
-            }
-
             return getEntry(state, verse.getName(), testament, index);
         } catch (BookException e) {
             return "";
@@ -218,7 +218,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (BookException e) {
             return false;
         } finally {
-            IOUtil.close(rawBackendState);
+            OpenFileStateManager.release(rawBackendState);
         }
     }
 
@@ -275,12 +275,12 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     protected String getEntry(RawBackendState state, String name, Testament testament, long index) throws IOException {
         final RandomAccessFile idxRaf;
         final RandomAccessFile txtRaf;
-        if (testament == Testament.NEW) {
-            idxRaf = state.getNtIdxRaf();
-            txtRaf = state.getNtTextRaf();
-        } else {
-             idxRaf = state.getOtIdxRaf();
-             txtRaf = state.getOtTextRaf();
+        idxRaf = state.getIdxRaf(testament);
+        txtRaf = state.getTextRaf(testament);
+
+        // It may be that this is a single testament Bible
+        if (idxRaf == null) {
+            return "";
         }
 
         DataIndex dataIndex = getIndex(idxRaf, index);

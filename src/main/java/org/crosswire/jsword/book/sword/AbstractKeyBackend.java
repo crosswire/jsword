@@ -69,6 +69,9 @@ public abstract class AbstractKeyBackend<T extends OpenFileState> extends Abstra
         return getCardinality() == 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
+     */
     @Override
     public boolean contains(Key key) {
         return indexOf(key) >= 0;

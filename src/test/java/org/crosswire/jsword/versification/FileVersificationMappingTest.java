@@ -22,18 +22,12 @@ package org.crosswire.jsword.versification;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 
 import org.crosswire.common.config.ConfigException;
-import org.crosswire.jsword.versification.system.SystemGerman;
-import org.crosswire.jsword.versification.system.SystemLeningrad;
-import org.crosswire.jsword.versification.system.SystemNRSV;
-import org.crosswire.jsword.versification.system.SystemSynodal;
-import org.crosswire.jsword.versification.system.SystemVulg;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Assert;
 import org.junit.Test;

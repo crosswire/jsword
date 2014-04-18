@@ -312,6 +312,11 @@ public class WebResource {
      */
     private int getHeaderAsInt(HttpResponse response, String field) {
         Header header = response.getFirstHeader(field);
+        // If there is no matching header in the message null is returned.
+        if (header==null) {
+            return 0;
+        }
+        
         String value = header.getValue();
         try {
             return Integer.parseInt(value);

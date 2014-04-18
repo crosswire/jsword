@@ -20,7 +20,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,14 +27,12 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
-import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -44,7 +41,7 @@ import org.crosswire.jsword.passage.VerseRange;
 import org.jdom2.Content;
 
 /**
- * A Sword version of Dictionary.
+ * A Sword version of a generic book.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -52,13 +49,18 @@ import org.jdom2.Content;
  */
 public class SwordGenBook extends AbstractBook {
     /**
-     * Start and to as much checking as we can without using memory. (i.e.
-     * actually reading the indexes)
+     * Construct an SwordGenBook given the BookMetaData and the AbstractBackend.
+     * 
+     * @param bmd the metadata that describes the book
+     * @param backend the means by which the resource is accessed
      */
-    protected SwordGenBook(SwordBookMetaData sbmd, AbstractBackend backend) {
-        super(sbmd);
+    protected SwordGenBook(SwordBookMetaData sbmd, Backend backend) {
+        super(sbmd, backend);
 
-        this.backend = backend;
+        if (backend == null) {
+            throw new IllegalArgumentException("AbstractBackend must not be null.");
+        }
+
         this.filter = sbmd.getFilter();
         map = null;
         set = null;
@@ -73,7 +75,7 @@ public class SwordGenBook extends AbstractBook {
     public final void activate(Lock lock) {
         super.activate(lock);
 
-        set = backend.readIndex();
+        set = getBackend().readIndex();
 
         map = new HashMap<String, Key>();
         for (Key key : set) {
@@ -109,9 +111,8 @@ public class SwordGenBook extends AbstractBook {
         checkActive();
 
         assert key != null;
-        assert backend != null;
 
-        return backend.readToOsis(key, new RawTextToXmlProcessor() {
+        return getBackend().readToOsis(key, new RawTextToXmlProcessor() {
             public void preRange(VerseRange range, List<Content> partialDom) {
                 // no - op
             }
@@ -130,22 +131,14 @@ public class SwordGenBook extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
-        OpenFileState state = null;
-        try {
-            state = backend.initState();
-            return backend.readRawContent(state, key);
-        } catch (IOException e) {
-            throw new BookException("Unable to obtain raw content from backend", e);
-        } finally {
-            IOUtil.close(state);
-        }
+        return getBackend().getRawText(key);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
-        return backend != null && backend.contains(key);
+        return getBackend().contains(key);
     }
 
     /*
@@ -157,16 +150,15 @@ public class SwordGenBook extends AbstractBook {
         checkActive();
 
         assert key != null;
-        assert backend != null;
 
-        return backend.readToOsis(key, processor);
+        return getBackend().readToOsis(key, processor);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
-        return backend.isWritable();
+        return getBackend().isWritable();
     }
 
     /* (non-Javadoc)
@@ -277,11 +269,6 @@ public class SwordGenBook extends AbstractBook {
      * So we can implement getIndex() easily
      */
     private Key set;
-
-    /**
-     * To read the data from the disk
-     */
-    private AbstractBackend backend;
 
     /**
      * The filter to use to convert to OSIS.

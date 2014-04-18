@@ -113,6 +113,7 @@ public class GenBookBackendState extends AbstractOpenFileState {
      * The raw data file
      */
     private File bdtFile;
+
     /**
      * The random access file for the raw data
      */

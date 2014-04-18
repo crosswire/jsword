@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.jsword.book.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +53,10 @@ public final class IndexMetadata {
     public static IndexMetadata instance() {
         return myInstance;
     }
-
+    //default Installed IndexVersion: index version that is installed/available in the Client's index folders
+    //todo get Installed ver from the IndexFolder location
     public float getInstalledIndexVersion() {
-        String value = props.get(INDEX_VERSION, "1.1");
+        String value = props.get(INDEX_VERSION, "1.1"); //todo At some point default should be 1.2
         return Float.parseFloat(value);
     }
 
@@ -62,17 +64,38 @@ public final class IndexMetadata {
         return Float.parseFloat(props.get(LUCENE_VERSION));
     }
 
+    //Default Latest IndexVersion : Default version number of Latest indexing schema: PerBook index version must be equal or greater than this
     public float getLatestIndexVersion() {
-        String value = props.get(INDEX_VERSION, "1.1");
+        String value = props.get(LATEST_INDEX_VERSION, "1.2");
         return Float.parseFloat(value);
     }
+
+    public float getLatestIndexVersion(Book b) {
+        if(b==null) return getLatestIndexVersion();
+
+        String value = props.get(PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE+b.getBookMetaData().getInitials(),
+                        props.get(LATEST_INDEX_VERSION) );
+        return Float.parseFloat(value);
+    }
+    /*public float getInstalledIndexVersion(Book b) {
+        if(b==null) return getInstalledIndexVersion();
+
+        String value = props.get(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +b.getBookMetaData().getInitials(),
+                props.get(INDEX_VERSION) );
+        return Float.parseFloat(value);
+    }*/
 
     public static final String INDEX_VERSION = "Installed.Index.Version";
     public static final String LATEST_INDEX_VERSION = "Latest.Index.Version";
     public static final String LUCENE_VERSION = "Lucene.Version";
+
+    @Deprecated
+    /* use latest version*/
     public static final float INDEX_VERSION_1_1 = 1.1f;
     public static final float INDEX_VERSION_1_2 = 1.2f;
 
+    public static final String PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE = "Latest.Index.Version.Book.";
+    public static final String PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE = "Installed.Index.Version.Book.";
     private static final Logger log = LoggerFactory.getLogger(IndexMetadata.class);
     private static IndexMetadata myInstance = new IndexMetadata();
     private PropertyMap props;
