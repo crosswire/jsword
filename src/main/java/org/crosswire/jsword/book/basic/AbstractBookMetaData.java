@@ -20,31 +20,34 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.KeyType;
+import org.crosswire.jsword.book.sword.MissingDataFilesException;
+import org.crosswire.jsword.index.IndexStatus;
+import org.jdom2.Document;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.crosswire.common.util.Language;
-import org.crosswire.jsword.book.*;
-import org.crosswire.jsword.book.sword.MissingDataFilesException;
-import org.crosswire.jsword.index.IndexStatus;
-import org.jdom2.Document;
-
 /**
  * An implementation of the Property Change methods from BookMetaData.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
+
 /**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public abstract class AbstractBookMetaData implements BookMetaData {
 
@@ -137,8 +140,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     }
 
     /**
-     * @param language
-     *            The language to set.
+     * @param language The language to set.
      */
     public void setLanguage(Language language) {
         putProperty(KEY_XML_LANG, language);
@@ -241,8 +243,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     }
 
     /**
-     * @param driver
-     *            The driver to set.
+     * @param driver The driver to set.
      */
     public void setDriver(BookDriver driver) {
         this.driver = driver;
