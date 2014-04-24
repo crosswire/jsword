@@ -46,13 +46,13 @@ public final class IndexMetadata {
     @Deprecated
     public static final float INDEX_VERSION_1_1 = 1.1f;
 
-    public static final String INDEX_VERSION = "Installed.Index.Version";
     public static final String LATEST_INDEX_VERSION = "Latest.Index.Version";
     public static final String LUCENE_VERSION = "Lucene.Version";
 
     public static final String PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE = "Latest.Index.Version.Book.";
     public static final String PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE = "Installed.Index.Version.Book.";
-
+    @Deprecated
+    public static final String INDEX_VERSION = "Installed.Index.Version";
     /**
      * All access to IndexMetadata is through this single instance.
      * 
@@ -61,8 +61,9 @@ public final class IndexMetadata {
     public static IndexMetadata instance() {
         return myInstance;
     }
-    //default Installed IndexVersion: index version that is installed/available in the Client's index folders
+
     /**
+     * default Installed IndexVersion
     @deprecated see InstalledIndex.java
      */
     public float getInstalledIndexVersion() {
