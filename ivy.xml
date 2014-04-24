@@ -18,7 +18,9 @@
 	<dependency org="org.slf4j"                 name="slf4j-api"        rev="1.7.6"     conf="default->master,sources" />
 	<dependency org="org.slf4j"                 name="jcl-over-slf4j"   rev="1.7.6"     conf="default->master,sources" />
 	<dependency org="org.slf4j"                 name="slf4j-jdk14"      rev="1.7.6"     conf="default->master,sources" />
-    <!-- dependency org="xalan"                     name="xalan"            rev="2.7.1"     conf="default->master,sources" / -->
+	<dependency org="org.mockito"               name="mockito-core"     rev="1.9.5"     conf="test" />
+
+      <!-- dependency org="xalan"                     name="xalan"            rev="2.7.1"     conf="default->master,sources" / -->
     <!-- dependency org="xalan"                     name="serializer"       rev="2.7.1"     conf="default->master,sources" / -->
     <!-- dependency org="xerces"                    name="xercesImpl"       rev="2.11.0"    conf="default->master,sources" / -->
   </dependencies>

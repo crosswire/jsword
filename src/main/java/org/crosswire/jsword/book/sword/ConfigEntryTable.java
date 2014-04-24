@@ -750,6 +750,13 @@ public final class ConfigEntryTable {
     }
 
     /**
+     * @return the internal name of the module
+     */
+    String getInternal() {
+        return internal;
+    }
+
+    /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
      */
@@ -894,4 +901,5 @@ public final class ConfigEntryTable {
      * The log stream
      */
     private static final Logger log = LoggerFactory.getLogger(ConfigEntryTable.class);
+
 }

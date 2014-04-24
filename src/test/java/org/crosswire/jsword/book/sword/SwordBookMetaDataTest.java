@@ -22,14 +22,20 @@ package org.crosswire.jsword.book.sword;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import org.crosswire.jsword.book.Book;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -40,7 +46,7 @@ import org.junit.Test;
  * @author DM Smith
  */
 public class SwordBookMetaDataTest {
-
+    Book mockBook;
     File configFile = new File("testconfig.conf");
     SwordBookMetaData swordBookMetaData = null;
 
@@ -57,7 +63,10 @@ public class SwordBookMetaDataTest {
             System.out.println(e.getMessage());
         }
 
-        swordBookMetaData = new SwordBookMetaData(null, configFile, "TestBook", new URI(""));
+        swordBookMetaData = new SwordBookMetaData(null, MetaFile.Level.SWORD, configFile, "TestBook", new URI(""));
+        mockBook = Mockito.mock(Book.class);
+        swordBookMetaData.setCurrentBook(mockBook);
+        Mockito.when(mockBook.getBookMetaData()).thenReturn(swordBookMetaData);
     }
 
     @After
@@ -72,5 +81,36 @@ public class SwordBookMetaDataTest {
         assertEquals("TestBook", swordBookMetaData.getInitials());
         assertNotNull(swordBookMetaData.getLanguage());
         assertEquals("de", swordBookMetaData.getLanguage().getCode());
+    }
+
+    @Test
+    public void testCreateAndSaveIntoSidecarConf() throws IOException {
+        assertNotNull(swordBookMetaData);
+
+        //run test capturing the argument - save stuff twice, such that we prove the creation flow and the update flow
+        ArgumentCaptor<SwordBookMetaData> captor = ArgumentCaptor.forClass(SwordBookMetaData.class);
+        swordBookMetaData.save(ConfigEntryType.SHORT_COPYRIGHT, "ShortCopy", MetaFile.Level.JSWORD_WRITE);
+        swordBookMetaData.save(ConfigEntryType.ABOUT, "About", MetaFile.Level.JSWORD_WRITE);
+
+        //save an extra time, but to the sword config file this time. Again, to prove this works.
+        //the chain at the result of all of this hasn't changed.
+        swordBookMetaData.save(ConfigEntryType.COPYRIGHT, "Copyright", MetaFile.Level.SWORD);
+
+        //check we ran the test correctly - this creates a new SBMD in the hierarchy.
+        Mockito.verify(mockBook, Mockito.times(2)).setBookMetaData(captor.capture());
+        SwordBookMetaData topLevel = captor.getValue();
+        assertEquals(topLevel.getLevel(), MetaFile.Level.JSWORD_WRITE);
+        assertEquals(topLevel.getParent(), swordBookMetaData);
+
+
+        //now let's check a few different fields to prove this worked.
+        assertEquals("ShortCopy", topLevel.getConfigEntryTable().getValue(ConfigEntryType.SHORT_COPYRIGHT));
+        assertEquals("About", topLevel.getConfigEntryTable().getValue(ConfigEntryType.ABOUT));
+        assertNull(topLevel.getConfigEntryTable().getValue(ConfigEntryType.COPYRIGHT));
+
+        //same checks but in sword conf
+        assertNull(topLevel.getParent().getConfigEntryTable().getValue(ConfigEntryType.SHORT_COPYRIGHT));
+        assertNull(topLevel.getParent().getConfigEntryTable().getValue(ConfigEntryType.ABOUT));
+        assertEquals("Copyright", topLevel.getParent().getConfigEntryTable().getValue(ConfigEntryType.COPYRIGHT));
     }
 }

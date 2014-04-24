@@ -29,13 +29,16 @@ import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.book.BookCategory;
-import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.KeyType;
+import org.crosswire.jsword.book.*;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.SimpleOsisParser;
+import org.crosswire.jsword.passage.VerseKey;
 import org.jdom2.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A utility class for loading and representing Sword book configs.
@@ -44,6 +47,20 @@ import org.jdom2.Document;
  * Config file format. See also: <a href=
  * "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
+ * <p>
+ * In addition, the SwordBookMetaData is hierarchical. The MetaFile.Level indicates where the file originates from.
+ * The full hierarchy could be laid out as followed:
+ * <pre>
+ *     - sword - 0 (parent == null)
+ *         - jsword read - 1
+ *            - jsword write - 2
+ *               - frontend read -3
+ *                  - frontend write (parent == frontend read) - 4
+ * </pre>
+ * Various rules govern where attributes are read from. The general rule is that the highest level (frontend write)
+ * will override values from the lowest common denominator (sword). Various parts of the tree may be missing
+ * as the files may not exist on disk. There are exceptions however and each method in this file documents its
+ * behaviour.
  *
  * <p>
  * The contents of the About field are in rtf.
@@ -57,26 +74,26 @@ import org.jdom2.Document;
  * @author Jacky Cheung
  * @author DM Smith
  */
+
 /**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Loads a sword config from a given File.
      *
-     *
-     * @param sbmd the parent metadata object, could be null
-     * @param file
-     * @param internal
-     * @throws IOException
+     * @param parent   the parent metadata object, could be null
+     * @param level    the level/hierarchy of the sword metadata object.
+     * @param file     the config file
+     * @param internal @throws IOException
      * @throws MissingDataFilesException indicates missing data files
      */
-    public SwordBookMetaData(SwordBookMetaData sbmd, File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
-        this.sbmd = sbmd;
+    public SwordBookMetaData(SwordBookMetaData parent, MetaFile.Level level,
+                             File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
+        this.parent = parent;
+        this.level = level;
         cet = new ConfigEntryTable(internal);
         cet.load(file);
 
@@ -104,8 +121,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     @Override
     public boolean isQuestionable() {
         //some parameters don't support overrides
-        if(this.sbmd != null) {
-            return this.sbmd.isQuestionable();
+        if (this.parent != null) {
+            return this.parent.isQuestionable();
         }
         return this.cet.isQuestionable();
     }
@@ -117,8 +134,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean isSupported() {
-        if(this.sbmd != null) {
-            return this.sbmd.isSupported();
+        if (this.parent != null) {
+            return this.parent.isSupported();
         }
 
         return this.cet.isSupported();
@@ -131,8 +148,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean isEnciphered() {
-        if(this.sbmd != null) {
-            return cet.isEnciphered() && this.sbmd.isEnciphered();
+        if (this.parent != null) {
+            return cet.isEnciphered() && this.parent.isEnciphered();
         }
         return cet.isEnciphered();
     }
@@ -144,8 +161,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean isLocked() {
-        if(this.sbmd != null) {
-            return cet.isLocked() && this.sbmd.isLocked();
+        if (this.parent != null) {
+            return cet.isLocked() && this.parent.isLocked();
         }
         return cet.isLocked();
     }
@@ -168,8 +185,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     @Override
     public String getUnlockKey() {
         String unlockKey = cet.getUnlockKey();
-        if(unlockKey == null && this.sbmd != null) {
-            return sbmd.getUnlockKey();
+        if (unlockKey == null && this.parent != null) {
+            return parent.getUnlockKey();
         }
         return unlockKey;
     }
@@ -182,14 +199,132 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public String getName() {
         //we allow overriding here
         String name = (String) getProperty(ConfigEntryType.DESCRIPTION);
-        if(name != null) {
+        if (name != null) {
             return name;
         }
 
-        if(this.sbmd != null) {
-            return sbmd.getName();
+        if (this.parent != null) {
+            return parent.getName();
         }
         return name;
+    }
+
+    /**
+     * Only supported for books, returns the key representing all entries in the book, as defined by the
+     * 'Scope' parameter.
+     * <p/>
+     * This can be overriden by frontends and/or jsword.
+     *
+     * @return the verse key for scope
+     */
+    public VerseKey getScope() {
+        Object key = this.cet.getValue(ConfigEntryType.SCOPE);
+        if (key == null) {
+            //then look through the parents...
+            if (this.parent != null) {
+                key = this.parent.getScope();
+            }
+        }
+
+        //do we have a key?
+        if (key != null) {
+            return SimpleOsisParser.parseOsisRef(
+                    (org.crosswire.jsword.versification.Versification) this.getProperty(ConfigEntryType.VERSIFICATION),
+                    (String) key);
+        }
+
+        //need to calculate this, but only if we are the parent of the sword config (i.e. the jsword conf file)
+        if (this.parent == null) {
+            return null;
+        }
+
+
+        Book currentBook = Books.installed().getBook(this.getInitials());
+        //if the book type doesn't have verses, then leave it.
+        if (this.getProperty(ConfigEntryType.VERSIFICATION) == null) {
+            //then we're not looking at a versified book
+            return null;
+        }
+
+        //now comes the expensive part
+        Key k = currentBook.getGlobalKeyList();
+
+        //this is practically impossible, but cater for it just in case.
+        if (!(k instanceof VerseKey)) {
+            return null;
+        }
+
+        //now we've done all the hard work, save it to file
+        String osisRef = k.getOsisRef();
+
+        try {
+            this.save(ConfigEntryType.SCOPE, osisRef, MetaFile.Level.JSWORD_WRITE);
+        } catch (IOException ex) {
+            //failed to save, so log and exit
+            log.error("Unable to save scope, it will be recalculated next time.", ex);
+        }
+
+        return SimpleOsisParser.parseOsisRef(
+                (org.crosswire.jsword.versification.Versification) this.getProperty(ConfigEntryType.VERSIFICATION),
+                osisRef);
+    }
+
+    /**
+     * Saves an config entry into the correct conf file, iterating through the conf files as necessary
+     *
+     * @param entry the entry name
+     * @param value the value to be saved
+     * @param level the level of the conf file to save it as
+     * @throws java.io.IOException we let the caller decide how to handle exceptions
+     */
+    void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
+        if (this.level == level) {
+            //then we can simply add it to the current table
+            this.cet.add(entry, value);
+            this.cet.save();
+            return;
+        } else {
+            // the simplest is to start at the top of the hierarchy and work our way down.
+            Book b = this.getCurrentBook();
+            SwordBookMetaData higherConf = null;
+            SwordBookMetaData lowerConf = ((SwordBookMetaData) b.getBookMetaData());
+
+            //we keep looking until we find the correct level of the file. If the current level
+            //becomes to low, then the file doesn't exist
+            while (lowerConf.parent != null && lowerConf.level.ordinal() > level.ordinal()) {
+                higherConf = lowerConf;
+                lowerConf = lowerConf.parent;
+            }
+
+            SwordBookMetaData newMetaData = null;
+            if (lowerConf.level != level) {
+                //create a new file
+                File newConfigFile = new File(level.getConfigLocation(), this.cet.getConfigFile().getName());
+                newConfigFile.createNewFile();
+
+                try {
+                    newMetaData = new SwordBookMetaData(lowerConf, level,
+                            newConfigFile, this.cet.getInternal(), this.getLibrary());
+                } catch (MissingDataFilesException e) {
+                    //ignore these, as already alerted upon first creation
+                    log.trace(e.getMessage(), e);
+                }
+
+                //place it at the correct location in the hierarchy
+                if (higherConf == null) {
+                    //need to replace the registration with the book
+                    this.getCurrentBook().setBookMetaData(newMetaData);
+                } else {
+                    //we link its parent in
+                    higherConf.parent = newMetaData;
+                }
+            } else {
+                newMetaData = lowerConf;
+            }
+            newMetaData.cet.add(entry, value);
+            newMetaData.cet.save();
+
+        }
     }
 
     /**
@@ -199,8 +334,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @return the charset of the book.
      */
     public String getBookCharset() {
-        if(this.sbmd != null) {
-            return this.sbmd.getBookCharset();
+        if (this.parent != null) {
+            return this.parent.getBookCharset();
         }
         return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
@@ -211,8 +346,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public KeyType getKeyType() {
-        if(this.sbmd != null) {
-            return this.sbmd.getKeyType();
+        if (this.parent != null) {
+            return this.parent.getKeyType();
         }
 
         BookType bookType = getBookType();
@@ -227,8 +362,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * Returns the Book Type.
      */
     public BookType getBookType() {
-        if(this.sbmd != null) {
-            return this.sbmd.getBookType();
+        if (this.parent != null) {
+            return this.parent.getBookType();
         }
 
         return cet.getBookType();
@@ -239,8 +374,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * Returns the Filter based upon the SourceType.
      */
     public Filter getFilter() {
-        if(this.sbmd != null) {
-            return this.sbmd.getFilter();
+        if (this.parent != null) {
+            return this.parent.getFilter();
         }
 
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
@@ -254,8 +389,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @return Returns the conf file or null if loaded from a byte buffer.
      */
     public File getConfigFile() {
-        if(this.sbmd != null) {
-            return this.sbmd.getConfigFile();
+        if (this.parent != null) {
+            return this.parent.getConfigFile();
         }
 
         return cet.getConfigFile();
@@ -269,8 +404,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     @Override
     public void setLibrary(URI library) throws MissingDataFilesException {
         //always sets on the parent first
-        if(this.sbmd != null) {
-            this.sbmd.setLibrary(library);
+        if (this.parent != null) {
+            this.parent.setLibrary(library);
             return;
         }
 
@@ -317,7 +452,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             // not a directory path
             // try appending .dat on the end to see if we have a file, if not, then 
             if (!new File(location.getPath() + ".dat").exists()) {
-             // TRANSLATOR: This indicates that the Book is only partially installed.
+                // TRANSLATOR: This indicates that the Book is only partially installed.
                 throw new MissingDataFilesException(JSMsg.gettext("The book {0} is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
 
@@ -337,8 +472,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
     public BookCategory getBookCategory() {
-        if(this.sbmd != null) {
-            return this.sbmd.getBookCategory();
+        if (this.parent != null) {
+            return this.parent.getBookCategory();
         }
 
 
@@ -346,7 +481,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             type = (BookCategory) getProperty(ConfigEntryType.CATEGORY);
             if (type == BookCategory.OTHER) {
                 BookType bookType = getBookType();
-                if(bookType == null) {
+                if (bookType == null) {
                     return null;
                 }
                 type = bookType.getBookCategory();
@@ -361,8 +496,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public Document toOSIS() {
-        if(this.sbmd != null) {
-            return this.sbmd.toOSIS();
+        if (this.parent != null) {
+            return this.parent.toOSIS();
         }
 
         return new Document(cet.toOSIS());
@@ -374,12 +509,12 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     public String getInitials() {
         String initials = (String) getProperty(ConfigEntryType.INITIALS);
-        if(initials != null) {
+        if (initials != null) {
             return initials;
         }
 
-        if(this.sbmd != null) {
-            return this.sbmd.getInitials();
+        if (this.parent != null) {
+            return this.parent.getInitials();
         }
 
         return initials;
@@ -388,21 +523,20 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Get the string value for the property or null if it is not defined. It is
      * assumed that all properties gotten with this method are single line.
-     *
+     * <p/>
      * This is done first by examing the current value, and if null, delegating to the parent
      *
-     * @param entry
-     *            the ConfigEntryType
+     * @param entry the ConfigEntryType
      * @return the property or null
      */
     public Object getProperty(ConfigEntryType entry) {
         Object value = cet.getValue(entry);
-        if(value != null) {
+        if (value != null) {
             return value;
         }
 
-        if(this.sbmd != null) {
-            return this.sbmd.getBookCharset();
+        if (this.parent != null) {
+            return this.parent.getBookCharset();
         }
 
         return value;
@@ -412,8 +546,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight() {
-        if(this.sbmd != null) {
-            return this.sbmd.isLeftToRight();
+        if (this.parent != null) {
+            return this.parent.isLeftToRight();
         }
 
         // This should return the dominate direction of the text, if it is BiDi,
@@ -455,11 +589,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         // But some do not
         boolean matches = cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
-            || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString());
+                || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString());
 
-        if(!matches && this.sbmd != null) {
+        if (!matches && this.parent != null) {
             //look at the parent
-            return this.sbmd.hasFeature(feature);
+            return this.parent.hasFeature(feature);
         }
         return matches;
     }
@@ -492,17 +626,46 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
+     * @return the level of this configuration
+     */
+    MetaFile.Level getLevel() {
+        return level;
+    }
+
+    /**
+     * @return the parent of this metadata
+     */
+    SwordBookMetaData getParent() {
+        return parent;
+    }
+
+    /**
+     * Exposed as package private for testing purposes.
+     * @return the config entry table
+     */
+    ConfigEntryTable getConfigEntryTable() {
+        return cet;
+    }
+
+    /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh! The
      * language strings need to be converted to Java charsets
      */
     private static final PropertyMap ENCODING_JAVA = new PropertyMap();
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(SwordBookMetaData.class);
+
     static {
         ENCODING_JAVA.put("Latin-1", "WINDOWS-1252");
         ENCODING_JAVA.put("UTF-8", "UTF-8");
     }
 
-    private SwordBookMetaData sbmd;
+    private SwordBookMetaData parent;
+    private MetaFile.Level level;
     private ConfigEntryTable cet;
     private BookCategory type;
+
 }

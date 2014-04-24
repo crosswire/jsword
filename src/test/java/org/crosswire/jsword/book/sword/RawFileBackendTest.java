@@ -79,7 +79,7 @@ public class RawFileBackendTest {
             System.out.println(e.getMessage());
         }
 
-        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(null, configFile, modName, new URI("file:///tmp"));
+        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(null, MetaFile.Level.SWORD, configFile, modName, new URI("file:///tmp"));
         backend = new RawFileBackend(swordBookMetaData, 2);
         backend.create();
     }

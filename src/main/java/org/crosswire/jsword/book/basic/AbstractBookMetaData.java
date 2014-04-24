@@ -27,10 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.KeyType;
+import org.crosswire.jsword.book.*;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom2.Document;
@@ -52,8 +49,8 @@ import org.jdom2.Document;
 public abstract class AbstractBookMetaData implements BookMetaData {
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getKeyType()
-     */
+         * @see org.crosswire.jsword.book.BookMetaData#getKeyType()
+         */
     public KeyType getKeyType() {
         return KeyType.LIST;
     }
@@ -298,10 +295,26 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     }
 
     /**
+     * @return the current book that is tied to this meta data
+     */
+    public Book getCurrentBook() {
+        return this.book;
+    }
+
+    /**
+     * @param currentBook gives a reference to the current book
+     */
+    public void setCurrentBook(final Book currentBook) {
+        this.book = currentBook;
+    }
+
+    /**
      * The single key version of the properties
      */
     private Map<String, Object> prop = new LinkedHashMap<String, Object>();
 
+    private Book book;
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;
+
 }

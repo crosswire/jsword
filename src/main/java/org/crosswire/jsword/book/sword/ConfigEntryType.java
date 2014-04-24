@@ -693,6 +693,12 @@ public enum ConfigEntryType {
     SEARCH_OPTION("SearchOption"),
 
     /**
+     * New. Not supported by Sword but supported by IBT. Scope is an OSIS Reference of all keys
+     * contained in the book
+     */
+    SCOPE("Scope"),
+
+    /**
      * The location of a collection of modules. JSword uses this to install and
      * delete a module.
      */

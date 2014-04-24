@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSMsg;
@@ -46,11 +45,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This represents all of the Sword Books (aka modules).
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public class SwordBookDriver extends AbstractBookDriver {
     /**
@@ -92,7 +91,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         //the main directory is always mods.d from Sword, so we ensure that one exists.
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
 
-        List<File> modsHierarchy = getModsDirectories(mods);
+        List<MetaFile> modsHierarchy = getModsDirectories(mods);
 
         if (mods.isDirectory()) {
             String[] bookConfs = SwordBookPath.getBookList(mods);
@@ -111,9 +110,9 @@ public class SwordBookDriver extends AbstractBookDriver {
                     //we go through the loop from the end, such that the least important entry (sword home)
                     //has no parent, and the most important entry refers to its parent in the chain
                     for (int j = modsHierarchy.size() - 1; j >= 0; j--) {
-                        File configfile = new File(modsHierarchy.get(j), bookConf);
-                        if(configfile.exists()) {
-                            sbmd = new SwordBookMetaData(sbmd, configfile, internal, NetUtil.getURI(bookDir));
+                        File configfile = new File(modsHierarchy.get(j).getFile(), bookConf);
+                        if (configfile.exists()) {
+                            sbmd = new SwordBookMetaData(sbmd, modsHierarchy.get(j).getLevel(), configfile, internal, NetUtil.getURI(bookDir));
                         }
                     }
                     // skip any book that is not supported.
@@ -130,6 +129,7 @@ public class SwordBookDriver extends AbstractBookDriver {
 
                     // Only take the first "installation" of the Book
                     Book book = createBook(sbmd);
+                    sbmd.setCurrentBook(book);
                     if (!valid.contains(book)) {
                         valid.add(book);
 
@@ -157,11 +157,11 @@ public class SwordBookDriver extends AbstractBookDriver {
     /**
      * Gets the full list of secondary directories, in the order of overrides.
      * The position in the list determines the importance of the file in terms of override.
-     *
+     * <p/>
      * A file later on in the list is less important and will override the earlier files.
-     *
+     * <p/>
      * The order goes
-     *  <pre>
+     * <pre>
      *  frontend writeable home
      *  frontend readable home
      *  jsword writeable home
@@ -169,37 +169,27 @@ public class SwordBookDriver extends AbstractBookDriver {
      *  sword home
      *  </pre>
      */
-    private List<File> getModsDirectories(File swordMods) {
-        final List<File> files = new ArrayList<File>(5);
+    private List<MetaFile> getModsDirectories(File swordMods) {
+        final List<MetaFile> files = new ArrayList<MetaFile>(5);
 
-        URI writeableFrontendProjectDir = CWProject.instance().getWriteableFrontendProjectDir();
-        if(writeableFrontendProjectDir != null) {
-            addNonNullURI(files, NetUtil.lengthenURI(writeableFrontendProjectDir, SwordConstants.DIR_CONF_OVERRIDE));
-        }
-
-        URI readableFrontendProjectDir = CWProject.instance().getReadableFrontendProjectDir();
-        if(readableFrontendProjectDir != null) {
-            addNonNullURI(files, NetUtil.lengthenURI(readableFrontendProjectDir, SwordConstants.DIR_CONF_OVERRIDE));
-        }
-
-        //write first, then read, so the order of this loop is OK
-        for(URI u : CWProject.instance().getProjectResourceDirs()) {
-            addNonNullURI(files, u);
-        }
-
-        files.add(swordMods);
+        addNonNull(files, MetaFile.Level.FRONTEND_WRITE);
+        addNonNull(files, MetaFile.Level.FRONTEND_READ);
+        addNonNull(files, MetaFile.Level.JSWORD_WRITE);
+        addNonNull(files, MetaFile.Level.JSWORD_READ);
+        files.add(new MetaFile(swordMods, MetaFile.Level.SWORD));
         return files;
     }
 
     /**
      * Adds the URI to the list if not null
+     *
      * @param files a list of files
-     * @param u the URI representing the location we want
+     * @param level the type of conf file
      */
-    private void addNonNullURI(List<File> files, URI u) {
-        URI mods = NetUtil.lengthenURI(u, SwordConstants.DIR_CONF);
-        if(mods != null) {
-            files.add(new File(mods));
+    private void addNonNull(List<MetaFile> files, MetaFile.Level level) {
+        File mods = level.getConfigLocation();
+        if (mods != null) {
+            files.add(new MetaFile(mods, level));
         }
     }
 
@@ -251,7 +241,7 @@ public class SwordBookDriver extends AbstractBookDriver {
 
     /**
      * Get the singleton instance of this driver.
-     * 
+     *
      * @return this driver instance
      */
     public static BookDriver instance() {
@@ -261,9 +251,8 @@ public class SwordBookDriver extends AbstractBookDriver {
     /**
      * A helper class for the SwordInstaller to tell us that it has copied a new
      * Book into our install directory
-     * 
-     * @param sbmd
-     *            The SwordBookMetaData object for the new Book
+     *
+     * @param sbmd The SwordBookMetaData object for the new Book
      * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd) throws BookException {
