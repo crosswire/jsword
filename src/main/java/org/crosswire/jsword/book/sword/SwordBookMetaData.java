@@ -20,25 +20,28 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.book.*;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
+import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.SimpleOsisParser;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.VerseKey;
 import org.jdom2.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 
 /**
  * A utility class for loading and representing Sword book configs.
@@ -94,7 +97,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                              File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
         this.parent = parent;
         this.level = level;
-        cet = new ConfigEntryTable(internal);
+        cet = new ConfigEntryTable(internal, this.parent == null);
         cet.load(file);
 
         setLibrary(bookRootPath);
@@ -109,7 +112,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @throws IOException
      */
     public SwordBookMetaData(byte[] buffer, String internal) throws IOException {
-        cet = new ConfigEntryTable(internal);
+        cet = new ConfigEntryTable(internal, true);
         cet.load(buffer);
         buildProperties();
     }
@@ -218,44 +221,46 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @return the verse key for scope
      */
     public VerseKey getScope() {
-        Object key = this.cet.getValue(ConfigEntryType.SCOPE);
-        if (key == null) {
-            //then look through the parents...
-            if (this.parent != null) {
-                key = this.parent.getScope();
-            }
-        }
-
-        //do we have a key?
-        if (key != null) {
-            return SimpleOsisParser.parseOsisRef(
-                    (org.crosswire.jsword.versification.Versification) this.getProperty(ConfigEntryType.VERSIFICATION),
-                    (String) key);
-        }
-
-        //need to calculate this, but only if we are the parent of the sword config (i.e. the jsword conf file)
-        if (this.parent == null) {
-            return null;
-        }
-
-
-        Book currentBook = Books.installed().getBook(this.getInitials());
         //if the book type doesn't have verses, then leave it.
         if (this.getProperty(ConfigEntryType.VERSIFICATION) == null) {
             //then we're not looking at a versified book
             return null;
         }
 
+        VerseKey finalKey = null;
+        Object keyString = this.cet.getValue(ConfigEntryType.SCOPE);
+        if (keyString != null) {
+            try {
+                return (VerseKey) this.getCurrentBook().getKey((String) keyString);
+            } catch (NoSuchKeyException ex) {
+                //the scope defined is not correct
+                log.error("Unable to parse scope from book", ex);
+                return null;
+            }
+        }
+
+        //then look through the parents...
+        if (this.parent != null) {
+            finalKey = this.parent.getScope();
+            //do we have a key?
+            if (finalKey != null) {
+                return finalKey;
+            }
+        }
+
+
+        //need to calculate the scope
         //now comes the expensive part
-        Key k = currentBook.getGlobalKeyList();
+        Key bookKeys = getCurrentBook().getGlobalKeyList();
 
         //this is practically impossible, but cater for it just in case.
-        if (!(k instanceof VerseKey)) {
+        if (!(bookKeys instanceof VerseKey)) {
+            log.error("Global key list isn't a verse key. A very expensive no-op has just occurred.");
             return null;
         }
 
         //now we've done all the hard work, save it to file
-        String osisRef = k.getOsisRef();
+        String osisRef = bookKeys.getOsisRef();
 
         try {
             this.save(ConfigEntryType.SCOPE, osisRef, MetaFile.Level.JSWORD_WRITE);
@@ -264,9 +269,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             log.error("Unable to save scope, it will be recalculated next time.", ex);
         }
 
-        return SimpleOsisParser.parseOsisRef(
-                (org.crosswire.jsword.versification.Versification) this.getProperty(ConfigEntryType.VERSIFICATION),
-                osisRef);
+        return (VerseKey) bookKeys;
     }
 
     /**
@@ -298,9 +301,17 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
             SwordBookMetaData newMetaData = null;
             if (lowerConf.level != level) {
+                //ensure the config directory exists
+                File configLocation = level.getConfigLocation();
+                if(!configLocation.mkdirs()) {
+                    throw new IOException("Failed to create config directory");
+                }
+
                 //create a new file
-                File newConfigFile = new File(level.getConfigLocation(), this.cet.getConfigFile().getName());
-                newConfigFile.createNewFile();
+                File newConfigFile = new File(configLocation, this.cet.getConfigFile().getName());
+                if(!newConfigFile.createNewFile()) {
+                    throw new IOException("Failed to create config file");
+                }
 
                 try {
                     newMetaData = new SwordBookMetaData(lowerConf, level,
@@ -530,19 +541,41 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @return the property or null
      */
     public Object getProperty(ConfigEntryType entry) {
-        Object value = cet.getValue(entry);
+        //need to cater for default values here, which we don't want overriding actual values held in sword conf files
+        //for examples...
+
+        ConfigEntry value = cet.getValueAsConfigEntry(entry);
+        if (value != null) {
+            return value.getValue();
+        }
+
+        if (this.parent != null) {
+            return this.parent.getProperty(entry);
+        }
+
+        return entry.getDefault();
+    }
+
+    /**
+     * Allow properties to be overridden, and delegate back to the source if not found.
+     *
+     * @param key the key
+     * @return the object
+     */
+    public Object getProperty(String key) {
+        Object value = super.getProperty(key);
         if (value != null) {
             return value;
         }
 
         if (this.parent != null) {
-            return this.parent.getBookCharset();
+            return this.parent.getProperty(key);
         }
-
-        return value;
+        return null;
     }
 
-    /* (non-Javadoc)
+    /*  Don't support overrides
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight() {
@@ -625,6 +658,25 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         }
     }
 
+    @Override
+    public Book getCurrentBook() {
+        if (this.parent != null) {
+            return this.parent.getCurrentBook();
+        }
+        //we are the sword conf, so return straight away
+        return super.getCurrentBook();
+    }
+
+    @Override
+    public void setCurrentBook(Book currentBook) {
+        //only ever set on lowest common book, so as to avoid having to set it when creating new files
+        if (this.parent != null) {
+            this.parent.setCurrentBook(currentBook);
+        }
+
+        super.setCurrentBook(currentBook);
+    }
+
     /**
      * @return the level of this configuration
      */
@@ -641,6 +693,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Exposed as package private for testing purposes.
+     *
      * @return the config entry table
      */
     ConfigEntryTable getConfigEntryTable() {

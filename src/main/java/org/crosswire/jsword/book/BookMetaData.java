@@ -26,6 +26,7 @@ import java.util.Map;
 import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.passage.VerseKey;
 import org.jdom2.Document;
 
 /**
@@ -257,6 +258,14 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * Get an OSIS representation of information concerning this Book.
      */
     Document toOSIS();
+
+    /**
+     * Only implemented by some resources, those of which have a versification system.
+     * Note: the first time call is potentially expensive as it requires reading all the keys from disk
+     * and writing them to the JSWORD_WRITE sidecar configuration file
+     * @return the current scope of the book.
+     */
+    VerseKey getScope();
 
     /**
      * The key for the type in the properties map

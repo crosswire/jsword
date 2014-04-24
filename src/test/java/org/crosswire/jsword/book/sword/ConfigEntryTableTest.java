@@ -52,14 +52,14 @@ public class ConfigEntryTableTest {
 
     @Test
     public void testCreateConfigEntryTableInstance() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
         assertNotNull(table);
     }
 
     // TODO: make this test use mocks or setup its own environment
     @Test
     public void failingAddConfigEntry() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
         assertNotNull(table);
 
         table.add(ConfigEntryType.LANG, "de");
@@ -101,7 +101,7 @@ public class ConfigEntryTableTest {
 
     @Test
     public void testSaveConfigEntryTable() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
         assertNotNull(table);
 
         table.add(ConfigEntryType.LANG, "de");

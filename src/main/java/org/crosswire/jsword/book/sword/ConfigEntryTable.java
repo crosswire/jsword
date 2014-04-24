@@ -69,12 +69,15 @@ import org.slf4j.LoggerFactory;
  * The copyright to this program is held by it's authors.
  */
 public final class ConfigEntryTable {
+
     /**
      * Create an empty Sword config for the named book.
      *
      * @param bookName the name of the book
+     * @param isRootConfig
      */
-    public ConfigEntryTable(String bookName) {
+    public ConfigEntryTable(String bookName, boolean isRootConfig) {
+        this.isRootConfig = isRootConfig;
         table = new HashMap<ConfigEntryType, ConfigEntry>();
         extra = new TreeMap<String, ConfigEntry>();
         internal = bookName;
@@ -116,10 +119,13 @@ public final class ConfigEntryTable {
                 in.close();
                 in = null;
             }
-            adjustDataPath();
-            adjustLanguage();
-            adjustBookType();
-            adjustName();
+
+            if(isRootConfig) {
+                adjustDataPath();
+                adjustLanguage();
+                adjustBookType();
+                adjustName();
+            }
             validate();
         } finally {
             if (in != null) {
@@ -158,10 +164,13 @@ public final class ConfigEntryTable {
                 in.close();
                 in = null;
             }
-            adjustDataPath();
-            adjustLanguage();
-            adjustBookType();
-            adjustName();
+
+            if(isRootConfig) {
+                adjustDataPath();
+                adjustLanguage();
+                adjustBookType();
+                adjustName();
+            }
             validate();
         } finally {
             if (in != null) {
@@ -266,6 +275,16 @@ public final class ConfigEntryTable {
     public BookType getBookType() {
         return bookType;
     }
+
+    /**
+     *
+     * @param type of the ConfigEntry
+     * @return the config entry
+     */
+    public ConfigEntry getValueAsConfigEntry(ConfigEntryType type) {
+        return table.get(type);
+    }
+
 
     /**
      * Gets a particular ConfigEntry's value by its type
@@ -437,8 +456,13 @@ public final class ConfigEntryTable {
                 break;
             }
         }
+
         if (initials == null) {
-            log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
+            //we warn of errors if we're the root config. For all other conf files,
+            // we'll only have a sparse configuration
+            if(this.isRootConfig) {
+                log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
+            }
             initials = internal;
         }
         add(ConfigEntryType.INITIALS, initials);
@@ -610,15 +634,14 @@ public final class ConfigEntryTable {
         // From the config map, extract the important bean properties
         String modTypeName = (String) getValue(ConfigEntryType.MOD_DRV);
         if (modTypeName == null) {
-            //this may not be the top entry, so log at info level, but mark as non-supported
-            log.info("Book not supported if this is the only configuration file: malformed conf file for {} no {} found.", internal, ConfigEntryType.MOD_DRV.getName());
+            log.error("Book not supported: malformed conf file for {} no {} found.", internal, ConfigEntryType.MOD_DRV.getName());
             supported = false;
             return;
         }
 
         String v11n = (String) getValue(ConfigEntryType.VERSIFICATION);
         if (!Versifications.instance().isDefined(v11n)) {
-            log.info("Book not supported if this is the only configuration file:: Unknown versification for {}. {} is unknown.", internal, v11n);
+            log.error("Book not supported: Unknown versification for {}. {} is unknown.", internal, v11n);
             supported = false;
             return;
         }
@@ -627,7 +650,7 @@ public final class ConfigEntryTable {
 
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null) {
-            log.error("Book not supported if this is the only configuration file: malformed conf file for {} no book type found", internal);
+            log.error("Book not supported: malformed conf file for {} no book type found", internal);
             supported = false;
             return;
         }
@@ -650,7 +673,7 @@ public final class ConfigEntryTable {
     private void adjustName() {
         // If there is no name then use the internal name
         if (table.get(ConfigEntryType.DESCRIPTION) == null) {
-            log.info("Malformed conf file for {}. No {} found. Using internal of {}", internal, ConfigEntryType.DESCRIPTION.getName(), internal);
+            log.error("Malformed conf file for {}. No {} found. Using internal of {}", internal, ConfigEntryType.DESCRIPTION.getName(), internal);
             add(ConfigEntryType.DESCRIPTION, internal);
         }
     }
@@ -835,10 +858,11 @@ public final class ConfigEntryTable {
             ConfigEntryType.KEY_TYPE,
             ConfigEntryType.DISPLAY_LEVEL,
             ConfigEntryType.VERSIFICATION,
+            ConfigEntryType.SCOPE
     };
 
     private static final ConfigEntryType[] HIDDEN = {
-            ConfigEntryType.CIPHER_KEY,
+        ConfigEntryType.CIPHER_KEY,
     };
 
     /**
@@ -882,6 +906,11 @@ public final class ConfigEntryTable {
      * updated.
      */
     private File configFile;
+
+    /**
+     * true to indicate this is a root configuration (i.e. the one in the sword home mods.d directory
+     */
+    private boolean isRootConfig;
 
     /**
      * Buffer size is based on file size but keep it with within reasonable limits

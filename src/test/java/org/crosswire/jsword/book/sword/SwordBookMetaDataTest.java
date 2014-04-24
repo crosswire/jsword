@@ -30,12 +30,10 @@ import java.net.URI;
 
 import org.crosswire.jsword.book.Book;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -52,7 +50,7 @@ public class SwordBookMetaDataTest {
 
     @Before
     public void setUp() throws Exception {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
         table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, "TestBook");
         table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");

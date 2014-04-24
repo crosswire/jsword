@@ -67,7 +67,7 @@ public class RawFileBackendTest {
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
-        ConfigEntryTable table = new ConfigEntryTable(modName);
+        ConfigEntryTable table = new ConfigEntryTable(modName, true);
         table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, modName);
         table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
