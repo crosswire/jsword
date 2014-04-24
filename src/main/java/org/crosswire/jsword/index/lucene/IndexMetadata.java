@@ -93,8 +93,12 @@ public final class IndexMetadata {
 
     //used in property keys e.g.  Installed.Index.Version.Book.ESV[1.0.1]
     public static String getBookIdentifierPropSuffix(BookMetaData meta) {
+        String moduleVer = null;
+        if(meta.getProperty("Version") !=null)
+            moduleVer = '['+ ((org.crosswire.common.util.Version)meta.getProperty("Version")).toString()+']';
+
         return
-                meta.getInitials()+'['+ ((org.crosswire.common.util.Version)meta.getProperty("Version")).toString()+']';
+                meta.getInitials()+ moduleVer;
 
     }
     public float getLuceneVersion() {
