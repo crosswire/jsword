@@ -39,17 +39,17 @@ import org.jdom2.Document;
 
 /**
  * A utility class for loading and representing Sword book configs.
- * 
+ *
  * <p>
  * Config file format. See also: <a href=
  * "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- * 
+ *
  * <p>
  * The contents of the About field are in rtf.
  * <p>
  * \ is used as a continuation line.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
@@ -67,13 +67,16 @@ import org.jdom2.Document;
 public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Loads a sword config from a given File.
-     * 
+     *
+     *
+     * @param sbmd the parent metadata object, could be null
      * @param file
      * @param internal
      * @throws IOException
      * @throws MissingDataFilesException indicates missing data files
      */
-    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
+    public SwordBookMetaData(SwordBookMetaData sbmd, File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
+        this.sbmd = sbmd;
         cet = new ConfigEntryTable(internal);
         cet.load(file);
 
@@ -83,7 +86,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Loads a sword config from a buffer.
-     * 
+     *
      * @param buffer
      * @param internal
      * @throws IOException
@@ -94,75 +97,124 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         buildProperties();
     }
 
-    /* (non-Javadoc)
+    /*  Cannot be overriden by jsword/frontends
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
     @Override
     public boolean isQuestionable() {
-        return cet.isQuestionable();
+        //some parameters don't support overrides
+        if(this.sbmd != null) {
+            return this.sbmd.isQuestionable();
+        }
+        return this.cet.isQuestionable();
     }
 
-    /* (non-Javadoc)
+
+    /* If the top most entry reports the module is supported, then it is supported
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isSupported()
      */
     @Override
     public boolean isSupported() {
-        return cet.isSupported() && cet.getBookType().isSupported(this);
+        if(this.sbmd != null) {
+            return this.sbmd.isSupported();
+        }
+
+        return this.cet.isSupported();
     }
 
-    /* (non-Javadoc)
+    /*
+     * If all configurations all enciphered, then this module is enciphered
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isEnciphered()
      */
     @Override
     public boolean isEnciphered() {
+        if(this.sbmd != null) {
+            return cet.isEnciphered() && this.sbmd.isEnciphered();
+        }
         return cet.isEnciphered();
     }
 
-    /* (non-Javadoc)
+    /*
+     * If all configurations are locked, then it is locked
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isLocked()
      */
     @Override
     public boolean isLocked() {
+        if(this.sbmd != null) {
+            return cet.isLocked() && this.sbmd.isLocked();
+        }
         return cet.isLocked();
     }
 
-    /* (non-Javadoc)
+    /* Unlock always happens at the top-level (frontend/jsword/sword)
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#unlock(java.lang.String)
      */
     @Override
     public boolean unlock(String unlockKey) {
+        //some operations never delegate - this will either write to the frontend conf, or the jsword conf
         return cet.unlock(unlockKey);
     }
 
-    /* (non-Javadoc)
+    /*
+     * Can be overriden by frontend/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getUnlockKey()
      */
     @Override
     public String getUnlockKey() {
-        return cet.getUnlockKey();
+        String unlockKey = cet.getUnlockKey();
+        if(unlockKey == null && this.sbmd != null) {
+            return sbmd.getUnlockKey();
+        }
+        return unlockKey;
     }
 
-    /* (non-Javadoc)
+    /*
+     * Can be overriden by frontend/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName() {
-        return (String) getProperty(ConfigEntryType.DESCRIPTION);
+        //we allow overriding here
+        String name = (String) getProperty(ConfigEntryType.DESCRIPTION);
+        if(name != null) {
+            return name;
+        }
+
+        if(this.sbmd != null) {
+            return sbmd.getName();
+        }
+        return name;
     }
 
     /**
-     * Returns the Charset of the book based on the encoding attribute
-     * 
+     * Returns the Charset of the book based on the encoding attribute.
+     * This cannot be override
+     *
      * @return the charset of the book.
      */
     public String getBookCharset() {
+        if(this.sbmd != null) {
+            return this.sbmd.getBookCharset();
+        }
         return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
-    /* (non-Javadoc)
+    /* This value cannot be overriden by frontends/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
      */
     @Override
     public KeyType getKeyType() {
+        if(this.sbmd != null) {
+            return this.sbmd.getKeyType();
+        }
+
         BookType bookType = getBookType();
         if (bookType == null) {
             return null;
@@ -171,34 +223,58 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
+     * This value cannot be overriden by frontend/jsword
      * Returns the Book Type.
      */
     public BookType getBookType() {
+        if(this.sbmd != null) {
+            return this.sbmd.getBookType();
+        }
+
         return cet.getBookType();
     }
 
     /**
+     * This value cannot be overriden by frontend/jsword
      * Returns the Filter based upon the SourceType.
      */
     public Filter getFilter() {
+        if(this.sbmd != null) {
+            return this.sbmd.getFilter();
+        }
+
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
     }
 
     /**
+     * To maintain backwards compatibility, this always returns the Sword conf file
      * Get the conf file for this SwordMetaData.
-     * 
+     *
      * @return Returns the conf file or null if loaded from a byte buffer.
      */
     public File getConfigFile() {
+        if(this.sbmd != null) {
+            return this.sbmd.getConfigFile();
+        }
+
         return cet.getConfigFile();
     }
 
-    /* (non-Javadoc)
+    /* This method sets the library on the sword conf file.
+     *
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
      */
     @Override
     public void setLibrary(URI library) throws MissingDataFilesException {
+        //always sets on the parent first
+        if(this.sbmd != null) {
+            this.sbmd.setLibrary(library);
+            return;
+        }
+
+
         // Ignore it if it is not supported.
         if (!isSupported()) {
             return;
@@ -256,50 +332,90 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         super.setLocation(location);
     }
 
-    /* (non-Javadoc)
+    /* Cannot be overriden by a frontend/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
     public BookCategory getBookCategory() {
+        if(this.sbmd != null) {
+            return this.sbmd.getBookCategory();
+        }
+
+
         if (type == null) {
             type = (BookCategory) getProperty(ConfigEntryType.CATEGORY);
             if (type == BookCategory.OTHER) {
-                type = getBookType().getBookCategory();
+                BookType bookType = getBookType();
+                if(bookType == null) {
+                    return null;
+                }
+                type = bookType.getBookCategory();
             }
         }
         return type;
     }
 
-    /* (non-Javadoc)
+    /* Cannot be overriden by a frontend/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#toOSIS()
      */
     @Override
     public Document toOSIS() {
+        if(this.sbmd != null) {
+            return this.sbmd.toOSIS();
+        }
+
         return new Document(cet.toOSIS());
     }
 
-    /* (non-Javadoc)
+    /* Could be overriden by a frontend/jsword
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials() {
-        return (String) getProperty(ConfigEntryType.INITIALS);
+        String initials = (String) getProperty(ConfigEntryType.INITIALS);
+        if(initials != null) {
+            return initials;
+        }
+
+        if(this.sbmd != null) {
+            return this.sbmd.getInitials();
+        }
+
+        return initials;
     }
 
     /**
      * Get the string value for the property or null if it is not defined. It is
      * assumed that all properties gotten with this method are single line.
-     * 
+     *
+     * This is done first by examing the current value, and if null, delegating to the parent
+     *
      * @param entry
      *            the ConfigEntryType
      * @return the property or null
      */
     public Object getProperty(ConfigEntryType entry) {
-        return cet.getValue(entry);
+        Object value = cet.getValue(entry);
+        if(value != null) {
+            return value;
+        }
+
+        if(this.sbmd != null) {
+            return this.sbmd.getBookCharset();
+        }
+
+        return value;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight() {
+        if(this.sbmd != null) {
+            return this.sbmd.isLeftToRight();
+        }
+
         // This should return the dominate direction of the text, if it is BiDi,
         // then we have to guess.
         String dir = (String) getProperty(ConfigEntryType.DIRECTION);
@@ -338,8 +454,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         buffer.append(alias);
 
         // But some do not
-        return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
+        boolean matches = cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
             || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString());
+
+        if(!matches && this.sbmd != null) {
+            //look at the parent
+            return this.sbmd.hasFeature(feature);
+        }
+        return matches;
     }
 
     private void buildProperties() {
@@ -380,6 +502,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         ENCODING_JAVA.put("UTF-8", "UTF-8");
     }
 
+    private SwordBookMetaData sbmd;
     private ConfigEntryTable cet;
     private BookCategory type;
 }

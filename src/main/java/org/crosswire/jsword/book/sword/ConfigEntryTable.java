@@ -50,30 +50,29 @@ import org.slf4j.LoggerFactory;
  * A utility class for loading the entries in a Sword book's conf file. Since
  * the conf files are manually maintained, there can be all sorts of errors in
  * them. This class does robust checking and reporting.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * Config file format. See also: <a href=
  * "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- * 
- * <p>
+ * <p/>
+ * <p/>
  * The contents of the About field are in rtf.
- * <p>
+ * <p/>
  * \ is used as a continuation line.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public final class ConfigEntryTable {
     /**
      * Create an empty Sword config for the named book.
-     * 
-     * @param bookName
-     *            the name of the book
+     *
+     * @param bookName the name of the book
      */
     public ConfigEntryTable(String bookName) {
         table = new HashMap<ConfigEntryType, ConfigEntry>();
@@ -84,9 +83,8 @@ public final class ConfigEntryTable {
 
     /**
      * Load the conf from a file.
-     * 
-     * @param file
-     *            the file to load
+     *
+     * @param file the file to load
      * @throws IOException
      */
     public void load(File file) throws IOException {
@@ -133,9 +131,8 @@ public final class ConfigEntryTable {
     /**
      * Load the conf from a buffer. This is used to load conf entries from the
      * mods.d.tar.gz file.
-     * 
-     * @param buffer
-     *            the buffer to load
+     *
+     * @param buffer the buffer to load
      * @throws IOException
      */
     public void load(byte[] buffer) throws IOException {
@@ -175,7 +172,7 @@ public final class ConfigEntryTable {
 
     /**
      * Get the conf file for this ConfigEntryTable.
-     * 
+     *
      * @return Returns the conf file or null if loaded from a byte buffer.
      */
     public File getConfigFile() {
@@ -198,7 +195,7 @@ public final class ConfigEntryTable {
 
     /**
      * Determines whether the Sword Book is enciphered.
-     * 
+     *
      * @return true if enciphered
      */
     public boolean isEnciphered() {
@@ -208,7 +205,7 @@ public final class ConfigEntryTable {
 
     /**
      * Determines whether the Sword Book is enciphered and without a key.
-     * 
+     *
      * @return true if enciphered
      */
     public boolean isLocked() {
@@ -219,9 +216,8 @@ public final class ConfigEntryTable {
     /**
      * Unlocks a book with the given key. The key is trimmed of any leading or
      * trailing whitespace.
-     * 
-     * @param unlockKey
-     *            the key to try
+     *
+     * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
     public boolean unlock(String unlockKey) {
@@ -243,7 +239,7 @@ public final class ConfigEntryTable {
 
     /**
      * Gets the unlock key for the module.
-     * 
+     *
      * @return the unlock key, if any, null otherwise.
      */
     public String getUnlockKey() {
@@ -273,11 +269,10 @@ public final class ConfigEntryTable {
 
     /**
      * Gets a particular ConfigEntry's value by its type
-     * 
-     * @param type
-     *            of the ConfigEntry
+     *
+     * @param type of the ConfigEntry
      * @return the requested value, the default (if there is no entry) or null
-     *         (if there is no default)
+     * (if there is no default)
      */
     public Object getValue(ConfigEntryType type) {
         ConfigEntry ce = table.get(type);
@@ -290,11 +285,9 @@ public final class ConfigEntryTable {
     /**
      * Determine whether this ConfigEntryTable has the ConfigEntry and it
      * matches the value.
-     * 
-     * @param type
-     *            The kind of ConfigEntry to look for
-     * @param search
-     *            the value to match against
+     *
+     * @param type   The kind of ConfigEntry to look for
+     * @param search the value to match against
      * @return true if there is a matching ConfigEntry matching the value
      */
     public boolean match(ConfigEntryType type, String search) {
@@ -321,7 +314,7 @@ public final class ConfigEntryTable {
      * Build's a SWORD conf file as a string. The result is not identical to the
      * original, cleaning up problems in the original and re-arranging the
      * entries into a predictable order.
-     * 
+     *
      * @return the well-formed conf.
      */
     public String toConf() {
@@ -490,9 +483,8 @@ public final class ConfigEntryTable {
 
     /**
      * Get the next line from the input
-     * 
-     * @param bin
-     *            The reader to get data from
+     *
+     * @param bin The reader to get data from
      * @return the next line
      * @throws IOException
      */
@@ -541,7 +533,7 @@ public final class ConfigEntryTable {
 
     /**
      * A helper to create/replace a value for a given type.
-     * 
+     *
      * @param type
      * @param aValue
      */
@@ -618,14 +610,15 @@ public final class ConfigEntryTable {
         // From the config map, extract the important bean properties
         String modTypeName = (String) getValue(ConfigEntryType.MOD_DRV);
         if (modTypeName == null) {
-            log.error("Book not supported: malformed conf file for {} no {} found.", internal, ConfigEntryType.MOD_DRV.getName());
+            //this may not be the top entry, so log at info level, but mark as non-supported
+            log.info("Book not supported if this is the only configuration file: malformed conf file for {} no {} found.", internal, ConfigEntryType.MOD_DRV.getName());
             supported = false;
             return;
         }
 
         String v11n = (String) getValue(ConfigEntryType.VERSIFICATION);
         if (!Versifications.instance().isDefined(v11n)) {
-            log.error("Book not supported: Unknown versification for {}. {} is unknown.", internal, v11n);
+            log.info("Book not supported if this is the only configuration file:: Unknown versification for {}. {} is unknown.", internal, v11n);
             supported = false;
             return;
         }
@@ -634,7 +627,7 @@ public final class ConfigEntryTable {
 
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null) {
-            log.error("Book not supported: malformed conf file for {} no book type found", internal);
+            log.error("Book not supported if this is the only configuration file: malformed conf file for {} no book type found", internal);
             supported = false;
             return;
         }
@@ -657,7 +650,7 @@ public final class ConfigEntryTable {
     private void adjustName() {
         // If there is no name then use the internal name
         if (table.get(ConfigEntryType.DESCRIPTION) == null) {
-            log.error("Malformed conf file for {}. No {} found. Using internal of {}", internal,  ConfigEntryType.DESCRIPTION.getName(), internal);
+            log.info("Malformed conf file for {}. No {} found. Using internal of {}", internal, ConfigEntryType.DESCRIPTION.getName(), internal);
             add(ConfigEntryType.DESCRIPTION, internal);
         }
     }
@@ -838,7 +831,7 @@ public final class ConfigEntryTable {
     };
 
     private static final ConfigEntryType[] HIDDEN = {
-        ConfigEntryType.CIPHER_KEY,
+            ConfigEntryType.CIPHER_KEY,
     };
 
     /**

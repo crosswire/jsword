@@ -23,10 +23,12 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSMsg;
@@ -85,7 +87,13 @@ public class SwordBookDriver extends AbstractBookDriver {
     }
 
     private void getBooks(Set<Book> valid, File bookDir) {
+        //there are 5 directories that we might want to read from
+        // Sword/mods.d, jsword/mods.d (readable and writeable), jsword/frontend/mods.d (readable and writeable)
+        //the main directory is always mods.d from Sword, so we ensure that one exists.
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
+
+        List<File> modsHierarchy = getModsDirectories(mods);
+
         if (mods.isDirectory()) {
             String[] bookConfs = SwordBookPath.getBookList(mods);
 
@@ -93,15 +101,28 @@ public class SwordBookDriver extends AbstractBookDriver {
             for (int i = 0; i < bookConfs.length; i++) {
                 String bookConf = bookConfs[i];
                 try {
-                    File configfile = new File(mods, bookConf);
                     String internal = bookConf;
                     if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
                         internal = internal.substring(0, internal.length() - 5);
                     }
-                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURI(bookDir));
 
+                    SwordBookMetaData sbmd = null;
+
+                    //we go through the loop from the end, such that the least important entry (sword home)
+                    //has no parent, and the most important entry refers to its parent in the chain
+                    for (int j = modsHierarchy.size() - 1; j >= 0; j--) {
+                        File configfile = new File(modsHierarchy.get(j), bookConf);
+                        if(configfile.exists()) {
+                            sbmd = new SwordBookMetaData(sbmd, configfile, internal, NetUtil.getURI(bookDir));
+                        }
+                    }
                     // skip any book that is not supported.
                     if (!sbmd.isSupported()) {
+                        log.error("The book's configuration files is not supported.");
+                        log.error(" -> Initials [{}], Driver=[{}], Versification=[{}], Book type=[{}], Book category=[{}]",
+                                sbmd.getInitials(),
+                                sbmd.getDriver(), sbmd.getProperty(ConfigEntryType.VERSIFICATION),
+                                sbmd.getBookType(), sbmd.getBookCategory());
                         continue;
                     }
 
@@ -130,6 +151,55 @@ public class SwordBookDriver extends AbstractBookDriver {
             }
         } else {
             log.debug("mods.d directory at {} does not exist", mods);
+        }
+    }
+
+    /**
+     * Gets the full list of secondary directories, in the order of overrides.
+     * The position in the list determines the importance of the file in terms of override.
+     *
+     * A file later on in the list is less important and will override the earlier files.
+     *
+     * The order goes
+     *  <pre>
+     *  frontend writeable home
+     *  frontend readable home
+     *  jsword writeable home
+     *  jsword readable home
+     *  sword home
+     *  </pre>
+     */
+    private List<File> getModsDirectories(File swordMods) {
+        final List<File> files = new ArrayList<File>(5);
+
+        URI writeableFrontendProjectDir = CWProject.instance().getWriteableFrontendProjectDir();
+        if(writeableFrontendProjectDir != null) {
+            addNonNullURI(files, NetUtil.lengthenURI(writeableFrontendProjectDir, SwordConstants.DIR_CONF_OVERRIDE));
+        }
+
+        URI readableFrontendProjectDir = CWProject.instance().getReadableFrontendProjectDir();
+        if(readableFrontendProjectDir != null) {
+            addNonNullURI(files, NetUtil.lengthenURI(readableFrontendProjectDir, SwordConstants.DIR_CONF_OVERRIDE));
+        }
+
+        //write first, then read, so the order of this loop is OK
+        for(URI u : CWProject.instance().getProjectResourceDirs()) {
+            addNonNullURI(files, u);
+        }
+
+        files.add(swordMods);
+        return files;
+    }
+
+    /**
+     * Adds the URI to the list if not null
+     * @param files a list of files
+     * @param u the URI representing the location we want
+     */
+    private void addNonNullURI(List<File> files, URI u) {
+        URI mods = NetUtil.lengthenURI(u, SwordConstants.DIR_CONF);
+        if(mods != null) {
+            files.add(new File(mods));
         }
     }
 

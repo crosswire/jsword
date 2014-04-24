@@ -95,6 +95,33 @@ public final class CWProject {
     }
 
     /**
+     * Sets the name of the frontend. This then informs the read/write directory of the frontend.
+     * @param frontendName
+     */
+    public void setFrontendName(String frontendName) {
+        this.frontendName = frontendName;
+    }
+
+    /**
+     * @return the writeable home for the frontend settings, that can be kept separate from JSword's
+     * configuration, as well from other frontends.
+     */
+    public URI getWriteableFrontendProjectDir() {
+        establishProjectHome();
+        return this.writeableFrontEndHome;
+    }
+
+    /**
+     * @return the readable home for the frontend settings, that can be kept separate from JSword's
+     * configuration, as well from other frontends.
+     */
+    public URI getReadableFrontendProjectDir() {
+        establishProjectHome();
+        return this.frontendReadHome;
+    }
+
+
+    /**
      * Get the writable user project directory.
      * 
      * @return the writable user project directory.
@@ -231,6 +258,19 @@ public final class CWProject {
                 log.warn("Failed to get directory for NetUtil.setURICacheDir()", ex);
             }
 
+            //also attempt to create the frontend home
+            try {
+                if(this.frontendName != null) {
+                    this.writeableFrontEndHome = getWriteableProjectSubdir(this.frontendName, true);
+                }
+            } catch(IOException ex) {
+                log.warn("Failed to create writeable frontend home.", ex);
+            }
+
+            //attempt to set frontend readable home, if different
+            if(readHome != null && this.frontendName != null) {
+                this.frontendReadHome = NetUtil.lengthenURI(this.readHome, this.frontendName);
+            }
         }
     }
 
@@ -282,10 +322,26 @@ public final class CWProject {
     private URI writeHome;
 
     /**
+     * The name of the frontend application. This allows frontends to store information
+     * under the jsword directory, separate from other frontends
+     */
+    private String frontendName;
+
+    /**
      * The readable home for this application, specified by the system property
      * jsword.home. Null, if jsword.home is also writable.
      */
     private URI readHome;
+
+    /**
+     * frontend home, where the app can write information to it. Could be null if failed to create
+     */
+    private URI writeableFrontEndHome;
+
+    /**
+     * frontend read home, could be null if not present
+     */
+    private URI frontendReadHome;
 
     /**
      * System property for home directory

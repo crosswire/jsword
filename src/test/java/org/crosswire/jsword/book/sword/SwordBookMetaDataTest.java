@@ -57,7 +57,7 @@ public class SwordBookMetaDataTest {
             System.out.println(e.getMessage());
         }
 
-        swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI(""));
+        swordBookMetaData = new SwordBookMetaData(null, configFile, "TestBook", new URI(""));
     }
 
     @After
