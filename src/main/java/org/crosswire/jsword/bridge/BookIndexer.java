@@ -105,17 +105,34 @@ public class BookIndexer {
     }
 
 
-    /* //todo static function: Demo of how clients can reindex, after a new install on a computer. If reindex All successful, update Installed.Index.DefaultVersion prop on the client computer
-    (jsword will reindex only if Latest.Index.Version mandates it, after comparing with Installed.Index.Version)
+    /* //todo static function: Demo of how clients can reindex, after a upgrade on a user computer. If reindexAll successful, update Installed.Index.DefaultVersion prop on the client computer
+
+    //note: Need separate method for downloadLatestIndexForAllBooksIfNeeded()
     public static void reindexAllBooksIfNeeded() throws Exception {
 
         Books myBooks = Books.installed();
 
         for(Book insBook: myBooks.getBooks()) {
             //reindex if needsReindexing(insBook) true
+            if(indexManager.needsReindexing(insBook)) {
+                createIndex(insBook);
+                //reindex & update Books Installed.Index.Version
+                InstalledIndex.instance().storeLatestVersionAsInstalledIndexMetadata(insBook);
+            }
             //manage all Installed.Index.Version property values in  metadata file
         }
-    }*/
+        //set Installed.Index.DefaultVersion={Latest Version}
+        PropertyMap map = new PropertyMap();
+        map.put(InstalledIndex.INSTALLED_INDEX_DEFAULT_VERSION , IndexMetadata.instance().getLatestIndexVersionStr());
+        InstalledIndex.instance().storeInstalledIndexMetadata(map);
+
+
+    }
+
+
+    */
+
+
 
     protected Book book;
     protected IndexManager indexManager;

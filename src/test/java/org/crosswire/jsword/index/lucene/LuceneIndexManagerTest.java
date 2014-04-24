@@ -37,6 +37,7 @@ public class LuceneIndexManagerTest {
         Books myBooks = Books.installed();
         boolean performedReindexing = false;
         Book reindexedBook = null;
+        System.out.println( IndexMetadata.generateInstalledBooksIndexVersionReport() );
 
         for (Book insBook : myBooks.getBooks()) {
 
@@ -97,7 +98,7 @@ public class LuceneIndexManagerTest {
         for (Book insBook : myBooks.getBooks()) {
 
 
-            //todo if(metadataFile exist) update InstalledVersion to a older value
+            //todo if(metadataFile exist) update LastestVersion of one book, higher than its InstalledVersion
             //assertTrue(indexManager.needsReindexing(insBook) == true );
             if (indexManager.needsReindexing(insBook)) {
                 System.out.println("Reindexing: " + insBook.getName());
