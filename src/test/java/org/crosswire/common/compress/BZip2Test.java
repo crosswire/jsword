@@ -20,6 +20,7 @@
  */
 package org.crosswire.common.compress;
 
+import static org.crosswire.common.util.PlatformTestUtils.startsWith;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -29,7 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.MissingResourceException;
+import java.util.regex.Pattern;
 
+import org.crosswire.common.util.PlatformTestUtils;
 import org.crosswire.common.util.ResourceUtil;
 import org.junit.Test;
 
@@ -73,7 +76,7 @@ public class BZip2Test {
         try {
             byte[] back = bosUncompressed.toByteArray();
             result = new String(back, "UTF-8");
-            assertTrue("round trip ZIP uncompression", result.startsWith("          \nThe First Book of Moses, called Genesis"));
+            assertTrue("round trip ZIP uncompression", startsWith(result, "^          \r?\nThe First Book of Moses, called Genesis"));
         } catch (UnsupportedEncodingException e) {
             fail();
             return;

@@ -303,13 +303,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             if (lowerConf.level != level) {
                 //ensure the config directory exists
                 File configLocation = level.getConfigLocation();
-                if(!configLocation.mkdirs()) {
+                if(!configLocation.exists() && !configLocation.mkdirs()) {
                     throw new IOException("Failed to create config directory");
                 }
 
                 //create a new file
                 File newConfigFile = new File(configLocation, this.cet.getConfigFile().getName());
-                if(!newConfigFile.createNewFile()) {
+                if(!newConfigFile.exists() && !newConfigFile.createNewFile()) {
                     throw new IOException("Failed to create config file");
                 }
 
