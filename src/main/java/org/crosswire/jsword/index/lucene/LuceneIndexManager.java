@@ -62,6 +62,12 @@ public class LuceneIndexManager implements IndexManager {
      */
     public LuceneIndexManager() {
         policy = new IndexPolicyAdapter();
+        try {
+            baseFolderURI = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
+        } catch (IOException ex) {
+            log.error("Failed to find lucene index storage area. "+ex.getMessage(), ex);
+
+        }
     }
 
     /* (non-Javadoc)
@@ -99,19 +105,21 @@ public class LuceneIndexManager implements IndexManager {
 
     /**
      * Clients can use this to determine if book's index is stale and needs to reindexed or downloaded.
-       @returns true, if Latest.Index.Version.xxx > Installed.Index.Version.xxx OR if {book's index folder} is not found at all
+     * Asssumes index exists: Client must use isIndexed() prior to using this method
+       @returns true, if Latest.Index.Version.xxx > Installed.Index.Version.xxx
      * @see org.crosswire.jsword.index.IndexManager#needsReindexing(org.crosswire.jsword.book.Book)
      */
 
     public boolean needsReindexing(Book book) {
-        // step 1: check for existing index
-        if (!isIndexed(book)) {
+
+
+        /*if (!isIndexed(book)) {
             return true;
-        }
+        }*/
 
         boolean reindex = false;
 
-        // step 2: check for index version
+        //check for index version
         try {
 
             //should Clients use IndexStatus.INVALID
@@ -267,13 +275,13 @@ public class LuceneIndexManager implements IndexManager {
         assert driverName != null;
         assert bookName != null;
 
-        URI base = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
-        URI driver = NetUtil.lengthenURI(base, driverName);
 
-        return NetUtil.lengthenURI(driver, bookName);
+        //URI driver = NetUtil.lengthenURI(baseFolderURI, driverName);
+        return NetUtil.lengthenURI(baseFolderURI, driverName+ NetUtil.SEPARATOR+ bookName);
     }
 
     private IndexPolicy policy;
+    private URI baseFolderURI ;
 
     /**
      * The created indexes

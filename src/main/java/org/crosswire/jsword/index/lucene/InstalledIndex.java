@@ -10,7 +10,9 @@ import java.net.URI;
 
 /**
 * A singleton that Reads and Maintains Installed Index Metadata (for e.g. version indexed on client machine) in properties file
-*   File location: {WritableProjectDir}/JSword/lucene/InstalledIndex.properties
+* If file does not exist on the client, it will be created
+*   File location: {WritableProjectDir}/JSword/lucene/org.crosswire.jsword.index.lucene.InstalledIndex.properties
+*
 *
 * @see gnu.lgpl.License for license details.<br>
 *      The copyright to this program is held by it's authors.
@@ -18,11 +20,13 @@ import java.net.URI;
 */
 
 /*
-# todo where to implement method reindexAllInstalledBooks() ? :  If this succeeds, update Installed.Index.DefaultVersion prop on the client computer
+# todo do we need method reindexAllInstalledBooks() ? :  If this succeeds, update Installed.Index.DefaultVersion prop on the client computer
 
  */
 public final class InstalledIndex {
     public static final String INSTALLED_INDEX_DEFAULT_VERSION = "Installed.Index.DefaultVersion";
+    //Book's property key format Installed.Index.Version.Book.Initial[module-version]
+    public static final String PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE = "Installed.Index.Version.Book.";
     public float defaultInstalledIndexVersionIfMetadataFileNotPresent =  IndexMetadata.INDEX_VERSION_1_2;   //todo change this value on lucene upgrade
 
     /**
@@ -47,7 +51,7 @@ public final class InstalledIndex {
         if(b==null) return getInstalledIndexDefaultVersion();
 
         //e.g. look for Installed.Index.Version.Book.ESV[1.0.1] , else use Installed.Index.DefaultVersion
-        String value = props.get(IndexMetadata.PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
+        String value = props.get(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                 props.get(INSTALLED_INDEX_DEFAULT_VERSION ) );
 
         if(value==null)
@@ -61,7 +65,7 @@ public final class InstalledIndex {
 
         synchronized (writeLock) {
 
-            props.put(IndexMetadata.PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
+            props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     String.valueOf( IndexMetadata.instance().getLatestIndexVersion(b) ) );
 
             try {
@@ -134,7 +138,7 @@ public final class InstalledIndex {
 
         synchronized (writeLock) {
 
-            props.put(IndexMetadata.PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
+            props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     installedIndexVersionToStore );
 
             try {
@@ -149,7 +153,7 @@ public final class InstalledIndex {
 
         synchronized (writeLock) {
 
-            props.remove(IndexMetadata.PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()) );
+            props.remove(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()) );
 
             try {
                 NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
@@ -160,9 +164,9 @@ public final class InstalledIndex {
     }
 
     private Object writeLock = new Object();
-    private static String metadataFileComment = "Properties that stay persistent on clients computer between upgrades." +
-            "\n#Contains Default index version for all books that are currently indexed\n" +
-            "#Also specifies Book specific installed index version over-ride. ";
+    private static String metadataFileComment = "Search index properties that stay persistent on clients computer. Used during index upgrades." +
+            "\nContains Default index version, used for all searchable books, if book specific over-ride is not found.\n" +
+            "JSword adds a Book specific installed index version over-ride property, after an index creation. ";
 
     private static final Logger log = LoggerFactory.getLogger(InstalledIndex.class);
     private static InstalledIndex myInstance = new InstalledIndex();

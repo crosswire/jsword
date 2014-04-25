@@ -50,7 +50,6 @@ public final class IndexMetadata {
     public static final String LUCENE_VERSION = "Lucene.Version";
 
     public static final String PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE = "Latest.Index.Version.Book.";
-    public static final String PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE = "Installed.Index.Version.Book.";
     @Deprecated
     public static final String INDEX_VERSION = "Installed.Index.Version";
     /**
@@ -135,8 +134,8 @@ public final class IndexMetadata {
         }
         toReturn.append("\nSummary: installedBooks ").append(installedBookCount)
             .append(", searchEnabledBooks ").append(searchEnabledBookCount)
-            .append(", booksWithOutdatedIndex ").append(reindexMandatoryBookCount);
-
+            .append(", booksWithOutdatedIndex ").append(reindexMandatoryBookCount)
+            .append("\n");
         return toReturn.toString();
     }
 

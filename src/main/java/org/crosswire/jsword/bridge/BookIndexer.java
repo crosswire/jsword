@@ -97,12 +97,8 @@ public class BookIndexer {
         done = state;
     }
 
-    public void reindexIfNeeded() throws BookException {
 
-        if(indexManager.needsReindexing(book)) {
-            createIndex();
-        }
-    }
+
 
 
     /* //todo static function: Demo of how clients can reindex, after a upgrade on a user computer. If reindexAll successful, update Installed.Index.DefaultVersion prop on the client computer
@@ -128,8 +124,6 @@ public class BookIndexer {
 
 
     }
-
-
     */
 
 
