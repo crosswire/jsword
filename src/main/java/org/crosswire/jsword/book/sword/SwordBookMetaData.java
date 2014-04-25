@@ -316,6 +316,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 try {
                     newMetaData = new SwordBookMetaData(lowerConf, level,
                             newConfigFile, this.cet.getInternal(), this.getLibrary());
+
+                    //some fields are held by the type parent, so need to set them.
+                    newMetaData.setCurrentBook(this.getCurrentBook());
+                    newMetaData.setDriver(this.getDriver());
+                    newMetaData.setIndexStatus(this.getIndexStatus());
                 } catch (MissingDataFilesException e) {
                     //ignore these, as already alerted upon first creation
                     log.trace(e.getMessage(), e);
