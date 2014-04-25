@@ -74,14 +74,26 @@ public final class ConfigEntryTable {
      * Create an empty Sword config for the named book.
      *
      * @param bookName the name of the book
-     * @param isRootConfig
+     * @param isRootConfig true to indicate a root configuration
      */
     public ConfigEntryTable(String bookName, boolean isRootConfig) {
+        this(bookName, isRootConfig, null);
+    }
+
+    /**
+     * Sometimes, we're creating the config off another config, and so need to ensure the initials match exactly.
+     *
+     * @param bookName the bookname
+     * @param isRootConfig true to indicate a root configuration
+     * @param initials the set of initials used to identify this module. This could be different to the bookName (which may be lowercase)
+     */
+    public ConfigEntryTable(String bookName, boolean isRootConfig, String initials) {
         this.isRootConfig = isRootConfig;
         table = new HashMap<ConfigEntryType, ConfigEntry>();
         extra = new TreeMap<String, ConfigEntry>();
         internal = bookName;
         supported = true;
+        this.initials = initials;
     }
 
     /**
@@ -442,6 +454,7 @@ public final class ConfigEntryTable {
     }
 
     private void loadInitials(BufferedReader in) throws IOException {
+        //prefer the initials from the file
         String initials = null;
         while (true) {
             String line = advance(in);
@@ -457,15 +470,21 @@ public final class ConfigEntryTable {
             }
         }
 
+        //if no initials found, perhaps we're in the process of creating/saving a new file
         if (initials == null) {
             //we warn of errors if we're the root config. For all other conf files,
             // we'll only have a sparse configuration
             if(this.isRootConfig) {
                 log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
             }
-            initials = internal;
+
+            //prefer the initials set as a field, if available
+            initials = this.initials != null ? this.initials : internal;
         }
         add(ConfigEntryType.INITIALS, initials);
+
+        //ensure all further access is consistent
+        this.initials = initials;
     }
 
     /**
@@ -912,6 +931,11 @@ public final class ConfigEntryTable {
      * true to indicate this is a root configuration (i.e. the one in the sword home mods.d directory
      */
     private boolean isRootConfig;
+
+    /**
+     * The set of initials identifying this book
+     */
+    private String initials;
 
     /**
      * Buffer size is based on file size but keep it with within reasonable limits

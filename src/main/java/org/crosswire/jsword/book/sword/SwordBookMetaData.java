@@ -97,7 +97,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                              File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
         this.parent = parent;
         this.level = level;
-        cet = new ConfigEntryTable(internal, this.parent == null);
+        cet = new ConfigEntryTable(internal, this.parent == null, this.parent != null ? this.parent.getInitials() : null);
         cet.load(file);
 
         setLibrary(bookRootPath);
