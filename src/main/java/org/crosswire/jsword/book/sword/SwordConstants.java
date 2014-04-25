@@ -76,4 +76,10 @@ public final class SwordConstants {
      * The configuration directory
      */
     public static final String DIR_CONF = "mods.d";
+
+    /**
+     * The configuration directory
+     */
+    public static final String DIR_CONF_OVERRIDE = "jsword-mods.d";
+
 }

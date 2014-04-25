@@ -50,43 +50,56 @@ import org.slf4j.LoggerFactory;
  * A utility class for loading the entries in a Sword book's conf file. Since
  * the conf files are manually maintained, there can be all sorts of errors in
  * them. This class does robust checking and reporting.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * Config file format. See also: <a href=
  * "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- * 
- * <p>
+ * <p/>
+ * <p/>
  * The contents of the About field are in rtf.
- * <p>
+ * <p/>
  * \ is used as a continuation line.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public final class ConfigEntryTable {
+
     /**
      * Create an empty Sword config for the named book.
-     * 
-     * @param bookName
-     *            the name of the book
+     *
+     * @param bookName the name of the book
+     * @param isRootConfig true to indicate a root configuration
      */
-    public ConfigEntryTable(String bookName) {
+    public ConfigEntryTable(String bookName, boolean isRootConfig) {
+        this(bookName, isRootConfig, null);
+    }
+
+    /**
+     * Sometimes, we're creating the config off another config, and so need to ensure the initials match exactly.
+     *
+     * @param bookName the bookname
+     * @param isRootConfig true to indicate a root configuration
+     * @param initials the set of initials used to identify this module. This could be different to the bookName (which may be lowercase)
+     */
+    public ConfigEntryTable(String bookName, boolean isRootConfig, String initials) {
+        this.isRootConfig = isRootConfig;
         table = new HashMap<ConfigEntryType, ConfigEntry>();
         extra = new TreeMap<String, ConfigEntry>();
         internal = bookName;
         supported = true;
+        this.initials = initials;
     }
 
     /**
      * Load the conf from a file.
-     * 
-     * @param file
-     *            the file to load
+     *
+     * @param file the file to load
      * @throws IOException
      */
     public void load(File file) throws IOException {
@@ -118,10 +131,13 @@ public final class ConfigEntryTable {
                 in.close();
                 in = null;
             }
-            adjustDataPath();
-            adjustLanguage();
-            adjustBookType();
-            adjustName();
+
+            if(isRootConfig) {
+                adjustDataPath();
+                adjustLanguage();
+                adjustBookType();
+                adjustName();
+            }
             validate();
         } finally {
             if (in != null) {
@@ -133,9 +149,8 @@ public final class ConfigEntryTable {
     /**
      * Load the conf from a buffer. This is used to load conf entries from the
      * mods.d.tar.gz file.
-     * 
-     * @param buffer
-     *            the buffer to load
+     *
+     * @param buffer the buffer to load
      * @throws IOException
      */
     public void load(byte[] buffer) throws IOException {
@@ -161,10 +176,13 @@ public final class ConfigEntryTable {
                 in.close();
                 in = null;
             }
-            adjustDataPath();
-            adjustLanguage();
-            adjustBookType();
-            adjustName();
+
+            if(isRootConfig) {
+                adjustDataPath();
+                adjustLanguage();
+                adjustBookType();
+                adjustName();
+            }
             validate();
         } finally {
             if (in != null) {
@@ -175,7 +193,7 @@ public final class ConfigEntryTable {
 
     /**
      * Get the conf file for this ConfigEntryTable.
-     * 
+     *
      * @return Returns the conf file or null if loaded from a byte buffer.
      */
     public File getConfigFile() {
@@ -198,7 +216,7 @@ public final class ConfigEntryTable {
 
     /**
      * Determines whether the Sword Book is enciphered.
-     * 
+     *
      * @return true if enciphered
      */
     public boolean isEnciphered() {
@@ -208,7 +226,7 @@ public final class ConfigEntryTable {
 
     /**
      * Determines whether the Sword Book is enciphered and without a key.
-     * 
+     *
      * @return true if enciphered
      */
     public boolean isLocked() {
@@ -219,9 +237,8 @@ public final class ConfigEntryTable {
     /**
      * Unlocks a book with the given key. The key is trimmed of any leading or
      * trailing whitespace.
-     * 
-     * @param unlockKey
-     *            the key to try
+     *
+     * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
     public boolean unlock(String unlockKey) {
@@ -243,7 +260,7 @@ public final class ConfigEntryTable {
 
     /**
      * Gets the unlock key for the module.
-     * 
+     *
      * @return the unlock key, if any, null otherwise.
      */
     public String getUnlockKey() {
@@ -272,12 +289,21 @@ public final class ConfigEntryTable {
     }
 
     /**
+     *
+     * @param type of the ConfigEntry
+     * @return the config entry
+     */
+    public ConfigEntry getValueAsConfigEntry(ConfigEntryType type) {
+        return table.get(type);
+    }
+
+
+    /**
      * Gets a particular ConfigEntry's value by its type
-     * 
-     * @param type
-     *            of the ConfigEntry
+     *
+     * @param type of the ConfigEntry
      * @return the requested value, the default (if there is no entry) or null
-     *         (if there is no default)
+     * (if there is no default)
      */
     public Object getValue(ConfigEntryType type) {
         ConfigEntry ce = table.get(type);
@@ -290,11 +316,9 @@ public final class ConfigEntryTable {
     /**
      * Determine whether this ConfigEntryTable has the ConfigEntry and it
      * matches the value.
-     * 
-     * @param type
-     *            The kind of ConfigEntry to look for
-     * @param search
-     *            the value to match against
+     *
+     * @param type   The kind of ConfigEntry to look for
+     * @param search the value to match against
      * @return true if there is a matching ConfigEntry matching the value
      */
     public boolean match(ConfigEntryType type, String search) {
@@ -321,7 +345,7 @@ public final class ConfigEntryTable {
      * Build's a SWORD conf file as a string. The result is not identical to the
      * original, cleaning up problems in the original and re-arranging the
      * entries into a predictable order.
-     * 
+     *
      * @return the well-formed conf.
      */
     public String toConf() {
@@ -430,6 +454,7 @@ public final class ConfigEntryTable {
     }
 
     private void loadInitials(BufferedReader in) throws IOException {
+        //prefer the initials from the file
         String initials = null;
         while (true) {
             String line = advance(in);
@@ -444,11 +469,22 @@ public final class ConfigEntryTable {
                 break;
             }
         }
+
+        //if no initials found, perhaps we're in the process of creating/saving a new file
         if (initials == null) {
-            log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
-            initials = internal;
+            //we warn of errors if we're the root config. For all other conf files,
+            // we'll only have a sparse configuration
+            if(this.isRootConfig) {
+                log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
+            }
+
+            //prefer the initials set as a field, if available
+            initials = this.initials != null ? this.initials : internal;
         }
         add(ConfigEntryType.INITIALS, initials);
+
+        //ensure all further access is consistent
+        this.initials = initials;
     }
 
     /**
@@ -490,9 +526,8 @@ public final class ConfigEntryTable {
 
     /**
      * Get the next line from the input
-     * 
-     * @param bin
-     *            The reader to get data from
+     *
+     * @param bin The reader to get data from
      * @return the next line
      * @throws IOException
      */
@@ -541,7 +576,7 @@ public final class ConfigEntryTable {
 
     /**
      * A helper to create/replace a value for a given type.
-     * 
+     *
      * @param type
      * @param aValue
      */
@@ -657,7 +692,7 @@ public final class ConfigEntryTable {
     private void adjustName() {
         // If there is no name then use the internal name
         if (table.get(ConfigEntryType.DESCRIPTION) == null) {
-            log.error("Malformed conf file for {}. No {} found. Using internal of {}", internal,  ConfigEntryType.DESCRIPTION.getName(), internal);
+            log.error("Malformed conf file for {}. No {} found. Using internal of {}", internal, ConfigEntryType.DESCRIPTION.getName(), internal);
             add(ConfigEntryType.DESCRIPTION, internal);
         }
     }
@@ -757,6 +792,13 @@ public final class ConfigEntryTable {
     }
 
     /**
+     * @return the internal name of the module
+     */
+    String getInternal() {
+        return internal;
+    }
+
+    /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
      */
@@ -835,6 +877,8 @@ public final class ConfigEntryTable {
             ConfigEntryType.KEY_TYPE,
             ConfigEntryType.DISPLAY_LEVEL,
             ConfigEntryType.VERSIFICATION,
+            ConfigEntryType.SCOPE,
+            ConfigEntryType.BOOK_LIST
     };
 
     private static final ConfigEntryType[] HIDDEN = {
@@ -884,6 +928,16 @@ public final class ConfigEntryTable {
     private File configFile;
 
     /**
+     * true to indicate this is a root configuration (i.e. the one in the sword home mods.d directory
+     */
+    private boolean isRootConfig;
+
+    /**
+     * The set of initials identifying this book
+     */
+    private String initials;
+
+    /**
      * Buffer size is based on file size but keep it with within reasonable limits
      */
     private static final long MAX_BUFF_SIZE = 8 * 1024;
@@ -901,4 +955,5 @@ public final class ConfigEntryTable {
      * The log stream
      */
     private static final Logger log = LoggerFactory.getLogger(ConfigEntryTable.class);
+
 }

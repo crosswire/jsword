@@ -67,7 +67,7 @@ public class RawFileBackendTest {
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
-        ConfigEntryTable table = new ConfigEntryTable(modName);
+        ConfigEntryTable table = new ConfigEntryTable(modName, true);
         table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, modName);
         table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
@@ -79,7 +79,7 @@ public class RawFileBackendTest {
             System.out.println(e.getMessage());
         }
 
-        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp"));
+        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(null, MetaFile.Level.SWORD, configFile, modName, new URI("file:///tmp"));
         backend = new RawFileBackend(swordBookMetaData, 2);
         backend.create();
     }
