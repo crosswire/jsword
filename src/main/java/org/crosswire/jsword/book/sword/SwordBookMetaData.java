@@ -280,7 +280,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @param level the level of the conf file to save it as
      * @throws java.io.IOException we let the caller decide how to handle exceptions
      */
-    void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
+    public void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
         if (this.level == level) {
             //then we can simply add it to the current table
             this.cet.add(entry, value);
@@ -303,13 +303,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             if (lowerConf.level != level) {
                 //ensure the config directory exists
                 File configLocation = level.getConfigLocation();
-                if(!configLocation.exists() && !configLocation.mkdirs()) {
+                if (!configLocation.exists() && !configLocation.mkdirs()) {
                     throw new IOException("Failed to create config directory");
                 }
 
                 //create a new file
                 File newConfigFile = new File(configLocation, this.cet.getConfigFile().getName());
-                if(!newConfigFile.exists() && !newConfigFile.createNewFile()) {
+                if (!newConfigFile.exists() && !newConfigFile.createNewFile()) {
                     throw new IOException("Failed to create config file");
                 }
 

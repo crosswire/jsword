@@ -20,10 +20,13 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.sword.ConfigEntryType;
+import org.crosswire.jsword.book.sword.MetaFile;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.passage.VerseKey;
@@ -268,6 +271,15 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     VerseKey getScope();
 
     /**
+     * Saves an entry to a particular configuration file.
+     * @param entry the entry that we are saving
+     * @param value the value of the entry
+     * @param level the level at which it is being saved
+     * @throws IOException
+     */
+    void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException;
+
+    /**
      * The key for the type in the properties map
      */
     String KEY_CATEGORY = "Category";
@@ -321,4 +333,6 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * The key for the Versification property.
      */
     String KEY_VERSIFICATION = "Versification";
+
+    String KEY_BOOKLIST = "BookList";
 }

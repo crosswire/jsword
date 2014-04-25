@@ -26,10 +26,14 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
+import org.crosswire.jsword.book.sword.ConfigEntryType;
+import org.crosswire.jsword.book.sword.MetaFile;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom2.Document;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -293,6 +297,17 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     @Override
     public String toString() {
         return getInitials();
+    }
+
+    /**
+     * Default implementation does not support this
+     * @param entry the type of entry we want to store
+     * @param value the value to be stored
+     * @param level the level at which the entry should be stored
+     * @throws IOException
+     */
+    public void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
+        throw new NotImplementedException();
     }
 
     /**

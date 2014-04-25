@@ -699,6 +699,12 @@ public enum ConfigEntryType {
     SCOPE("Scope"),
 
     /**
+     * New. Not supported by Sword. Lists of books contained in the module. Usually derived and cached in the JSword
+     * configuration files.
+     */
+    BOOK_LIST("BookList"),
+
+    /**
      * The location of a collection of modules. JSword uses this to install and
      * delete a module.
      */

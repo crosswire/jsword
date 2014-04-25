@@ -858,7 +858,8 @@ public final class ConfigEntryTable {
             ConfigEntryType.KEY_TYPE,
             ConfigEntryType.DISPLAY_LEVEL,
             ConfigEntryType.VERSIFICATION,
-            ConfigEntryType.SCOPE
+            ConfigEntryType.SCOPE,
+            ConfigEntryType.BOOK_LIST
     };
 
     private static final ConfigEntryType[] HIDDEN = {
