@@ -63,14 +63,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joe Walker [joe at eireneh dot com]
  * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * The copyright to this program is held by it's authors.
  */
 public abstract class AbstractPassageBook extends AbstractBook {
 
     /**
      * Construct an AbstractPassageBook given the BookMetaData and the AbstractBackend.
-     * 
-     * @param bmd the metadata that describes the book
+     *
+     * @param bmd     the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     public AbstractPassageBook(BookMetaData bmd, Backend backend) {
@@ -229,18 +229,36 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     /**
+     * This implementation lazily inits, saves to the JSword conf file and also caches the book list for future use.
+     *
      * @return the list of Bible books contained in the module
      */
-    public Set<BibleBook> getBookList() {
+    public Set<BibleBook> getBibleBooks() {
+        if (bibleBooks == null) {
+            synchronized (this) {
+                if(bibleBooks == null) {
+                    bibleBooks = getBibleBooksInternal();
+                }
+            }
+        }
+
+        return bibleBooks;
+    }
+
+    /**
+     * Obtains the set of bible books from the internal configuration file, creating it if required.
+     * @return the bible books relevant to this module.
+     */
+    private Set<BibleBook> getBibleBooksInternal() {
         String list = (String) this.getBookMetaData().getProperty(SwordBookMetaData.KEY_BOOKLIST);
         Set<BibleBook> bibleBooks;
-        if(list == null) {
+        if (list == null) {
             //calculate and store
             bibleBooks = calculateBibleBookList();
             String listOfBooks = toString(bibleBooks);
             try {
                 this.getBookMetaData().save(ConfigEntryType.BOOK_LIST, listOfBooks, MetaFile.Level.JSWORD_WRITE);
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 //failed to save, so warn
                 log.warn("Unable to save book list to side car configuration", ex);
             }
@@ -255,7 +273,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     private Set<BibleBook> fromString(String list) {
         Set<BibleBook> books = new LinkedHashSet<BibleBook>(list.length() / 2);
         final String[] bookOsis = StringUtil.split(list, ' ');
-        for(String s : bookOsis) {
+        for (String s : bookOsis) {
             books.add(BibleBook.fromExactOSIS(s));
         }
         return books;
@@ -266,7 +284,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         for (Iterator<BibleBook> iterator = bibleBooks.iterator(); iterator.hasNext(); ) {
             BibleBook b = iterator.next();
             sb.append(b.getOSIS());
-            if(iterator.hasNext()) {
+            if (iterator.hasNext()) {
                 sb.append(' ');
             }
 
@@ -280,7 +298,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     private Set<BibleBook> calculateBibleBookList() {
         final BookMetaData bookMetaData = this.getBookMetaData();
         final VerseKey scope = bookMetaData.getScope();
-        if(scope == null) {
+        if (scope == null) {
             return new HashSet<BibleBook>();
         }
 
@@ -316,6 +334,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
      * Our key manager
      */
     private PassageKeyFactory keyf = PassageKeyFactory.instance();
+
+    /**
+     * lazy of cache of bible books contained in the Book
+     */
+    private volatile Set<BibleBook> bibleBooks = null;
 
     /**
      * The log stream
