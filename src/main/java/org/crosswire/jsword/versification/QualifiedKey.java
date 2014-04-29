@@ -23,6 +23,7 @@ package org.crosswire.jsword.versification;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A QualifiedKey represents the various left and right sides of a map entry.
@@ -38,10 +39,10 @@ import org.crosswire.jsword.passage.VerseRange;
  * The mapping can indicate a part of a verse. This is an internal implementation detail of the Versification mapping code.
  * Here it is used to distinguish one QualifiedKey from another in equality tests and in containers.
  * </p>
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author chrisburrell
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public final class QualifiedKey {
     /**
@@ -75,9 +76,9 @@ public final class QualifiedKey {
                 return q != null && q.getSectionName() != null ? q.getSectionName() : "Missing section name";
             }
         };
+
         /**
-         * @param q
-         *            the QualifiedKey that this describes
+         * @param q the QualifiedKey that this describes
          * @return The description for the qualified key
          */
         public abstract String getDescription(QualifiedKey q);
@@ -86,7 +87,7 @@ public final class QualifiedKey {
 
     /**
      * Construct a QualifiedKey from a Verse.
-     * 
+     *
      * @param key the verse from which to create this QualifiedKey
      */
     public QualifiedKey(Verse key) {
@@ -96,7 +97,7 @@ public final class QualifiedKey {
 
     /**
      * Construct a QualifiedKey from a Verse.
-     * 
+     *
      * @param key the verse range from which to create this QualifiedKey
      */
     public QualifiedKey(VerseRange key) {
@@ -115,7 +116,6 @@ public final class QualifiedKey {
     /**
      * Constructs the QualifiedKey with the ABSENT_IN_LEFT qualifier.
      * This really means that there are no fields in this QualifiedKey.
-     *
      */
     public QualifiedKey() {
         this.absentType = Qualifier.ABSENT_IN_LEFT;
@@ -123,7 +123,7 @@ public final class QualifiedKey {
 
     /**
      * Create a QualifiedKey from a Verse or a VerseRange.
-     * 
+     *
      * @param k the Verse or VerseRange
      * @return the created QualifiedKey
      * @throws ClassCastException
@@ -163,7 +163,7 @@ public final class QualifiedKey {
 
     /**
      * A QualifiedKey is whole if it does not split part of a reference.
-     * 
+     *
      * @return whether this QualifiedKey has a whole reference
      */
     public boolean isWhole() {
@@ -178,7 +178,7 @@ public final class QualifiedKey {
      * This is a potentially dangerous operation that does no mapping
      * from one versification to another. Use it only when it is known
      * to be safe.
-     * 
+     *
      * @param target The target versification
      * @return The reversified QualifiedKey
      */
@@ -188,7 +188,17 @@ public final class QualifiedKey {
             return this;
         }
 
-        return create(qualifiedKey.reversify(target));
+        final VerseKey reversifiedKey = qualifiedKey.reversify(target);
+        if (reversifiedKey != null) {
+            return create(reversifiedKey);
+        }
+
+        if (target.getName().equals(Versifications.DEFAULT_V11N)) {
+            //then we're absent in KJV
+            return new QualifiedKey(qualifiedKey.getOsisID());
+        }
+        return new QualifiedKey();
+
     }
 
     @Override
@@ -211,8 +221,8 @@ public final class QualifiedKey {
     public int hashCode() {
         // Use a prime number in case one of the values is not around
         return (this.qualifiedKey == null ? 17 : qualifiedKey.hashCode())
-             + (this.absentType == null ? 13 : this.absentType.ordinal())
-             + (this.sectionName == null ? 19 : this.sectionName.hashCode());
+                + (this.absentType == null ? 13 : this.absentType.ordinal())
+                + (this.sectionName == null ? 19 : this.sectionName.hashCode());
     }
 
     @Override
@@ -220,14 +230,15 @@ public final class QualifiedKey {
         if (obj instanceof QualifiedKey) {
             final QualifiedKey otherKey = (QualifiedKey) obj;
             return this.getAbsentType() == otherKey.getAbsentType()
-                && bothNullOrEqual(this.sectionName, otherKey.sectionName)
-                && bothNullOrEqual(this.qualifiedKey, otherKey.qualifiedKey);
+                    && bothNullOrEqual(this.sectionName, otherKey.sectionName)
+                    && bothNullOrEqual(this.qualifiedKey, otherKey.qualifiedKey);
         }
         return false;
     }
 
     /**
      * Allow override of the key, particular useful if we're constructing in 2 stages like the offset mechanism
+     *
      * @param key the new key
      */
     private void setKey(final Verse key) {
@@ -237,6 +248,7 @@ public final class QualifiedKey {
 
     /**
      * Allow override of the key, particular useful if we're constructing in 2 stages like the offset mechanism
+     *
      * @param key the new key
      */
     private void setKey(final VerseRange key) {
@@ -250,6 +262,7 @@ public final class QualifiedKey {
 
     /**
      * Determine whether two objects are equal, allowing nulls
+     *
      * @param x
      * @param y
      * @return true if both are null or the two are equal

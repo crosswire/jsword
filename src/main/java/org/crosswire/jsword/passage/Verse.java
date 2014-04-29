@@ -33,6 +33,8 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleNames;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Verse is a pointer to a single verse. Externally its unique identifier is
@@ -303,7 +305,17 @@ public final class Verse implements VerseKey<Verse> {
         if (v11n.equals(newVersification)) {
             return this;
         }
-        return new Verse(newVersification, book, chapter, verse);
+
+        try {
+            //check the v11n supports this key, otherwise this leads to all sorts of issues
+            if (newVersification.validate(book, chapter, verse, true)) {
+                return new Verse(newVersification, book, chapter, verse);
+            }
+        } catch(NoSuchVerseException ex) {
+            //will never happen
+            log.error("Contract for validate was changed to thrown an exception when silent mode is true", ex);
+        }
+        return null;
     }
 
     /**
@@ -632,6 +644,8 @@ public final class Verse implements VerseKey<Verse> {
      * a.xy.asdf.qr
      */
     private String subIdentifier;
+
+    private static final Logger log = LoggerFactory.getLogger(Verse.class);
 
     /**
      * To make serialization work across new versions
