@@ -111,7 +111,13 @@ public final class VerseRange implements VerseKey<VerseRange> {
             return this;
         }
         Verse newStart = start.reversify(newVersification);
+        if(newStart == null) {
+            return null;
+        }
         Verse newEnd = end.reversify(newVersification);
+        if(newEnd == null) {
+            return null;
+        }
         return new VerseRange(newVersification, newStart, newEnd);
     }
 

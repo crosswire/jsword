@@ -981,9 +981,33 @@ public class Versification implements ReferenceSystem, Serializable {
      *                If the reference is illegal
      */
     public void validate(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
+        validate(book, chapter, verse, false);
+    }
 
+    /**
+     * Does the following represent a real verse?. It is code like this that
+     * makes me wonder if I18 is done well/worth doing. All this code does is
+     * check if the numbers are valid, but the exception handling code is huge
+     * :(
+     *
+     * @param book
+     *            The book part of the reference.
+     * @param chapter
+     *            The chapter part of the reference.
+     * @param verse
+     *            The verse part of the reference.
+     * @param silent
+     *            true to indicate we do not want to throw an exception
+     * @return true if validation was succesful
+     * @exception NoSuchVerseException
+     *                If the reference is illegal and silent was false
+     */
+    public boolean validate(BibleBook book, int chapter, int verse, boolean silent) throws NoSuchVerseException {
         // Check the book
         if (book == null) {
+            if(silent) {
+                return false;
+            }
             // TRANSLATOR: The user did not supply a book for a verse reference.
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         }
@@ -991,6 +1015,9 @@ public class Versification implements ReferenceSystem, Serializable {
         // Check the chapter
         int maxChapter = getLastChapter(book);
         if (chapter < 0 || chapter > maxChapter) {
+            if(silent) {
+                return false;
+            }
             // TRANSLATOR: The user supplied a chapter that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. This is always 0.
             // {1,number,integer} is the place holder for the highest chapter number in the book. The format is special in that it will present it in the user's preferred format.
@@ -998,12 +1025,15 @@ public class Versification implements ReferenceSystem, Serializable {
             // {3,number,integer} is a placeholder for the chapter number that the user gave.
             throw new NoSuchVerseException(JSMsg.gettext("Chapter should be between {0} and {1,number,integer} for {2} (given {3,number,integer}).",
                     Integer.valueOf(0), Integer.valueOf(maxChapter), getPreferredName(book), Integer.valueOf(chapter)
-                    ));
+            ));
         }
 
         // Check the verse
         int maxVerse = getLastVerse(book, chapter);
         if (verse < 0 || verse > maxVerse) {
+            if(silent) {
+                return false;
+            }
             // TRANSLATOR: The user supplied a verse number that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. This is always 0.
             // {1,number,integer} is the place holder for the highest verse number in the chapter. The format is special in that it will present it in the user's preferred format.
@@ -1014,6 +1044,7 @@ public class Versification implements ReferenceSystem, Serializable {
                     Integer.valueOf(0), Integer.valueOf(maxVerse), getPreferredName(book), Integer.valueOf(chapter), Integer.valueOf(verse)
                     ));
         }
+        return true;
     }
 
     /**
