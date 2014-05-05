@@ -24,10 +24,12 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 import org.junit.Test;
 
 /**
- * Tokenization and query parsing test
+ * Tokenization and query parsing test  : todo tests SmartChineseLuceneAnalyzer
  * 
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Sijo Cherian
@@ -37,8 +39,8 @@ public class ChineseLuceneAnalyzerTest {
 
     @Test
     public void testTokenization() throws ParseException {
-        myAnalyzer = new ChineseLuceneAnalyzer();
-        parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        myAnalyzer = new SmartChineseLuceneAnalyzer();
+        parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, field, myAnalyzer);
 
         String testInput = "\u795E\u7231\u4E16\u4EBA\uFF0C\u751A\u81F3\u628A\u4ED6\u7684\u72EC\u751F\u5B50\u8D50\u7ED9\u4ED6\u4EEC";
 

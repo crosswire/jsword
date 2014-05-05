@@ -20,10 +20,12 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
-import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.index.lucene.IndexMetadata;
@@ -42,33 +44,37 @@ import org.slf4j.LoggerFactory;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class LuceneAnalyzer extends Analyzer {
+//todo rename this to LuceneAnalyzerWrapper
+public class LuceneAnalyzer  {
 
     public LuceneAnalyzer(Book book) {
-        // The default analysis
-        analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
-
+        Map<String,Analyzer> analyzerPerField = new HashMap<String,Analyzer>();
         if (InstalledIndex.instance().getInstalledIndexDefaultVersion() > IndexMetadata.INDEX_VERSION_1_1) {
             // Content is analyzed using natural language analyzer
             // (stemming, stopword etc)
             Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(book);
-            analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
-            //analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING, myNaturalLanguageAnalyzer);  //heading to use same analyzer as BODY
-            //analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO, myNaturalLanguageAnalyzer);
-            log.debug("{}: Using languageAnalyzer: {}", book.getBookMetaData().getInitials(), myNaturalLanguageAnalyzer.getClass().getName());
+            analyzerPerField.put(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
+            //todo analyzerPerField.put(LuceneIndex.FIELD_HEADING, myNaturalLanguageAnalyzer);  //heading to use same analyzer as BODY
+            //analyzerPerField.put(LuceneIndex.FIELD_INTRO, myNaturalLanguageAnalyzer);
+            log.debug(book.getBookMetaData().getInitials()+" Using languageAnalyzer: "+ myNaturalLanguageAnalyzer.getClass().getName());
         }
 
         // Keywords are normalized to osisIDs
-        analyzer.addAnalyzer(LuceneIndex.FIELD_KEY, new KeyAnalyzer());
+        analyzerPerField.put(LuceneIndex.FIELD_KEY, new KeyAnalyzer());
 
         // Strong's Numbers are normalized to a consistent representation
-        analyzer.addAnalyzer(LuceneIndex.FIELD_STRONG, new StrongsNumberAnalyzer());
+        analyzerPerField.put(LuceneIndex.FIELD_STRONG, new StrongsNumberAnalyzer());
 
         // Strong's Numbers and Robinson's morphological codes are normalized to a consistent representation
-        analyzer.addAnalyzer(LuceneIndex.FIELD_MORPHOLOGY, new MorphologyAnalyzer());
+        analyzerPerField.put(LuceneIndex.FIELD_MORPHOLOGY, new MorphologyAnalyzer());
 
         // XRefs are normalized from ranges into a list of osisIDs
-        analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
+        analyzerPerField.put(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
+
+        // SimpleAnalyzer: default analyzer
+        analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING),
+                analyzerPerField);
+
 
         //add stemmers if available
         try {
@@ -89,10 +95,15 @@ public class LuceneAnalyzer extends Analyzer {
         }
     }
 
-    @Override
+    public Analyzer getBookAnalyzer() {
+        return analyzer;
+    }
+
+
+    /*@Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         return analyzer.tokenStream(fieldName, reader);
-    }
+    }*/
 
     private PerFieldAnalyzerWrapper analyzer;
     private static final Logger log = LoggerFactory.getLogger(LuceneAnalyzer.class);

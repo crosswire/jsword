@@ -22,11 +22,13 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.lucene.analysis.LowerCaseTokenizer;
-import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.LowerCaseTokenizer;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cz.CzechAnalyzer;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * An Analyzer whose {@link TokenStream} is built from a
@@ -46,20 +48,21 @@ final public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
     @Override
-    public final TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream result = new LowerCaseTokenizer(reader);
-
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer source = new LowerCaseTokenizer(matchVersion, reader);
+        TokenStream result = source;
         if (doStopWords && stopSet != null) {
-            result = new StopFilter(false, result, stopSet);
+            result = new StopFilter(matchVersion, result, stopSet);
         }
+        //todo CzechStemFilter(result)
 
-        return result;
+        return new TokenStreamComponents(source, result);
     }
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
+    /*@Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
@@ -73,7 +76,7 @@ final public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
             streams.getSource().reset(reader);
         }
         return streams.getResult();
-    }
+    }*/
 
-    private final Version matchVersion = Version.LUCENE_29;
+    private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }

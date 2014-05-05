@@ -19,10 +19,14 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.StopFilter;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * Base class for Analyzers. Note: All analyzers configured in
@@ -68,8 +72,12 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
         return doStopWords;
     }
 
-    public void setStopWords(Set<?> stopWords) {
+    public void setStopWords(CharArraySet stopWords) {
         stopSet = stopWords;
+    }
+    public void fromStopWordList(List<String> stopWords) {
+        stopSet = StopFilter.makeStopSet(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, stopWords );
+
     }
 
 
@@ -82,7 +90,7 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
      */
     protected Book book;
 
-    protected Set<?> stopSet;
+    protected CharArraySet stopSet;
 
     // for turning on/off stop word removal during analysis
     protected boolean doStopWords;

@@ -22,14 +22,16 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * 
@@ -42,7 +44,7 @@ public class AnalyzerFactoryTest {
 
     /**
      * Test method for
-     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory#createAnalyzer(org.crosswire.jsword.book.Book)}
+     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory createAnalyzer(java.lang.String)}
      * .
      */
     @Test
@@ -57,13 +59,13 @@ public class AnalyzerFactoryTest {
     @Test
     public void testCustomStopWordFiltering() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
 
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
                 "thy", "ye", "unto", "shalt"};
-        myAnalyzer.setStopWords(new CharArraySet(Arrays.asList(stopWords), false));
+        myAnalyzer.setStopWords(new CharArraySet(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, Arrays.asList(stopWords), false));
         String testInput = "Upon thy belly Shalt thou go";
 
         Query query = parser.parse(testInput);
@@ -76,7 +78,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testDiacriticFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
 
         Query query = parser.parse(testInput);
@@ -88,7 +90,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testStopWordsFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
         // enable stop words
         myAnalyzer.setDoStopWords(true);
@@ -100,7 +102,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testWithStemmingDisabled() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
         myAnalyzer.setDoStemming(false);
         Query query = parser.parse(testInput);
@@ -113,16 +115,16 @@ public class AnalyzerFactoryTest {
      * myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer("Latin");
      *
      * 
-     * QueryParser parser = new QueryParser(field, myAnalyzer);
+     * QueryParser parser = new QueryParser(FIELD, myAnalyzer);
      * 
      * String testInput = "test \u00D9\u00EB\u0153";
      * Assert.assertTrue(myAnalyzer instanceof SimpleLuceneAnalyzer); Query query =
      * parser.parse(testInput); //After Diacritic filtering
-     * Assert.assertTrue(query.toString().indexOf(field+":ueoe") > -1);
+     * Assert.assertTrue(query.toString().indexOf(FIELD+":ueoe") > -1);
      * 
      * testInput = "A\u00C1"; query = parser.parse(testInput);
      * //After Diacritic filtering
-     * Assert.assertTrue(query.toString().indexOf(field+":aa") > -1);
+     * Assert.assertTrue(query.toString().indexOf(FIELD+":aa") > -1);
      * 
      * 
      * }

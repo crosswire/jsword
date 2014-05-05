@@ -20,14 +20,15 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * Snowball Analyzer test for stemming, stop word
@@ -41,7 +42,7 @@ public class ConfigurableSnowballAnalyzerTest {
     @Before
     public void setUp() throws Exception {
         myAnalyzer = new ConfigurableSnowballAnalyzer();
-        parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
     }
 
     @Test
@@ -126,7 +127,7 @@ public class ConfigurableSnowballAnalyzerTest {
 
         // Compare with custom analyzer
         Analyzer anal = new GermanLuceneAnalyzer();
-        QueryParser gparser = new QueryParser(Version.LUCENE_29, FIELD, anal);
+        QueryParser gparser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, anal);
         query = gparser.parse(testInput);
         Assert.assertTrue(query.toString().indexOf(FIELD + ":denn ") > -1);
 

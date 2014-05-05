@@ -27,15 +27,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -199,69 +201,66 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             FileUtil.delete(tempPath);
         }
 
-        // Lock on metadata to allow creation of multiple indexes, so long as they are on different books.
-        // Otherwise lock on a single object to make this serial
-        Object mutex = policy.isSerial() ? CREATING : book.getBookMetaData();
-        synchronized (mutex) {
+        try {
+            // When misconfigured, this can throw errors.
+            Analyzer analyzer = new LuceneAnalyzer(book).getBookAnalyzer();
 
-            try {
-                // When misconfigured, this can throw errors.
-                Analyzer analyzer = new LuceneAnalyzer(book);
+	    book.setIndexStatus(IndexStatus.CREATING);
 
+	    IndexWriter writer = null;
+	    try {
+		// Write the core index to disk.
+		final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
+		IndexWriterConfig writerConfig = new IndexWriterConfig(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, analyzer);
+		    writerConfig.setRAMBufferSizeMB(policy.getRAMBufferSize()).
+		    setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+		writer = new IndexWriter(destination, writerConfig);
+		//writer = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+		//writer.setRAMBufferSizeMB(policy.getRAMBufferSize());
 
-                book.setIndexStatus(IndexStatus.CREATING);
+		generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0, policy);
 
-                IndexWriter writer = null;
-                try {
-                    // Write the core index to disk.
-                    final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
-                    writer = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
-                    writer.setRAMBufferSizeMB(policy.getRAMBufferSize());
+	    } finally {
+		if (writer != null) {
+		    writer.close();
+		}
+	    }
 
-                    generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0, policy);
+	    job.setCancelable(false);
+	    if (!job.isFinished()) {
+		if (!tempPath.renameTo(finalPath)) {
+		    // TRANSLATOR: The search index could not be moved to it's final location.
+		    throw new BookException(JSMsg.gettext("Installation failed."));
+		}
+	    }
 
-                } finally {
-                    if (writer != null) {
-                        writer.close();
-                    }
-                }
+	    if (finalPath.exists()) {
+		finalStatus = IndexStatus.DONE;
+	    }
 
-                job.setCancelable(false);
-                if (!job.isFinished()) {
-                    if (!tempPath.renameTo(finalPath)) {
-                        // TRANSLATOR: The search index could not be moved to it's final location.
-                        throw new BookException(JSMsg.gettext("Installation failed."));
-                    }
-                }
-
-                if (finalPath.exists()) {
-                    finalStatus = IndexStatus.DONE;
-                }
-
-                if (!errors.isEmpty()) {
-                    StringBuilder buf = new StringBuilder();
-                    for (Key error : errors) {
-                        buf.append(error);
-                        buf.append('\n');
-                    }
-                    // TRANSLATOR: It is likely that one or more verses could not be indexed due to errors in those verses.
-                    // This message gives a listing of them to the user.
-                    Reporter.informUser(this, JSMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
-                }
-                initDirectoryAndSearcher();
-            } catch (IOException ex) {
-                job.cancel();
-                // TRANSLATOR: Common error condition: Some error happened while creating a search index.
-                throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
-            } finally {
-                book.setIndexStatus(finalStatus);
-                job.done();
-                // Ensure that the temp path is gone - errors can leave it there and cause further problems.
-                if (tempPath.exists()) {
-                    FileUtil.delete(tempPath);
-                }
-            }
-        }
+	    if (!errors.isEmpty()) {
+		StringBuilder buf = new StringBuilder();
+		for (Key error : errors) {
+		    buf.append(error);
+		    buf.append('\n');
+		}
+		// TRANSLATOR: It is likely that one or more verses could not be indexed due to errors in those verses.
+		// This message gives a listing of them to the user.
+		Reporter.informUser(this, JSMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
+	    }
+	    initDirectoryAndSearcher();
+	} catch (IOException ex) {
+	    job.cancel();
+	    // TRANSLATOR: Common error condition: Some error happened while creating a search index.
+	    throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
+	} finally {
+	    book.setIndexStatus(finalStatus);
+	    job.done();
+	    // Ensure that the temp path is gone - errors can leave it there and cause further problems.
+	    if (tempPath.exists()) {
+		FileUtil.delete(tempPath);
+	    }
+	}
     }
 
     /**
@@ -270,7 +269,10 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     private void initDirectoryAndSearcher() {
         try {
             directory = FSDirectory.open(new File(path));
-            searcher = new IndexSearcher(directory, true);
+            IndexReader idxReader = DirectoryReader.open(directory);
+            searcher = new IndexSearcher(idxReader);
+
+
         } catch (IOException ex) {
             log.warn("second load failure", ex);
         }
@@ -289,9 +291,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         if (search != null) {
             Throwable theCause = null;
             try {
-                Analyzer analyzer = new LuceneAnalyzer(book);
+                Analyzer analyzer = new LuceneAnalyzer(book).getBookAnalyzer();
 
-                QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
+                QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
                 log.info("ParsedQuery- {}", query.toString());
@@ -371,10 +373,18 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @see org.crosswire.jsword.index.Index#close()
      */
     public final void close() {
-        IOUtil.close(searcher);
+        //IOUtil.close(searcher);
+        try {
+            idxReader.close();
+        } catch (IOException e) {
+            log.error("Index close error:"+e.getMessage(), e);
+            //try directory close if there was err
+            IOUtil.close(directory);
+            directory = null;
+        }
         searcher = null;
-        IOUtil.close(directory);
-        directory = null;
+
+
     }
 
     /**
@@ -401,17 +411,13 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         // Set up for reuse.
         Document doc = new Document();
-        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO);
-        Field bodyField = new Field(FIELD_BODY, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field bodyStemField = new Field(FIELD_BODY_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field introField = new Field(FIELD_INTRO, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field introStemField = new Field(FIELD_INTRO_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        //todo
         Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
-        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field headingField = new Field(FIELD_HEADING, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field headingStemField = new Field(FIELD_HEADING_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field morphologyField  = new Field(FIELD_MORPHOLOGY , "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field xrefField = new TextField(FIELD_XREF, "", Field.Store.NO);
+        Field noteField = new TextField(FIELD_NOTE, "", Field.Store.NO);
+        Field headingField = new TextField(FIELD_HEADING, "", Field.Store.YES);
+        Field headingStemField = new TextField(FIELD_HEADING, "", Field.Store.NO);
+        Field morphologyField  = new TextField(FIELD_MORPHOLOGY , "", Field.Store.NO);
 
         int size = key.getCardinality();
         int subCount = count;
@@ -439,16 +445,17 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
             // Do the actual indexing
             // Always add the key
-            keyField.setValue(subkey.getOsisRef());
+            Field keyField = new StringField(FIELD_KEY, subkey.getOsisRef(), Field.Store.YES);
+
             doc.add(keyField);
 
             final String canonicalText = OSISUtil.getCanonicalText(osis);
             if (subkey instanceof Verse && ((Verse) subkey).getVerse() == 0) {
-                addField(doc, introField, canonicalText);
-                addField(doc, introStemField, canonicalText);
+                addTextField(doc, FIELD_INTRO, canonicalText, Field.Store.YES);
+                addTextField(doc, FIELD_INTRO_STEM, canonicalText, Field.Store.NO);
             } else {
-                addField(doc, bodyField, canonicalText);
-                addField(doc, bodyStemField, canonicalText);
+                addTextField(doc, FIELD_BODY, canonicalText, Field.Store.YES);
+                addTextField(doc, FIELD_BODY_STEM, canonicalText, Field.Store.NO);
             }
 
             if (includeStrongs) {
@@ -457,21 +464,25 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
             if (includeXrefs) {
                 // We pass book and key because the xref may not be valid and it needs to be reported.
-                addField(doc, xrefField, OSISUtil.getReferences(this.book, subkey, v11n, osis));
+                addTextField(doc, FIELD_XREF,
+                        OSISUtil.getReferences(this.book, subkey, v11n, osis),
+                        Field.Store.NO);
             }
 
             if (includeNotes) {
-                addField(doc, noteField, OSISUtil.getNotes(osis));
+                addTextField(doc, FIELD_NOTE, OSISUtil.getNotes(osis),
+                        Field.Store.NO);
             }
 
             if (includeHeadings) {
                 final String headings = OSISUtil.getHeadings(osis);
-                addField(doc, headingField, headings);
-                addField(doc, headingStemField, headings);
+                addTextField(doc, FIELD_HEADING, headings, Field.Store.YES);
+                addTextField(doc, FIELD_HEADING_STEM, headings, Field.Store.NO);
             }
 
             if (includeMorphology) {
-                addField(doc, morphologyField, OSISUtil.getMorphologiesWithStrong(osis));
+                addTextField(doc,FIELD_MORPHOLOGY, OSISUtil.getMorphologiesWithStrong(osis),
+                        Field.Store.NO);
             }
 
             // Add the document if we added more than just the key.
@@ -512,13 +523,45 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @param doc The Document to which the Field should be added
      * @param field The Field to add
      * @param text The text for the field
+     *            @deprecated delete this method
      */
     private void addField(Document doc, Field field, String text) {
         if (text != null && text.length() > 0) {
-            field.setValue(text);
-            doc.add(field);
+            //it is not recommended to modify Field after instantiation
+            //field.setValue(text);
+            //doc.add(field);
         }
     }
+    //analyzed field
+    private void addTextField(Document doc, String name, String text, Field.Store store) {
+        if (text != null && text.length() > 0) {
+            Field myField = new TextField(name, text, store);
+            doc.add(myField);
+        }
+    }
+    //unanalyzed field
+    private void addStringField(Document doc, String name, String text, Field.Store store) {
+        if (text != null && text.length() > 0) {
+            Field myField = new StringField(name, text, store);
+            doc.add(myField);
+        }
+    }
+    private void addTextFieldCustomized(Document doc, String name, String text, Field.Store store) {
+        if (text != null && text.length() > 0) {
+            final FieldType myFieldType = new FieldType();
+
+            myFieldType.setIndexed(true);
+            myFieldType.setTokenized(true);
+            myFieldType.setStored(true);   //todo
+            myFieldType.setStoreTermVectors(true);
+            myFieldType.setStoreTermVectorPositions(false); //todo
+                myFieldType.freeze();
+
+            Field myField = new Field(name, text, myFieldType);
+            doc.add(myField);
+        }
+    }
+
 
     /**
      * Could be null if the index has been closed down. This is helpful to third party applications which wish to have greater control over 
@@ -528,7 +571,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * See {@link org.crosswire.jsword.index.IndexManager#closeAllIndexes()} for more information
      * @return the searcher
      */
-    public Searcher getSearcher() {
+    public IndexSearcher getSearcher() {
         return searcher;
     }
 
@@ -546,11 +589,11 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * The Lucene directory for the path.
      */
     private Directory directory;
-
+    private IndexReader idxReader;
     /**
      * The Lucene search engine
      */
-    private Searcher searcher;
+    private IndexSearcher searcher;
 
     /**
      * A synchronization lock point to prevent us from doing 2 index runs at a
