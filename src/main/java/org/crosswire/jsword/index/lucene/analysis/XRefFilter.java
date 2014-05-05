@@ -58,7 +58,7 @@ public class XRefFilter extends AbstractBookTokenFilter {
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
     @Override
-    public boolean incrementToken() throws IOException {
+    public final boolean incrementToken() throws IOException {
         // TODO(DMS): actually normalize
         return input.incrementToken();
     }
