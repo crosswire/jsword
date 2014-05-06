@@ -9,3 +9,5 @@
 /report
 *.iml
 *.orig
+.idea
+

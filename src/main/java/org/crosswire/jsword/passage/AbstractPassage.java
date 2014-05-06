@@ -607,9 +607,9 @@ public abstract class AbstractPassage implements Passage {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType, boolean, boolean)
      */
-    public void blur(int verses, RestrictionType restrict) {
+    public void blur(int verses, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
@@ -618,7 +618,7 @@ public abstract class AbstractPassage implements Passage {
         Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
         while (it.hasNext()) {
-            VerseRange range = restrict.blur(getVersification(), (VerseRange) it.next(), verses, verses);
+            VerseRange range = restrict.blur(getVersification(), (VerseRange) it.next(), blurDown ? verses : 0, blurUp ? verses : 0);
             add(range);
         }
 
@@ -626,6 +626,14 @@ public abstract class AbstractPassage implements Passage {
         if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, null, null);
         }
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
+     */
+    public void blur(int verses, RestrictionType restrict) {
+        blur(verses, restrict, true, true);
     }
 
     /* (non-Javadoc)

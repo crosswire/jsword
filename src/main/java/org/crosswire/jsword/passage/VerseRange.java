@@ -992,7 +992,14 @@ public final class VerseRange implements VerseKey {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
-        VerseRange newRange = restrict.blur(v11n, this, by, by);
+        blur(by, restrict, true, true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
+     */
+    public void blur(int by, RestrictionType restrict, boolean blurDown, boolean blurUp) {
+        VerseRange newRange = restrict.blur(v11n, this, blurDown ? by : 0, blurUp ? by : 0);
         start = newRange.start;
         end = newRange.end;
         verseCount = newRange.verseCount;
