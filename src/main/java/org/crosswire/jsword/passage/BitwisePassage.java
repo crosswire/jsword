@@ -308,8 +308,19 @@ public class BitwisePassage extends AbstractPassage {
         fireIntervalRemoved(this, null, null);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
+     */
     @Override
     public void blur(int verses, RestrictionType restrict) {
+        blur(verses, restrict, true, true);
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType, boolean, boolean)
+     */
+    public synchronized void blur(int verses, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         assert verses >= 0;
         optimizeWrites();
         raiseNormalizeProtection();
@@ -325,8 +336,8 @@ public class BitwisePassage extends AbstractPassage {
             BitSet newStore = new BitSet(maximumOrdinal + 1);
 
             for (int i = store.nextSetBit(0); i >= 0; i = store.nextSetBit(i + 1)) {
-                int start = Math.max(1, i - verses);
-                int end = Math.min(maximumOrdinal, i + verses);
+                int start = Math.max(1, i - (blurDown ? verses : 0));
+                int end = Math.min(maximumOrdinal, i + (blurUp ? verses : 0));
 
                 for (int j = start; j <= end; j++) {
                     newStore.set(j);
