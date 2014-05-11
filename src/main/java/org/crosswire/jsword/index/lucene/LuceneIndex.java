@@ -296,6 +296,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                 QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
+
                 log.info("ParsedQuery- {}", query.toString());
 
                 // For ranking we use a PassageTally

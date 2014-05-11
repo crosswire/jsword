@@ -17,17 +17,19 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <!-- version management -->
-        <slf4j.version>1.7.6</slf4j.version>
-<!--    <commons-codec.version>1.10</commons-codec.version> -->
-<!--    <commons-net.version>3.9.0</commons-net.version> -->
-        <commons-compress.version>1.26.0</commons-compress.version>
-<!--    <xz.version>1.6</xz.version> xz is impl within commons-compress -->
-        <jdom.version>2.0.6.1</jdom.version>
-        <lucene.version>3.6.2</lucene.version>
-<!--    <icu4j.version>59.1</icu4j.version> Brought in by lucene -->
-<!--    <httpcomponents-httpcore.version>4.4</httpcomponents-httpcore.version> replaced with javax impl -->
-<!--    <httpcomponents-httpclient.version>4.5.13</httpcomponents-httpclient.version> replace with javax impl -->
+		<!-- version management -->
+		<junit.version>4.11</junit.version>
+		<slf4j.version>1.7.2</slf4j.version>
+		<commons-codec.version>1.9</commons-codec.version>
+		<commons-logging.version>1.1.1</commons-logging.version>
+		<commons-net.version>3.3</commons-net.version>
+		<commons-compress.version>1.7</commons-compress.version>
+		<xz.version>1.4</xz.version>
+		<jdom.version>2.0.5</jdom.version>
+		<lucene.version>3.0.3</lucene.version>    <!-- Change lucene to 4.8.0-->
+		<icu4j.version>52.1</icu4j.version>
+		<httpcomponents-httpcore.version>4.3.2</httpcomponents-httpcore.version>
+		<httpcomponents-httpclient.version>4.3.2</httpcomponents-httpclient.version>
 
         <!-- maven plugin versions -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
