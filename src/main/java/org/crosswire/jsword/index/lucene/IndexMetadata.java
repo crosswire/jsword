@@ -57,7 +57,7 @@ public final class IndexMetadata {
     /*This is the LuceneVersion actually used for indexing & query-parsing. Tested with:
         LUCENE_30 : I have not found any compatibility issue using JSword created indexes
         LUCENE_31 : Tested with French FreSegond & Chinese ChiNCVs bible. Some differences found. So index is not back compatible
-        LUCENE_47 : Same as LUCENE_31
+        LUCENE_48 : Same as LUCENE_31
     */
     public static final org.apache.lucene.util.Version LUCENE_IDXVERSION_FOR_INDEXING = Version.LUCENE_30; //Change this create index with newer Version format
 
