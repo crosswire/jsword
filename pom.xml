@@ -23,7 +23,7 @@
 		<commons-compress.version>1.7</commons-compress.version>
 		<xz.version>1.4</xz.version>
 		<jdom.version>2.0.5</jdom.version>
-		<lucene.version>3.0.3</lucene.version>
+		<lucene.version>3.0.3</lucene.version>    <!-- Change lucene to 4.8.0-->
 		<icu4j.version>52.1</icu4j.version>
 		<httpcomponents-httpcore.version>4.3.2</httpcomponents-httpcore.version>
 		<httpcomponents-httpclient.version>4.3.2</httpcomponents-httpclient.version>

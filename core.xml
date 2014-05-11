@@ -10,7 +10,7 @@
 	== These are the standard locations that this build file uses.
 	== This assumes that the build file is in the root of the project.
 	=========================================================================-->
-	<property name="release.version"		value="2.0-beta" />
+	<property name="release.version"		value="2.0.1-luceneupgrade-alpha" />
 
 	<tstamp><format property="today" pattern="-yyyyMMdd"/></tstamp>
 	<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
