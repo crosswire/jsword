@@ -6,7 +6,7 @@
 	<groupId>org.crosswire</groupId>
 	<artifactId>jsword</artifactId>
 	<packaging>jar</packaging>
-	<version>1.6.1-SNAPSHOT</version>
+	<version>2.0.1-luceneupgrade-SNAPSHOT</version>
 	<name>jsword</name>
 	<url>http://maven.apache.org</url>
 
@@ -23,7 +23,7 @@
 		<commons-compress.version>1.7</commons-compress.version>
 		<xz.version>1.4</xz.version>
 		<jdom.version>2.0.5</jdom.version>
-		<lucene.version>3.0.3</lucene.version>    <!-- Change lucene to 4.8.0-->
+        <lucene.version>4.7.0</lucene.version>    <!-- lucene 4.8.0 require java7 -->
 		<icu4j.version>52.1</icu4j.version>
 		<httpcomponents-httpcore.version>4.3.2</httpcomponents-httpcore.version>
 		<httpcomponents-httpclient.version>4.3.2</httpcomponents-httpclient.version>
@@ -78,17 +78,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-snowball</artifactId>
+			<artifactId>lucene-analyzers-common</artifactId>
 			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-smartcn</artifactId>
+			<artifactId>lucene-analyzers-smartcn</artifactId>
 			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers</artifactId>
+			<artifactId>lucene-queryparser</artifactId>
 			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
