@@ -592,30 +592,35 @@ public final class PassageKeyFactory {
 
         char curChar = ' ';
         boolean isNumber = false;
-        boolean wasNumber = false;
+        boolean wasNumberOrMarker = false;
+        boolean isEndMarker = false;
+        boolean isNumberOrMarker = false;
         int i = 0;
         while (i < size) {
             curChar = passageReference.charAt(i);
 
             // Determine whether we are starting a number
-            isNumber = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < size ? passageReference.charAt(i + 1) : ' ') == 'f');
-
+            isNumber = Character.isDigit(curChar);
+            isEndMarker = curChar == '$' || (curChar == 'f' && (i + 1 < size ? passageReference.charAt(i + 1) : ' ') == 'f');
+            isNumberOrMarker = isNumber || isEndMarker;
             // If the last thing we saw was a number and the next thing we see
             // is another number or a word
             // then we want to put in a ',' or a ' '
-            if (wasNumber) {
+            if (wasNumberOrMarker) {
                 if (isNumber) {
                     buf.append(AbstractPassage.REF_PREF_DELIM);
-                } else if (Character.isLetter(curChar)) {
+                } else if(isEndMarker) {
+                    buf.append(VerseRange.RANGE_OSIS_DELIM);
+                }else if (Character.isLetter(curChar)) {
                     buf.append(' ');
                 }
 
                 // Having handled the condition, we now set it to false
-                wasNumber = false;
+                wasNumberOrMarker = false;
             }
 
-            if (isNumber) {
-                wasNumber = true;
+            if (isNumberOrMarker) {
+                wasNumberOrMarker = true;
                 buf.append(curChar);
                 i++;
 
