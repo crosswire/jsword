@@ -28,7 +28,10 @@ import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.index.lucene.IndexMetadata;
+import org.crosswire.jsword.index.lucene.InstalledIndex;
 import org.crosswire.jsword.index.lucene.LuceneIndex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A specialized analyzer for Books that analyzes different fields differently.
@@ -47,11 +50,14 @@ public class LuceneAnalyzer extends Analyzer {
         // The default analysis
         analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
 
-        if (IndexMetadata.instance().getInstalledIndexVersion() > IndexMetadata.INDEX_VERSION_1_1) {
+        if (InstalledIndex.instance().getInstalledIndexDefaultVersion() > IndexMetadata.INDEX_VERSION_1_1) {
             // Content is analyzed using natural language analyzer
             // (stemming, stopword etc)
             Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(book);
             analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
+            //analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING, myNaturalLanguageAnalyzer);  //heading to use same analyzer as BODY
+            //analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO, myNaturalLanguageAnalyzer);
+            log.debug(book.getBookMetaData().getInitials()+" Using languageAnalyzer: "+ myNaturalLanguageAnalyzer.getClass().getName());
         }
 
         // Keywords are normalized to osisIDs
@@ -65,6 +71,8 @@ public class LuceneAnalyzer extends Analyzer {
 
         // XRefs are normalized from ranges into a list of osisIDs
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
+
+
     }
 
     @Override
@@ -73,4 +81,6 @@ public class LuceneAnalyzer extends Analyzer {
     }
 
     private PerFieldAnalyzerWrapper analyzer;
+    private static final Logger log = LoggerFactory.getLogger(LuceneAnalyzer.class);
+
 }
