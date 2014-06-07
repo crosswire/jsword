@@ -481,8 +481,13 @@ public class VersificationToKJVMapper {
          if (vr.getCardinality() > 1) {
              end = versification.add(start, vr.getCardinality() - 1);
          }
-         VerseRange newvr = new VerseRange(versification, start, end);
-         return new QualifiedKey(newvr);
+
+        if(start == null || end == null) {
+            hasErrors = true;
+            LOGGER.error("Verse range with offset did not map to correct range in target versification. This mapping will be set to an empty unmapped key.");
+        }
+
+         return start != null && end != null ? new QualifiedKey(new VerseRange(versification, start, end)) : new QualifiedKey(versesKey);
     }
 
     /**

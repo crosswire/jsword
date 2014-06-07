@@ -506,6 +506,12 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
+        //check for key empty. This avoids the AIOBounds with that.getVerseAt, during event firing
+        if (key.isEmpty()) {
+            //nothing to add
+            return;
+        }
+
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
