@@ -68,7 +68,7 @@ public final class LuceneQueryBuilder implements QueryBuilder {
         if (rangeMatcher.find()) {
             rangeModifier = rangeMatcher.group(1);
             range = new RangeQuery(rangeMatcher.group(2));
-            sought = sought.substring(rangeMatcher.end());
+            sought = sought.replace(rangeMatcher.group(), " ");
         }
 
         // Look for a blur ~n
@@ -104,7 +104,7 @@ public final class LuceneQueryBuilder implements QueryBuilder {
      * leading [] (but not containing a [ or ]), with a + or - optional prefix,
      * perhaps surrounded by whitespace.
      */
-    private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*");
+    private static final Pattern RANGE_PATTERN = Pattern.compile("\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*");
 
     /**
      * The pattern of a blur. A '~', optionally followed by a number,
