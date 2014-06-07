@@ -92,6 +92,10 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * The Lucene field for the text contents
      */
     public static final String FIELD_BODY = "content";
+    /**
+     * The Lucene field for the text contents, using the stemmer
+     */
+    public static final String FIELD_BODY_STEM = "contentStem";
 
     /**
      * The Lucene field for the strong numbers
@@ -102,6 +106,11 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * The Lucene field for headings
      */
     public static final String FIELD_HEADING = "heading";
+    /**
+     * The Lucene field for the headings, stemmed for better search capability
+     */
+
+    public static final String FIELD_HEADING_STEM = "headingStem";
 
     /**
      * The Lucene field for cross references
@@ -122,6 +131,11 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * Combines the strong numbers with the morphology field
      */
     public static final String FIELD_INTRO = "intro";
+    /**
+     * The Lucene field for the intro text, stemmed for better search capability
+     */
+
+    public static final String FIELD_INTRO_STEM = "introStem";
 
     /**
      * An estimate of the percent of time spent indexing.
@@ -381,12 +395,15 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         // Set up for reuse.
         Document doc = new Document();
         Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO);
-        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field introField = new Field(FIELD_INTRO, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field bodyField = new Field(FIELD_BODY, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field bodyStemField = new Field(FIELD_BODY_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field introField = new Field(FIELD_INTRO, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field introStemField = new Field(FIELD_INTRO_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
         Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field headingField = new Field(FIELD_HEADING, "", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field headingStemField = new Field(FIELD_HEADING_STEM, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field morphologyField  = new Field(FIELD_MORPHOLOGY , "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
 
         int size = key.getCardinality();
@@ -402,7 +419,6 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             }
 
             data = new BookData(book, subkey);
-            osis = null;
 
             try {
                 osis = data.getOsisFragment();
@@ -419,10 +435,13 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             keyField.setValue(subkey.getOsisRef());
             doc.add(keyField);
 
+            final String canonicalText = OSISUtil.getCanonicalText(osis);
             if (subkey instanceof Verse && ((Verse) subkey).getVerse() == 0) {
-                addField(doc, introField, OSISUtil.getCanonicalText(osis));
+                addField(doc, introField, canonicalText);
+                addField(doc, introStemField, canonicalText);
             } else {
-                addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
+                addField(doc, bodyField, canonicalText);
+                addField(doc, bodyStemField, canonicalText);
             }
 
             if (includeStrongs) {
@@ -439,7 +458,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             }
 
             if (includeHeadings) {
-                addField(doc, headingField, OSISUtil.getHeadings(osis));
+                final String headings = OSISUtil.getHeadings(osis);
+                addField(doc, headingField, headings);
+                addField(doc, headingStemField, headings);
             }
 
             if (includeMorphology) {
