@@ -624,7 +624,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
         Verse new_start = v11n.max(a.getStart(), b.getStart());
         Verse new_end = v11n.min(a.getEnd(), b.getEnd());
 
-        if (v11n.distance(new_start, new_end) <= 0) {
+        if (v11n.distance(new_start, new_end) >= 0) {
             return new VerseRange(a.getVersification(), new_start, new_end);
         }
 
