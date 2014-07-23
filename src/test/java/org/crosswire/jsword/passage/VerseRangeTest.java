@@ -674,4 +674,9 @@ public class VerseRangeTest {
         Key gen_allKey = gen_all;
         assertTrue(gen_allKey.contains(gen11));
     }
+
+    @Test
+    public void testIntersection() {
+        assertTrue(VerseRange.intersection(gen_all, gen_exo).contains(gen_all));
+    }
 }
