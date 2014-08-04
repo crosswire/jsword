@@ -537,6 +537,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
+     * @return the internal name of the module, useful when re-constructing all the meta-information, after installation
+     * for example
+     */
+    String getInternalName() {
+        return this.cet.getInternal();
+    }
+
+    /**
      * Get the string value for the property or null if it is not defined. It is
      * assumed that all properties gotten with this method are single line.
      * <p/>
