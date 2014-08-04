@@ -11,4 +11,4 @@
 *.orig
 .idea
 rebel.xml
-
+atlassian-ide-plugin.xml
