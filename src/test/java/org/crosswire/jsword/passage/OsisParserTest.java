@@ -80,6 +80,7 @@ public class OsisParserTest {
         assertEquals("Gen.2-Gen.3", osisParser.parseOsisRef(testV11n, "Gen.2.1-Gen.3").getOsisRef());
         assertEquals("Gen.1-Gen.3", osisParser.parseOsisRef(testV11n, "Gen-Gen.3").getOsisRef());
         assertEquals("Gen.1-Gen.3.4", osisParser.parseOsisRef(testV11n, "Gen-Gen.3.4").getOsisRef());
+        assertEquals("Gen.3.4-Exod", osisParser.parseOsisRef(testV11n, "Gen.3.4-Exod").getOsisRef());
     }
 
     @Test

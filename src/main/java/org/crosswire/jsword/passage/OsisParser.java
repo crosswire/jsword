@@ -20,22 +20,35 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * The Osis ID parser simply assumes 2-3 parts divided by '.' and is very strict.
+ * The Osis ID parser simply assumes 1-3 parts divided by '.'.
  * Any deviation from the dot-delimited formatted yields nulls.
  * 
- * OSIS Refs should be separated by a '-'.  
+ * OSIS Refs should be separated by a '-' if there are 2 refs signifying a range e.g. Gen.1-Gen.3.  
  * 
  * The current implementation doesn't support an OSIS ID or OSIS ref with a missing chapter, 
  * as are currently returned by the getOsisRef() calls occasionally.
  * 
- * @author chrisburrell
+ * Algorithm:
+ * If ony 1 ID passed in then create ending id from it to enable a single flow through algorithm.
+ * Missing chapter or verse of starting id will be set to 0/1. 
+ * Missing chapter or verse of ending id will be set to last chapter/verse. 
+ * 
+ * @author chrisburrell, mjdenham
  */
 public final class OsisParser {
+    
+    // This could be 1 or 0 but for now I have used 1
+    private static final String START_CHAPTER_OR_VERSE = "1";
+    
     /**
      * String OSIS Ref parser, assumes a - separating two osis IDs
      * @param v11n the v11n
@@ -54,73 +67,69 @@ public final class OsisParser {
             return null;
         }
         
-        // manipulate to 2 OSIS IDs
-        String osisID1 = osisIDs[0];
-        String osisID2;
+        // Ensure ending OSIS id exists to simplify future logic - yes it is okay to use the start id as the end id here
+        String startOsisID = osisIDs[0];
+        String endOsisID;
         if (osisIDs.length==1) {
-            osisID2 = osisID1;
+            endOsisID = startOsisID;
         } else {
-            osisID2 = osisIDs[1];
+            endOsisID = osisIDs[1];
         }
 
         // ensure no empty parts in osis id1 and not too many parts
-        String[] osisID1Parts = StringUtil.splitAll(osisID1, Verse.VERSE_OSIS_DELIM);
-        if (isAnEmptyPart(osisID1Parts) || osisID1Parts.length>3) {
+        List<String> startOsisIDParts = splitOsisId(startOsisID);
+        if (isAnEmptyPart(startOsisIDParts) || startOsisIDParts.size() > 3) {
             return null;
         }
         
         // manipulate first osis id to 3 parts, padding with first chapter or verse
-        if (osisID1Parts.length<3) {
-            osisID1 += replicate(".1", 3-osisPartCount(osisID1));
-            osisID1Parts = StringUtil.splitAll(osisID1, Verse.VERSE_OSIS_DELIM);
+        while (startOsisIDParts.size()<3) {
+            startOsisIDParts.add(START_CHAPTER_OR_VERSE);
         }
-        // now we have a full 3 part start verse in osis id1
+        // now we have a full 3 part start OSIS id
         
-        // Now let us manufacture a 3 part end verse
+        // Now let us manufacture a 3 part end OSIS id
 
         // First check no empty parts were passed in for osis id 2
-        String[] osisID2Parts = StringUtil.splitAll(osisID2, Verse.VERSE_OSIS_DELIM);
-        if (isAnEmptyPart(osisID2Parts)) {
+        List<String> endOsisIDParts = splitOsisId(endOsisID);
+        if (isAnEmptyPart(endOsisIDParts)) {
             return null;
         }
 
         // Add end chapter/verse if missing
-        int osisID2PartCount = osisID2Parts.length;
-        if (osisID2PartCount<3) {
+        int endOsisIDPartCount = endOsisIDParts.size();
+        if (endOsisIDPartCount<3) {
             // need to calculate chapter and verse for osis id 2
 
             // there will always be a book
-            String bookName = osisID2Parts[0];
-            final BibleBook osisID2Book = BibleBook.fromExactOSIS(bookName);
+            String bookName = endOsisIDParts.get(0);
+            final BibleBook book = BibleBook.fromExactOSIS(bookName);
 
             // can asssume last chapter if unspecified because this is the trailing osis Id
-            int osisID2Chapter;
-            if (osisID2PartCount==1) {
-                osisID2Chapter = v11n.getLastChapter(osisID2Book);
-                osisID2 += "."+osisID2Chapter;
+            int chapter;
+            if (endOsisIDPartCount==1) {
+                chapter = v11n.getLastChapter(book);
+                endOsisIDParts.add(Integer.toString(chapter));
             } else {
-                osisID2Chapter = Integer.parseInt(osisID2Parts[1]);
+                chapter = Integer.parseInt(endOsisIDParts.get(1));
             }
 
             // can asssume last verse if unspecified because this is the trailing osis Id
-            int osisID2Verse;
-            if (osisID2PartCount<3) {
-                osisID2Verse = v11n.getLastVerse(osisID2Book, osisID2Chapter);
-                osisID2 += "."+osisID2Verse;
+            int verse;
+            if (endOsisIDPartCount<3) {
+                verse = v11n.getLastVerse(book, chapter);
+                endOsisIDParts.add(Integer.toString(verse));
             }
-        
-            // now there are more parts in osis id 2 
-            osisID2Parts = StringUtil.splitAll(osisID2, Verse.VERSE_OSIS_DELIM);
         }
         
-        // Specific 3-part verse(s) only beyond this point
+        // Now there is exactly 1 beginning and 1 ending 3-part verse only beyond this point
         
-        Verse start = parseOsisID(v11n, osisID1Parts);
+        Verse start = parseOsisID(v11n, startOsisIDParts);
         if (start == null) {
             return null;
         }
 
-        Verse end = parseOsisID(v11n, osisID2Parts);
+        Verse end = parseOsisID(v11n, endOsisIDParts);
         if (end == null) {
             return null;
         }
@@ -139,36 +148,48 @@ public final class OsisParser {
             return null;
         }
 
-        final String[] osisIDParts = StringUtil.splitAll(osisID, Verse.VERSE_OSIS_DELIM);
+        final List<String> osisIDParts = splitOsisId(osisID);
 
-        if (osisIDParts.length != 3 || isAnEmptyPart(osisIDParts)) {
+        if (osisIDParts.size() != 3 || isAnEmptyPart(osisIDParts)) {
             return null;
         }
         
         return parseOsisID(v11n, osisIDParts);
     }
 
-    private Verse parseOsisID(final Versification v11n, final String[] osisIDParts) {
+    private Verse parseOsisID(final Versification v11n, final List<String> osisIDParts) {
         
-        final BibleBook b = BibleBook.fromExactOSIS(osisIDParts[0]);
+        final BibleBook b = BibleBook.fromExactOSIS(osisIDParts.get(0));
         if (b == null) {
             return null;
         }
 
         // Allow a Verse to have a sub identifier on the last part.
         // We should use it, but throwing it away for now.
-        String[] endParts = StringUtil.splitAll(osisIDParts[2], Verse.VERSE_OSIS_SUB_PREFIX);
+        String[] endParts = StringUtil.splitAll(osisIDParts.get(2), Verse.VERSE_OSIS_SUB_PREFIX);
         String subIdentifier = null;
         if (endParts.length == 2 && endParts[1].length() > 0) {
             subIdentifier = endParts[1];
         }
-        return new Verse(v11n, b, Integer.parseInt(osisIDParts[1]), Integer.parseInt(endParts[0]), subIdentifier);
+        return new Verse(v11n, b, Integer.parseInt(osisIDParts.get(1)), Integer.parseInt(endParts[0]), subIdentifier);
+    }
+
+    /**
+     * Split string like 'Gen.1.1' into a 3 element list
+     */
+    private List<String> splitOsisId(String osisID1) {
+        String[] partArray = StringUtil.splitAll(osisID1, Verse.VERSE_OSIS_DELIM);
+        
+        // add to an appropriately sized editable list
+        List<String> list = new ArrayList(3);
+        list.addAll(Arrays.asList(partArray));
+        return list;
     }
 
     /** 
      * Check no part of the Osis ref is empty
      */
-    private static boolean isAnEmptyPart(String[] parts) {
+    private static boolean isAnEmptyPart(List<String> parts) {
         for (String part : parts) {
             if (part.length()==0) {
                 return true;
@@ -176,17 +197,4 @@ public final class OsisParser {
         }
         return false;
     }
-    
-    private static int osisPartCount(String osisRef) {
-        return StringUtil.splitAll(osisRef, Verse.VERSE_OSIS_DELIM).length;
-    }
-    
-    private static String replicate(String text, int times) {
-        StringBuilder builder = new StringBuilder();
-        for (int i=0; i<times; i++) {
-            builder.append(text);
-        }
-        return builder.toString();
-    }
-
 }
