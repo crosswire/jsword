@@ -24,9 +24,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.crosswire.jsword.passage.OsisParser;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RangedPassage;
-import org.crosswire.jsword.passage.SimpleOsisParser;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -42,7 +42,8 @@ import org.junit.Test;
 public class VersificationToKJVMapperTest {
     private final FileVersificationMapping properties = new FileVersificationMapping();
     private VersificationToKJVMapper mapper;
-
+    private OsisParser osisParser = new OsisParser();
+    
     @Test
     public void testSimpleMapping() {
         addProperty("Gen.1.1", "Gen.1.2");
@@ -195,7 +196,7 @@ public class VersificationToKJVMapperTest {
     }
 
     public String map(final String key) {
-        VerseRange vr = SimpleOsisParser.parseOsisRef(NON_KJV, key);
+        VerseRange vr = osisParser.parseOsisRef(NON_KJV, key);
         final QualifiedKey range = new QualifiedKey(vr);
         List<QualifiedKey> qualifiedKeys = mapper.map(range);
         Passage vk = new RangedPassage(KJV);
@@ -210,11 +211,11 @@ public class VersificationToKJVMapperTest {
     }
 
     public String unmap(final String kjvVerse) {
-        return mapper.unmap(new QualifiedKey(SimpleOsisParser.parseOsisRef(KJV, kjvVerse))).getOsisRef();
+        return mapper.unmap(new QualifiedKey(osisParser.parseOsisRef(KJV, kjvVerse))).getOsisRef();
     }
 
     public String mapToQualifiedKey(final String verseKey) {
-        VerseRange vk = SimpleOsisParser.parseOsisRef(NON_KJV, verseKey);
+        VerseRange vk = osisParser.parseOsisRef(NON_KJV, verseKey);
         final QualifiedKey qualifiedVerse = new QualifiedKey(vk);
         List<QualifiedKey> qualifiedKeys = mapper.map(qualifiedVerse);
 
