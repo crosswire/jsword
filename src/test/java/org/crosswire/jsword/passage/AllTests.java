@@ -45,7 +45,8 @@ import org.junit.runners.Suite.SuiteClasses;
     PassageWriteSpeedTest.class,
     SimpleOsisIDParserTest.class,
     VerseTest.class,
-    VerseRangeTest.class
+    VerseRangeTest.class,
+    TreeKeyTest.class
 })
 public class AllTests {
 }
