@@ -28,7 +28,9 @@ import org.crosswire.jsword.versification.Versification;
  * The Osis ID parser simply assumes 2-3 parts divided by '.' and is very strict.
  * Any deviation from the dot-delimited formatted yields nulls.
  * 
- * OSIS Refs should be separated by a '-'.  
+ * OSIS Refs ranges should be separated by a '-'.
+ *
+ * Osis Refs are separated by spaces.
  * 
  * The current implementation doesn't support an OSIS ID or OSIS ref with a missing chapter, 
  * as are currently returned by the getOsisRef() calls occasionally.
@@ -113,4 +115,6 @@ public final class SimpleOsisParser {
         }
         return new Verse(v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(endParts[0]), subIdentifier);
     }
+
+    private static final char OSIS_RANGES_SEPARATOR = ' ';
 }

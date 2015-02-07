@@ -171,6 +171,9 @@ public final class ConfigEntry {
      */
     public Object getValue() {
         if (value != null) {
+            if(configValueInterceptor != null) {
+                return configValueInterceptor.intercept(internal, this.type, value);
+            }
             return value;
         }
         if (values != null) {
@@ -404,6 +407,16 @@ public final class ConfigEntry {
     }
 
     /**
+     * Allows a frontend to intercept values returned by the configuration
+     * @param interceptor the interceptor
+     */
+    public static void setConfigValueInterceptor(ConfigValueInterceptor interceptor) {
+        synchronized (ConfigEntry.class) {
+            configValueInterceptor = interceptor;
+        }
+    }
+
+    /**
      * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
      * \qc \b, \i and embedded Unicode
      */
@@ -413,7 +426,7 @@ public final class ConfigEntry {
      * A histogram for debugging.
      */
     private static Histogram histogram = new Histogram();
-
+    private static ConfigValueInterceptor configValueInterceptor;
     private ConfigEntryType type;
     private String internal;
     private String name;

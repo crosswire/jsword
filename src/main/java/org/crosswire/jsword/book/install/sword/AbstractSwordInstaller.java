@@ -237,12 +237,18 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             // Once the unzipping is started, we need to continue
             job.setCancelable(false);
             if (!job.isFinished()) {
+                //copy into mods.d and modules under SWROD_HOME
                 File dldir = SwordBookPath.getSwordDownloadDir();
-                IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
+                IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir, true, SwordConstants.DIR_CONF, SwordConstants.DIR_DATA);
+
+                //copy everything else into JSWORD_HOME
+                File jswordHome = NetUtil.getAsFile(CWProject.instance().getWritableProjectDir());
+                IOUtil.unpackZip(NetUtil.getAsFile(temp), jswordHome, false, SwordConstants.DIR_CONF, SwordConstants.DIR_DATA);
                 // TRANSLATOR: Progress label for installing the conf file for a book.
                 job.setSectionName(JSMsg.gettext("Copying config file"));
                 sbmd.setLibrary(NetUtil.getURI(dldir));
                 SwordBookDriver.registerNewBook(sbmd);
+
             }
 
         } catch (IOException e) {

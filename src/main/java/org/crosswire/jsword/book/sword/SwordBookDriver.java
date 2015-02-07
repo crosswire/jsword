@@ -23,10 +23,13 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSMsg;
@@ -44,11 +47,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This represents all of the Sword Books (aka modules).
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public class SwordBookDriver extends AbstractBookDriver {
     /**
@@ -85,51 +88,120 @@ public class SwordBookDriver extends AbstractBookDriver {
     }
 
     private void getBooks(Set<Book> valid, File bookDir) {
+        //there are 5 directories that we might want to read from
+        // Sword/mods.d, jsword/mods.d (readable and writeable), jsword/frontend/mods.d (readable and writeable)
+        //the main directory is always mods.d from Sword, so we ensure that one exists.
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
+
+        List<MetaFile> modsHierarchy = getModsDirectories(mods);
+
         if (mods.isDirectory()) {
             String[] bookConfs = SwordBookPath.getBookList(mods);
 
             // Loop through the entries in this mods.d directory
             for (int i = 0; i < bookConfs.length; i++) {
-                String bookConf = bookConfs[i];
-                try {
-                    File configfile = new File(mods, bookConf);
-                    String internal = bookConf;
-                    if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
-                        internal = internal.substring(0, internal.length() - 5);
-                    }
-                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURI(bookDir));
-
-                    // skip any book that is not supported.
-                    if (!sbmd.isSupported()) {
-                        continue;
-                    }
-
-                    sbmd.setDriver(this);
-
-                    // Only take the first "installation" of the Book
-                    Book book = createBook(sbmd);
-                    if (!valid.contains(book)) {
-                        valid.add(book);
-
-                        IndexManager imanager = IndexManagerFactory.getIndexManager();
-                        if (imanager.isIndexed(book)) {
-                            sbmd.setIndexStatus(IndexStatus.DONE);
-                        } else {
-                            sbmd.setIndexStatus(IndexStatus.UNDONE);
-                        }
-                    }
-                } catch (IOException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e);
-                } catch (MissingDataFilesException e) {
-                    log.warn(e.getMessage());
-                    log.trace(e.getMessage(), e);
-                } catch (BookException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e);
-                }
+                createSwordBookMetaDataFromConf(valid, bookDir, modsHierarchy, bookConfs[i]);
             }
         } else {
             log.debug("mods.d directory at {} does not exist", mods);
+        }
+    }
+
+    /**
+     * Allows the creation of a SwordBookMetaData, which is sometimes required, such as after installation.
+     * @param valid the set of books successfully created
+     * @param bookDir the book directory (i.e. SWORD home directory)
+     * @param modsHierarchy the hierarchy of potential locations to find a conf file (include jsword/mods.d, ...)
+     * @param bookConf the name of the conf file
+     */
+    public void createSwordBookMetaDataFromConf(final Set<Book> valid, final File bookDir, final List<MetaFile> modsHierarchy, final String bookConf) {
+        try {
+            String internal = bookConf;
+            if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
+                internal = internal.substring(0, internal.length() - 5);
+            }
+
+            SwordBookMetaData sbmd = null;
+
+            //we go through the loop from the end, such that the least important entry (sword home)
+            //has no parent, and the most important entry refers to its parent in the chain
+            for (int j = modsHierarchy.size() - 1; j >= 0; j--) {
+                File configfile = new File(modsHierarchy.get(j).getFile(), bookConf);
+                if (configfile.exists()) {
+                    sbmd = new SwordBookMetaData(sbmd, modsHierarchy.get(j).getLevel(), configfile, internal, NetUtil.getURI(bookDir));
+                }
+            }
+            // skip any book that is not supported.
+            if (!sbmd.isSupported()) {
+                log.error("The book's configuration files is not supported.");
+                log.error(" -> Initials [{}], Driver=[{}], Versification=[{}], Book type=[{}], Book category=[{}]",
+                        sbmd.getInitials(),
+                        sbmd.getDriver(), sbmd.getProperty(ConfigEntryType.VERSIFICATION),
+                        sbmd.getBookType(), sbmd.getBookCategory());
+                return;
+            }
+
+            sbmd.setDriver(this);
+
+            // Only take the first "installation" of the Book
+            Book book = createBook(sbmd);
+            sbmd.setCurrentBook(book);
+            if (!valid.contains(book)) {
+                valid.add(book);
+
+                IndexManager imanager = IndexManagerFactory.getIndexManager();
+                if (imanager.isIndexed(book)) {
+                    sbmd.setIndexStatus(IndexStatus.DONE);
+                } else {
+                    sbmd.setIndexStatus(IndexStatus.UNDONE);
+                }
+            }
+        } catch (IOException e) {
+            log.warn("Couldn't create SwordBookMetaData", e);
+        } catch (MissingDataFilesException e) {
+            log.warn(e.getMessage());
+            log.trace(e.getMessage(), e);
+        } catch (BookException e) {
+            log.warn("Couldn't create SwordBookMetaData", e);
+        }
+    }
+
+    /**
+     * Gets the full list of secondary directories, in the order of overrides.
+     * The position in the list determines the importance of the file in terms of override.
+     * <p/>
+     * A file later on in the list is less important and will override the earlier files.
+     * <p/>
+     * The order goes
+     * <pre>
+     *  frontend writeable home
+     *  frontend readable home
+     *  jsword writeable home
+     *  jsword readable home
+     *  sword home
+     *  </pre>
+     */
+    private static List<MetaFile> getModsDirectories(File swordMods) {
+        final List<MetaFile> files = new ArrayList<MetaFile>(5);
+
+        addNonNull(files, MetaFile.Level.FRONTEND_WRITE);
+        addNonNull(files, MetaFile.Level.FRONTEND_READ);
+        addNonNull(files, MetaFile.Level.JSWORD_WRITE);
+        addNonNull(files, MetaFile.Level.JSWORD_READ);
+        files.add(new MetaFile(swordMods, MetaFile.Level.SWORD));
+        return files;
+    }
+
+    /**
+     * Adds the URI to the list if not null
+     *
+     * @param files a list of files
+     * @param level the type of conf file
+     */
+    private static void addNonNull(List<MetaFile> files, MetaFile.Level level) {
+        File mods = level.getConfigLocation();
+        if (mods != null) {
+            files.add(new MetaFile(mods, level));
         }
     }
 
@@ -181,7 +253,7 @@ public class SwordBookDriver extends AbstractBookDriver {
 
     /**
      * Get the singleton instance of this driver.
-     * 
+     *
      * @return this driver instance
      */
     public static BookDriver instance() {
@@ -191,17 +263,26 @@ public class SwordBookDriver extends AbstractBookDriver {
     /**
      * A helper class for the SwordInstaller to tell us that it has copied a new
      * Book into our install directory
-     * 
-     * @param sbmd
-     *            The SwordBookMetaData object for the new Book
+     *
+     * @param sbmd The SwordBookMetaData object for the new Book, as the entry point. however, seen as this was potentially just installed
+     *             we cannot trust it to be the complete chain. This method will therefore recreate the conf file.
      * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd) throws BookException {
         BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
+        final File swordBookPath = SwordBookPath.getSwordDownloadDir();
+        File mods = new File(swordBookPath, SwordConstants.DIR_CONF);
+        List<MetaFile> modsHierarchy = getModsDirectories(mods);
+
         for (int i = 0; i < drivers.length; i++) {
             SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
-            Book book = sdriver.createBook(sbmd);
-            Books.installed().addBook(book);
+            final Set<Book> valid = new LinkedHashSet<Book>();
+            sdriver.createSwordBookMetaDataFromConf(valid, swordBookPath, modsHierarchy, sbmd.getInternalName() + SwordConstants.EXTENSION_CONF);
+
+            //there should only be 1!
+            for(Book book : valid) {
+                Books.installed().addBook(book);
+            }
         }
     }
 

@@ -28,10 +28,12 @@ import static org.junit.Assert.assertFalse;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PassageType;
 import org.crosswire.jsword.passage.VerseRangeFactory;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -126,6 +128,17 @@ public class BooksTest {
             assertNotNull(data.getOsisFragment());
         }
     }
+
+    /** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
+     *	This tests the deduplication code in AbstractPassageBook.
+     */
+    @Test
+    public void testBookList() throws Exception {
+        //part of the pre-requisites
+        AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV");
+        assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
+    }
+
 
 	/** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
 	 *	This tests the deduplication code in AbstractPassageBook.
