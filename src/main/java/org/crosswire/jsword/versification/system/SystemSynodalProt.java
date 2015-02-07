@@ -24,9 +24,9 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * The SynodalP versification is essentially the KJV v11n, using its book order
- * and chapter counts,
- * but merged with verse counts similar to those of the Synodal v11n
+ * The SynodalP versification is essentially the KJV v11n, using its chapter counts, 
+ * but with a modified NT book order similar to those of the Synodal v11n
+ * and merged with verse counts similar to those of the Synodal v11n
  *
  *
  * @see gnu.lgpl.License for license details.<br>
@@ -43,7 +43,38 @@ public class SystemSynodalProt extends Versification {
 
     public static final String V11N_NAME = "SynodalProt";
 
-    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+    // The books are the SystemDefault.BOOKS_NT
+    // in a different order
+    /* protected */ static final BibleBook[] BOOKS_NT =
+    {
+        BibleBook.MATT,
+        BibleBook.MARK,
+        BibleBook.LUKE,
+        BibleBook.JOHN,
+        BibleBook.ACTS,
+        BibleBook.JAS,
+        BibleBook.PET1,
+        BibleBook.PET2,
+        BibleBook.JOHN1,
+        BibleBook.JOHN2,
+        BibleBook.JOHN3,
+        BibleBook.JUDE,
+        BibleBook.ROM,
+        BibleBook.COR1,
+        BibleBook.COR2,
+        BibleBook.GAL,
+        BibleBook.EPH,
+        BibleBook.PHIL,
+        BibleBook.COL,
+        BibleBook.THESS1,
+        BibleBook.THESS2,
+        BibleBook.TIM1,
+        BibleBook.TIM2,
+        BibleBook.TITUS,
+        BibleBook.PHLM,
+        BibleBook.HEB,
+        BibleBook.REV,
+    };
 
     /* protected */ static final int[][] LAST_VERSE_NT =
     {
@@ -75,6 +106,34 @@ public class SystemSynodalProt extends Versification {
                26,    47,    26,    37,    42,    15,    60,    40,    43,
                48,    30,    25,    52,    28,    41,    40,    34,    28,    40,
                38,    40,    30,    35,    27,    27,    32,    44,    31,
+        },
+        // James
+        {
+               27,    26,    18,    17,    20,
+        },
+        // I Peter
+        {
+               25,    25,    22,    19,    14,
+        },
+        // II Peter
+        {
+               21,    22,    18,
+        },
+        // I John
+        {
+               10,    29,    24,    21,    21,
+        },
+        // II John
+        {
+               13,
+        },
+        // III John
+        {
+               15,
+        },
+        // Jude
+        {
+               25,
         },
         // Romans
         {
@@ -135,34 +194,6 @@ public class SystemSynodalProt extends Versification {
         {
                14,    18,    19,    16,    14,    20,    28,    13,    28,
                39,    40,    29,    25,
-        },
-        // James
-        {
-               27,    26,    18,    17,    20,
-        },
-        // I Peter
-        {
-               25,    25,    22,    19,    14,
-        },
-        // II Peter
-        {
-               21,    22,    18,
-        },
-        // I John
-        {
-               10,    29,    24,    21,    21,
-        },
-        // II John
-        {
-               13,
-        },
-        // III John
-        {
-               15,
-        },
-        // Jude
-        {
-               25,
         },
         // Revelation of John
         {
