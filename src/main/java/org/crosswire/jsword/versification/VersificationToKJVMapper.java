@@ -37,10 +37,10 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.OsisParser;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.RestrictionType;
-import org.crosswire.jsword.passage.SimpleOsisParser;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
@@ -498,7 +498,7 @@ public class VersificationToKJVMapper {
      * @return the qualified key representing this
      */
     private QualifiedKey getExistingQualifiedKey(final Versification versification, final String versesKey) {
-        return new QualifiedKey(SimpleOsisParser.parseOsisRef(versification, versesKey));
+        return new QualifiedKey(osisParser.parseOsisRef(versification, versesKey));
     }
 
     /**
@@ -656,6 +656,8 @@ public class VersificationToKJVMapper {
     private Map<VerseKey, List<QualifiedKey>> toKJVMappings;
     private Map<QualifiedKey, Passage> fromKJVMappings;
     private boolean hasErrors;
+    
+    private OsisParser osisParser = new OsisParser();
 
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationToKJVMapper.class);
