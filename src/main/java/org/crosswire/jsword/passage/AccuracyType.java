@@ -402,7 +402,8 @@ public enum AccuracyType {
      */
     public static AccuracyType fromText(Versification v11n, String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         int partsLength = parts.length;
-        if (parts[partsLength - 1].charAt(0) == '!') {
+        String lastPart = parts[partsLength - 1];
+        if (lastPart.length()>0 && lastPart.charAt(0) == '!') {
             --partsLength;
         }
         switch (partsLength) {
