@@ -22,6 +22,7 @@ package org.crosswire.jsword.book.filter.osis;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -62,6 +63,25 @@ public class OSISFilter implements Filter {
         // encoded module.
         if (book.getInitials().startsWith("NET") && plain.endsWith("</div>")) {
             clean = clean.substring(0, plain.length() - 6);
+            if (clean.matches(".*</div> <chapter eID=\"[A-Za-z0-9.]+\"/>")) {
+                clean = clean.substring(0, clean.lastIndexOf("</div> <chapter"));
+            }
+        } else if (book.getInitials().equals("Kekchi") && plain.endsWith("</div> <lb type=\"x-begin-paragraph\"/>")) {
+            clean = clean.substring(0, clean.length() - 37);
+        } else if (book.getInitials().equals("VietLCCMN")) {
+            int startPos = clean.indexOf("<div>"), endPos = clean.indexOf("</div>");
+            if (endPos != -1 && (startPos == -1 || startPos > endPos)) {
+                if (clean.startsWith("<l ") || (clean.startsWith("<title ") && clean.contains("</title><l ")))
+                    clean = "<lg>"+clean;
+                clean = "<div><div><div><div>"+clean;
+            }
+        } else if (book.getInitials().equals("MapM")) {
+            for(String tag : Arrays.asList("cell", "row", "table")) {
+                int startPos = clean.indexOf("<"+tag+">"), endPos = clean.indexOf("</"+tag+">");
+                if (endPos != -1 && (startPos == -1 || startPos > endPos)) {
+                    clean = "<"+tag+">"+clean;
+                }
+            }
         }
 
         try {
@@ -73,6 +93,7 @@ public class OSISFilter implements Filter {
         }
 
         if (ele == null) {
+            ex = null;
             clean = XMLUtil.cleanAllEntities(clean);
 
             try {
@@ -81,6 +102,20 @@ public class OSISFilter implements Filter {
                 ex = e;
             } catch (IOException e) {
                 ex = e;
+            }
+        }
+
+        if (ele == null) {
+            String reclosed = XMLUtil.recloseTags(clean);
+            if (reclosed != null && !reclosed.equals(clean)) {
+                try {
+                    ele = parse(reclosed);
+                    ex = null;
+                } catch (JDOMException e) {
+                    ex = e;
+                } catch (IOException e) {
+                    ex = e;
+                }
             }
         }
 
