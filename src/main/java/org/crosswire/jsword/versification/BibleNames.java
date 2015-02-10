@@ -104,11 +104,19 @@ public final class BibleNames {
             book = BibleBook.fromOSIS(find);
 
             if (book == null) {
-                book = getLocalizedBibleNames().getBook(find);
+                book = getLocalizedBibleNames().getBook(find, false);
             }
 
             if (book == null) {
-                book = englishBibleNames.getBook(find);
+                book = englishBibleNames.getBook(find, false);
+            }
+
+            if (book == null) {
+                book = getLocalizedBibleNames().getBook(find, true);
+            }
+
+            if (book == null) {
+                book = englishBibleNames.getBook(find, true);
             }
         }
 
@@ -254,9 +262,11 @@ public final class BibleNames {
          * 
          * @param find
          *            The string to identify
+         * @param fuzzy
+         *            Whether to also find bible books where only a substring matches
          * @return The BibleBook, On error null
          */
-        BibleBook getBook(String find) {
+        BibleBook getBook(String find, boolean fuzzy) {
             String match = BookName.normalize(find, locale);
 
             BookName bookName = fullNT.get(match);
@@ -302,6 +312,10 @@ public final class BibleNames {
             bookName = altNC.get(match);
             if (bookName != null) {
                 return bookName.getBook();
+            }
+
+            if (!fuzzy) {
+                return null;
             }
 
             for (BookName aBook : books.values()) {
