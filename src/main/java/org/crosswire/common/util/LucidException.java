@@ -68,8 +68,8 @@ public class LucidException extends Exception {
      * All LucidExceptions are constructed with references to resources in an
      * i18n properties file.
      * 
-     * @param msg
-     *            The resource id to read
+     * @param msg   The resource id to read
+     * @param cause The cause of the exception
      */
     public LucidException(String msg, Throwable cause) {
         super(msg, cause);

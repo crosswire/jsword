@@ -35,6 +35,7 @@ public class BooksEvent extends EventObject {
     /**
      * Basic constructor
      * 
+     * @param source the source of this BookEvent
      * @param book
      *            The book of the changed Bible, or null if there is more than
      *            one change.
@@ -59,6 +60,8 @@ public class BooksEvent extends EventObject {
 
     /**
      * Is this an addition event?
+     * 
+     * @return true if the book is being added
      */
     public boolean isAddition() {
         return added;
@@ -67,9 +70,9 @@ public class BooksEvent extends EventObject {
     /**
      * Serialization support.
      * 
-     * @param is
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @param is the input stream
+     * @throws IOException if an I/O error occurred
+     * @throws ClassNotFoundException this class cannot be recreated.
      */
     private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         // Broken but we don't serialize events

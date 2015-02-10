@@ -1,18 +1,17 @@
 package org.crosswire.jsword.index.lucene;
 
+import static org.junit.Assert.assertTrue;
+
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertyMap;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
-
 import org.crosswire.jsword.index.IndexManagerFactory;
 import org.crosswire.jsword.passage.Key;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -25,10 +24,12 @@ import static org.junit.Assert.assertTrue;
 public class LuceneIndexManagerTest {
 
     private LuceneIndexManager indexManager;
+    private BookFilter filter;
 
     @Before
     public void setUp() throws Exception {
         indexManager = (LuceneIndexManager) IndexManagerFactory.getIndexManager();
+        filter = BookFilters.either(BookFilters.getBibles(), BookFilters.getCommentaries());
     }
 
     //Sample usage:  create new index Or upgrade index if needed
@@ -49,10 +50,10 @@ public class LuceneIndexManagerTest {
     public void testInstalledVersionEqualToLatestVersion() throws Exception {
 
         Books myBooks = Books.installed();
-        System.out.println(IndexMetadata.generateInstalledBooksIndexVersionReport());
+        System.out.println(IndexMetadata.generateInstalledBooksIndexVersionReport(filter));
 
         Book reindexedBook = null;
-        for (Book insBook : myBooks.getBooks()) {
+        for (Book insBook : myBooks.getBooks(filter)) {
             createOrUpgradeIndex(insBook);
 
             assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
@@ -78,7 +79,7 @@ public class LuceneIndexManagerTest {
         //delete InstalledIndex.properties , if it exists
         NetUtil.delete(InstalledIndex.instance().getPropertyFileURI());
 
-        for (Book insBook : myBooks.getBooks()) {
+        for (Book insBook : myBooks.getBooks(filter)) {
 
             if (indexManager.isIndexed(insBook)) {
 
@@ -114,7 +115,7 @@ public class LuceneIndexManagerTest {
         boolean performedReindexing = false;
         Book reindexedBook = null;
 
-        for (Book insBook : myBooks.getBooks()) {
+        for (Book insBook : myBooks.getBooks(filter)) {
 
             //todo  update LatestVersion of one book, higher than its InstalledVersion
 

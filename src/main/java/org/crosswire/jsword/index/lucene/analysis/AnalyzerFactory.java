@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * lucene-analyzers-[version].jar, lucene-smartcn-[version].jar,
  * lucene-snowball-[version].jar
  * 
- * Properties used: <Key> : <Value> Default.Analyzer : The default analyzer
+ * Properties used: &lt;Key&gt; : &lt;Value&gt; Default.Analyzer : The default analyzer
  * class [Lang].Analyzer : Appropriate Analyzer class to be used for the
  * language of the book
  * 

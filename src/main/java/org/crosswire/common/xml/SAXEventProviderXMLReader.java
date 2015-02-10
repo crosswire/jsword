@@ -35,124 +35,113 @@ import org.xml.sax.XMLReader;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
+/**
+ *
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith
+ */
+/**
+ *
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith
+ */
 public class SAXEventProviderXMLReader implements XMLReader {
     /**
      * Constructor SAXEventProviderXMLReader.
+     * 
+     * @param docIn the document provided as SAX events
      */
     public SAXEventProviderXMLReader(SAXEventProvider docIn) {
         this.docIn = docIn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getFeature(java.lang.String)
      */
     public boolean getFeature(String arg0) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setFeature(java.lang.String, boolean)
      */
     public void setFeature(String arg0, boolean arg1) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getProperty(java.lang.String)
      */
     public Object getProperty(String arg0) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.XMLReader#setProperty(java.lang.String,
-     * java.lang.Object)
+    /* (non-Javadoc)
+     * @see org.xml.sax.XMLReader#setProperty(java.lang.String, java.lang.Object)
      */
     public void setProperty(String arg0, Object arg1) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setEntityResolver(org.xml.sax.EntityResolver)
      */
     public void setEntityResolver(EntityResolver entities) {
         this.entities = entities;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getEntityResolver()
      */
     public EntityResolver getEntityResolver() {
         return entities;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setDTDHandler(org.xml.sax.DTDHandler)
      */
     public void setDTDHandler(DTDHandler dtds) {
         this.dtds = dtds;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getDTDHandler()
      */
     public DTDHandler getDTDHandler() {
         return dtds;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setContentHandler(org.xml.sax.ContentHandler)
      */
     public void setContentHandler(ContentHandler content) {
         this.content = content;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getContentHandler()
      */
     public ContentHandler getContentHandler() {
         return content;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#setErrorHandler(org.xml.sax.ErrorHandler)
      */
     public void setErrorHandler(ErrorHandler errors) {
         this.errors = errors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#getErrorHandler()
      */
     public ErrorHandler getErrorHandler() {
         return errors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(org.xml.sax.InputSource)
      */
     public void parse(InputSource is) throws SAXException {
@@ -163,9 +152,7 @@ public class SAXEventProviderXMLReader implements XMLReader {
         docIn.provideSAXEvents(getContentHandler());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.XMLReader#parse(java.lang.String)
      */
     public void parse(String arg0) throws SAXException {

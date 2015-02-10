@@ -33,6 +33,8 @@ import java.util.EventObject;
 public class WorkEvent extends EventObject {
     /**
      * Initialize a WorkEvent
+     * 
+     * @param source the job that has made progress
      */
     public WorkEvent(Progress source) {
         super(source);
@@ -40,6 +42,8 @@ public class WorkEvent extends EventObject {
 
     /**
      * Accessor for the Job
+     * 
+     * @return the job that has made progress
      */
     public Progress getJob() {
         return (Progress) getSource();

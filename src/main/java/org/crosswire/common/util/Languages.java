@@ -119,7 +119,7 @@ public final class Languages {
          * Get the language name for the code. If the language name is not known
          * then return the code.
          * 
-         * @param languageCode
+         * @param languageCode the language code
          * @return the name for the language.
          */
         public static String getName(String languageCode) {

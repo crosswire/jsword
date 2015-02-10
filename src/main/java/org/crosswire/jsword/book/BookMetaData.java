@@ -37,7 +37,7 @@ import org.jdom2.Document;
  * Language editions at least.
  * 
  * <p>
- * BookMetaData like Strings must be compared using <code>.equals()<code>
+ * BookMetaData like Strings must be compared using <code>.equals()</code>
  * instead of ==. A Bible must have the ability to handle a book unknown to
  * JSword. So Books must be able to add versions to the system, and the system
  * must cope with books that already exist.
@@ -78,6 +78,8 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * Accessor for the driver that runs this Book. Note this method should only
      * be used to delete() Books. Everything else you should want to do to a
      * Book should be available in other ways.
+     * 
+     * @return the driver for the book.
      */
     BookDriver getDriver();
 
@@ -182,6 +184,9 @@ public interface BookMetaData extends Comparable<BookMetaData> {
 
     /**
      * Return whether the feature is supported by the book.
+     * 
+     * @param feature the feature in question
+     * @return true if the book supports the feature
      */
     boolean hasFeature(FeatureType feature);
 
@@ -220,6 +225,8 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * Get a list of all the properties available to do with this Book. The
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
+     * 
+     * @return the read-only properties for this book
      */
     Map<String, Object> getProperties();
 
@@ -241,6 +248,7 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     /**
      * Has anyone generated a search index for this Book?
      * 
+     * @return the status for the index of this book.
      * @see org.crosswire.jsword.index.IndexManager
      */
     IndexStatus getIndexStatus();
@@ -249,12 +257,15 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * This method does not alter the index status, however it is for Indexers
      * that are responsible for indexing and have changed the status themselves.
      * 
+     * @param status the status for the index of this book
      * @see org.crosswire.jsword.index.IndexManager
      */
     void setIndexStatus(IndexStatus status);
 
     /**
      * Get an OSIS representation of information concerning this Book.
+     * 
+     * @return the OSIS representation of information about this book.
      */
     Document toOSIS();
 

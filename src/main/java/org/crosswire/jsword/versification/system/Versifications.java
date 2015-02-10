@@ -177,7 +177,7 @@ public final class Versifications {
     public int size() {
         return known.size();
     }
-    
+
     /**
      * This class is a singleton, enforced by a private constructor.
      */

@@ -82,6 +82,7 @@ public final class XMLUtil {
      * @param provider
      *            The source of SAX events
      * @return a serialized string
+     * @throws SAXException when SAX encounters a problem
      */
     public static String writeToString(SAXEventProvider provider) throws SAXException {
         ContentHandler ser = new PrettySerializingContentHandler();
@@ -108,6 +109,8 @@ public final class XMLUtil {
 
     /**
      * Show the attributes of an element as debug
+     * 
+     * @param attrs the attributes to show
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
@@ -117,6 +120,9 @@ public final class XMLUtil {
 
     /**
      * Normalizes the given string
+     * 
+     * @param s the string to normalize
+     * @return the normalized string
      */
     public static String escape(String s) {
         if (s == null) {
@@ -155,7 +161,7 @@ public final class XMLUtil {
     /**
      * For each entity in the input that is not allowed in XML, replace the
      * entity with its unicode equivalent or remove it. For each instance of a
-     * bare &, replace it with &amp;<br/>
+     * bare &amp;, replace it with &amp;amp;<br>
      * XML only allows 4 entities: &amp;amp;, &amp;quot;, &amp;lt; and &amp;gt;.
      * 
      * @param broken
@@ -232,8 +238,8 @@ public final class XMLUtil {
     /**
      * Remove all invalid characters in the input, replacing them with a space. XML has stringent
      * requirements as to which characters are or are not allowed. The set of
-     * allowable characters are:<br />
-     * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br/>
+     * allowable characters are:<br>
+     * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br>
      * Note: Java handles to \uFFFF
      * 
      * @param broken
@@ -264,7 +270,11 @@ public final class XMLUtil {
      * XML parse failed, so we can try getting rid of all the tags and having
      * another go. We define a tag to start at a &lt; and end at the end of the
      * next word (where a word is what comes in between spaces) that does not
-     * contain an = sign, or at a >, whichever is earlier.
+     * contain an = sign, or at a &gt;, whichever is earlier.
+     * 
+     * @param broken
+     *            the string to be cleaned
+     * @return the cleaned string
      */
     public static String cleanAllTags(String broken) {
         if (broken == null) {

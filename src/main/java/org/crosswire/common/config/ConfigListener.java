@@ -32,11 +32,15 @@ import java.util.EventListener;
 public interface ConfigListener extends EventListener {
     /**
      * Called whenever Config.add() is called
+     * 
+     * @param ev the event
      */
     void choiceAdded(ConfigEvent ev);
 
     /**
      * Called whenever Config.remove() is called
+     * 
+     * @param ev the event
      */
     void choiceRemoved(ConfigEvent ev);
 }

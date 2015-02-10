@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 /**
  * Formats a log entry by pattern.
- * <p>
+ * 
  * <ul>
  * <li>{0} is the Date</li>
  * <li>{1} is the name of the logger</li>

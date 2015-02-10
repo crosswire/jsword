@@ -41,7 +41,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * Most of the methods take the same arguments:
  * </p>
  * <ul>
- * <li><strong>Versification v11n<strong> - All Passages are created as part
+ * <li><strong>Versification v11n</strong> - All Passages are created as part
  * of a Versification. Verses and VerseRanges which make up a Passage, require
  * a one.</li>
  * <li><strong>String passageReference</strong> - A string representation for the Passage.
@@ -609,9 +609,9 @@ public final class PassageKeyFactory {
             if (wasNumberOrMarker) {
                 if (isNumber) {
                     buf.append(AbstractPassage.REF_PREF_DELIM);
-                } else if(isEndMarker) {
+                } else if (isEndMarker) {
                     buf.append(VerseRange.RANGE_OSIS_DELIM);
-                }else if (Character.isLetter(curChar)) {
+                } else if (Character.isLetter(curChar)) {
                     buf.append(' ');
                 }
 

@@ -238,7 +238,7 @@ public class WebResource {
      *            the URI of the destination, typically a file:///.
      * @param meter
      *            the job on which to report progress
-     * @throws LucidException
+     * @throws LucidException when an error is encountered
      */
     public void copy(URI dest, Progress meter) throws LucidException  {
         InputStream in = null;
@@ -296,8 +296,8 @@ public class WebResource {
     /**
      * Copy this WebResource to the destination.
      * 
-     * @param dest
-     * @throws LucidException
+     * @param dest the destination URI
+     * @throws LucidException when an error is encountered
      */
     public void copy(URI dest) throws LucidException {
         copy(dest, null);
@@ -313,10 +313,10 @@ public class WebResource {
     private int getHeaderAsInt(HttpResponse response, String field) {
         Header header = response.getFirstHeader(field);
         // If there is no matching header in the message null is returned.
-        if (header==null) {
+        if (header == null) {
             return 0;
         }
-        
+
         String value = header.getValue();
         try {
             return Integer.parseInt(value);

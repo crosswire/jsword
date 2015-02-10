@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -48,7 +49,7 @@ public final class ClassUtil {
      * @param className
      *            the class to get
      * @return the found Class
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if the class is not found
      */
     public static Class<?> forName(String className) throws ClassNotFoundException {
         return Thread.currentThread().getContextClassLoader().loadClass(className);
@@ -57,30 +58,35 @@ public final class ClassUtil {
     /**
      * This function finds the first matching filename for a Java class file
      * from the classpath, if none is found it returns null.
+     * 
+     * @param className
+     *            the class to get
+     * @param classPath the lookup class path
+     * @return the filename for the class
      */
-    public static String findClasspathEntry(String classname, String classpath) {
+    public static String findClasspathEntry(String className, String classPath) {
         String full = null;
 
-        String[] paths = StringUtil.split(classpath, File.pathSeparator);
+        String[] paths = StringUtil.split(classPath, File.pathSeparator);
         for (int i = 0; i < paths.length; i++) {
             // Search the jar
             if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR)) {
                 ZipFile zip = null;
                 try {
-                    String fileName = classname.replace(',', '/') + EXTENSION_CLASS;
+                    String fileName = className.replace(',', '/') + EXTENSION_CLASS;
                     zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(fileName);
 
                     if (entry != null && !entry.isDirectory()) {
                         if (full != null && !full.equals(fileName)) {
-                            log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
+                            LOGGER.warn("Warning duplicate {} found: {} and {}", className, full, paths[i]);
                         } else {
                             full = paths[i];
                         }
                     }
                 } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
-                    log.warn("Missing zip file for {} and {}", classname, paths[i]);
+                    LOGGER.warn("Missing zip file for {} and {}", className, paths[i]);
                 } finally {
                     IOUtil.close(zip);
                 }
@@ -88,7 +94,7 @@ public final class ClassUtil {
                 StringBuilder path = new StringBuilder(256);
 
                 // Search for the file
-                String extra = classname.replace('.', File.separatorChar);
+                String extra = className.replace('.', File.separatorChar);
 
                 path.append(paths[i]);
                 if (paths[i].charAt(paths[i].length() - 1) != File.separatorChar) {
@@ -101,7 +107,7 @@ public final class ClassUtil {
 
                 if (new File(fileName).isFile()) {
                     if (full != null && !full.equals(fileName)) {
-                        log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
+                        LOGGER.warn("Warning duplicate {} found: {} and {}", className, full, paths[i]);
                     } else {
                         full = paths[i];
                     }
@@ -115,16 +121,18 @@ public final class ClassUtil {
     /**
      * This function find the first matching filename for a Java class file from
      * the classpath, if none is found it returns null.
+     * 
+     * @param className
+     *            the class to get
+     * @return the filename for the class
      */
-    public static String findClasspathEntry(String classname) {
+    public static String findClasspathEntry(String className) {
         String classpath = System.getProperty("java.class.path", "");
-        return findClasspathEntry(classname, classpath);
+        return findClasspathEntry(className, classpath);
     }
 
     /**
-     * <p>
      * Gets the class name minus the package name for an <code>Object</code>.
-     * </p>
      * 
      * @param object
      *            the class to get the short name for, may be null
@@ -141,9 +149,7 @@ public final class ClassUtil {
     }
 
     /**
-     * <p>
      * Gets the class name minus the package name from a <code>Class</code>.
-     * </p>
      * 
      * @param cls
      *            the class to get the short name for, must not be
@@ -160,9 +166,7 @@ public final class ClassUtil {
     }
 
     /**
-     * <p>
      * Gets the class name minus the package name from a String.
-     * </p>
      * 
      * <p>
      * The string passed in is assumed to be a class name - it is not checked.
@@ -192,16 +196,12 @@ public final class ClassUtil {
     }
 
     /**
-     * <p>
      * The package separator character: <code>&#x2e;</code>.
-     * </p>
      */
     private static final char PACKAGE_SEPARATOR_CHAR = '.';
 
     /**
-     * <p>
      * The inner class separator character: <code>$</code>.
-     * </p>
      */
     private static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 
@@ -212,5 +212,5 @@ public final class ClassUtil {
     /**
      * The log stream
      */
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ClassUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);
 }

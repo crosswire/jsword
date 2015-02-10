@@ -67,9 +67,9 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean, boolean)
      */
-    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(final Key key, final boolean allowEmpty, final boolean allowGenTitles) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
         final Filter filter = getFilter();
@@ -79,7 +79,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
         //we could remove the method that doesn't support the versification parameter.
         //but that has far reaching consequences.
         Passage ref = VersificationsMapper.instance().map(KeyUtil.getPassage(key), this.getVersification());
-        final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
+
+        // Generated titles are shown when
+        // there are 2 or more ranges or
+        // empty are not allowed and generated titles are allowed
+        final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || (!allowEmpty && allowGenTitles);
 
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
             // track previous text to exclude duplicates caused by merged verses

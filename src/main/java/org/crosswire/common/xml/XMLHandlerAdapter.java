@@ -63,251 +63,190 @@ import org.xml.sax.ext.LexicalHandler;
  * @author DM Smith
  */
 public class XMLHandlerAdapter implements EntityResolver, DTDHandler, ContentHandler, ErrorHandler, DeclHandler, LexicalHandler {
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLHandlerAdapter() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
      */
     public void setDocumentLocator(Locator locator) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startDocument()
      */
     public void startDocument() throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String, java.lang.String)
      */
     public void processingInstruction(String target, String data) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int offset, int length) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
      */
     public void ignorableWhitespace(char[] ch, int offset, int length) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endDocument()
      */
     public void endDocument() throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
      */
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-     * java.lang.String, java.lang.String, org.xml.sax.Attributes)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localName, String qname, Attributes attributes) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-     * java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localName, String qname) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String)
      */
     public void endPrefixMapping(String prefix) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#skippedEntity(java.lang.String)
      */
     public void skippedEntity(String name) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.DTDHandler#notationDecl(java.lang.String,
-     * java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.DTDHandler#notationDecl(java.lang.String, java.lang.String, java.lang.String)
      */
     public void notationDecl(String name, String publicId, String systemId) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.DTDHandler#unparsedEntityDecl(java.lang.String,
-     * java.lang.String, java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.DTDHandler#unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ext.LexicalHandler#startDTD(java.lang.String,
-     * java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ext.LexicalHandler#startDTD(java.lang.String, java.lang.String, java.lang.String)
      */
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#startEntity(java.lang.String)
      */
     public void startEntity(String name) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#startCDATA()
      */
     public void startCDATA() throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#endCDATA()
      */
     public void endCDATA() throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#comment(char[], int, int)
      */
     public void comment(char[] ch, int offset, int length) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#endEntity(java.lang.String)
      */
     public void endEntity(String name) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ext.LexicalHandler#endDTD()
      */
     public void endDTD() throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ext.DeclHandler#elementDecl(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ext.DeclHandler#elementDecl(java.lang.String, java.lang.String)
      */
     public void elementDecl(String name, String contentModel) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ext.DeclHandler#attributeDecl(java.lang.String,
-     * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ext.DeclHandler#attributeDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     public void attributeDecl(String elementName, String attributeName, String type, String valueDefault, String value) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ext.DeclHandler#internalEntityDecl(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ext.DeclHandler#internalEntityDecl(java.lang.String, java.lang.String)
      */
     public void internalEntityDecl(String name, String text) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ext.DeclHandler#externalEntityDecl(java.lang.String,
-     * java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ext.DeclHandler#externalEntityDecl(java.lang.String, java.lang.String, java.lang.String)
      */
     public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
      */
     public void warning(SAXParseException ex) throws SAXException {
         printError("Warning", ex);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
      */
     public void error(SAXParseException ex) throws SAXException {
         printError("Error", ex);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
      */
     public void fatalError(SAXParseException ex) throws SAXException {
         printError("Fatal Error", ex);
     }
 
-    /** Prints the error message. */
+    /**
+     * Prints the error message.
+     * 
+     * @param type the type of the message
+     * @param ex the exception of the error
+     */
     private void printError(String type, SAXParseException ex) {
         System.err.print("[");
         System.err.print(type);

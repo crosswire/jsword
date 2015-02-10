@@ -109,11 +109,11 @@ public final class VerseRange implements VerseKey<VerseRange> {
             return this;
         }
         Verse newStart = start.reversify(newVersification);
-        if(newStart == null) {
+        if (newStart == null) {
             return null;
         }
         Verse newEnd = end.reversify(newVersification);
-        if(newEnd == null) {
+        if (newEnd == null) {
             return null;
         }
         return new VerseRange(newVersification, newStart, newEnd);
@@ -714,7 +714,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
     /**
      * Calculate how many verses in this range
      * 
-     * @return The number of verses. Always >= 1.
+     * @return The number of verses. Always&gt;= 1.
      */
     private int calcVerseCount() {
         return v11n.distance(start, end) + 1;

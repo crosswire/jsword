@@ -49,7 +49,7 @@ public class SwordBook extends AbstractPassageBook {
     /**
      * Construct an SwordBook given the BookMetaData and the AbstractBackend.
      * 
-     * @param bmd the metadata that describes the book
+     * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     public SwordBook(SwordBookMetaData sbmd, Backend<?> backend) {

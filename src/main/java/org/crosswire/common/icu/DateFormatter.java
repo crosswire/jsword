@@ -181,7 +181,7 @@ public final class DateFormatter {
     /**
      * Set whether this DataFormatter should be lenient in parsing dates.
      *
-     * @param lenient
+     * @param lenient whether to be lenient or not
      * @see java.text.DateFormat#setLenient(boolean)
      */
     public void setLenient(boolean lenient) {

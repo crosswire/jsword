@@ -537,6 +537,8 @@ public class License {
     /**
      * Build a License object from which can be obtained the warranty and its
      * details.
+     * 
+     * @param appName the name of the program being licensed
      */
     public License(String appName) {
         name = appName;

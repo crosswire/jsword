@@ -45,7 +45,9 @@ public enum EditType  {
 
     /**
      * @param name
-     *            The name of the FeatureType
+     *            The name of the EditType
+     * @param symbol
+     *            The symbol of the EditType
      */
     private EditType(String name, char symbol) {
         this.name = name;
@@ -53,17 +55,17 @@ public enum EditType  {
     }
 
     /**
-     * @return te symbol for this EditType
+     * @return the symbol for this EditType
      */
     public char getSymbol() {
         return symbol;
     }
 
     /**
-     * Get a CompressorType from a String
+     * Lookup method to find an EditType by name.
      * 
-     * @param name the case insensitive representation of the desired CompressorType
-     * @return the desired compressor or null if not found.
+     * @param name the case insensitive representation of the desired EditType
+     * @return the desired EditType or null if not found.
      */
     public static EditType fromString(String name) {
         for (EditType v : values()) {
@@ -78,7 +80,11 @@ public enum EditType  {
     }
 
     /**
-     * Lookup method to convert from a String
+     * Lookup method to find an EditType by symbol.
+     * 
+     * @param symbol
+     *            The symbol of the EditType
+     * @return the desired EditType or null if not found.
      */
     public static EditType fromSymbol(char symbol) {
         for (EditType v : values()) {
@@ -92,10 +98,8 @@ public enum EditType  {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     @Override
     public String toString() {
@@ -103,7 +107,7 @@ public enum EditType  {
     }
 
     /**
-     * The name of the FeatureType
+     * The name of the EditType
      */
     private String name;
 

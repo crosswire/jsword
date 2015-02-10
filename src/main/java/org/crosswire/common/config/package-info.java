@@ -1,7 +1,4 @@
 /**
-<style>
-.comment { color: #336600; }
-</style>
 <p>Config allows an application to separate the responsibilities of setting
 itself up, and providing a user interface from the real work that it needs
 to do.</p>
@@ -29,29 +26,29 @@ the config system what to configure and how.</p>
 <pre>
 &lt;config&gt;
 
-  <span class="comment">&lt;!-- A configuration is a set of options ... --&gt;</span>
-  <span class="comment">&lt;!-- The key is a dot separated name - Imaging this in a Mozilla tree or some nested tabs. --&gt;</span>
+  <span style="color: #336600">&lt;!-- A configuration is a set of options ... --&gt;</span>
+  <span style="color: #336600">&lt;!-- The key is a dot separated name - Imaging this in a Mozilla tree or some nested tabs. --&gt;</span>
   &lt;option key=&quot;Bibles.Sword.Base Directory&quot; type=&quot;string&quot;&gt;
-    <span class="comment">&lt;!-- The type (above) along with the introspect line configures what JavaBean methods will be called --&gt;</span>
+    <span style="color: #336600">&lt;!-- The type (above) along with the introspect line configures what JavaBean methods will be called --&gt;</span>
     &lt;introspect class=&quot;org.crosswire.jsword.book.sword.SwordBibleDriver&quot; property=&quot;SwordDir&quot;/&gt;
-    <span class="comment">&lt;!-- The tool-tip (or similar) describing what is going on --&gt;</span>
+    <span style="color: #336600">&lt;!-- The tool-tip (or similar) describing what is going on --&gt;</span>
     &lt;help&gt;Where is the SWORD Project base directory.&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- Another option, this time it is a boolean option which will show up as a tickbox --&gt;</span>
+  <span style="color: #336600">&lt;!-- Another option, this time it is a boolean option which will show up as a tickbox --&gt;</span>
   &lt;option key=&quot;Bibles.Display.Persistent Naming&quot; level=&quot;advanced&quot; type=&quot;boolean&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.jsword.passage.PassageUtil&quot; property=&quot;PersistentNaming&quot;/&gt;
     &lt;help&gt;True if the passage editor re-writes the references to conform to its notation.&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- Another type again this one for the look and feel. --&gt;
+  <span style="color: #336600">&lt;!-- Another type again this one for the look and feel. --&gt;
   &lt;!-- The reason for the helper class here is to alter windows that are not currently mapped --&gt;</span>
     &lt;option key=&quot;Looks.Look and Feel&quot; type=&quot;class&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.common.swing.LookAndFeelUtil&quot; property=&quot;LookAndFeel&quot;/&gt;
     &lt;help&gt;The look and feel of the application&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- When we have have an Enum style config option ... --&gt;</span>
+  <span style="color: #336600">&lt;!-- When we have have an Enum style config option ... --&gt;</span>
     &lt;option key=&quot;Bibles.Display.Book Case&quot; level=&quot;advanced&quot; type=&quot;int-options&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.jsword.passage.Books&quot; property=&quot;Case&quot;/&gt;
     &lt;help&gt;What case should we use to display the references.&lt;/help&gt;
@@ -61,45 +58,45 @@ the config system what to configure and how.</p>
     &lt;alternative number=&quot;3&quot; name=&quot;mIXeD&quot;/&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- The options here are more complex and need to be provided as a string array by Java code (see below) --&gt;</span>
+  <span style="color: #336600">&lt;!-- The options here are more complex and need to be provided as a string array by Java code (see below) --&gt;</span>
     &lt;option key=&quot;Bibles.Default&quot; type=&quot;string-options&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.jsword.book.Bibles&quot; property=&quot;DefaultName&quot;/&gt;
     &lt;help&gt;Which of the available Bibles is the default.&lt;/help&gt;
     &lt;map name=&quot;biblenames&quot;/&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- This option is 'advanced' which means it is not visible to all users (see below) --&gt;</span>
+  <span style="color: #336600">&lt;!-- This option is 'advanced' which means it is not visible to all users (see below) --&gt;</span>
     &lt;option key=&quot;Advanced.Source Path&quot; level=&quot;advanced&quot; type=&quot;path&quot;&gt;
     &lt;introspect class=&quot;org.crosswire.common.swing.DetailedExceptionPane&quot; property=&quot;SourcePath&quot;/&gt;
     &lt;help&gt;The directories to search for source code in when investigating an exception.&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- When the choice is very custom you can always do your own implementation --&gt;
+  <span style="color: #336600">&lt;!-- When the choice is very custom you can always do your own implementation --&gt;
   &lt;!-- This allows us to set users levels so not everyone gets asked hard questions --&gt;</span>
     &lt;option key=&quot;Advanced.User Level&quot; type=&quot;custom&quot; class=&quot;org.crosswire.common.util.UserLevel$UserLevelChoice&quot;&gt;
     &lt;help&gt;How advanced is your knowledge of this program.&lt;/help&gt;
   &lt;/option&gt;
 
-  <span class="comment">&lt;!-- There are other examples in config.xml --&gt;</span>
+  <span style="color: #336600">&lt;!-- There are other examples in config.xml --&gt;</span>
 &lt;/config&gt;
 </pre>
 
 <p>Then you need to add the Java code:</p>
-<pre><span class="comment">
+<pre><span style="color: #336600">
 // To load the config.xml file:
 </span>Config config = new Config(&quot;Tool Shed Options&quot;);
-Document xmlconfig = Project.resource().getDocument(&quot;config&quot;); <span class="comment">// Or whatever to get a JDOM Document</span>
+Document xmlconfig = Project.resource().getDocument(&quot;config&quot;); <span style="color: #336600">// Or whatever to get a JDOM Document</span>
 config.add(xmlconfig);
 
-<span class="comment">// To load a saved config</span>
-config.setProperties(Project.resource().getProperties(&quot;desktop&quot;)); <span class="comment">// Or however you get a Properties</span>
+<span style="color: #336600">// To load a saved config</span>
+config.setProperties(Project.resource().getProperties(&quot;desktop&quot;)); <span style="color: #336600">// Or however you get a Properties</span>
 config.localToApplication(true);
 
-<span class="comment">// And display it ...</span>
-URL configurl = Project.resource().getPropertiesURL(&quot;desktop&quot;); <span class="comment">// URL of the Properties file to save to</span>
+<span style="color: #336600">// And display it ...</span>
+URL configurl = Project.resource().getPropertiesURL(&quot;desktop&quot;); <span style="color: #336600">// URL of the Properties file to save to</span>
 SwingConfig.showDialog(config, parentWind, configurl);
 
-<span class="comment">// The code above needed help in setting up a string choice. This is how ...</span>
+<span style="color: #336600">// The code above needed help in setting up a string choice. This is how ...</span>
 ChoiceFactory.getDataMap().put(&quot;biblenames&quot;, Bibles.getBibleNames());
 </pre>
 <p>There are more examples in <code>org.crosswire.bibledesktop.desktop.OptionsAction.</code></p>

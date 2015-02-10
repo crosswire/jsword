@@ -29,15 +29,15 @@ import org.slf4j.LoggerFactory;
 /**
  * The Project class looks after the source of project files. These are per user
  * files and as such have a different location on different operating systems.
- * These are:<br/>
+ * These are:<br>
  * 
- * <table>
+ * <table summary=" ">
  * <tr>
  * <td>Mac OS X</td>
  * <td>~/Library/Application Support/JSword</td>
  * </tr>
  * <tr>
- * <td>Win NT/2000/XP/ME/9x</td>
+ * <td>Win NT/2000/XP/ME/9x/...</td>
  * <td>~/Application Data/JSword (~ is all over the place, but Java figures it
  * out)</td>
  * </tr>
@@ -67,6 +67,8 @@ import org.slf4j.LoggerFactory;
 public final class CWProject {
     /**
      * Accessor for the resource singleton.
+     * 
+     * @return the singleton
      */
     public static CWProject instance() {
         return instance;
@@ -147,7 +149,9 @@ public final class CWProject {
      * 
      * @param subject
      *            A name for the subdirectory of the Project directory.
+     * @param create whether to create the directory if it does not exist
      * @return A file: URI pointing at a local writable directory.
+     * @throws IOException a problem with I/O happened
      */
     public URI getWriteableProjectSubdir(String subject, boolean create) throws IOException {
         URI temp = NetUtil.lengthenURI(getWritableProjectDir(), subject);

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * 
  * <p>
  * Here is the grammar for version strings:
- * 
+ * </p>
  * <pre>
  * version ::= major('.'minor('.'micro('.'nano)?)?)?
  * major ::= [0-9]+
@@ -88,11 +88,11 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Compares this <code>Version object to another object.
+     * Compares this <code>Version</code> object to another object.
      * 
      * <p>
      * A version is considered to be equal to another version if all the
-     * parts are equal.
+     * parts are equal.</p>
      * 
      * @param object The <code>Version</code> object to be compared.
      * @return true if the two objects are equal.

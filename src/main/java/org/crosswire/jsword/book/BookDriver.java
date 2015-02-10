@@ -61,6 +61,8 @@ public interface BookDriver extends BookProvider {
      * reasons. For most implementations of Book etc, this method will throw up
      * because most will be read-only.
      * 
+     * @param dead
+     *            the book to be deleted
      * @throws BookException
      *             If the Book can't be deleted.
      */
@@ -68,6 +70,8 @@ public interface BookDriver extends BookProvider {
 
     /**
      * A short name for this BookDriver
+     * 
+     * @return a short name for this BookDriver
      */
     String getDriverName();
 }

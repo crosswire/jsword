@@ -36,19 +36,20 @@ public class SerializingContentHandler implements ContentHandler {
      * Default ctor that does not insert newlines.
      */
     public SerializingContentHandler() {
-        newlines = false;
+        this(false);
     }
 
     /**
-     * Default ctor that does not insert newlines.
+     * Default ctor that conditionally inserts newlines.
+     * 
+     * @param newlines whether newlines are desired
      */
     public SerializingContentHandler(boolean newlines) {
         this.newlines = newlines;
+        this.buffer = new StringBuilder();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
@@ -56,17 +57,13 @@ public class SerializingContentHandler implements ContentHandler {
         return buffer.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
      */
     public void setDocumentLocator(Locator locator) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startDocument()
      */
     public void startDocument() {
@@ -77,36 +74,26 @@ public class SerializingContentHandler implements ContentHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endDocument()
      */
     public void endDocument() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
      */
     public void startPrefixMapping(String prefix, String uri) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String)
      */
     public void endPrefixMapping(String prefix) {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-     * java.lang.String, java.lang.String, org.xml.sax.Attributes)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localname, String qname, Attributes attrs) {
         buffer.append('<');
@@ -131,11 +118,8 @@ public class SerializingContentHandler implements ContentHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-     * java.lang.String, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname) {
         buffer.append("</");
@@ -152,9 +136,7 @@ public class SerializingContentHandler implements ContentHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] chars, int start, int length) {
@@ -162,9 +144,7 @@ public class SerializingContentHandler implements ContentHandler {
         buffer.append(s);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
      */
     public void ignorableWhitespace(char[] chars, int start, int length) {
@@ -172,11 +152,8 @@ public class SerializingContentHandler implements ContentHandler {
         buffer.append(s);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String,
-     * java.lang.String)
+    /* (non-Javadoc)
+     * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String, java.lang.String)
      */
     public void processingInstruction(String target, String data) {
         buffer.append("<!");
@@ -190,14 +167,12 @@ public class SerializingContentHandler implements ContentHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#skippedEntity(java.lang.String)
      */
     public void skippedEntity(String name) {
     }
 
     private boolean newlines;
-    private StringBuilder buffer = new StringBuilder();
+    private StringBuilder buffer;
 }

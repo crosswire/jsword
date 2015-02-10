@@ -104,8 +104,8 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
      * Returns the number of elements in this set (its cardinality). If this set
      * contains more than <tt>Integer.MAX_VALUE</tt> elements, returns
      * <tt>Integer.MAX_VALUE</tt>.
-     * <p />
-     * This method is potentially expensive, as it often requires cycling through all the keys in the set.
+     * <p>
+     * This method is potentially expensive, as it often requires cycling through all the keys in the set.</p>
      * @return the number of elements in this set (its cardinality).
      */
     int getCardinality();
@@ -177,7 +177,7 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
      * 
      * @param that
      *            The Key to find
-     * @return The index of the key or < 0 if the key is not in the list
+     * @return The index of the key or &lt; 0 if the key is not in the list
      */
     int indexOf(Key that);
 

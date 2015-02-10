@@ -64,6 +64,7 @@ public final class CWClassLoader extends ClassLoader {
      * 
      * @param resourceOwner
      *            is the owner of the resource
+     * @return the CrossWire Class Loader
      */
     public static CWClassLoader instance(Class<?> resourceOwner) {
         return AccessController.doPrivileged(new PrivilegedLoader<CWClassLoader>(resourceOwner));
@@ -73,15 +74,15 @@ public final class CWClassLoader extends ClassLoader {
      * Creates a privileged class loader that finds resources for the calling
      * class that may not be in the class' package. Use this only within classes
      * that are directly looking up their resources.
+     * 
+     * @return the CrossWire Class Loader
      */
     public static CWClassLoader instance() {
         Class<? extends Object> resourceOwner = CallContext.getCallingClass();
         return instance(resourceOwner);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.ClassLoader#findResource(java.lang.String)
      */
     @Override
@@ -150,6 +151,9 @@ public final class CWClassLoader extends ClassLoader {
     /**
      * Prefix the search with a package prefix, if not already. Skip a leading
      * '/' if present.
+     * 
+     * @param aSearch the search to adjust
+     * @return the adjusted search
      */
     private String adjustPackageSearch(String aSearch) {
         String search = aSearch;
@@ -175,6 +179,9 @@ public final class CWClassLoader extends ClassLoader {
 
     /**
      * Change all but a leading '/' to '.'
+     * 
+     * @param aSearch the search to adjust
+     * @return the adjusted search
      */
     private String adjustPathSearch(String aSearch) {
         String search = aSearch;
@@ -190,7 +197,9 @@ public final class CWClassLoader extends ClassLoader {
     }
 
     /**
-     *
+     * Pick the best class loader
+     * 
+     * @return the class loader
      */
     public ClassLoader getClassLoader() {
         // Choose the child loader as it will use the parent if need be
@@ -204,6 +213,10 @@ public final class CWClassLoader extends ClassLoader {
      * 'loader1'=='loader2']. Of course, this works only for classloaders that
      * set their parent pointers correctly. 'null' is interpreted as the
      * primordial loader [i.e., everybody's parent].
+     * 
+     * @param loader1 a class loader to consider
+     * @param loader2 a class loader to consider
+     * @return one of the class loaders
      */
     private static ClassLoader pickLoader(ClassLoader loader1, ClassLoader loader2) {
         ClassLoader loader = loader2;
@@ -229,6 +242,7 @@ public final class CWClassLoader extends ClassLoader {
      * If the application has set the homes, it will return the application's
      * requested home directory, otherwise it returns null.
      * 
+     * @param i get the i-th home
      * @return Returns the home.
      */
     public static synchronized URI getHome(int i) {
@@ -256,6 +270,7 @@ public final class CWClassLoader extends ClassLoader {
      * 
      * @param search
      *            must be non-null, non-empty
+     * @return the URI of the home of the resource
      */
     public static URI findHomeResource(String search) {
         if (homes == null) {
@@ -279,6 +294,8 @@ public final class CWClassLoader extends ClassLoader {
     /**
      * PrivilegedLoader creates a CWClassLoader if it is able to obtain java
      * security permissions to do so.
+     * 
+     * @param <T> the type
      */
     private static class PrivilegedLoader<T> implements PrivilegedAction<T> {
         /**
@@ -294,9 +311,7 @@ public final class CWClassLoader extends ClassLoader {
             owningClass = resourceOwner;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.security.PrivilegedAction#run()
          */
         public T run() {

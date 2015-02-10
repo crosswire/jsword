@@ -365,8 +365,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      */
     private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count, IndexPolicy policy) throws BookException, IOException {
         String v11nName = null;
-        if(book.getBookMetaData().getProperty("Versification")!=null)
+        if (book.getBookMetaData().getProperty("Versification") != null) {
             v11nName = book.getBookMetaData().getProperty("Versification").toString();
+        }
         Versification v11n = Versifications.instance().getVersification(v11nName);
         boolean includeStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS) && policy.isStrongsIndexed();
         boolean includeXrefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES) && policy.isXrefIndexed();
@@ -407,7 +408,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             osis = null;
 
             try {
-                osis = data.getOsisFragment();
+                osis = data.getOsisFragment(false);
             } catch (BookException e) {
                 errors.add(subkey);
                 continue;
@@ -441,7 +442,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             }
 
             if (includeHeadings) {
-                addField(doc, headingField, OSISUtil.getHeadings(osis));
+                String heading = OSISUtil.getHeadings(osis);
+                addField(doc, headingField, heading);
             }
 
             if (includeMorphology) {

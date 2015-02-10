@@ -61,23 +61,23 @@ public class SystemOrthodox extends Versification {
         BibleBook.KGS2,
         BibleBook.CHR1,
         BibleBook.CHR2,
-	BibleBook.ESD1,
+        BibleBook.ESD1,
         BibleBook.EZRA,
         BibleBook.NEH,
-	BibleBook.TOB,
-	BibleBook.JDT,
+        BibleBook.TOB,
+        BibleBook.JDT,
         BibleBook.ESTH,
-	BibleBook.MACC1,
-	BibleBook.MACC2,
-	BibleBook.MACC3,
+        BibleBook.MACC1,
+        BibleBook.MACC2,
+        BibleBook.MACC3,
         BibleBook.PS,
-	BibleBook.PR_MAN,
+        BibleBook.PR_MAN,
         BibleBook.JOB,
         BibleBook.PROV,
         BibleBook.ECCL,
         BibleBook.SONG,
-	BibleBook.WIS,
-	BibleBook.SIR,
+        BibleBook.WIS,
+        BibleBook.SIR,
         BibleBook.HOS,
         BibleBook.AMOS,
         BibleBook.MIC,
@@ -92,14 +92,14 @@ public class SystemOrthodox extends Versification {
         BibleBook.MAL,
         BibleBook.ISA,
         BibleBook.JER,
-	BibleBook.BAR,
+        BibleBook.BAR,
         BibleBook.LAM,
-	BibleBook.EP_JER,
+        BibleBook.EP_JER,
         BibleBook.EZEK,
-	BibleBook.SUS,
+        BibleBook.SUS,
         BibleBook.DAN,
-	BibleBook.BEL,
-	BibleBook.MACC4,
+        BibleBook.BEL,
+        BibleBook.MACC4,
     };
 
     /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
@@ -346,7 +346,7 @@ public class SystemOrthodox extends Versification {
            17,  14,   9,  21,
         },
         // Malachi
-	{
+        {
            14,  17,  24,   6,
         },
         // Isaiah
@@ -407,8 +407,7 @@ public class SystemOrthodox extends Versification {
            27,  20,  27,  20,  32,  25,  24,  24,
         },
     };
-         
-         
+
     /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matthew

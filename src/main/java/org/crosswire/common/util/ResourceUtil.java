@@ -29,7 +29,7 @@ import org.crosswire.jsword.JSOtherMsg;
 
 /**
  * Better implementations of the getResource methods with less ambiguity and
- * that are less dependent on the specific classloader situation.
+ * that are less dependent on the specific class loader situation.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -61,6 +61,7 @@ public final class ResourceUtil {
      * Generic resource URL fetcher. One way or the other we'll find it! Either
      * as a relative or an absolute reference.
      * 
+     * @param <T> the type of the resource
      * @param clazz the basis to search for the resource first.
      * @param resourceName
      *            The resource to find
@@ -81,6 +82,8 @@ public final class ResourceUtil {
     /**
      * Generic resource URL fetcher
      * 
+     * @param search
+     *            The name of the resource (without a leading /) to find
      * @return The requested resource
      * @throws IOException
      *             if there is a problem reading the file
@@ -94,6 +97,10 @@ public final class ResourceUtil {
     /**
      * Generic resource URL fetcher
      * 
+     * @param <T> the type of the resource
+     * @param clazz the basis to search for the resource first.
+     * @param search
+     *            The name of the resource (without a leading /) to find
      * @return The requested resource
      * @throws IOException
      *             if there is a problem reading the file
@@ -113,8 +120,6 @@ public final class ResourceUtil {
      * @return The found and loaded properties file
      * @throws IOException
      *             if the resource can not be loaded
-     * @throws MissingResourceException
-     *             if the resource can not be found
      */
     public static PropertyMap getProperties(String subject) throws IOException {
         return getProperties(CallContext.getCallingClass(), subject);
@@ -124,13 +129,12 @@ public final class ResourceUtil {
      * Get and load a properties file from the writable area or if that fails
      * from the classpath (where a default ought to be stored)
      * 
+     * @param <T> the type of the resource
      * @param clazz
      *            The name of the desired resource
      * @return The found and loaded properties file
      * @throws IOException
      *             if the resource can not be loaded
-     * @throws MissingResourceException
-     *             if the resource can not be found
      */
     public static <T> PropertyMap getProperties(Class<T> clazz) throws IOException {
         return getProperties(clazz, ClassUtil.getShortClassName(clazz));
@@ -140,13 +144,14 @@ public final class ResourceUtil {
      * Get and load a properties file from the writable area or if that fails
      * from the classpath (where a default ought to be stored)
      * 
+     * @param <T> the type of the resource
      * @param clazz
      *            The name of the desired resource
+     * @param subject
+     *            The name of the desired resource (without any extension)
      * @return The found and loaded properties file
      * @throws IOException
      *             if the resource can not be loaded
-     * @throws MissingResourceException
-     *             if the resource can not be found
      */
     private static <T> PropertyMap getProperties(Class<T> clazz, String subject) throws IOException {
         try {

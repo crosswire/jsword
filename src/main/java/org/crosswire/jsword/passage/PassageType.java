@@ -141,7 +141,6 @@ public enum PassageType {
      * Create an empty, optimized passage
      * 
      * @return the optimized, empty passage
-     * @throws NoSuchVerseException
      */
     public abstract Passage createEmptyPassage(Versification v11n);
 

@@ -351,7 +351,7 @@ public final class DiffCleanup {
     /**
      * Set the edit cost for efficiency
      * 
-     * @param newEditCost
+     * @param newEditCost the edit cost
      */
     public static void setEditCost(int newEditCost) {
         editCost = newEditCost;

@@ -76,6 +76,8 @@ public class DefaultBook {
     /**
      * Unset the current default book, if it matches the argument and attempt to
      * appoint another.
+     * 
+     * @param oldBook the book to unset if it is the default
      */
     protected void unsetDefaultConditionally(Book oldBook) {
         if (book == oldBook) {
@@ -95,6 +97,8 @@ public class DefaultBook {
     /**
      * This method is identical to <code>getDefault().getName()</code> and is
      * only used by Config which works best with strings under reflection.
+     * 
+     * @return the default book name
      */
     public String getDefaultName() {
         if (book == null) {
@@ -122,7 +126,7 @@ public class DefaultBook {
      */
     public void setDefaultByName(String name) {
         if (name == null || name.length() == 0) {
-            log.warn("Attempt to set empty book as default. Ignoring");
+            LOGGER.warn("Attempt to set empty book as default. Ignoring");
             return;
         }
 
@@ -133,7 +137,7 @@ public class DefaultBook {
             }
         }
 
-        log.warn("Book not found. Ignoring: {}", name);
+        LOGGER.warn("Book not found. Ignoring: {}", name);
     }
 
     /**
@@ -167,5 +171,5 @@ public class DefaultBook {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(DefaultBook.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultBook.class);
 }

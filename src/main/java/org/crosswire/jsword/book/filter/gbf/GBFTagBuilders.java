@@ -81,7 +81,7 @@ public final class GBFTagBuilders {
             TagBuilder builder = null;
             if (length == 2) {
                 builder = BUILDERS.get(name);
-            } else {
+            } else if (length > 2) {
                 builder = BUILDERS.get(name.substring(0, 2));
             }
 
@@ -93,7 +93,6 @@ public final class GBFTagBuilders {
                 // I'm not confident enough that we handle all the GBF tags
                 // that I will blame the book instead of the program
                 log.warn("In {}({}) ignoring tag of <{}>", book.getInitials(), key.getName(), name);
-                // DataPolice.report("Ignoring tag of <" + name + ">");
             }
         }
         return tag;

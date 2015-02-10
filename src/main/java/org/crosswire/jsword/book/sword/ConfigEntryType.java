@@ -28,11 +28,11 @@ import org.crosswire.jsword.book.BookCategory;
 
 /**
  * Constants for the keys in a Sword Config file. Taken from
- * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout<br/>
+ * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout<br>
  * now located at
- * http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout<br/>
- * now located at http://www.crosswire.org/wiki/index.php/DevTools:Modules<br/>
- * now located at http://www.crosswire.org/wiki/DevTools:confFiles<br/>
+ * http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout<br>
+ * now located at http://www.crosswire.org/wiki/index.php/DevTools:Modules<br>
+ * now located at http://www.crosswire.org/wiki/DevTools:confFiles<br>
  * <p>
  * Note: This file is organized the same as the latest wiki documentation.
  * 
@@ -270,7 +270,7 @@ public enum ConfigEntryType {
     FONT("Font"),
 
     /**
-     * When false do not show quotation marks for OSIS text that has <q>
+     * When false do not show quotation marks for OSIS text that has &lt;q&gt;
      * elements.
      */
     OSIS_Q_TO_TICK("OSISqToTick", 0,
@@ -666,7 +666,7 @@ public enum ConfigEntryType {
     },
 
     /**
-     * Contains the URL (a bare URL, not an HTML <a> link) of a web page for unlocking instructions/payment.
+     * Contains the URL (a bare URL, not an HTML &lt;a&gt; link) of a web page for unlocking instructions/payment.
      */
     UNLOCK_URL("UnlockURL"),
 

@@ -37,6 +37,8 @@ public class ConfigEvent extends EventObject {
      * 
      * @param source
      *            The event originator, or log stream
+     * @param key the key for the config item
+     * @param model the config item
      */
     public ConfigEvent(Object source, String key, Choice model) {
         super(source);
@@ -75,9 +77,10 @@ public class ConfigEvent extends EventObject {
     /**
      * Serialization support.
      * 
-     * @param is
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @param is the input stream
+     * @throws  IOException if an I/O error occurs.
+     * @throws  ClassNotFoundException if the class of a serialized object
+     *          could not be found.
      */
     private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         // Broken but we don't serialize events

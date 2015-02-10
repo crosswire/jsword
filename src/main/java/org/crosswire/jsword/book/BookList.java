@@ -36,29 +36,31 @@ import java.util.List;
 public interface BookList {
     /**
      * Get a list of all the Books of all types.
+     * 
+     * @return the desired list of books
      */
     List<Book> getBooks();
 
     /**
      * Get a filtered list of all the Books.
      * 
+     * @param filter the filter to apply to the list of books
+     * @return the desired list of books
      * @see BookFilters
      */
     List<Book> getBooks(BookFilter filter);
 
     /**
-     * Remove a BibleListener from our list of listeners
+     * Add a BibleListener from our list of listeners
      * 
-     * @param li
-     *            The old listener
+     * @param li interested listener
      */
     void addBooksListener(BooksListener li);
 
     /**
-     * Add a BibleListener to our list of listeners
+     * Remove a BibleListener to our list of listeners
      * 
-     * @param li
-     *            The new listener
+     * @param li disinterested listener
      */
     void removeBooksListener(BooksListener li);
 }

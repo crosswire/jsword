@@ -67,7 +67,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
      * For example, "Language" will return all the languages for this
      * BookMetaDataList and null for which the language is unknown.
      * 
-     * @param key
+     * @param key the property key
      * @return the values for a particular key.
      */
     public Set<Object> getGroup(String key) {

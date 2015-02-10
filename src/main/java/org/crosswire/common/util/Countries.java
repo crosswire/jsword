@@ -46,7 +46,7 @@ public final class Countries {
      * locale is used for the iso3166Code, it will use the part after the '_'.
      * Thus, this code does not support dialects.
      * 
-     * @param iso3166Code
+     * @param iso3166Code the country code
      * @return true if the country is valid.
      */
     public static boolean isValidCountry(String iso3166Code) {
@@ -79,7 +79,7 @@ public final class Countries {
      * is used for the iso3166Code, it will use the part before the '_'. Thus,
      * this code does not support dialects, except as found in the iso3166.
      * 
-     * @param iso3166Code
+     * @param iso3166Code the country code
      * @return the name of the country
      */
     public static String getCountry(String iso3166Code) {

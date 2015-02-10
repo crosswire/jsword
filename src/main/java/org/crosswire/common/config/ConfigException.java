@@ -31,15 +31,15 @@ import org.crosswire.common.util.LucidException;
  */
 public class ConfigException extends LucidException {
     /**
-     * @param msg
+     * @param msg what happened
      */
     public ConfigException(String msg) {
         super(msg);
     }
 
     /**
-     * @param msg
-     * @param cause
+     * @param msg what happened
+     * @param cause what caused it to happen
      */
     public ConfigException(String msg, Throwable cause) {
         super(msg, cause);

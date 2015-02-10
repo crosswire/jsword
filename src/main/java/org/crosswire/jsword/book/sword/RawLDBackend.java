@@ -193,7 +193,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             }
 
             return entrySize;
-     
         } catch (IOException e) {
             return 0;
         } catch (BookException e) {
@@ -256,7 +255,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     /**
-     * Find a matching entry, returning it's index. Otherwise return < 0, such
+     * Find a matching entry, returning it's index. Otherwise return &lt; 0, such
      * that (-pos - 1) gives the insertion index.
      * 
      * @param key

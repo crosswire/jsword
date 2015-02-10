@@ -22,7 +22,7 @@ package org.crosswire.common.config;
 
 import java.io.File;
 
-import org.crosswire.common.util.Convert;
+import org.crosswire.common.util.StringUtil;
 
 /**
  * A class to convert between strings and objects of a type.
@@ -56,7 +56,7 @@ public class PathChoice extends AbstractReflectedChoice {
             names[i] = paths[i].getAbsolutePath();
         }
 
-        return Convert.stringArray2String(names, File.pathSeparator);
+        return StringUtil.join(names, File.pathSeparator);
     }
 
     /*
@@ -68,7 +68,7 @@ public class PathChoice extends AbstractReflectedChoice {
      */
     @Override
     public Object convertToObject(String orig) {
-        String[] names = Convert.string2StringArray(orig, File.pathSeparator);
+        String[] names = StringUtil.split(orig, File.pathSeparator);
         File[] paths = new File[names.length];
         for (int i = 0; i < names.length; i++) {
             paths[i] = new File(names[i]);

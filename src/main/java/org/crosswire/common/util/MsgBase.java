@@ -51,7 +51,8 @@ public class MsgBase {
     /**
      * Get the internationalized text, but return key if key is unknown.
      *
-     * @param key
+     * @param key the format key to internationalize
+     * @param params the parameters for the format
      * @return the internationalized text
      */
     public String lookup(String key, Object... params) {

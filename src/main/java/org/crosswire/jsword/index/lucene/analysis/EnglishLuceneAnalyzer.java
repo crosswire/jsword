@@ -32,7 +32,7 @@ import org.apache.lucene.util.Version;
 
 /**
  * English Analyzer works like lucene SimpleAnalyzer + Stemming.
- * (LowerCaseTokenizer > PorterStemFilter). Like the AbstractAnalyzer,
+ * (LowerCaseTokenizer &gt; PorterStemFilter). Like the AbstractAnalyzer,
  * {@link StopFilter} is off by default.
  * 
  * 

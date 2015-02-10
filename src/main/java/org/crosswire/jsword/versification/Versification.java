@@ -508,8 +508,8 @@ public class Versification implements ReferenceSystem, Serializable {
      * last verse in a chapter or book is adjacent every verse that
      * follows up to and including verse 1 of the next chapter in
      * the versification.
-     * <br/>
-     * For example:<br/>
+     * <br>
+     * For example:<br>
      * The last verse in the Old Testament is adjacent to:
      * <ul>
      * <li>Intro.NT - the New Testament introduction</li>
@@ -708,7 +708,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * @param start
      *            The first Verse in the range
      * @param end The last Verse in the range
-     * @return The number of chapters. Always >= 1.
+     * @return The number of chapters. Always &gt;= 1.
      */
     public int getChapterCount(Verse start, Verse end) {
         BibleBook startBook = start.getBook();
@@ -739,7 +739,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * @param start
      *            The first Verse in the range
      * @param end The last Verse in the range
-     * @return The number of books. Always >= 1.
+     * @return The number of books. Always &gt;= 1.
      */
     public int getBookCount(Verse start, Verse end) {
         int startBook = bookList.getOrdinal(start.getBook());
@@ -1005,7 +1005,7 @@ public class Versification implements ReferenceSystem, Serializable {
     public boolean validate(BibleBook book, int chapter, int verse, boolean silent) throws NoSuchVerseException {
         // Check the book
         if (book == null) {
-            if(silent) {
+            if (silent) {
                 return false;
             }
             // TRANSLATOR: The user did not supply a book for a verse reference.
@@ -1015,7 +1015,7 @@ public class Versification implements ReferenceSystem, Serializable {
         // Check the chapter
         int maxChapter = getLastChapter(book);
         if (chapter < 0 || chapter > maxChapter) {
-            if(silent) {
+            if (silent) {
                 return false;
             }
             // TRANSLATOR: The user supplied a chapter that was out of bounds. This tells them what is allowed.
@@ -1031,7 +1031,7 @@ public class Versification implements ReferenceSystem, Serializable {
         // Check the verse
         int maxVerse = getLastVerse(book, chapter);
         if (verse < 0 || verse > maxVerse) {
-            if(silent) {
+            if (silent) {
                 return false;
             }
             // TRANSLATOR: The user supplied a verse number that was out of bounds. This tells them what is allowed.

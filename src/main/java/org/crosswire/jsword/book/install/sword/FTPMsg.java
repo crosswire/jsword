@@ -18,35 +18,38 @@
  *     The copyright to this program is held by it's authors.
  *
  */
-package org.crosswire.common.config;
+package org.crosswire.jsword.book.install.sword;
 
-import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.MsgBase;
 
 /**
- * Something in the startup config files failed to start properly.
+ * Compile safe Msg resource settings.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class StartupException extends LucidException {
+final class FTPMsg extends MsgBase {
+    static final MsgBase AUTH_REFUSED = new FTPMsg("SwordInstaller.AuthRefused");
+    static final MsgBase CONNECT_REFUSED = new FTPMsg("SwordInstaller.ConnectRefused");
+    static final MsgBase CWD_REFUSED = new FTPMsg("SwordInstaller.CWDRefused");
+    static final MsgBase DOWNLOAD_REFUSED = new FTPMsg("SwordInstaller.DownloadRefused");
+    static final MsgBase URL_AT_COUNT = new FTPMsg("SwordInstallerFactory.URLAtCount");
+    static final MsgBase URL_COLON_COUNT = new FTPMsg("SwordInstallerFactory.URLColonCount");
+
     /**
-     * @param msg what happened
+     * Passthrough ctor
      */
-    public StartupException(String msg) {
-        super(msg);
+    private FTPMsg(String name) {
+        super();
+        this.name = name;
     }
 
     /**
-     * @param msg what happened
-     * @param cause what caused the problem
+     * @return the name
      */
-    public StartupException(String msg, Throwable cause) {
-        super(msg, cause);
+    public String getName() {
+        return name;
     }
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3616451198199345203L;
+    private String name;
 }

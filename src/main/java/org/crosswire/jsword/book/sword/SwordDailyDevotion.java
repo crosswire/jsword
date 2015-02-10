@@ -36,7 +36,7 @@ public class SwordDailyDevotion extends SwordDictionary implements PreferredKey 
     /**
      * Construct an SwordDailyDevotion given the BookMetaData and the AbstractBackend.
      * 
-     * @param bmd the metadata that describes the book
+     * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     public SwordDailyDevotion(SwordBookMetaData sbmd, Backend backend) {

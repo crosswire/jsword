@@ -37,6 +37,7 @@ public interface SAXEventProvider {
      * 
      * @param handler
      *            The place to send SAX events.
+     * @throws SAXException when a SAX encounters a problem
      */
     void provideSAXEvents(ContentHandler handler) throws SAXException;
 }

@@ -69,6 +69,8 @@ public enum OSType {
 
     /**
      * Simple ctor
+     * 
+     * @param name the name of the OS
      */
     private OSType(String name) {
         this.name = name;
@@ -94,6 +96,9 @@ public enum OSType {
      */
     public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
 
+    /**
+     * @return the URI of the user home
+     */
     public static URI getUserHome() {
         return NetUtil.getURI(new File(System.getProperty("user.home")));
     }
@@ -108,7 +113,10 @@ public enum OSType {
     }
 
     /**
-     * Lookup method to convert from a String
+     * Lookup method to convert from a String to an OSType
+     * 
+     * @param name the name of an OSType
+     * @return the OSType or DEFAULT
      */
     public static OSType fromString(String name) {
         for (OSType v : values()) {
@@ -120,10 +128,8 @@ public enum OSType {
         return DEFAULT;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     @Override
     public String toString() {

@@ -28,38 +28,40 @@ import org.crosswire.jsword.versification.Versification;
 /**
  * Types of Accuracy for verse references. For example:
  * <ul>
- * <li>Gen == BOOK_ONLY;
- * <li>Gen 1 == BOOK_CHAPTER;
- * <li>Gen 1:1 == BOOK_VERSE;
- * <li>Jude 1 == BOOK_VERSE;
- * <li>Jude 1:1 == BOOK_VERSE;
- * <li>1:1 == CHAPTER_VERSE;
- * <li>10 == BOOK_ONLY, CHAPTER_ONLY, or VERSE_ONLY
- * <ul>
+ * <li>Gen == BOOK_ONLY;</li>
+ * <li>Gen 1 == BOOK_CHAPTER;</li>
+ * <li>Gen 1:1 == BOOK_VERSE;</li>
+ * <li>Jude 1 == BOOK_VERSE;</li>
+ * <li>Jude 1:1 == BOOK_VERSE;</li>
+ * <li>1:1 == CHAPTER_VERSE;</li>
+ * <li>10 == BOOK_ONLY, CHAPTER_ONLY, or VERSE_ONLY</li>
+ * </ul>
  * 
+ * <p>
  * With the last one, you will note that there is a choice. By itself there is
  * not enough information to determine which one it is. There has to be a
  * context in which it is used.
- * <p>
+ * </p><p>
  * It may be found in a verse range like: Gen 1:2 - 10. In this case the context
  * of 10 is Gen 1:2, which is BOOK_VERSE. So in this case, 10 is VERSE_ONLY.
- * <p>
+ * </p><p>
  * If it is at the beginning of a range like 10 - 22:3, it has to have more
  * context. If the context is a prior entry like Gen 2:5, 10 - 22:3, then its
  * context is Gen 2:5, which is BOOK_VERSE and 10 is VERSE_ONLY.
- * <p>
+ * </p><p>
  * However if it is Gen 2, 10 - 22:3 then the context is Gen 2, BOOK_CHAPTER so
  * 10 is understood as BOOK_CHAPTER.
- * <p>
+ * </p><p>
  * As a special case, if the preceding range is an entire chapter or book then
  * 10 would understood as CHAPTER_ONLY or BOOK_ONLY (respectively)
- * <p>
+ * </p><p>
  * If the number has no preceding context, then it is understood as being
  * BOOK_ONLY.
- * <p>
+ * </p><p>
  * In all of these examples, the start verse was being interpreted. In the case
  * of a verse that is the end of a range, it is interpreted in the context of
  * the range's start.
+ * </p>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -84,7 +86,7 @@ public enum AccuracyType {
             int verse = 1;
             final String subIdentifier = getSubIdentifier(parts);
             final boolean hasSub = subIdentifier != null;
-            
+
             //can be of form, BCV, BCV!sub, BV, BV!a
             //we only have a chapter and verse number if
             // a- BCV (3 parts) or b- BCV!sub (4 parts)
@@ -385,14 +387,14 @@ public enum AccuracyType {
     /**
      * Does this string exactly define a Verse. For example:
      * <ul>
-     * <li>fromText("Gen") == AccuracyType.BOOK_ONLY;
-     * <li>fromText("Gen 1:1") == AccuracyType.BOOK_VERSE;
-     * <li>fromText("Gen 1") == AccuracyType.BOOK_CHAPTER;
-     * <li>fromText("Jude 1") == AccuracyType.BOOK_VERSE;
-     * <li>fromText("Jude 1:1") == AccuracyType.BOOK_VERSE;
-     * <li>fromText("1:1") == AccuracyType.CHAPTER_VERSE;
-     * <li>fromText("1") == AccuracyType.VERSE_ONLY;
-     * <ul>
+     * <li>fromText("Gen") == AccuracyType.BOOK_ONLY;</li>
+     * <li>fromText("Gen 1:1") == AccuracyType.BOOK_VERSE;</li>
+     * <li>fromText("Gen 1") == AccuracyType.BOOK_CHAPTER;</li>
+     * <li>fromText("Jude 1") == AccuracyType.BOOK_VERSE;</li>
+     * <li>fromText("Jude 1:1") == AccuracyType.BOOK_VERSE;</li>
+     * <li>fromText("1:1") == AccuracyType.CHAPTER_VERSE;</li>
+     * <li>fromText("1") == AccuracyType.VERSE_ONLY;</li>
+     * </ul>
      * 
      * @param parts
      * @param verseAccuracy
@@ -403,7 +405,7 @@ public enum AccuracyType {
     public static AccuracyType fromText(Versification v11n, String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         int partsLength = parts.length;
         String lastPart = parts[partsLength - 1];
-        if (lastPart.length()>0 && lastPart.charAt(0) == '!') {
+        if (lastPart.length() > 0 && lastPart.charAt(0) == '!') {
             --partsLength;
         }
         switch (partsLength) {

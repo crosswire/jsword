@@ -125,6 +125,12 @@ public class NumberShaper implements Serializable {
 
     /**
      * Perform shaping back to 0-9.
+     * @param src
+     *            the text to transform
+     * @param transformed
+     *            an input parameter of one boolean that can hold whether there
+     *            was a transformation
+     * @return the unshaped text
      */
     private char[] unshaped(char[] src, boolean[] transformed) {
         int nine = getNine();
@@ -138,7 +144,10 @@ public class NumberShaper implements Serializable {
 
     /**
      * @param src
+     *            the text to transform
      * @param transformed
+     *            an input parameter of one boolean that can hold whether there
+     *            was a transformation
      * @return the shaped string
      */
     private char[] shaped(char[] src, boolean[] transformed) {

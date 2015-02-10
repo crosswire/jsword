@@ -37,11 +37,11 @@ import java.util.regex.Pattern;
  * 
  * <p>
  * Numbers that exist:
- * <ul>
- * <li>Hebrew: 1-8674
- * <li>Greek: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
- * </ul>
  * </p>
+ * <ul>
+ * <li>Hebrew: 1-8674</li>
+ * <li>Greek: 1-5624 (but not 1418, 2717, 3203-3302, 4452)</li>
+ * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -49,12 +49,10 @@ import java.util.regex.Pattern;
  */
 public class StrongsNumber {
     /**
-     * Build an immutable Strong's Number. Anything that does not match causes a
-     * BookException.
+     * Build an immutable Strong's Number.
      * 
      * @param input
      *            a string that needs to be parsed.
-     * @throws BookException
      */
     public StrongsNumber(String input) {
         valid = parse(input);
@@ -74,7 +72,7 @@ public class StrongsNumber {
      * Build an immutable Strong's Number.
      * 
      * @param language
-     * @param strongsNumber     * @throws BookException
+     * @param strongsNumber
      */
     public StrongsNumber(char language, short strongsNumber, String part) {
         this.language = language;

@@ -36,17 +36,15 @@ import org.xml.sax.SAXException;
 public class JDOMSAXEventProvider implements SAXEventProvider {
     /**
      * Simple constructor
+     * 
+     * @param doc the document
      */
     public JDOMSAXEventProvider(Document doc) {
         this.doc = doc;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax
-     * .ContentHandler)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax.ContentHandler)
      */
     public void provideSAXEvents(ContentHandler handler) throws SAXException {
         try {

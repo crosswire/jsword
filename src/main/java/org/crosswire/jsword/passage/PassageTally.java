@@ -81,9 +81,9 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * Memory considerations: The BitSet approach will always use a
- * <code>int[31000]</code> = 128k of memory.<br />
+ * <code>int[31000]</code> = 128k of memory.<br>
  * The Distinct approach will be n * int[4] where n is the number of verses
- * stored. I expect most searches to have at least n=1000. Also 128k<br />
+ * stored. I expect most searches to have at least n=1000. Also 128k<br>
  * Given this, (A Distinct style PassageTally will usually use more memory than
  * a BitSet style PassageTally) And the intuitive result that the BitSet will be
  * faster, I'm going to start by implementing the latter only.

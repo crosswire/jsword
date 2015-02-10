@@ -40,5 +40,11 @@ public interface WorkListener extends EventListener {
      */
     void workProgressed(WorkEvent ev);
 
+    /**
+     * This method is called to indicate that the work state has changed, perhaps finished.
+     * 
+     * @param ev
+     *            Describes the progress
+     */
     void workStateChanged(WorkEvent ev);
 }
