@@ -74,6 +74,11 @@ public final class GBFTagBuilders {
      */
     public static Tag getTag(Book book, Key key, String name) {
         Tag tag = null;
+        if (name.startsWith("W") && (name.contains("-") || name.contains(":")) && name.matches("WT?[GH] ?[0-9]+[-:][0-9abc-]+")) {
+            // these tags show verse boundaries in different versification;
+            // ignore them instead of parsing them as Strongs / Morphology tags
+            return null;
+        }
         int length = name.length();
         if (length > 0) {
             // Only the first two letters of the tag are indicative of the tag
