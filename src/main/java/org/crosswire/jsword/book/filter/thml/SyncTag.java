@@ -116,6 +116,35 @@ public class SyncTag extends AbstractTag {
             return null;
         }
 
+        if ("lemma".equals(type)) {
+            List<Content> siblings = ele.getContent();
+            int size = siblings.size();
+            if (size == 0) {
+                return null;
+            }
+            Content lastEle = siblings.get(size - 1);
+            if (lastEle instanceof Text) {
+                Element w = OSISUtil.factory().createW();
+                w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_MISC + value);
+                siblings.set(size - 1, w);
+                w.addContent(lastEle);
+            } else if (lastEle instanceof Element) {
+                Element wEle = (Element) lastEle;
+                if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W)) {
+                    StringBuilder buf = new StringBuilder();
+                    String lemmaAttr = wEle.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
+                    if (lemmaAttr != null) {
+                        buf.append(lemmaAttr);
+                        buf.append(' ');
+                    }
+                    buf.append(OSISUtil.LEMMA_MISC);
+                    buf.append(value);
+                    wEle.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, buf.toString());
+                }
+            }
+            return null;
+        }
+
         if ("Dict".equals(type)) {
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value);
