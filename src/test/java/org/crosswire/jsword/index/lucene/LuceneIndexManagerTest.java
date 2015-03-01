@@ -1,18 +1,14 @@
 package org.crosswire.jsword.index.lucene;
 
+import static org.junit.Assert.assertTrue;
+
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertyMap;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
-
 import org.crosswire.jsword.index.IndexManagerFactory;
-import org.crosswire.jsword.passage.Key;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -98,9 +94,9 @@ public class LuceneIndexManagerTest {
 
             assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
             //Can run queries
-            String myquery = VerseField + ":(john)";
-            Key key = reindexedBook.find(myquery);
-            //System.out.println(myquery + " , ResultList: " + key.getName());
+            // String myquery = VerseField + ":(john)";
+            // Key key = reindexedBook.find(myquery);
+            // System.out.println(myquery + " , ResultList: " + key.getName());
 
         }
     }
@@ -139,9 +135,9 @@ public class LuceneIndexManagerTest {
 
             assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
             //A random query test
-            String myquery = VerseField + ":(john)";
-            Key key = reindexedBook.find(myquery);
-            //System.out.println(myquery + " , ResultList: " + key.getName());
+            //String myquery = VerseField + ":(john)";
+            // Key key = reindexedBook.find(myquery);
+            // System.out.println(myquery + " , ResultList: " + key.getName());
 
         }
     }

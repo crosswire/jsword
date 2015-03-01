@@ -21,16 +21,13 @@
 package org.crosswire.jsword.book;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.passage.PassageType;
 import org.crosswire.jsword.passage.VerseRangeFactory;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
