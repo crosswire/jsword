@@ -26,6 +26,7 @@ import java.util.Map;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.BoldStartTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.CrossRefStartTag;
+import org.crosswire.jsword.book.filter.gbf.GBFTags.BookTitleStartTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.DefaultEndTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.EOLTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.FootnoteEndTag;
@@ -86,7 +87,7 @@ public final class GBFTagBuilders {
             TagBuilder builder = null;
             if (length == 2) {
                 builder = BUILDERS.get(name);
-            } else {
+            } else if (length > 2) {
                 builder = BUILDERS.get(name.substring(0, 2));
             }
 
@@ -120,6 +121,15 @@ public final class GBFTagBuilders {
             return new BoldStartTag(name);
         }
     }
+
+    /**
+    *
+    */
+   static final class BookTitleStartTagBuilder implements TagBuilder {
+       public Tag createTag(String name) {
+           return new BookTitleStartTag(name);
+       }
+   }
 
     /**
      *
@@ -350,6 +360,9 @@ public final class GBFTagBuilders {
         BUILDERS.put("TH", new TitleStartTagBuilder());
         BUILDERS.put("Th", defaultEndTagBuilder);
 
+        BUILDERS.put("TT", new BookTitleStartTagBuilder());
+        BUILDERS.put("Tt", defaultEndTagBuilder);
+
         BUILDERS.put("BA", ignoreTagBuilder);
         BUILDERS.put("BC", ignoreTagBuilder);
         BUILDERS.put("BI", ignoreTagBuilder);
@@ -358,6 +371,7 @@ public final class GBFTagBuilders {
         BUILDERS.put("BP", ignoreTagBuilder);
 
         BUILDERS.put("JR", new JustifyRightTagBuilder());
+        BUILDERS.put("JC", ignoreTagBuilder);
         BUILDERS.put("JL", ignoreTagBuilder);
 
         BUILDERS.put("FO", new OTQuoteStartTagBuilder());
