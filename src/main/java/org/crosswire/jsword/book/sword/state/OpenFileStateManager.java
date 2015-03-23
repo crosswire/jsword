@@ -70,7 +70,7 @@ public final class OpenFileStateManager {
         this.monitoringThread = Executors.newScheduledThreadPool(1, new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 Thread t = new Thread(r);
-                t.setDaemon(false);
+                t.setDaemon(true);
                 return t;
             }
 
