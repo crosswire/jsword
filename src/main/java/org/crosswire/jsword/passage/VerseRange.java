@@ -29,8 +29,6 @@ import java.util.NoSuchElementException;
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a Verse plus a
@@ -51,7 +49,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
      * provide this constructor however, you are supposed to provide a default
      * ctor for all beans. For this reason I suggest you don't use it.
      * 
-     *      * @param v11n
+     * @param v11n
      *            The versification for the range
      */
     public VerseRange(Versification v11n) {
@@ -624,7 +622,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
         Verse new_start = v11n.max(a.getStart(), b.getStart());
         Verse new_end = v11n.min(a.getEnd(), b.getEnd());
 
-        if (v11n.distance(new_start, new_end) <= 0) {
+        if (v11n.distance(new_start, new_end) >= 0) {
             return new VerseRange(a.getVersification(), new_start, new_end);
         }
 
@@ -966,12 +964,6 @@ public final class VerseRange implements VerseKey<VerseRange> {
      * The original string for picky users
      */
     private transient String originalName;
-
-    /**
-     * The log stream
-     */
-    /* pkg protected */static final transient Logger log = LoggerFactory.getLogger(VerseRange.class);
-
 
     /**
      * Serialization ID

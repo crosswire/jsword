@@ -213,6 +213,7 @@ public final class OSISUtil {
      * Constant for a Strong's numbering lemma
      */
     public static final String LEMMA_STRONGS = "strong:";
+    public static final String LEMMA_MISC = "lemma:";
     public static final String MORPH_ROBINSONS = "robinson:";
 
     /**

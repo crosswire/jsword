@@ -124,6 +124,9 @@ public final class Versifications {
         if (SystemLuther.V11N_NAME.equals(name)) {
             return new SystemLuther();
         }
+        if (SystemLXX.V11N_NAME.equals(name)) {
+            return new SystemLXX();
+        }
         if (SystemMT.V11N_NAME.equals(name)) {
             return new SystemMT();
         }
@@ -132,6 +135,9 @@ public final class Versifications {
         }
         if (SystemNRSVA.V11N_NAME.equals(name)) {
             return new SystemNRSVA();
+        }
+        if (SystemOrthodox.V11N_NAME.equals(name)) {
+            return new SystemOrthodox();
         }
         if (SystemSynodal.V11N_NAME.equals(name)) {
             return new SystemSynodal();

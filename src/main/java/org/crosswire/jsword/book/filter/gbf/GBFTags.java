@@ -91,6 +91,24 @@ public final class GBFTags {
     /**
      *
      */
+    public static final class BookTitleStartTag extends AbstractTag {
+       /**
+        * @param name
+        */
+       public BookTitleStartTag(String name) {
+           super(name);
+       }
+
+       public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+           Element ele = OSIS_FACTORY.createTitle();
+           ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, "main");
+           GBFTags.updateOsisStack(stack, ele);
+       }
+   }
+
+    /**
+     *
+     */
     public static final class CrossRefStartTag extends AbstractTag {
         public CrossRefStartTag(String name) {
             super(name);
@@ -388,7 +406,7 @@ public final class GBFTags {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
                 if (size == 0) {
-                    DataPolice.report(book, key, "No content to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No content to attach Strong's Morph tag to: <" + name + ">.");
                     return;
                 }
 
@@ -404,7 +422,7 @@ public final class GBFTags {
                 } else if (prevObj instanceof Element) {
                     word = (Element) prevObj;
                 } else {
-                    DataPolice.report(book, key, "No words to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No words to attach Strong's Morph tag to: <" + name + ">.");
                     return;
                 }
 
@@ -432,45 +450,55 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            boolean empty = false;
             String name = getName().trim();
+            Element word = null;
 
             Content top = stack.get(0);
             if (top instanceof Element) {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
-                if (size == 0) {
-                    DataPolice.report(book, key, "No content to attach word to: <" + name + ">.");
-                    return;
+                if (size > 0) {
+                    int lastIndex = size - 1;
+                    Content prevObj = ele.getContent(lastIndex);
+
+                    if (prevObj instanceof Text) {
+                        Text textItem = (Text) prevObj;
+                        word = OSIS_FACTORY.createW();
+                        ele.removeContent(textItem);
+                        word.addContent(textItem);
+                        ele.addContent(word);
+                    } else if (prevObj instanceof Element) {
+                        word = (Element) prevObj;
+                    }
                 }
+            }
 
-                int lastIndex = size - 1;
-                Content prevObj = ele.getContent(lastIndex);
-                Element word = null;
+            if (word == null) {
+                word = OSIS_FACTORY.createW();
+                empty = true;                    
+            }
 
-                if (prevObj instanceof Text) {
-                    Text textItem = (Text) prevObj;
-                    word = OSIS_FACTORY.createW();
-                    ele.removeContent(textItem);
-                    word.addContent(textItem);
+            String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
+            StringBuilder newLemma = new StringBuilder();
+
+            // Strong's numbers are separated by spaces w/in the attribute
+            if (existingLemma != null && existingLemma.length() > 0) {
+                newLemma.append(existingLemma).append(' ');
+            }
+
+            // Grab the G or H and the number that follows
+            newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(1));
+            word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
+
+            if (empty) {
+                // The last element of the stack is the wrapping div.
+                // Empty elements are merely appended to the parent container
+                top = stack.getLast();
+                if (top instanceof Element) {
+                    Element ele = (Element) top;
                     ele.addContent(word);
-                } else if (prevObj instanceof Element) {
-                    word = (Element) prevObj;
-                } else {
-                    DataPolice.report(book, key, "No words to attach word to: <" + name + ">.");
-                    return;
                 }
-
-                String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
-                StringBuilder newLemma = new StringBuilder();
-
-                // Strong's numbers are separated by spaces w/in the attribute
-                if (existingLemma != null && existingLemma.length() > 0) {
-                    newLemma.append(existingLemma).append(' ');
-                }
-
-                // Grab the G or H and the number that follows
-                newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(1));
-                word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
             }
         }
     }
@@ -513,7 +541,17 @@ public final class GBFTags {
                 Content top = stack.get(0);
                 if (top instanceof Element) {
                     Element ele = (Element) top;
-                    ele.addContent(text);
+                    // Don't make this text the child of a preceding <w>
+                    if (OSISUtil.OSIS_ELEMENT_W.equals(ele.getName())) {
+                        // The last element of the stack is the wrapping div.
+                        top = stack.getLast();
+                        if (top instanceof Element) {
+                            ele = (Element) top;
+                            ele.addContent(new Text(text));
+                        }
+                    } else {
+                        ele.addContent(text);
+                    }
                 }
             }
         }

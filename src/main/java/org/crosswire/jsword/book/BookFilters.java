@@ -174,12 +174,8 @@ public final class BookFilters {
      * Filter for all books
      */
     static class AllBookFilter implements BookFilter {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book
-         * .Book)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
             return true;
@@ -194,12 +190,8 @@ public final class BookFilters {
             this.category = category;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book
-         * .Book)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
             return book.getBookCategory().equals(category) && !book.isLocked();
@@ -216,12 +208,8 @@ public final class BookFilters {
             this.category = category;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book
-         * .Book)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
             return !book.getBookCategory().equals(category) && !book.isLocked();
@@ -238,12 +226,8 @@ public final class BookFilters {
             this.feature = feature;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book
-         * .Book)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
             return book.hasFeature(feature) && !book.isLocked();
@@ -321,18 +305,24 @@ public final class BookFilters {
             tests = cache.toArray(new Test[cache.size()]);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book
-         * .Book)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
             for (int i = 0; i < tests.length; i++) {
                 Test test = tests[i];
-                Object result = book.getProperty(test.property);
-                if (result == null || !test.result.equals(result.toString())) {
+                Object property = book.getProperty(test.property);
+                if (property == null) {
+                    return false;
+                }
+                String result = property.toString();
+                if (result.indexOf('\n') > -1) {
+                    // There's more than one value.
+                    if ((result.indexOf(test.result) > -1) != test.expected) {
+                        return false;
+                    }
+                }
+                else if (test.result.equals(result) != test.expected) {
                     return false;
                 }
             }
@@ -349,18 +339,27 @@ public final class BookFilters {
             protected Test(String filter) {
                 String[] parts = filter.split("=");
                 if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0) {
-                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filter);
+                    throw new IllegalArgumentException("Filter format is 'property=value' or property!=value, given: " + filter);
                 }
-                this.property = parts[0];
-                this.result = parts[1];
-
+                property = parts[0];
+                result = parts[1];
+                int len = property.length();
+                this.expected = (property.charAt(len - 1) != '!');
+                if (!expected) {
+                    property = property.substring(0, len - 1);
+                }
             }
-            protected Test(String property, String result) {
+            protected Test(String property, String result, boolean expected) {
                 this.property = property;
                 this.result = result;
+                this.expected = expected;
+            }
+            protected Test(String property, String result) {
+                this(property, result, true);
             }
             protected String property;
             protected String result;
+            protected boolean expected;
         }
     }
 }

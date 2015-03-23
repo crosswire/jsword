@@ -23,7 +23,7 @@ package org.crosswire.jsword.passage;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * A Versified indicates that a Key has a Versification reference system.
+ * A VerseKey indicates that a Key has a Versification reference system.
  * 
  * @param <T> The type of VerseKey that reversify returns.
  *

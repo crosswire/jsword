@@ -60,7 +60,7 @@ public final class DataPolice {
             buf.append(':');
         }
         if (key != null) {
-            buf.append(key.getName());
+            buf.append(key.getOsisID());
         }
         buf.append(": ");
         buf.append(message);

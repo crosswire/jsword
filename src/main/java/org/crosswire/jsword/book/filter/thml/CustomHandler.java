@@ -184,7 +184,7 @@ public class CustomHandler extends DefaultHandler {
                 return t;
             }
 
-            DataPolice.report(book, key, "Wrong case used in thml element: " + name);
+            // DataPolice.report(book, key, "Wrong case used in thml element: " + name);
         }
         return t;
     }

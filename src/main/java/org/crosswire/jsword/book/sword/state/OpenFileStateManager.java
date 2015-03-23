@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.BlockType;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manages the creation and re-distribution of open file states. This increases
@@ -66,9 +68,11 @@ public final class OpenFileStateManager {
 
         RawBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new RawBackendState(metadata);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new RawBackendState(metadata);
         }
 
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
@@ -77,9 +81,11 @@ public final class OpenFileStateManager {
 
         RawFileBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new RawFileBackendState(metadata);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new RawFileBackendState(metadata);
         }
 
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
@@ -88,8 +94,11 @@ public final class OpenFileStateManager {
 
         GenBookBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new GenBookBackendState(metadata);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new GenBookBackendState(metadata);
         }
+
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
@@ -98,9 +107,11 @@ public final class OpenFileStateManager {
 
         RawLDBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new RawLDBackendState(metadata);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new RawLDBackendState(metadata);
         }
 
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
@@ -109,9 +120,11 @@ public final class OpenFileStateManager {
 
         ZLDBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new ZLDBackendState(metadata);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new ZLDBackendState(metadata);
         }
 
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
@@ -120,17 +133,19 @@ public final class OpenFileStateManager {
 
         ZVerseBackendState state = getInstance(metadata);
         if (state == null) {
-            state = new ZVerseBackendState(metadata, blockType);
+            LOGGER.trace("Initializing: {}", metadata.getInitials());
+            return new ZVerseBackendState(metadata, blockType);
         }
 
+        LOGGER.trace("Reusing: {}", metadata.getInitials());
         return state;
     }
 
     @SuppressWarnings("unchecked")
     private static <T extends OpenFileState> T getInstance(SwordBookMetaData metadata) {
         Queue<OpenFileState> availableStates = getQueueForMeta(metadata);
-
-        return (T) availableStates.poll();
+        T queue = (T) availableStates.poll();
+        return queue;
     }
 
     private static Queue<OpenFileState> getQueueForMeta(SwordBookMetaData metadata) {
@@ -152,11 +167,14 @@ public final class OpenFileStateManager {
         }
 
         // instead of releasing, we add to our queue
-        Queue<OpenFileState> queueForMeta = getQueueForMeta(fileState.getBookMetaData());
+        SwordBookMetaData bmd = fileState.getBookMetaData();
+        Queue<OpenFileState> queueForMeta = getQueueForMeta(bmd);
+        LOGGER.trace("Offering to releasing: {}", bmd.getInitials());
         boolean offered = queueForMeta.offer(fileState);
 
         // ignore if we couldn't offer to the queue
         if (!offered) {
+            LOGGER.trace("Released: {}", bmd.getInitials());
             fileState.releaseResources();
         }
     }
@@ -182,4 +200,5 @@ public final class OpenFileStateManager {
 
     private static volatile Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
     private static volatile boolean shuttingDown;
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenFileStateManager.class);
 }
