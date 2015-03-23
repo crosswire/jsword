@@ -37,4 +37,15 @@ public interface OpenFileState extends Closeable {
     SwordBookMetaData getBookMetaData();
 
     void releaseResources();
+
+    /**
+     * @return latest access before releasing back to the pool
+     */
+    long getLastAccess();
+
+    /**
+     * Sets the last access time
+     * @param lastAccess the time at which this instance was last accessed
+     */
+    void setLastAccess(long lastAccess);
 }

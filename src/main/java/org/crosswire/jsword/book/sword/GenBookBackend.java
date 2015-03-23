@@ -51,7 +51,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     }
 
     public GenBookBackendState initState() throws BookException {
-        return OpenFileStateManager.getGenBookBackendState(getBookMetaData());
+        return OpenFileStateManager.instance().getGenBookBackendState(getBookMetaData());
     }
 
     /* (non-Javadoc)
