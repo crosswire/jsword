@@ -75,25 +75,25 @@ public final class OpenFileStateManager {
             }
 
         }).scheduleWithFixedDelay(new Runnable() {
-                    public void run() {
-                        // check the state of the maps and queues... The queues may have too much in them and that will in turn max out
-                        // the heap.
-                        long currentTime = System.currentTimeMillis();
+            public void run() {
+                // check the state of the maps and queues... The queues may have too much in them and that will in turn max out
+                // the heap.
+                long currentTime = System.currentTimeMillis();
 
-                        for (Queue<OpenFileState> e : OpenFileStateManager.this.metaToStates.values()) {
-                            for (Iterator<OpenFileState> iterator = e.iterator(); iterator.hasNext(); ) {
-                                final OpenFileState state = iterator.next();
-                                if (state.getLastAccess() + maxExpiry * 1000 < currentTime) {
-                                    //release resources
-                                    state.releaseResources();
+                for (Queue<OpenFileState> e : OpenFileStateManager.this.metaToStates.values()) {
+                    for (Iterator<OpenFileState> iterator = e.iterator(); iterator.hasNext(); ) {
+                        final OpenFileState state = iterator.next();
+                        if (state.getLastAccess() + maxExpiry * 1000 < currentTime) {
+                            //release resources
+                            state.releaseResources();
 
-                                    //remove from the queues
-                                    iterator.remove();
-                                }
-                            }
+                            //remove from the queues
+                            iterator.remove();
                         }
                     }
-                }, 0, cleanupIntervalSeconds, TimeUnit.SECONDS);
+                }
+            }
+        }, 0, cleanupIntervalSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -211,7 +211,9 @@ public final class OpenFileStateManager {
         //gives you a snapshot at some point in time, though not necessarily consistent, so just in case this remains
         //in access of the iterator() functionality, we update the last access date to avoid it being destroyed while we
         //use it
-        state.setLastAccess(System.currentTimeMillis());
+        if(state != null) {
+            state.setLastAccess(System.currentTimeMillis());
+        }
         return state;
     }
 
