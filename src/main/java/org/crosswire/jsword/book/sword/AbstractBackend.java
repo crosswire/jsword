@@ -125,7 +125,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         } catch (IOException e) {
             throw new BookException("Unable to obtain raw content from backend", e);
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -140,7 +140,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         } catch (IOException e) {
             throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -180,8 +180,10 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
             openFileState = initState();
             switch (this.bmd.getKeyType()) {
                 case LIST:
-                case TREE:
                     readNormalOsis(key, processor, content, openFileState);
+                    break;
+                case TREE:
+                    readNormalOsisSingleKey(key, processor, content, openFileState);
                     break;
                 case VERSE:
                     readPassageOsis(key, processor, content, openFileState);
@@ -192,7 +194,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
             return content;
         } finally {
-            OpenFileStateManager.release(openFileState);
+            OpenFileStateManager.instance().release(openFileState);
         }
     }
 
@@ -210,6 +212,21 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 // failed to process key 'next'
                 throwFailedKeyException(key, next, e);
             }
+        }
+    }
+
+    /**
+     * Avoid using iterator for GenBook TreeKeys which would cause a GenBook nodes children to be appended to their parent 
+     * e.g. the top level page would include the whole book and result in OOM error 
+     */
+    private void readNormalOsisSingleKey(Key key, RawTextToXmlProcessor processor, List<Content> content, T openFileState) throws BookException {
+        String rawText;
+        try {
+            rawText = readRawContent(openFileState, key);
+            processor.postVerse(key, content, rawText);
+        } catch (IOException e) {
+            // failed to process key
+            throwFailedKeyException(key, key, e);
         }
     }
 

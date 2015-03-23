@@ -146,6 +146,36 @@ public class TreeKey extends AbstractKeyList {
         return parent;
     }
 
+    /** equality is tricky if comparing TreeKeys (as used by GenBooks) because some child keys can have the same name but different parents
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // Since this can not be null
+        if (obj == null) {
+            return false;
+        }
+
+        // Check that that is the same as this
+        // Don't use instanceOf since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        TreeKey otherTreeKey = (TreeKey)obj;
+        if (!getName().equals(otherTreeKey.getName())) {
+            return false;
+        }
+
+        // names match so now work up the tree comparing parents
+
+        if (getParent()==null) {
+            return otherTreeKey.getParent()==null;
+        }
+        
+        // KeyTrees nodes can have the same name but different parents
+        return getParent().equals(otherTreeKey.getParent());
+    }
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */

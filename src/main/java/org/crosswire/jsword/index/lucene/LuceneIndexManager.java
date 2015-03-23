@@ -51,8 +51,10 @@ import org.slf4j.LoggerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  */
 /*
-//todo OPEN questions
+//todo
     use org.apache.lucene.util.Version when upgrading Lucene;
+
+    OPEN questions
  */
 public class LuceneIndexManager implements IndexManager {
     /**
@@ -60,6 +62,12 @@ public class LuceneIndexManager implements IndexManager {
      */
     public LuceneIndexManager() {
         policy = new IndexPolicyAdapter();
+        try {
+            baseFolderURI = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
+        } catch (IOException ex) {
+            log.error("Failed to find lucene index storage area. "+ex.getMessage(), ex);
+
+        }
     }
 
     /* (non-Javadoc)
@@ -95,31 +103,24 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
-    /** (non-Javadoc)
+    /**
+     * Clients can use this to determine if book's index is stale and needs to reindexed or downloaded.
+     * Asssumes index exists: Client must use isIndexed() prior to using this method
+       @returns true, if Latest.Index.Version.xxx > Installed.Index.Version.xxx
      * @see org.crosswire.jsword.index.IndexManager#needsReindexing(org.crosswire.jsword.book.Book)
      */
 
-    /*
-            todo IndexVersion: for new index, store InstalledVersion as getLatestIndexVersion(book)
-               For any newly created index:
-                  store PerBook prop:  Installed.Index.Version.Book.xxx = getLatestIndexVersion(book)
-            todo Default Installed version Installed.Index.Version [value of getLatestIndexVersion()] in prop file, say ({IndexFolder}/JSword/lucene/js.index.installed.metadata )
-                  Question: At what point can jsword add/update value of Installed.Index.Version : Options:
-                    1. If
-
-     */
     public boolean needsReindexing(Book book) {
-        // step 1: check for existing index
-        if (!isIndexed(book)) {
+
+
+        /*if (!isIndexed(book)) {
             return true;
-        }
+        }*/
 
         boolean reindex = false;
 
-        // step 2: check for index version
+        //check for index version
         try {
-            // need hard casting because it is only implemented on LuceneIndex, not the Index interface
-            //LuceneIndex index = (LuceneIndex)getIndex(book);
 
             //should Clients use IndexStatus.INVALID
 
@@ -127,7 +128,7 @@ public class LuceneIndexManager implements IndexManager {
             float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
             if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
                 reindex = true;
-                log.info(book.getName()+": needs reindexing, Installed index version @"+installedV);
+                log.info(book.getBookMetaData().getInitials()+": needs reindexing, Installed index version @"+installedV);
             }
             
         } catch (Exception ex) {
@@ -166,6 +167,9 @@ public class LuceneIndexManager implements IndexManager {
             if (NetUtil.getAsFile(storage).exists()) {
                 finalStatus = IndexStatus.DONE;
                 INDEXES.put(book, index);
+
+                //update IndexVersion
+                InstalledIndex.instance().storeLatestVersionAsInstalledIndexMetadata(book);
             }
         } catch (IOException e) {
             Reporter.informUser(LuceneIndexManager.this, e);
@@ -223,6 +227,10 @@ public class LuceneIndexManager implements IndexManager {
                 throw new BookException(JSMsg.gettext("Failed to delete search index."));
             }
             book.setIndexStatus(IndexStatus.UNDONE);
+
+            //Delete index Version metadata (InstalledIndex)
+            InstalledIndex.instance().removeFromInstalledIndexMetadata(book);
+
         } catch (IOException ex) {
             // TRANSLATOR: Error condition: The index could not be deleted.
             throw new BookException(JSMsg.gettext("Failed to delete search index."), ex);
@@ -267,13 +275,13 @@ public class LuceneIndexManager implements IndexManager {
         assert driverName != null;
         assert bookName != null;
 
-        URI base = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
-        URI driver = NetUtil.lengthenURI(base, driverName);
 
-        return NetUtil.lengthenURI(driver, bookName);
+        //URI driver = NetUtil.lengthenURI(baseFolderURI, driverName);
+        return NetUtil.lengthenURI(baseFolderURI, driverName+ NetUtil.SEPARATOR+ bookName);
     }
 
     private IndexPolicy policy;
+    private URI baseFolderURI ;
 
     /**
      * The created indexes
@@ -283,7 +291,7 @@ public class LuceneIndexManager implements IndexManager {
     /**
      * The lucene search index directory
      */
-    private static final String DIR_LUCENE = "lucene";
+    public static final String DIR_LUCENE = "lucene";
 
     /**
      * The log stream

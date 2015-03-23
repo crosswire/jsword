@@ -195,7 +195,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             log.error("Unable to ascertain key validity", e);
             return 0;
         } finally {
-            OpenFileStateManager.release(rafBook);
+            OpenFileStateManager.instance().release(rafBook);
         }
     }
 
@@ -253,7 +253,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         } catch (IOException e) {
             throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
-            OpenFileStateManager.release(rafBook);
+            OpenFileStateManager.instance().release(rafBook);
         }
     }
 
@@ -261,7 +261,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      * @see org.crosswire.jsword.book.sword.StatefulFileBackedBackend#initState()
      */
     public ZVerseBackendState initState() throws BookException {
-        return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
+        return OpenFileStateManager.instance().getZVerseBackendState(getBookMetaData(), blockType);
     }
 
     /* (non-Javadoc)

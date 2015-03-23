@@ -257,7 +257,7 @@ try    -->
     <module name="IllegalCatch"/>
     <module name="IllegalThrows"/>
     <module name="PackageDeclaration"/>
-    <module name="JUnitTestCase"/>
+    <!--  <module name="JUnitTestCase"/> Removed in 6.2 -->
     <!-- We are not ready for this
     <module name="ReturnCount">
       <property name="max" value="3"/>

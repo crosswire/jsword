@@ -47,15 +47,17 @@ public class ReadEverything {
     public static void main(String[] args) {
         // Loop through all the Books
         log.warn("*** Reading all installed Bibles");
-        BookFilter filter = BookFilters.getCustom("SourceType=GBF;Category=Biblical Texts");
+        BookFilter filter = BookFilters.getCustom("SourceType=GBF");
         List<Book> comments = Books.installed().getBooks(filter);
         for (Book book : comments) {
 
             if (!book.isLocked()) {
-                log.warn("****** Reading: {}", book.getInitials());
+                log.warn("****** Reading: [{}] {} ({})", book.getInitials(), book.getName(), book.getBookCategory());
                 Key set = book.getGlobalKeyList();
 
                 testReadMultiple(book, set);
+            } else {
+                log.warn("****** Skipping: [{}] {} ({})", book.getInitials(), book.getName(), book.getBookCategory());
             }
         }
     }
@@ -73,7 +75,7 @@ public class ReadEverything {
             // skip the root of a TreeKey as it often is not addressable.
             if (first) {
                 first = false;
-                if (set instanceof TreeKey && key.getName().length() == 0) {
+                if (key instanceof TreeKey && key.getName().length() == 0) {
                     continue;
                 }
             }
@@ -93,18 +95,18 @@ public class ReadEverything {
      */
     private static void testReadSingle(Book book, Key key) {
         try {
-            // log.debug("reading: {}/{}", bmd.getInitials(), key.getText());
+            log.debug("reading: {}/{}", book.getInitials(), key.getName());
 
             BookData data = new BookData(book, key);
             if (data.getOsisFragment() == null) {
-                log.warn("No output from: {},{}", book.getInitials(), key.getName());
+                log.warn("No output from: {},{}", book.getInitials(), key.getOsisID());
             }
 
             // This might be a useful extra test, except that a failure gives
             // you no help at all.
             // data.validate();
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: {}, {}", book.getInitials(), key.getName(), ex);
+            log.error("Unexpected error reading: {}, {}, {}", book.getInitials(), key.getOsisID(), key.getClass().getName(), ex);
         }
     }
 

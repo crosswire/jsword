@@ -25,21 +25,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.crosswire.common.config.ChoiceFactory;
-import org.crosswire.common.config.Config;
-import org.crosswire.common.util.CWClassLoader;
-import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
+import org.crosswire.jsword.passage.TreeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,44 +50,22 @@ public class GatherAllReferences {
     /**
      * Read all the books that we can get our hands on.
      */
-    public static void main(String[] args) throws IOException, JDOMException {
+    public static void main(String[] args) throws IOException {
         out = new PrintWriter(new BufferedWriter(new FileWriter("passages.log")));
-        // Calling Project.instance() will set up the project's home directory
-        // ~/.jsword
-        // This will set it as a place to look for overrides for
-        // ResourceBundles, properties and other resources
-        CWProject.instance();
-
-        // And the array of allowed osis>html converters
-        ChoiceFactory.getDataMap().put("converters", new String[] {});
-
-        // The choice of configurable XSL stylesheets
-        ChoiceFactory.getDataMap().put("cswing-styles", new String[] {});
-
-        // Load the desktop configuration so we can find the sword drivers
-        Config config = new Config("Desktop Options");
-        Document xmlconfig = XMLUtil.getDocument("config");
-
-        Locale defaultLocale = Locale.getDefault();
-        ResourceBundle configResources = ResourceBundle.getBundle("config", defaultLocale, CWClassLoader.instance(GatherAllReferences.class));
-
-        config.add(xmlconfig, configResources);
-
-        config.setProperties(ResourceUtil.getProperties("desktop"));
-        config.localToApplication();
-
         // Loop through all the Books
         log.warn("*** Reading all known Books");
-        List<Book> comments = Books.installed().getBooks();
+        BookFilter filter = BookFilters.getCustom("GlobalOptionFilter=ThMLScripref;Category=Biblical Texts");
+        List<Book> comments = Books.installed().getBooks(filter);
         for (Book book : comments) {
 
-            BookMetaData bmd = book.getBookMetaData();
-            // Skip PlainText as they do not have references marked up
-            if (bmd.getProperty("SourceType") != null)
-            {
-                Key set = book.getGlobalKeyList();
+            if (!book.isLocked()) {
+                BookMetaData bmd = book.getBookMetaData();
+                // Skip PlainText as they do not have references marked up
+                if (bmd.getProperty("SourceType") != null) {
+                    Key set = book.getGlobalKeyList();
 
-                readBook(book, set);
+                    readBook(book, set);
+                }
             }
         }
         out.flush();
@@ -112,7 +80,15 @@ public class GatherAllReferences {
                 0, 0
         };
 
+        boolean first = true;
         for (Key key : set) {
+            // skip the root of a TreeKey as it often is not addressable.
+            if (first) {
+                first = false;
+                if (key instanceof TreeKey && key.getName().length() == 0) {
+                    continue;
+                }
+            }
             readKey(book, key, stats);
         }
         log.warn(book.getInitials() + ':' + stats[0] + ':' + stats[1]);
@@ -128,7 +104,7 @@ public class GatherAllReferences {
             try {
                 orig = book.getRawText(key);
             } catch (BookException ex) {
-                log.warn("Failed to read: {}({}):{}", book.getInitials(), key.getName(), ex.getMessage(), ex);
+                log.warn("Failed to read: {}({}):{}", book.getInitials(), key.getOsisID(), ex.getMessage(), ex);
                 return;
             }
 
@@ -143,9 +119,10 @@ public class GatherAllReferences {
 
             if (matcher != null) {
                 while (matcher.find()) {
-                    String rawRef = matcher.group(1);
+                    String rawRef = matcher.group(2);
                     stats[0]++;
                     String message = book.getInitials() + ':' + key.getOsisRef() + '/' + rawRef;
+/*
                     try {
                         Key ref = book.getKey(rawRef);
                         message += '/' + ref.getOsisRef();
@@ -153,6 +130,7 @@ public class GatherAllReferences {
                         message += '!' + e.getMessage();
                         stats[1]++;
                     }
+ */
 
                     out.println(message);
                 }
@@ -163,9 +141,9 @@ public class GatherAllReferences {
         }
     }
 
-    private static Pattern thmlPassagePattern = Pattern.compile("passage=\"([^\"]*)");
-    private static Pattern gbfPassagePattern = Pattern.compile("<RX>([^<]*)");
-    private static Pattern osisPassagePattern = Pattern.compile("osisRef=\"([^\"]*)");
+    private static Pattern thmlPassagePattern = Pattern.compile("(osisRef|passage)=\"([^\"]*)");
+    private static Pattern gbfPassagePattern = Pattern.compile("(<RX>)([^<]*)");
+    private static Pattern osisPassagePattern = Pattern.compile("(osisRef)=\"([^\"]*)");
     private static PrintWriter out;
 
     /**

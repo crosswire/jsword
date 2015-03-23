@@ -22,8 +22,12 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.FileUtil;
@@ -242,6 +246,58 @@ public final class XMLUtil {
      */
     public static String cleanAllCharacters(String broken) {
         return invalidCharacterPattern.matcher(broken).replaceAll(" ");
+    }
+
+    /**
+     * Strip all closing tags from the end of the XML fragment, and then
+     * re-close all tags that are open at the end of the string.
+     * 
+     * @param broken
+     *            the string to be cleaned.
+     * @return cleaned string, or {@code null} if the string could not be
+     *         cleaned due to more broken XML
+     */
+    public static String recloseTags(String broken) {
+        String result = broken;
+        // remove closing tags from the end
+        while (result.matches(".*</[a-zA-Z]+>[ \t\r\n]*")) {
+            result = result.substring(0, result.lastIndexOf('<'));
+        }
+        // close tags again
+        List<String> openTags = new ArrayList<String>();
+        Matcher m = Pattern.compile("</?[a-zA-Z]+").matcher(result);
+        boolean lTagFound = false, lgTagFound = false;
+        while (m.find()) {
+            String match = m.group();
+            if (match.startsWith("</")) {
+                if (openTags.size() == 0 && match.equals("</l") && !lTagFound) {
+                    return recloseTags("<l>"+broken);
+                }
+                if (openTags.size() == 0 && match.equals("</lg") && !lgTagFound) {
+                    return recloseTags("<lg>"+broken);
+                }
+                if (openTags.size() == 0)
+                    return null;
+                String lastTag = openTags.remove(openTags.size() - 1);
+                if (!match.equals("</" + lastTag))
+                    return null;
+            } else {
+                int closePos = result.indexOf('>', m.end());
+                if (closePos == -1)
+                    return null;
+                while (Character.isWhitespace(result.charAt(closePos-1))) closePos--;
+                if (result.charAt(closePos-1) != '/') {
+                    if(match.equals("<l")) lTagFound = true;
+                    if(match.equals("<lg")) lgTagFound = true;
+                    openTags.add(match.substring(1));
+                }
+            }
+        }
+        Collections.reverse(openTags);
+        for (String openTag : openTags) {
+            result += "</" + openTag + ">";
+        }
+        return result;
     }
 
     /**

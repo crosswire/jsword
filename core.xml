@@ -476,7 +476,7 @@
 	== Use Checkstyle to check the style of JSword files
 	== These are properties related to checkstyle.
 	=========================================================================-->
-	<property name="checkstyle.version"		value="5.7" />
+	<property name="checkstyle.version"		value="6.3" />
 	<property name="checkstyle.home"		location="${tools.home}/checkstyle-${checkstyle.version}" />
 	<property name="checkstyle.report"		location="${report.dir}/checkstyle" />
 	<property name="checkstyle.url"			value="http://sourceforge.net/projects/checkstyle/files/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
@@ -530,7 +530,7 @@
 	== Use findbugs to find bugs.
 	== These are properties related to findbugs.
 	=========================================================================-->
-	<property name="findbugs.version"		value="2.0.3" />
+	<property name="findbugs.version"		value="3.0.0" />
 	<property name="findbugs.home"			location="${tools.home}/findbugs-${findbugs.version}" />
 	<property name="findbugs.report"		location="${report.dir}/findbugs" />
 	<property name="findbugs.url"			value="http://prdownloads.sourceforge.net/findbugs/findbugs-${findbugs.version}.zip?download" />
@@ -582,7 +582,7 @@
 	== Use PMD and CPD to find bad code
 	== These are properties related to PMD.
 	=========================================================================-->
-	<property name="pmd.version"			value="5.1.0" />
+	<property name="pmd.version"			value="5.1.3" />
 	<property name="pmd.home"				location="${tools.home}/pmd-bin-${pmd.version}" />
 	<property name="pmd.report"				location="${report.dir}/pmd" />
 	<property name="cpd.report"				location="${report.dir}/cpd" />
@@ -906,10 +906,10 @@
 	== Use Javancss to do analyze Non Commenting Source Statements
 	== These are properties related to Javancss.
 	=========================================================================-->
-	<property name="javancss.version"		value="32.53" />
+	<property name="javancss.version"		value="33.54" />
 	<property name="javancss.home"			location="${tools.home}/javancss-${javancss.version}" />
 	<property name="javancss.report"		location="${report.dir}/javancss" />
-	<property name="javancss.url"			value="http://www.kclee.de/clemens/java/javancss/javancss-${javancss.version}.zip"/>
+	<property name="javancss.url"			value="http://javancss.codehaus.org/javancss-${javancss.version}.zip"/>
 	<property name="javancss.zip"			location="${tools.home}/javancss-${javancss.version}.zip" />
 
 	<target name="javancss"
