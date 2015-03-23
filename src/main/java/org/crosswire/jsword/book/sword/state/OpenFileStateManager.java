@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -67,14 +68,15 @@ public final class OpenFileStateManager {
      */
     private OpenFileStateManager(final int cleanupIntervalSeconds, final int maxExpiry) {
         // no op
-        this.monitoringThread = Executors.newScheduledThreadPool(1, new ThreadFactory() {
+        scheduledExecutorService = Executors.newScheduledThreadPool(1, new ThreadFactory() {
             public Thread newThread(Runnable r) {
                 Thread t = new Thread(r);
                 t.setDaemon(true);
                 return t;
             }
 
-        }).scheduleWithFixedDelay(new Runnable() {
+        });
+        this.monitoringThread = this.scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             public void run() {
                 // check the state of the maps and queues... The queues may have too much in them and that will in turn max out
                 // the heap.
@@ -256,6 +258,7 @@ public final class OpenFileStateManager {
     public void shutDown() {
         shuttingDown = true;
         this.monitoringThread.cancel(true);
+        this.scheduledExecutorService.shutdownNow();
         for (Queue<OpenFileState> e : metaToStates.values()) {
             OpenFileState state = null;
             while ((state = e.poll()) != null) {
@@ -271,6 +274,7 @@ public final class OpenFileStateManager {
     }
 
     private final ScheduledFuture<?> monitoringThread;
+    private final ScheduledExecutorService scheduledExecutorService;
     private final Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
     private volatile boolean shuttingDown;
 
