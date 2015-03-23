@@ -41,26 +41,26 @@ public class LuceneIndexManagerTest {
 
     }
 
-    @Test
-    public void testInstalledVersionEqualToLatestVersion() throws Exception {
-
-        Books myBooks = Books.installed();
-        System.out.println(IndexMetadata.generateInstalledBooksIndexVersionReport());
-
-        Book reindexedBook = null;
-        for (Book insBook : myBooks.getBooks()) {
-            createOrUpgradeIndex(insBook);
-
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
-
-            assertTrue(indexManager.isIndexed(insBook));
-            assertTrue(indexManager.needsReindexing(insBook) == false);
-
-
-        } //for
-
-    }
+//    @Test
+//    public void testInstalledVersionEqualToLatestVersion() throws Exception {
+//
+//        Books myBooks = Books.installed();
+//        System.out.println(IndexMetadata.generateInstalledBooksIndexVersionReport());
+//
+//        Book reindexedBook = null;
+//        for (Book insBook : myBooks.getBooks()) {
+//            createOrUpgradeIndex(insBook);
+//
+//            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
+//            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
+//
+//            assertTrue(indexManager.isIndexed(insBook));
+//            assertTrue(indexManager.needsReindexing(insBook) == false);
+//
+//
+//        } //for
+//
+//    }
 
 
 
