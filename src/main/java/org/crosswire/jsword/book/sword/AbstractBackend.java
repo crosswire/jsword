@@ -241,7 +241,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 } catch (IOException e) {
                     //some versifications have more verses than modules contain - so can't throw
                     //an error here...
-                    LOGGER.debug(e.getMessage(), e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }
