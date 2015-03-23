@@ -52,7 +52,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
      */
     @Override
     public ZLDBackendState initState() throws BookException {
-        return OpenFileStateManager.getZLDBackendState(getBookMetaData());
+        return OpenFileStateManager.instance().getZLDBackendState(getBookMetaData());
     }
 
     /* (non-Javadoc)
