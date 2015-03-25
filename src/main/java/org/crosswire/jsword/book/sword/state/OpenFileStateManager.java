@@ -21,9 +21,14 @@
 package org.crosswire.jsword.book.sword.state;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.BlockType;
@@ -44,10 +49,11 @@ import org.slf4j.LoggerFactory;
  * lookup by {@link SwordBookMetaData}, which then gives us a pool of available
  * file states... We create some more if none are available.
  * 
- * We may want to set a maximum to prevent leaking resources on heavy concurrent
- * usage. However, at the current time, with single thread access, we are
- * bounded to having 1 open file per module installed, which should be
- * acceptable across platforms.
+ * In order to prevent memory leaks (OpenFileStates might be quite heavy as they do some internal caching of file data..
+ * In order to avoid many file references piling up in memory, we implement a background cleaning thread which will clean
+ * up redundant keys every so often.
+ *
+ *
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -59,11 +65,65 @@ public final class OpenFileStateManager {
     /**
      * prevent instantiation
      */
-    private OpenFileStateManager() {
+    private OpenFileStateManager(final int cleanupIntervalSeconds, final int maxExpiry) {
         // no op
+        this.monitoringThread = Executors.newScheduledThreadPool(1, new ThreadFactory() {
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(r);
+                t.setDaemon(true);
+                return t;
+            }
+
+        }).scheduleWithFixedDelay(new Runnable() {
+            public void run() {
+                // check the state of the maps and queues... The queues may have too much in them and that will in turn max out
+                // the heap.
+                long currentTime = System.currentTimeMillis();
+
+                for (Queue<OpenFileState> e : OpenFileStateManager.this.metaToStates.values()) {
+                    for (Iterator<OpenFileState> iterator = e.iterator(); iterator.hasNext(); ) {
+                        final OpenFileState state = iterator.next();
+                        if (state.getLastAccess() + maxExpiry * 1000 < currentTime) {
+                            //release resources
+                            state.releaseResources();
+
+                            //remove from the queues
+                            iterator.remove();
+                        }
+                    }
+                }
+            }
+        }, 0, cleanupIntervalSeconds, TimeUnit.SECONDS);
     }
 
-    public static RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
+    /**
+     * Allow the caller to initialise with their own settings. Should the OpenFileStateManager already be initialised
+     * a no-op will occur. No need for double-checked locking here
+     */
+    public static synchronized void init(final int cleanupIntervalSeconds, final int maxExpiry) {
+        if(manager == null) {
+            manager = new OpenFileStateManager(cleanupIntervalSeconds, maxExpiry);
+        } else {
+            // already intialised
+            LOGGER.warn("The OpenFileStateManager has already been initialised, potentially with its default settings. The following values were ignored: cleanUpInterval [{}], maxExpiry=[{}]", cleanupIntervalSeconds, maxExpiry);
+        }
+
+    }
+
+    /**
+     * Singleton instance method to return the one and only Open File State Manager
+     * @return
+     */
+    public static OpenFileStateManager instance() {
+        if(manager == null) {
+            synchronized (OpenFileStateManager.class) {
+                init(60, 60);
+            }
+        }
+        return manager;
+    }
+
+    public RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawBackendState state = getInstance(metadata);
@@ -76,7 +136,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public static RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
+    public RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawFileBackendState state = getInstance(metadata);
@@ -89,7 +149,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
+    public GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         GenBookBackendState state = getInstance(metadata);
@@ -102,7 +162,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public static RawLDBackendState getRawLDBackendState(SwordBookMetaData metadata) throws BookException {
+    public RawLDBackendState getRawLDBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawLDBackendState state = getInstance(metadata);
@@ -115,7 +175,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public static ZLDBackendState getZLDBackendState(SwordBookMetaData metadata) throws BookException {
+    public ZLDBackendState getZLDBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         ZLDBackendState state = getInstance(metadata);
@@ -128,7 +188,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public static ZVerseBackendState getZVerseBackendState(SwordBookMetaData metadata, BlockType blockType) throws BookException {
+    public ZVerseBackendState getZVerseBackendState(SwordBookMetaData metadata, BlockType blockType) throws BookException {
         ensureNotShuttingDown();
 
         ZVerseBackendState state = getInstance(metadata);
@@ -142,13 +202,21 @@ public final class OpenFileStateManager {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends OpenFileState> T getInstance(SwordBookMetaData metadata) {
+    private <T extends OpenFileState> T getInstance(SwordBookMetaData metadata) {
         Queue<OpenFileState> availableStates = getQueueForMeta(metadata);
-        T queue = (T) availableStates.poll();
-        return queue;
+        final T state = (T) availableStates.poll();
+
+        //while not strictly necessary, the documentation suggests that iterating through the collection
+        //gives you a snapshot at some point in time, though not necessarily consistent, so just in case this remains
+        //in access of the iterator() functionality, we update the last access date to avoid it being destroyed while we
+        //use it
+        if(state != null) {
+            state.setLastAccess(System.currentTimeMillis());
+        }
+        return state;
     }
 
-    private static Queue<OpenFileState> getQueueForMeta(SwordBookMetaData metadata) {
+    private Queue<OpenFileState> getQueueForMeta(SwordBookMetaData metadata) {
         Queue<OpenFileState> availableStates = metaToStates.get(metadata);
         if (availableStates == null) {
             synchronized (OpenFileState.class) {
@@ -159,12 +227,14 @@ public final class OpenFileStateManager {
         return availableStates;
     }
 
-    public static void release(OpenFileState fileState) {
+    public void release(OpenFileState fileState) {
         if (fileState == null) {
             // can't release anything. JSword has failed to open a file state,
             // and a finally block is trying to close this
             return;
         }
+
+        fileState.setLastAccess(System.currentTimeMillis());
 
         // instead of releasing, we add to our queue
         SwordBookMetaData bmd = fileState.getBookMetaData();
@@ -182,8 +252,9 @@ public final class OpenFileStateManager {
     /**
      * Shuts down all open files
      */
-    public static void shutDown() {
+    public void shutDown() {
         shuttingDown = true;
+        this.monitoringThread.cancel(true);
         for (Queue<OpenFileState> e : metaToStates.values()) {
             OpenFileState state = null;
             while ((state = e.poll()) != null) {
@@ -192,13 +263,16 @@ public final class OpenFileStateManager {
         }
     }
 
-    private static void ensureNotShuttingDown() throws BookException {
+    private void ensureNotShuttingDown() throws BookException {
         if (shuttingDown) {
             throw new BookException("Unable to read book, application is shutting down.");
         }
     }
 
-    private static volatile Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
-    private static volatile boolean shuttingDown;
+    private final ScheduledFuture<?> monitoringThread;
+    private final Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
+    private volatile boolean shuttingDown;
+
+    private static volatile OpenFileStateManager manager;
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenFileStateManager.class);
 }
