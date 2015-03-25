@@ -27,10 +27,26 @@ package org.crosswire.jsword.book.sword.state;
  * @author DM Smith
  */
 public abstract class AbstractOpenFileState implements OpenFileState {
+    private long lastAccess = System.currentTimeMillis();
+
     /**
      * Allows us to decide whether to release the resources or continue using them
      */
     public void close() {
-        OpenFileStateManager.release(this);
+        OpenFileStateManager.instance().release(this);
+    }
+
+    /**
+      * @return latest access before releasing back to the pool
+     */
+    public long getLastAccess() {
+        return this.lastAccess;
+    }
+
+    /**
+     * @param lastAccess last time the file state was accessed
+     */
+    public void setLastAccess(final long lastAccess) {
+        this.lastAccess = lastAccess;
     }
 }

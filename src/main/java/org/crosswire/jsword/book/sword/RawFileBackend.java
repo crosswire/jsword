@@ -75,7 +75,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
     @Override
     public RawFileBackendState initState() throws BookException {
-        return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
+        return OpenFileStateManager.instance().getRawFileBackendState(getBookMetaData());
     }
 
     /* (non-Javadoc)
@@ -280,7 +280,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             prepopulateIndexFiles(state);
             prepopulateIncfile(state);
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 

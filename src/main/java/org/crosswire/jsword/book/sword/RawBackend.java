@@ -99,7 +99,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (BookException e) {
             return 0;
         } finally {
-            OpenFileStateManager.release(initState);
+            OpenFileStateManager.instance().release(initState);
         }
     }
 
@@ -166,12 +166,12 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (IOException e) {
             throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
-            OpenFileStateManager.release(rafBook);
+            OpenFileStateManager.instance().release(rafBook);
         }
     }
 
     public T initState() throws BookException {
-        return (T) OpenFileStateManager.getRawBackendState(getBookMetaData());
+        return (T) OpenFileStateManager.instance().getRawBackendState(getBookMetaData());
     }
 
     public String getRawText(RawBackendState state, Key key) throws IOException {
@@ -197,7 +197,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (BookException e) {
             return "";
         } finally {
-            OpenFileStateManager.release(initState);
+            OpenFileStateManager.instance().release(initState);
         }
     }
 
@@ -219,7 +219,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         } catch (BookException e) {
             return false;
         } finally {
-            OpenFileStateManager.release(rawBackendState);
+            OpenFileStateManager.instance().release(rawBackendState);
         }
     }
 

@@ -125,7 +125,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         } catch (IOException e) {
             throw new BookException("Unable to obtain raw content from backend", e);
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -140,7 +140,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         } catch (IOException e) {
             throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -194,7 +194,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
             return content;
         } finally {
-            OpenFileStateManager.release(openFileState);
+            OpenFileStateManager.instance().release(openFileState);
         }
     }
 

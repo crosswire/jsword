@@ -71,7 +71,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     public RawLDBackendState initState() throws BookException {
-        return OpenFileStateManager.getRawLDBackendState(getBookMetaData());
+        return OpenFileStateManager.instance().getRawLDBackendState(getBookMetaData());
     }
 
     private String readRawContent(RawLDBackendState state, String key) throws IOException {
@@ -125,7 +125,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (IOException e) {
             return 0;
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -147,7 +147,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (IOException e) {
             // fall through FIXM(CJB) Log?
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
         throw new ArrayIndexOutOfBoundsException(index);
     }
@@ -165,7 +165,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (BookException e) {
             return -getCardinality() - 1;
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
@@ -199,7 +199,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (BookException e) {
             return 0;
         } finally {
-            OpenFileStateManager.release(state);
+            OpenFileStateManager.instance().release(state);
         }
     }
 
