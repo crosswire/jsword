@@ -54,10 +54,10 @@ public final class InstalledIndex {
         String value = props.get(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                 props.get(INSTALLED_INDEX_DEFAULT_VERSION ) );
 
-        if(value==null)
+        if (value == null) {
             return defaultInstalledIndexVersionIfMetadataFileNotPresent;
-        else
-            return Float.parseFloat(value);
+        }
+        return Float.parseFloat(value);
     }
 
     //Store the LatestIndexVersion for a book in the metadata file : typically after a new index creation
@@ -68,11 +68,7 @@ public final class InstalledIndex {
             props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     String.valueOf( IndexMetadata.instance().getLatestIndexVersion(b) ) );
 
-            try {
-                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
-            } catch (IOException e) {
-                log.error("Failed to store InstalledIndex metadata ", e);
-            }
+            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
         }
     }
 
@@ -85,12 +81,8 @@ public final class InstalledIndex {
     protected void storeInstalledIndexMetadata() throws IOException {
 
 
-        try {
-            synchronized (writeLock) {
-                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
-            }
-        } catch (IOException e) {
-            log.error("Failed to store InstalledIndex metadata ", e);
+        synchronized (writeLock) {
+            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
         }
     }
 
@@ -125,11 +117,7 @@ public final class InstalledIndex {
 
         synchronized (writeLock) {
             props.putAll(updateProps);
-            try {
-                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
-            } catch (IOException e) {
-                log.error("Failed to store InstalledIndex metadata ", e);
-            }
+            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
         }
     }
 
@@ -141,11 +129,7 @@ public final class InstalledIndex {
             props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     installedIndexVersionToStore );
 
-            try {
-                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
-            } catch (IOException e) {
-                log.error("Failed to store InstalledIndex metadata ", e);
-            }
+            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
         }
     }
 
@@ -155,11 +139,7 @@ public final class InstalledIndex {
 
             props.remove(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE +IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()) );
 
-            try {
-                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
-            } catch (IOException e) {
-                log.error("Failed to store removed Index metadata ", e);
-            }
+            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
         }
     }
 

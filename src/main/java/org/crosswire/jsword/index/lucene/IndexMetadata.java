@@ -63,8 +63,9 @@ public final class IndexMetadata {
 
     /**
      * default Installed IndexVersion
-    @deprecated see InstalledIndex.java
+     * @deprecated see InstalledIndex.java
      */
+    @Deprecated
     public float getInstalledIndexVersion() {
         String value = props.get(INDEX_VERSION, "1.1"); //todo At some point default should be 1.2
         return Float.parseFloat(value);
@@ -94,7 +95,7 @@ public final class IndexMetadata {
     public static String getBookIdentifierPropSuffix(BookMetaData meta) {
         String moduleVer = null;
         if(meta.getProperty("Version") !=null)
-            moduleVer = '['+ ((org.crosswire.common.util.Version)meta.getProperty("Version")).toString()+']';
+            moduleVer = '[' + meta.getProperty("Version") + ']';
 
         return
                 meta.getInitials()+ moduleVer;

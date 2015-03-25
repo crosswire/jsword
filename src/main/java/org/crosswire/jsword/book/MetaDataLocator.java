@@ -14,33 +14,34 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013
+ * Copyright: 2015
  *     The copyright to this program is held by it's authors.
- *
  */
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.book;
 
-import org.crosswire.jsword.book.BookException;
+import java.io.File;
 
 /**
- * Indicates that the files are missing, and therefore this book should be excluded
+ * A MetaDataLocator allows one to define where BookMetaData for a Book may be found.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Chris Burrell
+ * @author DM Smith
  */
-public class MissingDataFilesException extends BookException {
+public interface MetaDataLocator {
     /**
-     * Instantiates a new missing data files exception.
-     *
-     * @param msg the msg
+     * A read-only folder containing configuration data for books.
+     * May return null or a folder that does not exist.
+     * 
+     * @return the config folder
      */
-    public MissingDataFilesException(String msg) {
-        super(msg);
-    }
+    File getReadLocation();
 
     /**
-     * Serialization ID
+     * A writable folder containing configuration data for books.
+     * May return null or a folder that does not exist.
+     * 
+     * @return the config folder
      */
-    private static final long serialVersionUID = -130074367541462750L;
+    File getWriteLocation();
 }

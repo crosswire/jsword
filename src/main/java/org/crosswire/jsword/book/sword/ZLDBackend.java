@@ -92,7 +92,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
 
                 decipher(temp);
 
-                String compressType = (String) getBookMetaData().getProperty(ConfigEntryType.COMPRESS_TYPE);
+                String compressType = getBookMetaData().getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE);
                 uncompressed = CompressorType.fromString(compressType).getCompressor(temp).uncompress().toByteArray();
 
                 // cache the uncompressed data for next time

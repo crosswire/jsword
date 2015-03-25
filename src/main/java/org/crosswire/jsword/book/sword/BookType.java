@@ -62,7 +62,7 @@ public enum BookType {
 
         @Override
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
-            BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
     },
@@ -108,7 +108,7 @@ public enum BookType {
 
         @Override
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
-            BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
     },

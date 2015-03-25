@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Config does the following things:
  * <ul>
- * <li>Provides a GUI independant API with which to create GUIs</li>
+ * <li>Provides a GUI independent API with which to create GUIs</li>
  * <li>Stores a local store of settings</li>
  * <li>Allows updates to the local store</li>
  * </ul>
@@ -119,7 +119,7 @@ public class Config implements Iterable<Choice> {
         String value = model.getString();
         if (value == null) {
             value = "";
-            log.info("key={} had a null value", key);
+            log.debug("key={} had a null value", key);
         }
 
         local.put(key, value);
@@ -269,7 +269,7 @@ public class Config implements Iterable<Choice> {
             // if force==true or if a higher priority choice has
             // changed.
             if (!newValue.equals(oldValue)) {
-                log.info("Setting {}={} (was {})", key, newValue, oldValue);
+                log.debug("Setting {}={} (was {})", key, newValue, oldValue);
                 try {
                     choice.setString(newValue);
                     if (changeListeners != null) {

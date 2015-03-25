@@ -24,13 +24,16 @@ import java.util.List;
 
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.versification.Versification;
 import org.jdom2.Attribute;
 import org.jdom2.Content;
@@ -49,7 +52,7 @@ public class SwordBook extends AbstractPassageBook {
     /**
      * Construct an SwordBook given the BookMetaData and the AbstractBackend.
      * 
-     * @param bmd the metadata that describes the book
+     * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     public SwordBook(SwordBookMetaData sbmd, Backend<?> backend) {
@@ -74,7 +77,7 @@ public class SwordBook extends AbstractPassageBook {
                 // fail silently, operation not supported by the backend
                 log.debug(ex.getMessage());
             } catch (BookException ex) {
-                // failing silently, as previous behaviour was to attempt to
+                // failing silently, as previous behavior was to attempt to
                 // return as much as we can using the slower method
                 log.debug(ex.getMessage());
             }
@@ -92,6 +95,43 @@ public class SwordBook extends AbstractPassageBook {
         }
 
         return global;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBook#getScope()
+     */
+    @Override
+    public Key getScope() {
+        SwordBookMetaData sbmd = (SwordBookMetaData) getBookMetaData();
+        //if the book type doesn't have verses, then leave it.
+        if (sbmd.getProperty(BookMetaData.KEY_VERSIFICATION) == null) {
+            //then we're not looking at a versified book
+            return null;
+        }
+
+        Object keyString = sbmd.getProperty(BookMetaData.KEY_SCOPE);
+
+        if (keyString != null) {
+            try {
+                return getKey((String) keyString);
+            } catch (NoSuchKeyException ex) {
+                //the scope defined is not correct
+                log.error("Unable to parse scope from book", ex);
+                return null;
+            }
+        }
+
+        //need to calculate the scope
+        //now comes the expensive part
+        Key bookKeys = getGlobalKeyList();
+
+        //this is practically impossible, but cater for it just in case.
+        if (!(bookKeys instanceof VerseKey)) {
+            log.error("Global key list isn't a verse key. A very expensive no-op has just occurred.");
+            return null;
+        }
+
+        return bookKeys;
     }
 
     /* (non-Javadoc)

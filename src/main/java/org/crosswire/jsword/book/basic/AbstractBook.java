@@ -21,7 +21,7 @@
 package org.crosswire.jsword.book.basic;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.common.activate.Lock;
@@ -67,6 +67,13 @@ public abstract class AbstractBook implements Book {
         this.bmd = bmd;
         this.backend = backend;
         this.listeners = new CopyOnWriteArrayList<IndexStatusListener>();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getScope()
+     */
+    public Key getScope() {
+        return getGlobalKeyList();
     }
 
     /* (non-Javadoc)
@@ -220,24 +227,31 @@ public abstract class AbstractBook implements Book {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getProperties()
+     * @see org.crosswire.jsword.book.Book#getPropertyKeys()
      */
-    public Map<String, Object> getProperties() {
-        return bmd.getProperties();
+    public Set<String> getPropertyKeys() {
+        return bmd.getPropertyKeys();
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getProperty(java.lang.String)
      */
-    public Object getProperty(String key) {
+    public String getProperty(String key) {
         return bmd.getProperty(key);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#putProperty(java.lang.String, java.lang.Object)
      */
-    public void putProperty(String key, Object value) {
-        bmd.putProperty(key, value);
+    public void putProperty(String key, String value) {
+        bmd.putProperty(key, value, false);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#putProperty(java.lang.String, java.lang.String, boolean)
+     */
+    public void putProperty(String key, String value, boolean forFrontend) {
+        bmd.putProperty(key, value, forFrontend);
     }
 
     /* (non-Javadoc)

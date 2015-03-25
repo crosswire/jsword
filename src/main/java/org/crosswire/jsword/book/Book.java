@@ -20,8 +20,9 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.util.Language;
@@ -53,6 +54,16 @@ public interface Book extends Activatable, Comparable<Book> {
      * @return A Key that includes all of the known Keys
      */
     Key getGlobalKeyList();
+
+    /**
+     * Get a complete list of entries. Create a Key that encompasses all
+     * of the existing entries in the book. For most modules this will be the
+     * same as {@link #getGlobalKeyList}, however for a Bible, it will
+     * get the references that are actually in the book.
+     * 
+     * @return A Key that includes all of the existing Keys
+     */
+    Key getScope();
 
     /**
      * Get a Key for the name, if possible. Otherwise return an empty Key.
@@ -343,22 +354,34 @@ public interface Book extends Activatable, Comparable<Book> {
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
      */
-    Map<String, Object> getProperties();
+    Set<String> getPropertyKeys();
 
     /**
      * @param key
      *            the key of the property.
      * @return the value of the property
      */
-    Object getProperty(String key);
+    String getProperty(String key);
 
     /**
+     * Save to shared storage.
+     * 
      * @param key
-     *            the key of the property.
+     *            the key of the property to set
      * @param value
      *            the value of the property
      */
-    void putProperty(String key, Object value);
+    void putProperty(String key, String value);
+
+    /**
+     * Saves an entry to a particular configuration file.
+     * 
+     * @param key the entry that we are saving
+     * @param value the value of the entry
+     * @param forFrontend when {@code true} save to front end storage, else in shared storage
+     * @throws IOException
+     */
+    void putProperty(String key, String value, boolean forFrontend);
 
     /**
      * Has anyone generated a search index for this Book?

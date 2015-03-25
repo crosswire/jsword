@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.book.sword.state.RawFileBackendState;
@@ -114,7 +115,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
      */
     public void setRawText(RawFileBackendState state, Key key, String text) throws BookException, IOException {
 
-        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);
         int index = verse.getOrdinal();
@@ -142,7 +143,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     public void setAliasKey(RawFileBackendState state, Key alias, Key source) throws IOException {
-        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse aliasVerse = KeyUtil.getVerse(alias);
         Verse sourceVerse = KeyUtil.getVerse(source);
@@ -312,7 +313,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
     private void prepopulateIndexFiles(RawFileBackendState state) throws IOException {
 
-        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         Versification v11n = Versifications.instance().getVersification(v11nName);
         int otCount = v11n.getCount(Testament.OLD);
         int ntCount = v11n.getCount(Testament.NEW) + 1;

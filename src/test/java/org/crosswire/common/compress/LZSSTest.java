@@ -20,6 +20,7 @@
  */
 package org.crosswire.common.compress;
 
+import static org.crosswire.common.util.PlatformTestUtils.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -113,7 +114,7 @@ public class LZSSTest {
         try {
             byte[] back = bosUncompressed.toByteArray();
             result = new String(back, "UTF-8");
-            assertTrue("round trip LZSS uncompression", result.startsWith("          \nThe First Book of Moses, called Genesis"));
+            assertTrue("round trip LZSS uncompression", startsWith(result, "^          \r?\nThe First Book of Moses, called Genesis"));
         } catch (UnsupportedEncodingException e) {
             fail();
             return;

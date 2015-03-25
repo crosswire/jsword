@@ -215,9 +215,8 @@ public class VersificationToKJVMapper {
         VerseKey kjvKeys = kjvVerses.getKey();
         Iterator<Key> leftIter = leftKeys.iterator();
 
-        boolean isKJVMany = kjvKeys != null && kjvKeys.getCardinality() != 1;
-
-        if (isKJVMany) {
+        // Are there many KJV keys?
+        if (kjvKeys != null && kjvKeys.getCardinality() != 1) {
             // We detect if the keys are 1-apart from each other. If so, then we skip verse 0 on both sides.
             int diff = Math.abs(leftKeys.getCardinality() - kjvKeys.getCardinality());
 

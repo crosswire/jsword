@@ -225,7 +225,7 @@ public class BookData implements BookProvider {
                 for (int i = 0; i < books.length; i++) {
                     Book book = books[i];
                     cell = OSISUtil.factory().createCell();
-                    Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                    Language lang = book.getLanguage();
                     if (lang != null) {
                         cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                     }
@@ -272,7 +272,7 @@ public class BookData implements BookProvider {
 
                                 // Since we used that cell create another
                                 cell = OSISUtil.factory().createCell();
-                                lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                                lang = book.getLanguage();
                                 cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                                 row.addContent(cell);
                             }
@@ -348,7 +348,7 @@ public class BookData implements BookProvider {
      */
     private Versification getVersification(final int i) {
         return Versifications.instance().getVersification(
-                (String) books[i].getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
+                books[i].getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
     }
 
 

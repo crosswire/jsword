@@ -230,7 +230,7 @@ public class TreeKeyIndex implements Activatable {
     }
 
     private String getExpandedDataPath() throws BookException {
-        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
+        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), bmd.getProperty(SwordBookMetaData.KEY_DATA_PATH));
 
         if (loc == null) {
             // FIXME(DMS): missing parameter

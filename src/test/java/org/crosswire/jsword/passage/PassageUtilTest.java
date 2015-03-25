@@ -62,7 +62,7 @@ public class PassageUtilTest {
         persist = PassageUtil.isPersistentNaming();
 
         // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
+        v11n = Versifications.instance().getVersification("KJV");
     }
 
     /*

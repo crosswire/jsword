@@ -252,3 +252,11 @@ haggai
 zechariah
 manasses
 laodiceans
+temp
+unenciphered
+anglicised
+pristine
+multimap
+plaintext
+bidi
+wiki

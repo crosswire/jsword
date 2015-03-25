@@ -39,8 +39,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 /**
@@ -232,8 +230,4 @@ public class OSISFilter implements Filter {
      * Pattern to find the end of a speech. Used to convert to a milestoned version.
      */
     private static final Pattern SPEECH_END = Pattern.compile("</speech>", Pattern.LITERAL);
-    /**
-     * The log stream
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OSISFilter.class);
 }

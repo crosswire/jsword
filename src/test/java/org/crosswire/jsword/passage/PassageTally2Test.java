@@ -78,8 +78,8 @@ public class PassageTally2Test {
     Passage gen1_157 = null;
 
     // AV11N(DMS): Update test to test all V11Ns
-    PassageTally tally = new PassageTally(Versifications.instance().getDefaultVersification());
-    PassageTally empty = new PassageTally(Versifications.instance().getDefaultVersification());
+    PassageTally tally = new PassageTally(Versifications.instance().getVersification("KJV"));
+    PassageTally empty = new PassageTally(Versifications.instance().getVersification("KJV"));
     PassageTally temp = null;
 
     @Before
@@ -89,7 +89,7 @@ public class PassageTally2Test {
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
         // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
+        v11n = Versifications.instance().getVersification("KJV");
 
         gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 1);
         gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 2);

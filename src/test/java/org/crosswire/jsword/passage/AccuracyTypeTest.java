@@ -43,7 +43,7 @@ public class AccuracyTypeTest {
     @Before
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
-        rs = Versifications.instance().getDefaultVersification();
+        rs = Versifications.instance().getVersification("KJV");
     }
 
     @Test

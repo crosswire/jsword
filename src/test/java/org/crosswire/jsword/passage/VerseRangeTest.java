@@ -87,7 +87,7 @@ public class VerseRangeTest {
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
         // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
+        v11n = Versifications.instance().getVersification("KJV");
 
         gen10_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 32);
         gen10_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 2);

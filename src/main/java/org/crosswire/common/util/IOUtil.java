@@ -51,7 +51,7 @@ public final class IOUtil {
     /**
      * Unpack a zip file to a given directory. Honor the paths as given in the
      * zip file.
-     * 
+     *
      * @param file
      *            The zip file to download
      * @param destdir
@@ -59,8 +59,27 @@ public final class IOUtil {
      * @throws IOException
      *             If there is an file error
      */
-    @SuppressWarnings("resource")
     public static void unpackZip(File file, File destdir) throws IOException {
+        unpackZip(file, destdir, true);
+    }
+
+    /**
+     * Unpack a zip file to a given directory. Honor the paths as given in the
+     * zip file.
+     *
+     * @param file
+     *            The zip file to download
+     * @param destdir
+     *            The directory to unpack up
+     * @param include
+     *            true to indicate the next arguments will be a filter that only includes what is specified.
+     * @param includeExcludes
+     *            a list of case insensitive patterns that will act as an inclusion or exclusion prefix
+     * @throws IOException
+     *            If there is an file error
+     */
+    @SuppressWarnings("resource")
+    public static void unpackZip(File file, File destdir, boolean include, String... includeExcludes) throws IOException {
         // unpack the zip.
         byte[] dbuf = new byte[4096];
         ZipFile zf = null;
@@ -70,6 +89,30 @@ public final class IOUtil {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 String entrypath = entry.getName();
+
+                //check filters
+                if (includeExcludes != null && includeExcludes.length > 0) {
+                        //if include, then we attempt to match ANY path
+                        //if exclude, then we ensure that we match NO path
+                    boolean skip = include;
+                    for (String filter : includeExcludes) {
+                        final boolean matchesPath = entrypath.toLowerCase().startsWith(filter);
+                        //for includes, ANY match counts, so we override the default of true to false to say 'not skip'
+                        if (include && matchesPath) {
+                            skip = false;
+                        }
+
+                        //for excludes, the default of skip is false
+                        if (!include && matchesPath) {
+                            skip = true;
+                        }
+                    }
+
+                    if (skip) {
+                        continue;
+                    }
+                }
+
                 File entryFile = new File(destdir, entrypath);
                 File parentDir = entryFile.getParentFile();
                 // Is it already a directory ?
@@ -107,7 +150,7 @@ public final class IOUtil {
 
     /**
      * Closes any {@link Closeable} object
-     * 
+     *
      * @param closeable
      *            The zip file to close
      */
@@ -123,7 +166,7 @@ public final class IOUtil {
 
     /**
      * Closes any {@link Closeable} object
-     * 
+     *
      * @param closeable
      *            The zip file to close
      */

@@ -81,7 +81,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      * @see org.crosswire.jsword.book.sword.Backend#decipher(byte[])
      */
     public void decipher(byte[] data) {
-        String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
+        String cipherKeyString = getBookMetaData().getProperty(SwordBookMetaData.KEY_CIPHER_KEY);
         if (cipherKeyString != null) {
             Sapphire cipherEngine = new Sapphire(cipherKeyString.getBytes());
             for (int i = 0; i < data.length; i++) {

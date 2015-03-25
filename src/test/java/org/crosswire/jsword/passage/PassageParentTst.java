@@ -111,7 +111,7 @@ public class PassageParentTst {
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
         // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
+        v11n = Versifications.instance().getVersification("KJV");
 
         start = System.currentTimeMillis();
         gen1_135 = keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");

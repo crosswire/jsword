@@ -25,6 +25,7 @@ import java.io.RandomAccessFile;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.BitwisePassage;
@@ -73,7 +74,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
      */
     @Override
     public int getRawTextLength(Key key) {
-        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);
 
@@ -108,7 +109,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         try {
             rafBook = initState();
 
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
             Versification v11n = Versifications.instance().getVersification(v11nName);
 
             Testament[] testaments = new Testament[] {
@@ -181,7 +182,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String readRawContent(RawBackendState state, Key key) throws IOException {
-        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);
 

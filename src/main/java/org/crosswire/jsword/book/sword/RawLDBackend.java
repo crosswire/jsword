@@ -96,7 +96,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     protected String getRawText(DataEntry entry) {
-        String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
+        String cipherKeyString = getBookMetaData().getProperty(SwordBookMetaData.KEY_CIPHER_KEY);
         byte[] cipherKeyBytes = null;
         if (cipherKeyString != null) {
             try {

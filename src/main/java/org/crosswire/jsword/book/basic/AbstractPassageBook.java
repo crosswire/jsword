@@ -20,9 +20,13 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -36,7 +40,10 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -51,19 +58,20 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joe Walker [joe at eireneh dot com]
  * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * The copyright to this program is held by it's authors.
  */
 public abstract class AbstractPassageBook extends AbstractBook {
 
     /**
      * Construct an AbstractPassageBook given the BookMetaData and the AbstractBackend.
-     * 
-     * @param bmd the metadata that describes the book
+     *
+     * @param bmd     the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     public AbstractPassageBook(BookMetaData bmd, Backend backend) {
         super(bmd, backend);
-        this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
+        keyf = PassageKeyFactory.instance();
+        this.versification = bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
     }
 
     /* (non-Javadoc)
@@ -211,9 +219,96 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
     public Versification getVersification() {
         if (this.versificationSystem == null) {
-            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
+            this.versificationSystem = Versifications.instance().getVersification(getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
         }
         return versificationSystem;
+    }
+
+    /**
+     * This implementation lazily inits, saves to the JSword conf file and also caches the book list for future use.
+     *
+     * @return the list of Bible books contained in the module
+     */
+    public Set<BibleBook> getBibleBooks() {
+        if (bibleBooks == null) {
+            synchronized (this) {
+                if (bibleBooks == null) {
+                    bibleBooks = getBibleBooksInternal();
+                }
+            }
+        }
+
+        return bibleBooks;
+    }
+
+    /**
+     * Obtains the set of bible books from the internal configuration file, creating it if required.
+     * @return the bible books relevant to this module.
+     */
+    private Set<BibleBook> getBibleBooksInternal() {
+        String list = this.getBookMetaData().getProperty(BookMetaData.KEY_BOOKLIST);
+        Set<BibleBook> books;
+        if (list == null) {
+            //calculate and store
+            books = calculateBibleBookList();
+            String listOfBooks = toString(books);
+            this.putProperty(BookMetaData.KEY_BOOKLIST, listOfBooks);
+        } else {
+            //iterate through each item and get the books as a bible books
+            books = fromString(list);
+        }
+
+        return books;
+    }
+
+    private Set<BibleBook> fromString(String list) {
+        Set<BibleBook> books = new LinkedHashSet<BibleBook>(list.length() / 2);
+        final String[] bookOsis = StringUtil.split(list, ' ');
+        for (String s : bookOsis) {
+            books.add(BibleBook.fromExactOSIS(s));
+        }
+        return books;
+    }
+
+    private String toString(Set<BibleBook> books) {
+        StringBuilder sb = new StringBuilder(books.size() * 8);
+        for (Iterator<BibleBook> iterator = books.iterator(); iterator.hasNext(); ) {
+            BibleBook b = iterator.next();
+            sb.append(b.getOSIS());
+            if (iterator.hasNext()) {
+                sb.append(' ');
+            }
+
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Iterate all books checking if document contains a verse from the book
+     */
+    private Set<BibleBook> calculateBibleBookList() {
+        final BookMetaData bookMetaData = this.getBookMetaData();
+        final VerseKey scope = (VerseKey) getScope();
+        if (scope == null) {
+            return new HashSet<BibleBook>();
+        }
+
+        final Set<BibleBook> bookList = new LinkedHashSet<BibleBook>();
+
+        // iterate over all book possible in this document
+        final Versification v11n = Versifications.instance().getVersification(bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION));
+        final Iterator<BibleBook> v11nBookIterator = v11n.getBookIterator();
+
+        while (v11nBookIterator.hasNext()) {
+            BibleBook bibleBook = v11nBookIterator.next();
+            // test some random verses - normally ch1 v 1 is sufficient - but we don't want to miss any
+            if (scope.contains(new Verse(v11n, bibleBook, 1, 1))
+                || scope.contains(new Verse(v11n, bibleBook, 1, 2))) {
+                bookList.add(bibleBook);
+            }
+        }
+
+        return bookList;
     }
 
     /**
@@ -229,7 +324,12 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /**
      * Our key manager
      */
-    private PassageKeyFactory keyf = PassageKeyFactory.instance();
+    private PassageKeyFactory keyf;
+
+    /**
+     * lazy of cache of bible books contained in the Book
+     */
+    private volatile Set<BibleBook> bibleBooks;
 
     /**
      * The log stream

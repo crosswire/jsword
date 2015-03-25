@@ -51,7 +51,6 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookSet;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ConfigEntry;
 import org.crosswire.jsword.book.sword.NullBackend;
 import org.crosswire.jsword.book.sword.SwordBook;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
@@ -237,12 +236,18 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             // Once the unzipping is started, we need to continue
             job.setCancelable(false);
             if (!job.isFinished()) {
+                //copy into mods.d and modules under SWROD_HOME
                 File dldir = SwordBookPath.getSwordDownloadDir();
-                IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
+                IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir, true, SwordConstants.DIR_CONF, SwordConstants.DIR_DATA);
+
+                //copy everything else into JSWORD_HOME
+                File jswordHome = NetUtil.getAsFile(CWProject.instance().getWritableProjectDir());
+                IOUtil.unpackZip(NetUtil.getAsFile(temp), jswordHome, false, SwordConstants.DIR_CONF, SwordConstants.DIR_DATA);
                 // TRANSLATOR: Progress label for installing the conf file for a book.
                 job.setSectionName(JSMsg.gettext("Copying config file"));
                 sbmd.setLibrary(NetUtil.getURI(dldir));
                 SwordBookDriver.registerNewBook(sbmd);
+
             }
 
         } catch (IOException e) {
@@ -328,8 +333,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         GzipCompressorInputStream gin = null;
         TarArchiveInputStream tin = null;
         try {
-            ConfigEntry.resetStatistics();
-
             in = NetUtil.getInputStream(cache);
             gin = new GzipCompressorInputStream(in);
             tin = new TarArchiveInputStream(gin);
@@ -380,8 +383,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
             loaded = true;
-
-            ConfigEntry.dumpStatistics();
         } catch (IOException ex) {
             throw new InstallException(JSOtherMsg.lookupText("Error loading from cache"), ex);
         } finally {
@@ -509,7 +510,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     protected URI getCachedIndexFile() throws InstallException {
         try {
-            URI scratchdir = CWProject.instance().getWriteableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
+            URI scratchdir = CWProject.instance().getWritableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
             return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         } catch (IOException ex) {
             throw new InstallException(JSOtherMsg.lookupText("URL manipulation failed"), ex);

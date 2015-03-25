@@ -20,11 +20,11 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.Set;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom2.Document;
 
@@ -33,7 +33,7 @@ import org.jdom2.Document;
  * the same BookMetaData should return identical text for any call to
  * <code>Bible.getText(VerseRange)</code>. The implication of this is that there
  * may be many instances of the Version "NIV", as there are several different
- * versions of the NIV - Original American-English, Anglicized, and Inclusive
+ * versions of the NIV - Original American-English, Anglicised, and Inclusive
  * Language editions at least.
  * 
  * <p>
@@ -87,6 +87,14 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * @return the book's language
      */
     Language getLanguage();
+
+    /**
+     * Set the language for this book.
+     * 
+     * @param language
+     *            the book's language
+     */
+    void setLanguage(Language language);
 
     /**
      * The initials of this book - how people familiar with this book will know
@@ -197,9 +205,9 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * 
      * @param library
      *            the base URI or null if there is none
-     * @throws MissingDataFilesException  indicates missing data files
+     * @throws BookException  indicates missing data files
      */
-    void setLibrary(URI library) throws MissingDataFilesException;
+    void setLibrary(URI library) throws BookException;
 
     /**
      * Get the base URI for relative URIs in the document.
@@ -221,22 +229,36 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
      */
-    Map<String, Object> getProperties();
+    Set<String> getPropertyKeys();
 
     /**
+     * Get the property or null.
+     * 
      * @param key
      *            the key of the property.
      * @return the value of the property
      */
-    Object getProperty(String key);
+    String getProperty(String key);
 
     /**
+     * Save to shared storage.
+     * 
      * @param key
      *            the key of the property to set
      * @param value
      *            the value of the property
      */
-    void putProperty(String key, Object value);
+    void putProperty(String key, String value);
+
+    /**
+     * Saves an entry to a particular configuration file.
+     * 
+     * @param key the entry that we are saving
+     * @param value the value of the entry
+     * @param forFrontend when {@code true} save to front end storage, else in shared storage
+     * @throws IOException
+     */
+    void putProperty(String key, String value, boolean forFrontend);
 
     /**
      * Has anyone generated a search index for this Book?
@@ -281,7 +303,7 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     /**
      * The key for the language in the properties map
      */
-    String KEY_XML_LANG = "Lang";
+    String KEY_LANG = "Lang";
 
     /**
      * The key for the font in the properties map
@@ -289,27 +311,11 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     String KEY_FONT = "Font";
 
     /**
-     * The key for the initials in the properties map
-     */
-    String KEY_INITIALS = "Initials";
-
-    /**
-     * The key for the URI locating where this book is installed
-     */
-    String KEY_LIBRARY_URI = "LibraryURI";
-
-    /**
-     * The key for the URI locating this book
-     */
-    String KEY_LOCATION_URI = "LocationURI";
-
-    /**
-     * The key for the indexed status in the properties map
-     */
-    String KEY_INDEXSTATUS = "IndexStatus";
-
-    /**
      * The key for the Versification property.
      */
     String KEY_VERSIFICATION = "Versification";
+
+    String KEY_BOOKLIST = "BookList";
+
+    String KEY_SCOPE = "Scope";
 }

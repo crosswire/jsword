@@ -27,9 +27,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import org.crosswire.common.util.IniSection;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookMetaData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -40,24 +44,28 @@ import org.junit.Test;
  * @author DM Smith
  */
 public class SwordBookMetaDataTest {
-
+    Book mockBook;
     File configFile = new File("testconfig.conf");
     SwordBookMetaData swordBookMetaData = null;
 
     @Before
     public void setUp() throws Exception {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
-        table.add(ConfigEntryType.LANG, "de");
-        table.add(ConfigEntryType.INITIALS, "TestBook");
-        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
-        table.add(ConfigEntryType.MOD_DRV, "RawFiles");
+        String modName = "TestBook";
+        IniSection table = new IniSection(modName);
+        table.add(BookMetaData.KEY_LANG, "de");
+        table.add(SwordBookMetaData.KEY_DESCRIPTION, "MyNewBook");
+        table.add(SwordBookMetaData.KEY_MOD_DRV, "RawFiles");
+        table.add(SwordBookMetaData.KEY_ENCODING, "UTF-8");
         try {
-            table.save(configFile);
+            table.save(configFile, "UTF-8");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI(""));
+        swordBookMetaData = new SwordBookMetaData(configFile, new URI(""));
+        mockBook = Mockito.mock(Book.class);
+        mockBook.setBookMetaData(swordBookMetaData);
+        Mockito.when(mockBook.getBookMetaData()).thenReturn(swordBookMetaData);
     }
 
     @After
@@ -73,4 +81,5 @@ public class SwordBookMetaDataTest {
         assertNotNull(swordBookMetaData.getLanguage());
         assertEquals("de", swordBookMetaData.getLanguage().getCode());
     }
+
 }

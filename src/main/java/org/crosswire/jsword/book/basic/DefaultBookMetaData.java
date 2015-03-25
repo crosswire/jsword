@@ -20,19 +20,18 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.index.IndexManager;
-import org.crosswire.jsword.index.IndexManagerFactory;
-import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.passage.VerseKey;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -48,67 +47,68 @@ import org.jdom2.Element;
  */
 public class DefaultBookMetaData extends AbstractBookMetaData {
     /**
-     * Ctor with a properties from which to get values. A call to setBook() is
-     * still required after this ctor is called
-     */
-    public DefaultBookMetaData(BookDriver driver, Book book, Map<String, Object> prop) {
-        setDriver(driver);
-
-        setProperties(prop);
-        setName((String) prop.get(BookMetaData.KEY_NAME));
-        setType((String) prop.get(BookMetaData.KEY_CATEGORY));
-        String lang = (String) prop.get(BookMetaData.KEY_XML_LANG);
-        setLanguage(new Language(lang));
-
-        IndexManager imanager = IndexManagerFactory.getIndexManager();
-        if (imanager.isIndexed(book)) {
-            setIndexStatus(IndexStatus.DONE);
-        } else {
-            setIndexStatus(IndexStatus.UNDONE);
-        }
-    }
-
-    /**
      * Ctor with some default values. A call to setBook() is still required
      * after this ctor is called
      */
     public DefaultBookMetaData(BookDriver driver, String name, BookCategory type) {
+        props = new HashMap<String, String>();
         setDriver(driver);
         setName(name);
         setBookCategory(type);
         setLanguage(Language.DEFAULT_LANG); // Default language
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#getType()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getPropertyKeys()
+     */
+    public Set<String> getPropertyKeys() {
+        return Collections.unmodifiableSet(props.keySet());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
+     */
+    public String getProperty(String key) {
+        return props.get(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void putProperty(String key, String value) {
+        props.put(key, value);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String, boolean)
+     */
+    public void putProperty(String key, String value, boolean forFrontend) {
+        props.put(key, value);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
     public BookCategory getBookCategory() {
         return type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName() {
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials() {
         return initials;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight() {
@@ -133,8 +133,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         } else {
             this.initials = initials;
         }
-
-        putProperty(KEY_INITIALS, this.initials);
     }
 
     /**
@@ -164,7 +162,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         }
         type = t;
 
-        putProperty(KEY_CATEGORY, type);
+        putProperty(KEY_CATEGORY, type.toString());
     }
 
     /**
@@ -180,28 +178,33 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         setBookCategory(newType);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#toOSIS()
      */
     @Override
     public Document toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
-        addRow(ele, "Initials", getInitials());
-        addRow(ele, "Description", getName());
-        addRow(ele, "Key", getBookCategory().toString());
-        addRow(ele, "Language", getLanguage().getName());
+        addRow(factory, ele, "Initials", getInitials());
+        addRow(factory, ele, "Description", getName());
+        addRow(factory, ele, "Key", getBookCategory().toString());
+        addRow(factory, ele, "Language", getLanguage().getName());
         return new Document(ele);
     }
 
-    private void addRow(Element table, String key, String value) {
+    /**
+     * @return The scope
+     */
+    public VerseKey getScope() {
+        // The following method is only available for Sword books
+        throw new UnsupportedOperationException();
+    }
+
+
+    private void addRow(OSISUtil.OSISFactory factory, Element table, String key, String value) {
         if (value == null) {
             return;
         }
-
-        OSISUtil.OSISFactory factory = OSISUtil.factory();
 
         Element rowEle = factory.createRow();
 
@@ -225,4 +228,5 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     private BookCategory type;
     private String name;
     private String initials;
+    private Map<String, String> props;
 }

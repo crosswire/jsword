@@ -26,6 +26,7 @@ import java.io.RandomAccessFile;
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.BitwisePassage;
@@ -159,7 +160,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         try {
             rafBook = initState();
 
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
             Versification v11n = Versifications.instance().getVersification(v11nName);
             Verse verse = KeyUtil.getVerse(key);
 
@@ -208,7 +209,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         try {
             rafBook = initState();
 
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
             Versification v11n = Versifications.instance().getVersification(v11nName);
 
             Testament[] testaments = new Testament[] {
@@ -271,9 +272,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
         SwordBookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
-        final String compressType = (String) bookMetaData.getProperty(ConfigEntryType.COMPRESS_TYPE);
+        final String compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE);
 
-        final String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        final String v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
         final Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);
 

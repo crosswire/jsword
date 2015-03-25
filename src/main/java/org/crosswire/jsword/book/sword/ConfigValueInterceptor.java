@@ -14,30 +14,26 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2014
  *     The copyright to this program is held by it's authors.
+ *
  */
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.sword;
 
 /**
- * A BookProvider provides a list of books.
- * 
+ * Intercepts values from the configuration before these are widely distributed to the rest of the application.
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith
+ * @author Chris Burrell
  */
-public interface BookProvider {
+public interface ConfigValueInterceptor {
     /**
-     * Provide books.
-     * 
-     * @return the books
+     * Intercepts a value before distribution to the rest of the JSword library
+     * @param bookName the initials of the book that is being intercepted
+     * @param configEntryType the configuration entry type, describing which field is being accessed
+     * @param value the value to be intercepted
+     * @return the new value, if different
      */
-    Book[] getBooks();
-
-    /**
-     * Provide the first book.
-     * 
-     * @return the first book
-     */
-    Book getFirstBook();
+    Object intercept(String bookName, ConfigEntryType configEntryType, Object value);
 }

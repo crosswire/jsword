@@ -21,33 +21,28 @@
 package org.crosswire.jsword.book.basic;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
-import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom2.Document;
 
 /**
  * An implementation of the Property Change methods from BookMetaData.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
+
 /**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public abstract class AbstractBookMetaData implements BookMetaData {
 
@@ -136,89 +131,42 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
      */
     public Language getLanguage() {
-        return (Language) getProperty(KEY_XML_LANG);
+        return this.language;
     }
 
-    /**
-     * @param language
-     *            The language to set.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setLanguage(org.crosswire.common.util.Language)
      */
     public void setLanguage(Language language) {
-        putProperty(KEY_XML_LANG, language);
+        this.language = language;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLibrary()
      */
     public URI getLibrary() {
-        URI uri = null;
-        try {
-            String loc = (String) getProperty(KEY_LIBRARY_URI);
-            if (loc != null) {
-                uri = new URI(loc);
-            }
-            return uri;
-        } catch (URISyntaxException e) {
-            return null;
-        }
+        return library;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URI)
      */
-    public void setLibrary(URI library) throws MissingDataFilesException {
-        putProperty(KEY_LIBRARY_URI, library.toString());
+    public void setLibrary(URI library) throws BookException {
+        this.library = library;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setLocation(java.net.URI)
      */
     public void setLocation(URI location) {
-        putProperty(KEY_LOCATION_URI, location.toString());
+        this.location = location;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLocation()
      */
     public URI getLocation() {
-        URI uri = null;
-        try {
-            String loc = (String) getProperty(KEY_LOCATION_URI);
-            if (loc != null) {
-                uri = new URI(loc);
-            }
-            return uri;
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getProperties()
-     */
-    public Map<String, Object> getProperties() {
-        return Collections.unmodifiableMap(prop);
-    }
-
-    /**
-     * @param newProperties
-     */
-    public void setProperties(Map<String, Object> newProperties) {
-        prop = newProperties;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
-     */
-    public Object getProperty(String key) {
-        return prop.get(key);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.Object)
-     */
-    public void putProperty(String key, Object value) {
-        prop.put(key, value);
+        return location;
     }
 
     /* (non-Javadoc)
@@ -233,7 +181,13 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      */
     public void setIndexStatus(IndexStatus newValue) {
         indexStatus = newValue;
-        prop.put(KEY_INDEXSTATUS, newValue.toString());
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String)
+     */
+    public void putProperty(String key, String value) {
+        putProperty(key, value, false);
     }
 
     /* (non-Javadoc)
@@ -244,8 +198,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     }
 
     /**
-     * @param driver
-     *            The driver to set.
+     * @param driver The driver to set.
      */
     public void setDriver(BookDriver driver) {
         this.driver = driver;
@@ -300,11 +253,10 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         return getInitials();
     }
 
-    /**
-     * The single key version of the properties
-     */
-    private Map<String, Object> prop = new LinkedHashMap<String, Object>();
-
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;
+    private Language language;
+    private URI library;
+    private URI location;
+
 }

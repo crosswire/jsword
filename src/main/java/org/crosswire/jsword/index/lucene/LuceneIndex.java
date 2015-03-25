@@ -51,6 +51,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
@@ -262,7 +263,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @see org.crosswire.jsword.index.Index#find(java.lang.String)
      */
     public Key find(String search) throws BookException {
-        String v11nName = book.getBookMetaData().getProperty("Versification").toString();
+        String v11nName = book.getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
 
         SearchModifier modifier = getSearchModifier();
@@ -365,8 +366,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      */
     private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count, IndexPolicy policy) throws BookException, IOException {
         String v11nName = null;
-        if(book.getBookMetaData().getProperty("Versification")!=null)
-            v11nName = book.getBookMetaData().getProperty("Versification").toString();
+        if(book.getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)!=null)
+            v11nName = book.getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
         boolean includeStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS) && policy.isStrongsIndexed();
         boolean includeXrefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES) && policy.isXrefIndexed();

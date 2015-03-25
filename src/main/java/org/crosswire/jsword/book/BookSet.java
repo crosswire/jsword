@@ -55,7 +55,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
     public Set<String> getGroups() {
         Set<String> results = new TreeSet<String>();
         for (Book book : this) {
-            results.addAll(book.getProperties().keySet());
+            results.addAll(book.getPropertyKeys());
         }
         return results;
     }

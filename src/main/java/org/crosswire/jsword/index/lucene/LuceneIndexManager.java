@@ -63,7 +63,7 @@ public class LuceneIndexManager implements IndexManager {
     public LuceneIndexManager() {
         policy = new IndexPolicyAdapter();
         try {
-            baseFolderURI = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
+            baseFolderURI = CWProject.instance().getWritableProjectSubdir(DIR_LUCENE, false);
         } catch (IOException ex) {
             log.error("Failed to find lucene index storage area. "+ex.getMessage(), ex);
 

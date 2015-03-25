@@ -28,10 +28,11 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
-import org.crosswire.common.util.Language;
+import org.crosswire.common.util.IniSection;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
@@ -52,33 +53,34 @@ public class ConfigEntryTableTest {
 
     @Test
     public void testCreateConfigEntryTableInstance() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
         assertNotNull(table);
     }
 
     // TODO: make this test use mocks or setup its own environment
     @Test
     public void failingAddConfigEntry() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        String modName = "TestBook";
+        IniSection table = new IniSection(modName);
         assertNotNull(table);
 
-        table.add(ConfigEntryType.LANG, "de");
-        assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode());
+        table.add(BookMetaData.KEY_LANG, "de");
+        assertEquals("de", table.get(BookMetaData.KEY_LANG));
         FeatureType feature = FeatureType.STRONGS_NUMBERS;
-        table.add(ConfigEntryType.FEATURE, FeatureType.STRONGS_NUMBERS.toString());
-        if (table.match(ConfigEntryType.FEATURE, feature.toString())) {
+        table.add(SwordBookMetaData.KEY_FEATURE, FeatureType.STRONGS_NUMBERS.toString());
+        if (table.containsValue(SwordBookMetaData.KEY_FEATURE, feature.toString())) {
             assertTrue("Should have Strongs", true);
         } else {
             // Many "features" are GlobalOptionFilters, which in the Sword C++ API
             // indicate a class to use for filtering.
             // These mostly have the source type prepended to the feature
-            StringBuilder buffer = new StringBuilder((String) table.getValue(ConfigEntryType.SOURCE_TYPE));
+            StringBuilder buffer = new StringBuilder(table.get(SwordBookMetaData.KEY_SOURCE_TYPE));
             buffer.append(feature);
-            if (table.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
+            if (table.containsValue(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER, buffer.toString())) {
                 assertTrue("Should have Strongs", true);
             } else {
                 // But some do not
-                assertTrue("Should have Strongs",  table.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.toString()));
+                assertTrue("Should have Strongs",  table.containsValue(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER, feature.toString()));
             }
         }
         Book book = Books.installed().getBook("KJV");
@@ -101,19 +103,18 @@ public class ConfigEntryTableTest {
 
     @Test
     public void testSaveConfigEntryTable() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        String modName = "TestBook";
+        IniSection table = new IniSection(modName);
         assertNotNull(table);
 
-        table.add(ConfigEntryType.LANG, "de");
-        Language lang = (Language) table.getValue(ConfigEntryType.LANG);
+        table.add(BookMetaData.KEY_LANG, "de");
+        String lang = table.get(BookMetaData.KEY_LANG);
         assertNotNull(lang);
-        assertEquals(lang.getCode(), "de");
-        table.add(ConfigEntryType.INITIALS, "TestBook");
-        assertEquals(table.getValue(ConfigEntryType.INITIALS), "TestBook");
+        assertEquals(lang, "de");
 
         File configFile = new File("testconfig.conf");
         try {
-            table.save(configFile);
+            table.save(configFile, "UTF-8");
         } catch (IOException e) {
             assertTrue(false);
         } finally {

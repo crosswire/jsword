@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.crosswire.common.util.IOUtil;
+import org.crosswire.common.util.IniSection;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.state.RawFileBackendState;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
@@ -66,20 +68,21 @@ public class RawFileBackendTest {
     @Before
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
-        ConfigEntryTable table = new ConfigEntryTable(modName);
-        table.add(ConfigEntryType.LANG, "de");
-        table.add(ConfigEntryType.INITIALS, modName);
-        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
-        table.add(ConfigEntryType.MOD_DRV, "RawFiles");
-        table.add(ConfigEntryType.DATA_PATH, "test");
+        v11n = Versifications.instance().getVersification("KJV");
+        IniSection table = new IniSection(modName);
+        table.add(BookMetaData.KEY_LANG, "de");
+        table.add(SwordBookMetaData.KEY_DESCRIPTION, "MyNewBook");
+        table.add(SwordBookMetaData.KEY_MOD_DRV, "RawFiles");
+        table.add(SwordBookMetaData.KEY_DATA_PATH, "test");
+        table.add(SwordBookMetaData.KEY_ENCODING, "UTF-8");
         try {
-            table.save(configFile);
+            table.save(configFile, "UTF-8");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp"));
+        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, new URI("file:///tmp"));
+        v11n = Versifications.instance().getVersification(swordBookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION));
         backend = new RawFileBackend(swordBookMetaData, 2);
         backend.create();
     }

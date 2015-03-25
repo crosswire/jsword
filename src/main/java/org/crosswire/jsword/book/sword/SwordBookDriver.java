@@ -34,6 +34,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.index.IndexManager;
@@ -44,11 +45,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This represents all of the Sword Books (aka modules).
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public class SwordBookDriver extends AbstractBookDriver {
     /**
@@ -68,9 +69,6 @@ public class SwordBookDriver extends AbstractBookDriver {
      * @see org.crosswire.jsword.book.BookProvider#getBooks()
      */
     public Book[] getBooks() {
-        ConfigEntry.resetStatistics();
-
-
         File[] dirs = SwordBookPath.getSwordPath();
         //initial size based on Guava's  newHashMapWithExpectedSize method:
         //http://docs.guava-libraries.googlecode.com/git/javadoc/src-html/com/google/common/collect/Maps.html#line.201
@@ -78,58 +76,62 @@ public class SwordBookDriver extends AbstractBookDriver {
         for (int j = 0; j < dirs.length; j++) {
             getBooks(valid, dirs[j]);
         }
-
-        ConfigEntry.dumpStatistics();
-
         return valid.toArray(new Book[valid.size()]);
     }
 
     private void getBooks(Set<Book> valid, File bookDir) {
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
-        if (mods.isDirectory()) {
-            String[] bookConfs = SwordBookPath.getBookList(mods);
+        if (!mods.isDirectory()) {
+            LOGGER.debug("mods.d directory at {} does not exist", mods);
+            return;
+        }
 
-            // Loop through the entries in this mods.d directory
-            for (int i = 0; i < bookConfs.length; i++) {
-                String bookConf = bookConfs[i];
-                try {
-                    File configfile = new File(mods, bookConf);
-                    String internal = bookConf;
-                    if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
-                        internal = internal.substring(0, internal.length() - 5);
-                    }
-                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURI(bookDir));
+        String[] bookConfs = SwordBookPath.getBookList(mods);
 
-                    // skip any book that is not supported.
-                    if (!sbmd.isSupported()) {
-                        continue;
-                    }
+        // Loop through the entries in this mods.d directory
+        URI bookDirURI = NetUtil.getURI(bookDir);
+        for (int i = 0; i < bookConfs.length; i++) {
+            String bookConf = bookConfs[i];
+            try {
+                SwordBookMetaData sbmd = null;
 
-                    sbmd.setDriver(this);
-
-                    // Only take the first "installation" of the Book
-                    Book book = createBook(sbmd);
-                    if (!valid.contains(book)) {
-                        valid.add(book);
-
-                        IndexManager imanager = IndexManagerFactory.getIndexManager();
-                        if (imanager.isIndexed(book)) {
-                            sbmd.setIndexStatus(IndexStatus.DONE);
-                        } else {
-                            sbmd.setIndexStatus(IndexStatus.UNDONE);
-                        }
-                    }
-                } catch (IOException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e);
-                } catch (MissingDataFilesException e) {
-                    log.warn(e.getMessage());
-                    log.trace(e.getMessage(), e);
-                } catch (BookException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e);
+                File configfile = new File(mods, bookConf);
+                if (configfile.exists()) {
+                    // First time here chain is null, indicating that we are at the master BookMetaData
+                    sbmd = new SwordBookMetaData(configfile, bookDirURI);
                 }
+
+                if (sbmd == null) {
+                    LOGGER.error("The book's configuration files is not supported.");
+                    continue;
+                }
+
+                // skip any book that is not supported.
+                if (!sbmd.isSupported()) {
+                    LOGGER.error("The book's configuration files is not supported. -> Initials [{}], Driver=[{}], Versification=[{}], Book type=[{}], Book category=[{}]",
+                            sbmd.getInitials(), sbmd.getDriver(), sbmd.getProperty(BookMetaData.KEY_VERSIFICATION), sbmd.getBookType(), sbmd.getBookCategory());
+                    continue;
+                }
+
+                sbmd.setDriver(this);
+
+                // Only take the first "installation" of the Book
+                Book book = createBook(sbmd);
+                if (!valid.contains(book)) {
+                    valid.add(book);
+
+                    IndexManager imanager = IndexManagerFactory.getIndexManager();
+                    if (imanager.isIndexed(book)) {
+                        sbmd.setIndexStatus(IndexStatus.DONE);
+                    } else {
+                        sbmd.setIndexStatus(IndexStatus.UNDONE);
+                    }
+                }
+            } catch (IOException e) {
+                LOGGER.warn("Couldn't create SwordBookMetaData", e);
+            } catch (BookException e) {
+                LOGGER.warn("Couldn't create SwordBookMetaData", e);
             }
-        } else {
-            log.debug("mods.d directory at {} does not exist", mods);
         }
     }
 
@@ -226,5 +228,5 @@ public class SwordBookDriver extends AbstractBookDriver {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(SwordBookDriver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SwordBookDriver.class);
 }

@@ -379,7 +379,7 @@ public final class SwordUtil {
      * @throws BookException thrown if an issue is encountered, e.g. missing data files.
      */
     public static URI getExpandedDataPath(SwordBookMetaData bookMetaData) throws BookException {
-        URI loc = NetUtil.lengthenURI(bookMetaData.getLibrary(), (String) bookMetaData.getProperty(ConfigEntryType.DATA_PATH));
+        URI loc = NetUtil.lengthenURI(bookMetaData.getLibrary(), bookMetaData.getProperty(SwordBookMetaData.KEY_DATA_PATH));
 
         if (loc == null) {
             // FIXME(DMS): missing parameter
