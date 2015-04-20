@@ -26,6 +26,7 @@ import java.io.Reader;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * A simple wrapper for {@link SmartChineseAnalyzer}, which takes overlapping
@@ -38,25 +39,27 @@ import org.apache.lucene.util.Version;
  * @author DM Smith
  */
 public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+
     public SmartChineseLuceneAnalyzer() {
-        myAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_29);
+        myAnalyzer = new SmartChineseAnalyzer(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING);
+
     }
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
     @Override
-    public final TokenStream tokenStream(String fieldName, Reader reader) {
-        return myAnalyzer.tokenStream(fieldName, reader);
+    public  TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        return myAnalyzer.createComponents(fieldName, reader);
     }
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
-    public final TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+    //@Override
+    /*public final TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         return myAnalyzer.reusableTokenStream(fieldName, reader);
-    }
+    }*/
 
     private SmartChineseAnalyzer myAnalyzer;
 }

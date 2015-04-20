@@ -25,11 +25,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 import org.junit.Test;
 
 /**
@@ -44,7 +45,7 @@ public class AnalyzerFactoryTest {
 
     /**
      * Test method for
-     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory#createAnalyzer(java.lang.String)}
+     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory createAnalyzer(java.lang.String)}
      * .
      */
     @Test
@@ -59,13 +60,13 @@ public class AnalyzerFactoryTest {
     @Test
     public void testCustomStopWordFiltering() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, field, myAnalyzer);
 
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
                 "thy", "ye", "unto", "shalt"};
-        myAnalyzer.setStopWords(new CharArraySet(Arrays.asList(stopWords), false));
+        myAnalyzer.setStopWords(new CharArraySet(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, Arrays.asList(stopWords), false));
         String testInput = "Upon thy belly Shalt thou go";
 
         Query query = parser.parse(testInput);
@@ -78,7 +79,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testDiacriticFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, field, myAnalyzer);
         String testInput = "Surely will every man walketh";
 
         Query query = parser.parse(testInput);
@@ -90,7 +91,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testStopWordsFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, field, myAnalyzer);
         String testInput = "Surely will every man walketh";
         // enable stop words
         myAnalyzer.setDoStopWords(true);
@@ -102,7 +103,7 @@ public class AnalyzerFactoryTest {
     @Test
     public void testWithStemmingDisabled() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, field, myAnalyzer);
         String testInput = "Surely will every man walketh";
         myAnalyzer.setDoStemming(false);
         Query query = parser.parse(testInput);

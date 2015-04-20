@@ -22,13 +22,17 @@ package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 
-import org.apache.lucene.analysis.LowerCaseTokenizer;
-import org.apache.lucene.analysis.PorterStemFilter;
-import org.apache.lucene.analysis.StopAnalyzer;
-import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.LowerCaseTokenizer;
+import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.LowerCaseFilter;
+import org.apache.lucene.analysis.core.StopFilter;
+import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * English Analyzer works like lucene SimpleAnalyzer + Stemming.
@@ -50,6 +54,8 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
      * Constructs a {@link LowerCaseTokenizer} filtered by a language filter
      * {@link StopFilter} and {@link PorterStemFilter} for English.
      */
+
+    /*
     @Override
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
@@ -64,13 +70,13 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
         }
 
         return result;
-    }
+    }*/
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+
+    /*public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
             streams = new SavedStreams(new LowerCaseTokenizer(reader));
@@ -87,7 +93,25 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
             streams.getSource().reset(reader);
         }
         return streams.getResult();
+    }*/
+
+    @Override
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+
+        Tokenizer source = new LowerCaseTokenizer(matchVersion, reader) ;
+        TokenStream result = source;
+
+        if (doStopWords && stopSet != null) {
+            //result = new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), result, stopSet);
+            result = new StopFilter(matchVersion, source,stopSet) ;
+        }
+
+        // Using Porter Stemmer
+        if (doStemming) {
+            result = new PorterStemFilter(result);
+        }
+        return new TokenStreamComponents(source, result);
     }
 
-    private final Version matchVersion = Version.LUCENE_29;
+    private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }

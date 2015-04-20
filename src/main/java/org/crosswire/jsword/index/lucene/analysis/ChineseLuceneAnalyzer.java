@@ -36,8 +36,9 @@ import org.apache.lucene.analysis.cn.ChineseAnalyzer;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @deprecated
  */
-public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+public class ChineseLuceneAnalyzer /*extends AbstractBookAnalyzer*/ {
     public ChineseLuceneAnalyzer() {
         myAnalyzer = new ChineseAnalyzer();
     }
@@ -45,18 +46,18 @@ public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
-    public final TokenStream tokenStream(String fieldName, Reader reader) {
+   // @Override
+    /*public final TokenStream tokenStream(String fieldName, Reader reader) {
         return myAnalyzer.tokenStream(fieldName, reader);
-    }
+    }*/
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
+    /*@Override
     public final TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         return myAnalyzer.reusableTokenStream(fieldName, reader);
-    }
+    }*/
 
     private ChineseAnalyzer myAnalyzer;
 }

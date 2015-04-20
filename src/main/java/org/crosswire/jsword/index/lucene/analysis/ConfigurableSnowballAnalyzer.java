@@ -26,16 +26,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.lucene.analysis.LowerCaseTokenizer;
-import org.apache.lucene.analysis.StopAnalyzer;
-import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.LowerCaseTokenizer;
+import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.nl.DutchAnalyzer;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.util.Version;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * An Analyzer whose {@link TokenStream} is built from a
@@ -80,10 +83,12 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
      * {@link SnowballFilter}.
      */
     @Override
-    public final TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream result = new LowerCaseTokenizer(reader);
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer source = new LowerCaseTokenizer(matchVersion, reader) ;
+        TokenStream result = source;
+
         if (doStopWords && stopSet != null) {
-            result = new StopFilter(false, result, stopSet);
+            result = new StopFilter(matchVersion, result, stopSet);
         }
 
         // Configure Snowball filter based on language/stemmerName
@@ -91,13 +96,15 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
             result = new SnowballFilter(result, stemmerName);
         }
 
-        return result;
+
+        return new TokenStreamComponents(source, result);
+
     }
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
+    /*@Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
@@ -116,7 +123,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         }
         return streams.getResult();
     }
-
+*/
     @Override
     public void setBook(Book newBook) {
         book = newBook;
@@ -170,7 +177,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
     }
 
     // Maps StemmerName > String array of standard stop words
-    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap<String, Set<?>>();
+    private static HashMap<String, CharArraySet> defaultStopWordMap = new HashMap<String, CharArraySet>();
     static {
         defaultStopWordMap.put("fr", FrenchAnalyzer.getDefaultStopSet());
         defaultStopWordMap.put("de", GermanAnalyzer.getDefaultStopSet());
@@ -178,5 +185,5 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         defaultStopWordMap.put("en", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
     }
 
-    private final Version matchVersion = Version.LUCENE_29;
+    private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }

@@ -23,11 +23,13 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.th.ThaiWordFilter;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * Tokenization using ThaiWordFilter. It uses java.text.BreakIterator to break
@@ -43,19 +45,20 @@ public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
     }
 
     @Override
-    public TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream ts = new StandardTokenizer(matchVersion, reader);
-        ts = new ThaiWordFilter(ts);
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer source  = new StandardTokenizer(matchVersion, reader);
+        TokenStream result = new ThaiWordFilter(matchVersion, source);
         if (doStopWords && stopSet != null) {
-            ts = new StopFilter(false, ts, stopSet);
+            result = new StopFilter(matchVersion, result, stopSet);
         }
-        return ts;
+
+        return new TokenStreamComponents(source, result);
     }
 
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
-    @Override
+    /*@Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
@@ -72,7 +75,7 @@ public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
             streams.getResult().reset(); // reset the ThaiWordFilter's state
         }
         return streams.getResult();
-    }
+    }*/
 
-    private final Version matchVersion = Version.LUCENE_29;
+    private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }
