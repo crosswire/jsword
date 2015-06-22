@@ -207,7 +207,7 @@ public class TreeKey extends AbstractKeyList {
         StringBuilder b = new StringBuilder(100);
         b.append(osisify(getName()));
         for (Key parentKey = this.getParent(); parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
-            b.insert(0, ".");
+            b.insert(0, "/");
             b.insert(0, osisify(parentKey.getName()));
         }
         // Remove the leading .
