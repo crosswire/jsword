@@ -42,6 +42,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A utility class for loading and representing Sword book configs.
@@ -652,23 +654,38 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             if (value == null) {
                 continue;
             }
-            if (value instanceof List<?>) {
-                List<String> list = (List<String>) value;
-                StringBuilder combined = new StringBuilder();
-                boolean appendSeparator = false;
-                for (String element : list) {
-                    if (appendSeparator) {
-                        combined.append('\n');
-                    }
-                    combined.append(element);
-                    appendSeparator = true;
-                }
-
-                value = combined.toString();
-            }
+            value = getListAsStringOrValue(value);
 
             putProperty(key.toString(), value);
         }
+
+        Map<String, ConfigEntry> extras = cet.getExtras();
+        for(Map.Entry<String, ConfigEntry> extra : extras.entrySet()) {
+            putProperty(extra.getKey(), getListAsStringOrValue(extra.getValue().getValue()));
+        }
+    }
+
+    /**
+     * Returns either the value of the config, or if it is a list, returns the concatenated form
+     * @param value the value from the configuration file
+     * @return the concatenated list or the original value
+     */
+    private Object getListAsStringOrValue(Object value) {
+        if (value instanceof List<?>) {
+            List<String> list = (List<String>) value;
+            StringBuilder combined = new StringBuilder();
+            boolean appendSeparator = false;
+            for (String element : list) {
+                if (appendSeparator) {
+                    combined.append('\n');
+                }
+                combined.append(element);
+                appendSeparator = true;
+            }
+
+            value = combined.toString();
+        }
+        return value;
     }
 
     @Override

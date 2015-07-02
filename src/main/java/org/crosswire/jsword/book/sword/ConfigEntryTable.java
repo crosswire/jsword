@@ -281,6 +281,10 @@ public final class ConfigEntryTable {
         return extra.keySet();
     }
 
+    public Map<String, ConfigEntry> getExtras() {
+        return this.extra;
+    }
+
     /**
      * Returns an Enumeration of all the keys found in the config file.
      */
