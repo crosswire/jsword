@@ -71,6 +71,12 @@ public enum CaseType {
         }
     };
 
+    /**
+     * Adjust the case of the string as defined by the type.
+     * 
+     * @param word the string to transform
+     * @return the transformed string
+     */
     public abstract String setCase(String word);
 
     /**
@@ -132,6 +138,8 @@ public enum CaseType {
 
     /**
      * Get an integer representation for this CaseType
+     * 
+     * @return the ordinal value of this CaseType
      */
     public int toInteger() {
         return ordinal();
@@ -139,6 +147,9 @@ public enum CaseType {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the name of the CaseType
+     * @return the CaseType that matches
      */
     public static CaseType fromString(String name) {
         for (CaseType v : values()) {
@@ -154,6 +165,9 @@ public enum CaseType {
 
     /**
      * Lookup method to convert from an integer
+     * 
+     * @param i the ordinal value of the CaseType
+     * @return the matching CaseType
      */
     public static CaseType fromInteger(int i) {
         for (CaseType v : values()) {

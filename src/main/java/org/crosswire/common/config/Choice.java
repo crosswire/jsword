@@ -42,6 +42,10 @@ import org.jdom2.Element;
 public interface Choice {
     /**
      * String value to associate with the name (key)
+     * 
+     * @param option the option
+     * @param configResources the resource bundle to load
+     * @throws StartupException if startup is not possible
      */
     void init(Element option, ResourceBundle configResources) throws StartupException;
 
@@ -96,6 +100,7 @@ public interface Choice {
      * 
      * @param value
      *            The new value for this Choice
+     * @throws ConfigException if there is a problem with the configuration
      */
     void setString(String value) throws ConfigException;
 

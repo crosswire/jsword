@@ -51,7 +51,7 @@ public class SwordGenBook extends AbstractBook {
     /**
      * Construct an SwordGenBook given the BookMetaData and the AbstractBackend.
      * 
-     * @param bmd the metadata that describes the book
+     * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     protected SwordGenBook(SwordBookMetaData sbmd, Backend backend) {
@@ -105,9 +105,9 @@ public class SwordGenBook extends AbstractBook {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean, boolean)
      */
-    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty, final boolean allowGenTitle) throws BookException {
         checkActive();
 
         assert key != null;

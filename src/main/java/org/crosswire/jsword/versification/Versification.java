@@ -708,7 +708,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * @param start
      *            The first Verse in the range
      * @param end The last Verse in the range
-     * @return The number of chapters. Always >= 1.
+     * @return The number of chapters. Always &gt;= 1.
      */
     public int getChapterCount(Verse start, Verse end) {
         BibleBook startBook = start.getBook();
@@ -739,7 +739,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * @param start
      *            The first Verse in the range
      * @param end The last Verse in the range
-     * @return The number of books. Always >= 1.
+     * @return The number of books. Always &gt;= 1.
      */
     public int getBookCount(Verse start, Verse end) {
         int startBook = bookList.getOrdinal(start.getBook());

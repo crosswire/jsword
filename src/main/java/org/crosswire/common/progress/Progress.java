@@ -171,11 +171,15 @@ public interface Progress {
 
     /**
      * Used to determine whether job is done or canceled or reached totalWork.
+     * 
+     * @return true if finished
      */
     boolean isFinished();
 
     /**
      * Might the job be cancelable?
+     * 
+     * @return true if the job can be cancelled
      */
     boolean isCancelable();
 

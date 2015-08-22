@@ -81,6 +81,7 @@ public final class JobManager {
      * Create a new Job that cannot be canceled.
      * 
      * @param jobName the name of the Job
+     * @return the job
      */
     public static Progress createJob(String jobName) {
         return createJob(UUID.randomUUID().toString(), jobName, null);
@@ -89,8 +90,10 @@ public final class JobManager {
     /**
      * Create a new Job that can be canceled.
      * 
+     * @param jobID a unique identifier for the job
      * @param jobName the name of the Job
      * @param workerThread the thread on which this job runs
+     * @return the job
      */
     public static Progress createJob(String jobID, String jobName, Thread workerThread) {
         Progress job = new Job(jobID, jobName, workerThread);
@@ -103,13 +106,17 @@ public final class JobManager {
 
     /**
      * Add a listener to the list
+     * 
+     * @param li the interested listener
      */
     public static void addWorkListener(WorkListener li) {
         listeners.add(li);
     }
 
     /**
-     * Remote a listener from the list
+     * Remove a listener from the list
+     * 
+     * @param li the disinterested listener
      */
     public static void removeWorkListener(WorkListener li) {
         listeners.remove(li);
@@ -117,6 +124,8 @@ public final class JobManager {
 
     /**
      * Accessor for the currently known jobs
+     * 
+     * @return an iterator over the jobs
      */
     public static Iterator<Progress> iterator() {
         return jobs.iterator();
@@ -131,6 +140,8 @@ public final class JobManager {
 
     /**
      * Inform the listeners that a title has changed.
+     * 
+     * @param job the job that has made progress
      */
     protected static void fireWorkProgressed(Progress job) {
         final WorkEvent ev = new WorkEvent(job);

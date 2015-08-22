@@ -21,6 +21,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.Comparator;
+import java.util.Locale;
 
 /**
  * Provides different ways to sort Books.
@@ -38,6 +39,8 @@ public final class BookComparators {
 
     /**
      * Order by default Book ordering
+     * 
+     * @return the desired Comparator
      */
     public static Comparator<Book> getDefault() {
         return new Comparator<Book>() {
@@ -49,11 +52,13 @@ public final class BookComparators {
 
     /**
      * Order by Initials.
+     * 
+     * @return the desired Comparator
      */
     public static Comparator<Book> getInitialComparator() {
         return new Comparator<Book>() {
             public int compare(Book o1, Book o2) {
-                return o1.getInitials().compareTo(o2.getInitials());
+                return o1.getInitials().toUpperCase(Locale.ENGLISH).compareTo(o2.getInitials().toUpperCase(Locale.ENGLISH));
             }
         };
     }

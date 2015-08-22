@@ -24,10 +24,11 @@ import java.util.Locale;
 
 /**
  * A factory for creating LocaleProvider objects, to support all the static instances of where JSword needs access to the the Locale.
- * <p />
+ * <p>
  * It is expected that the LocaleProvider will only be set once, as a result, no effort is made to make this thread-safe as this should happen on
  * start up of the application. A default locale provider is given which simply returns the default locale. See {@link DefaultLocaleProvider} for more details.
- *
+ * </p>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Chris Burrell

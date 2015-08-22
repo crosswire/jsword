@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * GetOptions parses an argument list for requested arguments given by an
- * OptionList.<br>
+ * OptionList.<br><br>
  * 
  * This supports short and long options:<br>
  * Short Options have the following characteristics.
@@ -53,8 +53,7 @@ import java.util.Map;
  * long option is typically descriptive, but can be a single character.</li>
  * <li>An argument may be given in one of two ways --file=filename or --file
  * filename. That is, separated by an '=' sign or whitespace.</li>
- * <li>
- * <ul>
+ * </ul>
  * Note:
  * <ul>
  * <li>Options can be repeated. What that means is up to the program.</li>

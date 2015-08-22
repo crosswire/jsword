@@ -112,6 +112,9 @@ public enum FeatureType {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the name of a FeatureType
+     * @return the matching FeatureType
      */
     public static FeatureType fromString(String name) {
         for (FeatureType v : values()) {

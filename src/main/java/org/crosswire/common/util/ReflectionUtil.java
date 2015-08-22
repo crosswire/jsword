@@ -45,12 +45,18 @@ public final class ReflectionUtil {
      * Boolean. Likewise for other primitives. If this is needed, do not call
      * this method.
      * 
+     * @param <T> the type of the object to construct
      * @param className
      *            the full class name of the object
      * @return the constructed object
-     * @throws ClassNotFoundException
-     * @throws IllegalAccessException
+     * @throws ClassNotFoundException if the class is not found
      * @throws InstantiationException
+     *               if this {@code data} represents an abstract class,
+     *               an interface, an array class, a primitive type, or void;
+     *               or if the class has no nullary constructor;
+     *               or if the instantiation fails for some other reason.
+     * @throws IllegalAccessException  if the class or its nullary
+     *               constructor is not accessible.
      */
     public static <T> T construct(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         Class<T> clazz = (Class<T>) ClassUtil.forName(className);
@@ -62,16 +68,27 @@ public final class ReflectionUtil {
      * takes a boolean needs a type of boolean.class, but a parameter of type
      * Boolean. Likewise for other primitives.
      * 
+     * @param <T> the type of the object to construct
      * @param className
      *            the full class name of the object
      * @param params
      *            the constructor's arguments
      * @return the built object
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if the class is not found
      * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     *              the method does not exist
+     * @throws  InstantiationException
+     *               if this {@code data} represents an abstract class,
+     *               an interface, an array class, a primitive type, or void;
+     *               or if the class has no nullary constructor;
+     *               or if the instantiation fails for some other reason.
+     * @throws IllegalAccessException  if the class or its nullary
+     *               constructor is not accessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      * @throws InstantiationException
+     *              if the class that declares the
+     *              underlying constructor represents an abstract class.
      */
     public static <T> T construct(String className, Object... params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, InstantiationException
@@ -85,15 +102,23 @@ public final class ReflectionUtil {
      * takes a boolean needs a type of boolean.class, but a parameter of type
      * Boolean. Likewise for other primitives.
      *
+     * @param <T> the type of the object to construct
      * @param clazz
      *            the class of the object
      * @param params
      *            the constructor's arguments
      * @return the built object
-     * @throws ClassNotFoundException
      * @throws NoSuchMethodException
+     *              the method does not exist
+     * @throws InstantiationException
+     *              if the class that declares the
+     *              underlying constructor represents an abstract class.
      * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static <T> T construct(final Class<T> clazz, final Object... params) throws NoSuchMethodException, InstantiationException, IllegalAccessException,
             InvocationTargetException
@@ -106,6 +131,7 @@ public final class ReflectionUtil {
     /**
      * Build an object using the supplied parameters.
      * 
+     * @param <T> the type of the object to construct
      * @param className
      *            the full class name of the object
      * @param params
@@ -113,11 +139,18 @@ public final class ReflectionUtil {
      * @param paramTypes
      *            the types of the parameters
      * @return the built object
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if the class is not found
      * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     *              the method does not exist
      * @throws InstantiationException
+     *              if the class that declares the
+     *              underlying constructor represents an abstract class.
+     * @throws IllegalAccessException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static <T> T construct(String className, Object[] params, Class<?>[] paramTypes) throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, InstantiationException
@@ -140,6 +173,15 @@ public final class ReflectionUtil {
      *            The text of the invocation, for example "getName"
      * @param params
      *            For example new Object[] { ...}
+     * @return whatever the method returs
+     * @throws NoSuchMethodException
+     *              the method does not exist
+     * @throws IllegalAccessException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static Object invoke(Object base, String methodName, Object... params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
@@ -156,6 +198,16 @@ public final class ReflectionUtil {
      *            "java.lang.String.getName"
      * @param params
      *            For example new Object[] { ...}
+     * @return whatever the method returs
+     * @throws ClassNotFoundException if the class is not found
+     * @throws NoSuchMethodException
+     *              the method does not exist
+     * @throws IllegalAccessException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static Object invoke(String call, Object... params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
@@ -175,6 +227,7 @@ public final class ReflectionUtil {
      * parameter of type Boolean. Likewise for other primitives. If this is
      * needed, do not call this method.
      * 
+     * @param <T> the type of the object to construct
      * @param clazz
      *            the class of the object
      * @param obj
@@ -185,8 +238,13 @@ public final class ReflectionUtil {
      *            the parameters
      * @return whatever the method returns
      * @throws NoSuchMethodException
+     *              the method does not exist
      * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object... params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
@@ -200,6 +258,7 @@ public final class ReflectionUtil {
      * Note: a method that takes a boolean needs a type of boolean.class, but a
      * parameter of type Boolean. Likewise for other primitives.
      * 
+     * @param <T> the type of the object to construct
      * @param clazz
      *            the class of the object
      * @param obj
@@ -212,8 +271,13 @@ public final class ReflectionUtil {
      *            the types of each of the parameters
      * @return whatever the method returns
      * @throws NoSuchMethodException
+     *              the method does not exist
      * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     *              if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @throws InvocationTargetException if the underlying constructor
+     *              throws an exception.
      */
     public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object[] params, Class<?>[] paramTypes) throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException

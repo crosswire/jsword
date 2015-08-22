@@ -402,8 +402,8 @@ public class Patch {
      */
     public static class PatchResults {
         /**
-         * @param text
-         * @param results
+         * @param text the text
+         * @param results the results
          */
         public PatchResults(String text, boolean[] results) {
             this.text = text;

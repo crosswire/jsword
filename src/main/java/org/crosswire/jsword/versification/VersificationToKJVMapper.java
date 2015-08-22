@@ -62,8 +62,8 @@ import org.slf4j.LoggerFactory;
  * You can specify a range on either side. If a range is present on both sides, they have to have the same number of
  * verses, i.e. verses are mapped verse by verse to each other<br>
  * Gen.1.1-Gen.1.2=Gen.1.2-Gen.1.3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3<br>
- * <br>
- * Note: if the cardinality of the left & KJV sides are different by only one, the algorithm makes the
+ *<br>
+ * Note: if the cardinality of the left &amp; KJV sides are different by only one, the algorithm makes the
  * assumption that verse 0 should be disregarded in both ranges.
  * </p>
  * <p>
@@ -83,14 +83,14 @@ import org.slf4j.LoggerFactory;
  * For example,<br>
  * if V1 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen1.1<br>
  * if V2 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen.1.1<br>
- * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1=>Gen.1.1-Gen.1.2 which is inaccurate if in fact
+ * then, mapping from V1=&gt;KJV and KJV=&gt;V2 gives you Gen.1.1=&gt;Gen.1.1=&gt;Gen.1.1-Gen.1.2 which is inaccurate if in fact
  * V1(Gen.1.1) actually equals V2(Gen.1.1). So instead, we use a split on the right hand-side:
  * </p>
  * <p>
  * For example,<br>
  * V1 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br>
  * V2 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br>
- * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1!a=>Gen.1.1, which is now accurate.
+ * then, mapping from V1=&gt;KJV and KJV=&gt;V2 gives you Gen.1.1=&gt;Gen.1.1!a=&gt;Gen.1.1, which is now accurate.
  * A part is a string fragment placed after the end of a key reference. We cannot use # because that is commonly known
  * as a comment in real properties-file. Using a marker, means we can have meaningful part names if we so choose.
  * Parts of ranges are not supported.
@@ -153,10 +153,6 @@ public class VersificationToKJVMapper {
                 // TODO(CJB): should we throw a config exception?
                 LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
                 hasErrors = true;
-            } catch (Exception ex) {
-                // TODO(CJB): should we throw a config exception?
-                LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
-                hasErrors = true;
             }
         }
     }
@@ -215,8 +211,9 @@ public class VersificationToKJVMapper {
         VerseKey kjvKeys = kjvVerses.getKey();
         Iterator<Key> leftIter = leftKeys.iterator();
 
-        // Are there many KJV keys?
-        if (kjvKeys != null && kjvKeys.getCardinality() != 1) {
+        boolean isKJVMany = kjvKeys != null && kjvKeys.getCardinality() != 1;
+
+        if (isKJVMany) {
             // We detect if the keys are 1-apart from each other. If so, then we skip verse 0 on both sides.
             int diff = Math.abs(leftKeys.getCardinality() - kjvKeys.getCardinality());
 
@@ -481,10 +478,10 @@ public class VersificationToKJVMapper {
              end = versification.add(start, vr.getCardinality() - 1);
          }
 
-         if (start == null || end == null) {
-             hasErrors = true;
-             LOGGER.error("Verse range with offset did not map to correct range in target versification. This mapping will be set to an empty unmapped key.");
-         }
+        if (start == null || end == null) {
+            hasErrors = true;
+            LOGGER.error("Verse range with offset did not map to correct range in target versification. This mapping will be set to an empty unmapped key.");
+        }
 
          return start != null && end != null ? new QualifiedKey(new VerseRange(versification, start, end)) : new QualifiedKey(versesKey);
     }
@@ -587,6 +584,8 @@ public class VersificationToKJVMapper {
                 String output = os.toString("UTF8");
                 LOGGER.trace(output);
             } catch (UnsupportedEncodingException e) {
+                // It is impossible!
+                LOGGER.error("Encoding UTF8 not supported.", e);
             } finally {
                 IOUtil.close(ps);
             }

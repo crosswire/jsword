@@ -51,6 +51,7 @@ public final class StringUtil {
      * @param in
      *            The Stream to read from.
      * @return A string containing all the text from the Stream.
+     * @throws IOException when an I/O error occurred
      */
     public static String read(Reader in) throws IOException {
         StringBuilder retcode = new StringBuilder();
@@ -76,6 +77,9 @@ public final class StringUtil {
      * This function creates a readable title from a variable name type input.
      * For example calling: StringUtil.createTitle("one_two") = "One Two"
      * StringUtil.createTitle("oneTwo") = "One Two"
+     * 
+     * @param variable the name of a variable
+     * @return the generated title
      */
     public static String createTitle(String variable) {
         StringBuilder retcode = new StringBuilder();
@@ -141,10 +145,8 @@ public final class StringUtil {
     }
 
     /**
-     * <p>
      * Splits the provided text into an array, using whitespace as the
      * separator. Whitespace is defined by {@link Character#isWhitespace(char)}.
-     * </p>
      * 
      * <p>
      * The separator is not included in the returned String array. Adjacent
@@ -223,10 +225,8 @@ public final class StringUtil {
     }
 
     /**
-     * <p>
      * Splits the provided text into an array, using whitespace as the
      * separator. Whitespace is defined by {@link Character#isWhitespace(char)}.
-     * </p>
      * 
      * <p>
      * The separator is not included in the returned String array. Adjacent
@@ -243,6 +243,7 @@ public final class StringUtil {
      * 
      * @param str
      *            the String to parse, may be null
+     * @param max the maximum number of elements to return
      * @return an array of parsed Strings, <code>null</code> if null String
      *         input
      */
@@ -311,10 +312,8 @@ public final class StringUtil {
     }
 
     /**
-     * <p>
      * Splits the provided text into an array, separator specified. This is an
      * alternative to using StringTokenizer.
-     * </p>
      * 
      * <p>
      * The separator is not included in the returned String array. Adjacent

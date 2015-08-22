@@ -22,12 +22,8 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.FileUtil;
@@ -86,6 +82,7 @@ public final class XMLUtil {
      * @param provider
      *            The source of SAX events
      * @return a serialized string
+     * @throws SAXException when SAX encounters a problem
      */
     public static String writeToString(SAXEventProvider provider) throws SAXException {
         ContentHandler ser = new PrettySerializingContentHandler();
@@ -112,6 +109,8 @@ public final class XMLUtil {
 
     /**
      * Show the attributes of an element as debug
+     * 
+     * @param attrs the attributes to show
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
@@ -121,6 +120,9 @@ public final class XMLUtil {
 
     /**
      * Normalizes the given string
+     * 
+     * @param s the string to normalize
+     * @return the normalized string
      */
     public static String escape(String s) {
         if (s == null) {
@@ -159,7 +161,7 @@ public final class XMLUtil {
     /**
      * For each entity in the input that is not allowed in XML, replace the
      * entity with its unicode equivalent or remove it. For each instance of a
-     * bare &, replace it with &amp;<br>
+     * bare &amp;, replace it with &amp;amp;<br>
      * XML only allows 4 entities: &amp;amp;, &amp;quot;, &amp;lt; and &amp;gt;.
      * 
      * @param broken
@@ -236,7 +238,7 @@ public final class XMLUtil {
     /**
      * Remove all invalid characters in the input, replacing them with a space. XML has stringent
      * requirements as to which characters are or are not allowed. The set of
-     * allowable characters are:<br />
+     * allowable characters are:<br>
      * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br>
      * Note: Java handles to \uFFFF
      * 
@@ -246,68 +248,6 @@ public final class XMLUtil {
      */
     public static String cleanAllCharacters(String broken) {
         return invalidCharacterPattern.matcher(broken).replaceAll(" ");
-    }
-
-    /**
-     * Strip all closing tags from the end of the XML fragment, and then
-     * re-close all tags that are open at the end of the string.
-     * 
-     * @param broken
-     *            the string to be cleaned.
-     * @return cleaned string, or {@code null} if the string could not be
-     *         cleaned due to more broken XML
-     */
-    public static String recloseTags(String broken) {
-        String result = broken;
-        // remove closing tags from the end
-        while (result.matches(".*</[a-zA-Z]+>[ \t\r\n]*")) {
-            result = result.substring(0, result.lastIndexOf('<'));
-        }
-        // close tags again
-        List<String> openTags = new ArrayList<String>();
-        Matcher m = Pattern.compile("</?[a-zA-Z]+").matcher(result);
-        boolean lTagFound = false;
-        boolean lgTagFound = false;
-        while (m.find()) {
-            String match = m.group();
-            if (match.startsWith("</")) {
-                if (openTags.size() == 0 && "</l".equals(match) && !lTagFound) {
-                    return recloseTags("<l>" + broken);
-                }
-                if (openTags.size() == 0 && "</lg".equals(match) && !lgTagFound) {
-                    return recloseTags("<lg>" + broken);
-                }
-                if (openTags.size() == 0) {
-                    return null;
-                }
-                String lastTag = openTags.remove(openTags.size() - 1);
-                if (!match.equals("</" + lastTag)) {
-                    return null;
-                }
-            } else {
-                int closePos = result.indexOf('>', m.end());
-                if (closePos == -1) {
-                    return null;
-                }
-                while (Character.isWhitespace(result.charAt(closePos - 1))) {
-                    --closePos;
-                }
-                if (result.charAt(closePos - 1) != '/') {
-                    if ("<l".equals(match)) {
-                        lTagFound = true;
-                    }
-                    if ("<lg".equals(match)) {
-                        lgTagFound = true;
-                    }
-                    openTags.add(match.substring(1));
-                }
-            }
-        }
-        Collections.reverse(openTags);
-        for (String openTag : openTags) {
-            result += "</" + openTag + ">";
-        }
-        return result;
     }
 
     /**
@@ -330,7 +270,11 @@ public final class XMLUtil {
      * XML parse failed, so we can try getting rid of all the tags and having
      * another go. We define a tag to start at a &lt; and end at the end of the
      * next word (where a word is what comes in between spaces) that does not
-     * contain an = sign, or at a >, whichever is earlier.
+     * contain an = sign, or at a &gt;, whichever is earlier.
+     * 
+     * @param broken
+     *            the string to be cleaned
+     * @return the cleaned string
      */
     public static String cleanAllTags(String broken) {
         if (broken == null) {

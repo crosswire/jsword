@@ -55,8 +55,8 @@ public class LucidRuntimeException extends RuntimeException {
      * All LucidRuntimeException are constructed with references to resources in
      * an i18n properties file.
      * 
-     * @param msg
-     *            The resource id to read
+     * @param msg   The resource id to read
+     * @param cause The cause of the exception
      */
     public LucidRuntimeException(String msg, Throwable cause) {
         super(msg, cause);

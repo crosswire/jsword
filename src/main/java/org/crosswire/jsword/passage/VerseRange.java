@@ -714,7 +714,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
     /**
      * Calculate how many verses in this range
      * 
-     * @return The number of verses. Always >= 1.
+     * @return The number of verses. Always&gt;= 1.
      */
     private int calcVerseCount() {
         return v11n.distance(start, end) + 1;

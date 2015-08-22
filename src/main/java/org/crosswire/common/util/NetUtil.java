@@ -44,6 +44,7 @@ import java.util.jar.JarEntry;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -124,6 +125,8 @@ public final class NetUtil {
      * 
      * @param orig
      *            The directory URI to create
+     * @throws MalformedURLException
+     *                If the URI is not valid
      */
     public static void makeDirectory(URI orig) throws MalformedURLException {
         checkFileURI(orig);
@@ -152,6 +155,9 @@ public final class NetUtil {
      * 
      * @param orig
      *            The file URI to create
+     * @throws MalformedURLException
+     *                If the URI is not valid
+     * @throws IOException a problem with I/O happened
      */
     public static void makeFile(URI orig) throws MalformedURLException, IOException {
         checkFileURI(orig);
@@ -256,6 +262,8 @@ public final class NetUtil {
      *            The URI to move
      * @param newUri
      *            The destination URI
+     * @return whether the move happened
+     * @throws IOException a problem with I/O happened
      */
     public static boolean move(URI oldUri, URI newUri) throws IOException {
         checkFileURI(oldUri);
@@ -272,6 +280,8 @@ public final class NetUtil {
      * 
      * @param orig
      *            The URI to delete
+     * @return whether the deleted happened
+     * @throws IOException a problem with I/O happened
      */
     public static boolean delete(URI orig) throws IOException {
         checkFileURI(orig);
@@ -286,7 +296,7 @@ public final class NetUtil {
      * @param uri
      *            The original URI to the file.
      * @return The URI as a file
-     * @throws IOException
+     * @throws IOException a problem with I/O happened
      */
     public static File getAsFile(URI uri) throws IOException {
         // if the URI is already a file URI, return it
@@ -411,6 +421,7 @@ public final class NetUtil {
      * @param uri
      *            The URI to attempt to read from
      * @return An InputStream connection
+     * @throws IOException a problem with I/O happened
      */
     public static InputStream getInputStream(URI uri) throws IOException {
         // We favor the FileOutputStream
@@ -429,6 +440,7 @@ public final class NetUtil {
      * @param uri
      *            The URI to attempt to write to
      * @return An OutputStream connection
+     * @throws IOException a problem with I/O happened
      */
     public static OutputStream getOutputStream(URI uri) throws IOException {
         return getOutputStream(uri, false);
@@ -445,6 +457,7 @@ public final class NetUtil {
      * @param append
      *            Do we write to the end of the file instead of the beginning
      * @return An OutputStream connection
+     * @throws IOException a problem with I/O happened
      */
     public static OutputStream getOutputStream(URI uri, boolean append) throws IOException {
         // We favor the FileOutputStream method here because append
@@ -467,6 +480,13 @@ public final class NetUtil {
      * <p>
      * If the URI is a file: URI then we execute both methods and warn if there
      * is a difference, but returning the values from the index.txt method.
+     * 
+     * @param uri the URI to list
+     * @param filter the filter for the listing
+     * @return the filtered list
+     * @throws MalformedURLException
+     *                If the URI is not valid
+     * @throws IOException a problem with I/O happened
      */
     public static String[] list(URI uri, URIFilter filter) throws MalformedURLException, IOException {
         // We should probably cache this in some way? This is going
@@ -480,7 +500,7 @@ public final class NetUtil {
             // JNLP or other systems that can't use file: URIs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            log.warn("index file for " + uri.toString() + " was not found.");
+            LOGGER.warn("index file for " + uri.toString() + " was not found.");
             if (uri.getScheme().equals(PROTOCOL_FILE)) {
                 return listByFile(uri, filter);
             }
@@ -492,12 +512,12 @@ public final class NetUtil {
 
             // Check that the answers are the same
             if (files.length != reply.length) {
-                log.warn("index file for {} has incorrect number of entries.", uri.toString());
+                LOGGER.warn("index file for {} has incorrect number of entries.", uri.toString());
             } else {
                 List<String> list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
-                        log.warn("file: based index found {} but this was not found using index file.", files[i]);
+                        LOGGER.warn("file: based index found {} but this was not found using index file.", files[i]);
                     }
                 }
             }
@@ -509,7 +529,11 @@ public final class NetUtil {
     /**
      * List all the files specified by the index file passed in.
      * 
-     * @return String[] Matching results.
+     * @param uri the URI to list
+     * @param filter the filter for the listing
+     * @return the filtered list
+     * @throws MalformedURLException
+     *                If the URI is not valid
      */
     public static String[] listByFile(URI uri, URIFilter filter) throws MalformedURLException {
         File fdir = new File(uri.getPath());
@@ -526,8 +550,9 @@ public final class NetUtil {
      * acceptable it must be a non-0 length string, not commented with #, and
      * not the index file itself.
      * 
-     * @return String[] Matching results.
-     * @throws FileNotFoundException
+     * @param index the URI to list
+     * @return the list.
+     * @throws IOException a problem with I/O happened
      */
     public static String[] listByIndexFile(URI index) throws IOException {
         return listByIndexFile(index, new DefaultURIFilter());
@@ -540,6 +565,7 @@ public final class NetUtil {
      * <li>Ignore comments (# to end of line)</li>
      * <li>Trim spaces from line.</li>
      * <li>Ignore blank lines.</li>
+     * </ul>
      * 
      * To be acceptable it:
      * <ul>
@@ -547,8 +573,10 @@ public final class NetUtil {
      * <li> and must acceptable by the filter.</li>
      * </ul>
      * 
-     * @return String[] Matching results.
-     * @throws FileNotFoundException
+     * @param index the URI to list
+     * @param filter the filter for the listing
+     * @return the list.
+     * @throws IOException a problem with I/O happened
      */
     public static String[] listByIndexFile(URI index, URIFilter filter) throws IOException {
         InputStream in = null;
@@ -604,7 +632,7 @@ public final class NetUtil {
      * @param uri
      *            the location of the properties
      * @return the properties given by the URI
-     * @throws IOException
+     * @throws IOException a problem with I/O happened
      */
     public static PropertyMap loadProperties(URI uri) throws IOException {
         InputStream is = null;
@@ -629,7 +657,7 @@ public final class NetUtil {
      *            the location of the store
      * @param title
      *            the label held in the properties file
-     * @throws IOException
+     * @throws IOException a problem with I/O happened
      */
     public static void storeProperties(PropertyMap properties, URI uri, String title) throws IOException {
         OutputStream out = null;
@@ -675,15 +703,35 @@ public final class NetUtil {
     /**
      * When was the given URI last modified. If no modification time is
      * available then this method return the current time.
+     * 
+     * @param uri the URI to examine
+     * @return the last modified date
      */
     public static long getLastModified(URI uri) {
         return getLastModified(uri, null, null);
     }
 
+    /**
+     * When was the given URI last modified. If no modification time is
+     * available then this method return the current time.
+     * 
+     * @param uri the URI to examine
+     * @param proxyHost the proxy host
+     * @return the last modified date
+     */
     public static long getLastModified(URI uri, String proxyHost) {
         return getLastModified(uri, proxyHost, null);
     }
 
+    /**
+     * When was the given URI last modified. If no modification time is
+     * available then this method return the current time.
+     * 
+     * @param uri the URI to examine
+     * @param proxyHost the proxy host
+     * @param proxyPort the proxy port
+     * @return the last modified date
+     */
     public static long getLastModified(URI uri, String proxyHost, Integer proxyPort) {
         try {
             if (uri.getScheme().equals(PROTOCOL_HTTP)) {
@@ -706,7 +754,7 @@ public final class NetUtil {
 
             return time;
         } catch (IOException ex) {
-            log.warn("Failed to get modified time", ex);
+            LOGGER.warn("Failed to get modified time", ex);
             return new Date().getTime();
         }
     }
@@ -715,18 +763,37 @@ public final class NetUtil {
      * Returns whether the left is newer than the right by comparing their last
      * modified dates.
      * 
-     * @param left
-     * @param right
+     * @param left one URI to compare
+     * @param right the other URI to compare
      * @return true if the left is newer
      */
     public static boolean isNewer(URI left, URI right) {
         return isNewer(left, right, null, null);
     }
 
+    /**
+     * Returns whether the left is newer than the right by comparing their last
+     * modified dates.
+     * 
+     * @param left one URI to compare
+     * @param right the other URI to compare
+     * @param proxyHost the proxy host
+     * @return true if the left is newer
+     */
     public static boolean isNewer(URI left, URI right, String proxyHost) {
         return isNewer(left, right, proxyHost, null);
     }
 
+    /**
+     * Returns whether the left is newer than the right by comparing their last
+     * modified dates.
+     * 
+     * @param left one URI to compare
+     * @param right the other URI to compare
+     * @param proxyHost the proxy host
+     * @param proxyPort the proxy port
+     * @return true if the left is newer
+     */
     public static boolean isNewer(URI left, URI right, String proxyHost, Integer proxyPort) {
         return NetUtil.getLastModified(left, proxyHost, proxyPort) > NetUtil.getLastModified(right, proxyHost, proxyPort);
     }
@@ -737,14 +804,14 @@ public final class NetUtil {
     public static class URIFilterFilenameFilter implements FilenameFilter {
         /**
          * Simple ctor
+         * 
+         * @param filter the filter
          */
         public URIFilterFilenameFilter(URIFilter filter) {
             this.filter = filter;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
          */
         public boolean accept(File arg0, String name) {
@@ -802,6 +869,8 @@ public final class NetUtil {
     /**
      * A URI version of <code>File.createTempFile()</code>
      * 
+     * @param prefix the prefix of the temporary file
+     * @param suffix the suffix of the temporary file
      * @return A new temporary URI
      * @throws IOException
      *             If something goes wrong creating the temp URI
@@ -848,15 +917,15 @@ public final class NetUtil {
     public static class IsDirectoryURIFilter implements URIFilter {
         /**
          * Simple ctor
+         * 
+         * @param parent the parent directory
          */
         public IsDirectoryURIFilter(URI parent) {
             this.parent = parent;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.common.util.URLFilter#accept(java.lang.String)
+        /* (non-Javadoc)
+         * @see org.crosswire.common.util.URIFilter#accept(java.lang.String)
          */
         public boolean accept(String name) {
             return NetUtil.isDirectory(NetUtil.lengthenURI(parent, name));
@@ -873,5 +942,5 @@ public final class NetUtil {
     /**
      * The log stream
      */
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(NetUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetUtil.class);
 }

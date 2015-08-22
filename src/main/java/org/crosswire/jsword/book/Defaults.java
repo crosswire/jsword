@@ -53,7 +53,7 @@ public final class Defaults {
      * Establish whether the getBible should return the current Bible or the
      * user's chosen default.
      * 
-     * @param current
+     * @param current whether getBible tracks the current Bible
      */
     public static void setCurrentBible(boolean current) {
         trackBible = current;
@@ -63,7 +63,7 @@ public final class Defaults {
      * If the user has chosen to remember the book (by type) then set the
      * current book for that type.
      * 
-     * @param book
+     * @param book the current Book
      */
     public static void setCurrentBook(Book book) {
         BookCategory type = book.getBookCategory();
@@ -87,7 +87,7 @@ public final class Defaults {
     /**
      * Set the default Bible.
      * 
-     * @param book
+     * @param book the default Bible
      */
     public static void setBible(Book book) {
         bibleDeft.setDefault(book);
@@ -117,7 +117,7 @@ public final class Defaults {
     /**
      * Set the default Bible by name.
      * 
-     * @param name
+     * @param name the name of the default Bible
      */
     public static void setBibleByName(String name) {
         bibleDeft.setDefaultByName(name);
@@ -126,7 +126,7 @@ public final class Defaults {
     /**
      * Set the default commentary.
      * 
-     * @param book
+     * @param book the default commentary
      */
     public static void setCommentary(Book book) {
         commentaryDeft.setDefault(book);
@@ -156,7 +156,7 @@ public final class Defaults {
     /**
      * Set the default commentary by name.
      * 
-     * @param name
+     * @param name the default commentary's name
      */
     public static void setCommentaryByName(String name) {
         commentaryDeft.setDefaultByName(name);
@@ -165,7 +165,7 @@ public final class Defaults {
     /**
      * Set the default dictionary.
      * 
-     * @param book
+     * @param book the default dictionary
      */
     public static void setDictionary(Book book) {
         dictionaryDeft.setDefault(book);
@@ -195,7 +195,7 @@ public final class Defaults {
     /**
      * Set the default dictionary by name.
      * 
-     * @param name
+     * @param name the name of the default dictionary
      */
     public static void setDictionaryByName(String name) {
         dictionaryDeft.setDefaultByName(name);
@@ -204,7 +204,7 @@ public final class Defaults {
     /**
      * Set the default daily devotional.
      * 
-     * @param book
+     * @param book the default daily devotional
      */
     public static void setDailyDevotional(Book book) {
         dictionaryDeft.setDefault(book);
@@ -234,7 +234,7 @@ public final class Defaults {
     /**
      * Set the default daily devotional by name.
      * 
-     * @param name
+     * @param name the name of the default daily devotional
      */
     public static void setDailyDevotionalByName(String name) {
         dailyDevotionalDeft.setDefaultByName(name);
@@ -243,7 +243,7 @@ public final class Defaults {
     /**
      * Set the default Greek Strong's Numbers dictionary.
      * 
-     * @param book
+     * @param book the default Greek Strong's Numbers dictionary.
      */
     public static void setGreekDefinitions(Book book) {
         greekDefinitionsDeft.setDefault(book);
@@ -273,7 +273,7 @@ public final class Defaults {
     /**
      * Set the default Greek Strong's Numbers dictionary by name.
      * 
-     * @param name
+     * @param name the name of the default Greek Strong's Numbers dictionary
      */
     public static void setGreekDefinitionsByName(String name) {
         greekDefinitionsDeft.setDefaultByName(name);
@@ -282,7 +282,7 @@ public final class Defaults {
     /**
      * Set the default Hebrew Strong's Numbers dictionary.
      * 
-     * @param book
+     * @param book the default Hebrew Strong's Numbers dictionary.
      */
     public static void setHebrewDefinitions(Book book) {
         hebrewDefinitionsDeft.setDefault(book);
@@ -312,7 +312,7 @@ public final class Defaults {
     /**
      * Set the default Hebrew Strong's Numbers dictionary by name.
      * 
-     * @param name
+     * @param name the name of the default Hebrew Strong's Numbers dictionary
      */
     public static void setHebrewDefinitionsByName(String name) {
         hebrewDefinitionsDeft.setDefaultByName(name);
@@ -321,7 +321,7 @@ public final class Defaults {
     /**
      * Set the default Greek morphology dictionary.
      * 
-     * @param book
+     * @param book the default Greek morphology dictionary.
      */
     public static void setGreekParse(Book book) {
         greekParseDeft.setDefault(book);
@@ -351,7 +351,7 @@ public final class Defaults {
     }
 
     /**
-     * @param name
+     * @param name the name of the default Greek morphology dictionary
      */
     public static void setGreekParseByName(String name) {
         greekParseDeft.setDefaultByName(name);
@@ -360,7 +360,7 @@ public final class Defaults {
     /**
      * Set the default Hebrew morphology dictionary by name.
      * 
-     * @param book
+     * @param book the default Hebrew morphology dictionary by name.
      */
     public static void setHebrewParse(Book book) {
         hebrewParseDeft.setDefault(book);
@@ -390,7 +390,7 @@ public final class Defaults {
     /**
      * Set the default Hebrew morphology dictionary by name.
      * 
-     * @param name
+     * @param name the default Hebrew morphology dictionary by name.
      */
     public static void setHebrewParseByName(String name) {
         hebrewParseDeft.setDefaultByName(name);
@@ -502,6 +502,8 @@ public final class Defaults {
     /**
      * Determine whether this Book become the default. It should, only if there
      * is not one.
+     * 
+     * @param book the book to check
      */
     protected static void checkPreferable(Book book) {
         assert book != null;
@@ -518,6 +520,9 @@ public final class Defaults {
 
     /**
      * Convert a filter into an array of names of Books that pass the filter.
+     * 
+     * @param filter the filter to locate matching books
+     * @return matching books
      */
     private static Map<Book, String> getBookMap(BookFilter filter) {
         Map<Book, String> books = new TreeMap<Book, String>(BookComparators.getDefault());

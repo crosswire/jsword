@@ -47,7 +47,17 @@ public final class ChoiceFactory {
      * 
      * @param option
      *            The element to check
+     * @param configResources the resource bundle holding the option
      * @return One of the ChoiceTypes.
+     * @throws  InstantiationException
+     *               if this {@code data} represents an abstract class,
+     *               an interface, an array class, a primitive type, or void;
+     *               or if the class has no nullary constructor;
+     *               or if the instantiation fails for some other reason.
+     * @throws ClassNotFoundException if the class is not found
+     * @throws IllegalAccessException  if the class or its nullary
+     *               constructor is not accessible.
+     * @throws StartupException if startup is not possible
      */
     public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException,
             InstantiationException, StartupException
@@ -69,6 +79,8 @@ public final class ChoiceFactory {
 
     /**
      * Method getDataMap.
+     * 
+     * @return the map data
      */
     public static Map<String, Object> getDataMap() {
         return datamap;

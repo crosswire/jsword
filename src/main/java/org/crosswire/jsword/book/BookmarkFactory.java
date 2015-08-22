@@ -42,6 +42,8 @@ public final class BookmarkFactory {
 
     /**
      * Create a new Bookmark.
+     * 
+     * @return the singleton
      */
     public static Bookmark getBookmark() {
         return instance.clone();
@@ -55,7 +57,7 @@ public final class BookmarkFactory {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(BookmarkFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookmarkFactory.class);
 
     /**
      * Setup the instance
@@ -64,15 +66,15 @@ public final class BookmarkFactory {
         try {
             instance = PluginUtil.getImplementation(Bookmark.class);
         } catch (IOException e) {
-            log.error("createBookmark failed", e);
+            LOGGER.error("createBookmark failed", e);
         } catch (ClassCastException e) {
-            log.error("createBookmark failed", e);
+            LOGGER.error("createBookmark failed", e);
         } catch (ClassNotFoundException e) {
-            log.error("createBookmark failed", e);
+            LOGGER.error("createBookmark failed", e);
         } catch (IllegalAccessException e) {
-            log.error("createBookmark failed", e);
+            LOGGER.error("createBookmark failed", e);
         } catch (InstantiationException e) {
-            log.error("createBookmark failed", e);
+            LOGGER.error("createBookmark failed", e);
         }
     }
 }

@@ -901,7 +901,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * Create a Passage from a human readable string. The opposite of
      * <code>toString()</code>. Since this method is not public it leaves
-     * control of <code>suppress_events<code> up to the people
+     * control of <code>suppress_events</code> up to the people
      * that call it.
      *
      * @param refs

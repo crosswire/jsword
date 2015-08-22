@@ -63,9 +63,9 @@ public class LuceneIndexManager implements IndexManager {
     public LuceneIndexManager() {
         policy = new IndexPolicyAdapter();
         try {
-            baseFolderURI = CWProject.instance().getWritableProjectSubdir(DIR_LUCENE, false);
+            baseFolderURI = CWProject.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
         } catch (IOException ex) {
-            log.error("Failed to find lucene index storage area. " + ex.getMessage(), ex);
+            log.error("Failed to find lucene index storage area.", ex);
 
         }
     }
@@ -106,32 +106,21 @@ public class LuceneIndexManager implements IndexManager {
     }
 
     /**
-     * Clients can use this to determine if book's index is stale and needs to reindexed or downloaded.
-     * Asssumes index exists: Client must use isIndexed() prior to using this method
-       @returns true, if Latest.Index.Version.xxx > Installed.Index.Version.xxx
+     * Clients can use this to determine if book's index is stale and needs to re-indexed or downloaded.
+     * Assumes index exists: Client must use isIndexed() prior to using this method
+     * 
+     * @return true, if Latest.Index.Version.xxx &gt; Installed.Index.Version.xxx
      * @see org.crosswire.jsword.index.IndexManager#needsReindexing(org.crosswire.jsword.book.Book)
      */
-
     public boolean needsReindexing(Book book) {
-
-
-        /*if (!isIndexed(book)) {
-            return true;
-        }*/
-
-        boolean reindex = false;
-
         //check for index version
         //should Clients use IndexStatus.INVALID
-
-
         float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
         if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
-            reindex = true;
-            log.info(book.getBookMetaData().getInternalName() + ": needs reindexing, Installed index version @" + installedV);
+            log.info("{}: needs reindexing, Installed index version @{}", book.getBookMetaData().getInternalName(), Float.toString(installedV));
+            return true;
         }
-
-        return reindex;
+        return false;
     }
 
     /* (non-Javadoc)

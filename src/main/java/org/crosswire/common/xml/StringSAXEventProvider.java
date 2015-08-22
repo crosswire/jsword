@@ -42,6 +42,10 @@ import org.xml.sax.XMLReader;
 public class StringSAXEventProvider implements SAXEventProvider {
     /**
      * Simple ctor
+     * 
+     * @param xmlstr the xml as a string
+     * @throws ParserConfigurationException when there is a parser configuration problem
+     * @throws SAXException when there is a SAX problem
      */
     public StringSAXEventProvider(String xmlstr) throws ParserConfigurationException, SAXException {
         this.xmlstr = xmlstr;
@@ -52,12 +56,8 @@ public class StringSAXEventProvider implements SAXEventProvider {
         reader = parser.getXMLReader();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax
-     * .ContentHandler)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax.ContentHandler)
      */
     public void provideSAXEvents(ContentHandler handler) throws SAXException {
         try {

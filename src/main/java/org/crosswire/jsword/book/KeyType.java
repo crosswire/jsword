@@ -45,7 +45,9 @@ public enum KeyType {
     TREE;
 
     /**
-     * Get an integer representation for this CaseType
+     * Get an integer representation for this KeyType
+     * 
+     * @return the ordinal of a KeyType
      */
     public int toInteger() {
         return ordinal();
@@ -53,6 +55,9 @@ public enum KeyType {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the name of a KeyType
+     * @return the matching KeyType
      */
     public static KeyType fromString(String name) {
         for (KeyType v : values()) {

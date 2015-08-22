@@ -48,7 +48,7 @@ import org.crosswire.jsword.versification.Versification;
  * <li>NRSV translations</li>
  * </ul>
  *
- * All of these Bibles & texts should be accommodated by this versification definition without
+ * All of these Bibles &amp; texts should be accommodated by this versification definition without
  * requiring that any extra verses be appended; as a consequence, no Bible will include every
  * verse of this system.
  *

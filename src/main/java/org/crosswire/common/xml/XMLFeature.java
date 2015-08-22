@@ -66,8 +66,8 @@ public enum XMLFeature {
     /**
      * Construct a feature for xml, setting the initial state
      * 
-     * @param control
-     * @param initialState
+     * @param control the identifier for an XML feature
+     * @param initialState whether that feature defaults to on or off
      */
     private XMLFeature(String control, boolean initialState) {
         this.control = control;
@@ -77,7 +77,7 @@ public enum XMLFeature {
     /**
      * Construct a feature for xml, setting the initial state set to false.
      * 
-     * @param control
+     * @param control the identifier for an XML feature that is initially off
      */
     private XMLFeature(String control) {
         this(control, false);
@@ -101,6 +101,9 @@ public enum XMLFeature {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the name of the control feature
+     * @return the XML Feature
      */
     public static XMLFeature fromString(String name) {
         for (XMLFeature o : XMLFeature.values()) {
@@ -113,6 +116,9 @@ public enum XMLFeature {
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
+     */
     @Override
     public String toString() {
         return (state ? "on  " : "off ") + control;

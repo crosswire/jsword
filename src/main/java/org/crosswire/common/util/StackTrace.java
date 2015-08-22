@@ -126,6 +126,8 @@ public final class StackTrace {
 
     /**
      * How many stack elements are there?
+     * 
+     * @return the number of stack elements
      */
     public int countStackElements() {
         return methodNames.length;
@@ -136,6 +138,7 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the function name
      */
     public String getFunctionName(int level) {
         return methodNames[level];
@@ -146,6 +149,7 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the full function name
      */
     public String getFullFunctionName(int level) {
         return classNames[level] + '.' + methodNames[level] + "()";
@@ -156,6 +160,7 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the class name
      */
     public String getClassName(int level) {
         return classNames[level];
@@ -166,6 +171,7 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the file name
      */
     public String getFileName(int level) {
         return fileNames[level];
@@ -176,11 +182,17 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the line number
      */
     public int getLineNumber(int level) {
         return lineNumbers[level];
     }
 
+    /**
+     * Get the count of classes
+     * 
+     * @return the number of classes
+     */
     public int getClassCount() {
         return classNames.length;
     }
@@ -190,6 +202,7 @@ public final class StackTrace {
      * 
      * @param level
      *            Number of calling function
+     * @return the function owner
      */
     public Class<?> getClass(int level) {
         try {
@@ -233,6 +246,8 @@ public final class StackTrace {
 
     /**
      * To iterate over the class names
+     * 
+     * @return an iterator of class names
      */
     public Iterator<String> getClassNameElements() {
         return new AbstractStackIterator<String>() {
@@ -247,6 +262,8 @@ public final class StackTrace {
 
     /**
      * To iterate over the function names
+     * 
+     * @return an iterator of function names
      */
     public Iterator<String> getFunctionNameElements() {
         return new AbstractStackIterator<String>() {
@@ -261,6 +278,8 @@ public final class StackTrace {
 
     /**
      * To iterate over the full function names
+     * 
+     * @return an iterator of full function names
      */
     public Iterator<String> getFullFunctionNameElements() {
         return new AbstractStackIterator<String>() {

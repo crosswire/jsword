@@ -44,7 +44,7 @@ public class OptionList {
      * "undefined" behavior for an Option's short or long name to already be
      * known.
      * 
-     * @param option
+     * @param option the option to append
      */
     public void add(Option option) {
         char shortName = option.getShortName();

@@ -307,7 +307,7 @@ public class DifferenceEngine {
      * Set the timeout for the diff operation. The default is 1 second. Use 0
      * for infinity.
      * 
-     * @param newTimeout
+     * @param newTimeout the new timeout
      */
     public static void setTimeout(float newTimeout) {
         timeout = newTimeout;

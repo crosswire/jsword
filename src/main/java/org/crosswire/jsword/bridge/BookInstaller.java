@@ -214,9 +214,9 @@ public class BookInstaller {
      * BookInstaller can manage the installation of books with the following
      * capabilities.
      * 
-     * Usage: BookInstaller [option]<br>
-     * Options:
+     * <p>Usage: BookInstaller [option]</p>
      * <table border="0">
+     * <caption>Options</caption>
      * <tr>
      * <td>uninstall</td>
      * <td>bookName</td>

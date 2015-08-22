@@ -232,7 +232,7 @@ public class Diff {
 
     /**
      * loc is a location in source, compute and return the equivalent location
-     * in target. e.g. "The cat" vs "The big cat", 1->1, 5->8
+     * in target. e.g. "The cat" vs "The big cat", 1-&gt;1, 5-&gt;8
      * 
      * @param diffs
      *            List of Difference objects

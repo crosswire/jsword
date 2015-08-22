@@ -34,8 +34,8 @@ final class LGPLMsg extends MsgBase {
      * Get the internationalized text, but return key if key is unknown.
      * The text requires one or more parameters to be passed.
      * 
-     * @param key
-     * @param params
+     * @param key the formatted key to internationalize
+     * @param params the parameters to format
      * @return the formatted, internationalized text
      */
     public static String lookupText(String key, Object... params) {

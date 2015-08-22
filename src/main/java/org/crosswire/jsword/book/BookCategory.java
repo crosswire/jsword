@@ -78,6 +78,7 @@ public enum BookCategory {
     /**
      * @param name
      *            The name of the BookCategory
+     * @param externalName the name of the BookCategory worthy of an end user
      */
     private BookCategory(String name, String externalName) {
         this.name = name;
@@ -86,6 +87,9 @@ public enum BookCategory {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the internal name of a BookCategory
+     * @return the matching BookCategory
      */
     public static BookCategory fromString(String name) {
         for (BookCategory o : BookCategory.values()) {
@@ -98,6 +102,9 @@ public enum BookCategory {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the external name of a BookCategory
+     * @return the matching BookCategory
      */
     public static BookCategory fromExternalString(String name) {
         for (BookCategory o : BookCategory.values()) {
@@ -110,6 +117,9 @@ public enum BookCategory {
 
     /**
      * Lookup method to convert from an integer
+     * 
+     * @param i the ordinal value of the BookCategory in this enumeration.
+     * @return the i-th BookCategory
      */
     public static BookCategory fromInteger(int i) {
         for (BookCategory o : BookCategory.values()) {

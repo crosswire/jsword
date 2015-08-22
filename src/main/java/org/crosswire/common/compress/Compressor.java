@@ -42,6 +42,7 @@ public interface Compressor {
      * Compresses the input and provides the result.
      * 
      * @return the compressed result
+     * @throws IOException if an exception is encountered
      */
     ByteArrayOutputStream compress() throws IOException;
 
@@ -49,6 +50,7 @@ public interface Compressor {
      * Uncompresses the input and provides the result.
      * 
      * @return the uncompressed result
+     * @throws IOException if an exception is encountered
      */
     ByteArrayOutputStream uncompress() throws IOException;
 
@@ -58,6 +60,7 @@ public interface Compressor {
      * @param expectedLength
      *            the size of the result buffer
      * @return the uncompressed result
+     * @throws IOException if an exception is encountered
      */
     ByteArrayOutputStream uncompress(int expectedLength) throws IOException;
 }

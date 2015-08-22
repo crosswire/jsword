@@ -145,6 +145,7 @@ public final class BookName {
      * <li>it is a prefix of a normalized long name</li>
      * <li>it is a prefix of a normalized short name</li>
      * <li>a normalized short name is a prefix of it</li>
+     * </ol>
      * 
      * @param normalizedName
      *            the already normalized name to match against.

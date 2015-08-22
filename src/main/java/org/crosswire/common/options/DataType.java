@@ -76,7 +76,10 @@ public enum DataType {
     public abstract Object convertFromString(String input);
 
     /**
-     * Lookup method to convert from a String
+     * Find a DataType by name
+     * 
+     * @param name the name of the DataType
+     * @return the DataType or null
      */
     public static DataType fromString(String name) {
         for (DataType v : values()) {

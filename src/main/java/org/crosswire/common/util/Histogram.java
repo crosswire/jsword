@@ -29,7 +29,7 @@ import java.util.Map;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class Histogram {
     /**
@@ -40,9 +40,9 @@ public class Histogram {
     }
 
     /**
-     * note that this key has been seen one time more than before.
+     * Note that this key has been seen one time more than before.
      * 
-     * @param key
+     * @param key the key to increment
      */
     public void increment(String key) {
         Counter counter = hist.get(key);

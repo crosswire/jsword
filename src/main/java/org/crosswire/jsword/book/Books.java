@@ -120,6 +120,8 @@ public final class Books extends AbstractBookList {
     /**
      * Add a Book to the current list of Books. This method should only be
      * called by BibleDrivers, it is not a method for general consumption.
+     * 
+     * @param book the book to add to this book list
      */
     public synchronized void addBook(Book book) {
         if (book != null && books.add(book)) {
@@ -132,6 +134,9 @@ public final class Books extends AbstractBookList {
     /**
      * Remove a Book from the current list of Books. This method should only be
      * called by BibleDrivers, it is not a method for general consumption.
+     * 
+     * @param book the book to be removed from this book list
+     * @throws BookException when an error occurs when performing this method
      */
     public synchronized void removeBook(Book book) throws BookException {
         // log.debug("unregistering book: {}", bmd.getName());
@@ -155,6 +160,7 @@ public final class Books extends AbstractBookList {
      * 
      * @param driver
      *            The BookDriver to add
+     * @throws BookException when an error occurs when performing this method
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException {
         log.debug("begin registering driver: {}", driver.getClass().getName());
@@ -191,6 +197,9 @@ public final class Books extends AbstractBookList {
      * Since Books keeps a track of drivers itself, including creating them when
      * registered it can be hard to get a hold of the current book driver. This
      * method gives access to the registered instances.
+     * 
+     * @param type the type of BookDriver
+     * @return matching BookDrivers
      */
     public synchronized BookDriver[] getDriversByClass(Class<? extends BookDriver> type) {
         List<BookDriver> matches = new ArrayList<BookDriver>();

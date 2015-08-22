@@ -338,6 +338,8 @@ public final class OSISUtil {
 
     /**
      * An accessor for the OSISFactory that creates OSIS objects
+     * 
+     * @return the singleton OSISFactory
      */
     public static OSISFactory factory() {
         return factory;
@@ -348,63 +350,63 @@ public final class OSISUtil {
      */
     public static class OSISFactory {
         /**
-        *
+        * @return an abbr element
         */
         public Element createAbbr() {
             return new Element(OSIS_ELEMENT_ABBR);
         }
 
         /**
-       *
-       */
+         * @return a seg element
+         */
         public Element createSeg() {
             return new Element(OSIS_ELEMENT_SEG);
         }
 
         /**
-         *
+         * @return an osisText element
          */
         public Element createOsisText() {
             return new Element(OSIS_ELEMENT_OSISTEXT);
         }
 
         /**
-         *
+         * @return a header element
          */
         public Element createHeader() {
             return new Element(OSIS_ELEMENT_HEADER);
         }
 
         /**
-         *
+         * @return a work element
          */
         public Element createWork() {
             return new Element(OSIS_ELEMENT_WORK);
         }
 
         /**
-         *
+         * @return an osis element
          */
         public Element createOsis() {
             return new Element(OSIS_ELEMENT_OSIS);
         }
 
         /**
-         *
+         * @return a div element
          */
         public Element createDiv() {
             return new Element(OSIS_ELEMENT_DIV);
         }
 
         /**
-         *
+         * @return a cell element
          */
         public Element createCell() {
             return new Element(OSIS_ELEMENT_CELL);
         }
 
         /**
-         *
+         * @return a header cell element (akin to HTML's TH)
          */
         public Element createHeaderCell() {
             Element ele = new Element(OSIS_ELEMENT_CELL);
@@ -414,112 +416,112 @@ public final class OSISUtil {
         }
 
         /**
-         *
+         * @return a verse element
          */
         public Element createVerse() {
             return new Element(OSIS_ELEMENT_VERSE);
         }
 
         /**
-         *
+         * @return a w element
          */
         public Element createW() {
             return new Element(OSIS_ELEMENT_W);
         }
 
         /**
-         *
+         * @return a figure element
          */
         public Element createFigure() {
             return new Element(OSIS_ELEMENT_FIGURE);
         }
 
         /**
-         *
+         * @return a foreign element
          */
         public Element createForeign() {
             return new Element(OSIS_ELEMENT_FOREIGN);
         }
 
         /**
-         *
+         * @return an item element
          */
         public Element createItem() {
             return new Element(OSIS_ELEMENT_ITEM);
         }
 
         /**
-         *
+         * @return a p element
          */
         public Element createP() {
             return new Element(OSIS_ELEMENT_P);
         }
 
         /**
-         *
+         * @return a list element
          */
         public Element createList() {
             return new Element(OSIS_ELEMENT_LIST);
         }
 
         /**
-         *
+         * @return a q element
          */
         public Element createQ() {
             return new Element(OSIS_ELEMENT_Q);
         }
 
         /**
-         *
+         * @return a name element
          */
         public Element createName() {
             return new Element(OSIS_ELEMENT_NAME);
         }
 
         /**
-         *
+         * @return a note element
          */
         public Element createNote() {
             return new Element(OSIS_ELEMENT_NOTE);
         }
 
         /**
-         *
+         * @return a reference element
          */
         public Element createReference() {
             return new Element(OSIS_ELEMENT_REFERENCE);
         }
 
         /**
-         *
+         * @return a row element
          */
         public Element createRow() {
             return new Element(OSIS_ELEMENT_ROW);
         }
 
         /**
-         *
+         * @return a speaker element
          */
         public Element createSpeaker() {
             return new Element(OSIS_ELEMENT_SPEAKER);
         }
 
         /**
-         *
+         * @return a speech element
          */
         public Element createSpeech() {
             return new Element(OSIS_ELEMENT_SPEECH);
         }
 
         /**
-         *
+         * @return a table element
          */
         public Element createTable() {
             return new Element(OSIS_ELEMENT_TABLE);
         }
 
-        /**
-        *
+       /**
+        * @return a title element
         */
        public Element createTitle() {
            return new Element(OSIS_ELEMENT_TITLE);
@@ -527,6 +529,8 @@ public final class OSISUtil {
 
         /**
          * Create a title marked as generated.
+         * 
+         * @return a generated title element
          */
         public Element createGeneratedTitle() {
             Element title = new Element(OSIS_ELEMENT_TITLE);
@@ -536,6 +540,8 @@ public final class OSISUtil {
 
         /**
          * Line Group
+         * 
+         * @return a lg element
          */
         public Element createLG() {
             return new Element(OSIS_ELEMENT_LG);
@@ -543,6 +549,8 @@ public final class OSISUtil {
 
         /**
          * Line
+         * 
+         * @return a l element
          */
         public Element createL() {
             return new Element(OSIS_ELEMENT_L);
@@ -550,6 +558,8 @@ public final class OSISUtil {
 
         /**
          * Line Break
+         * 
+         * @return a lb element
          */
         public Element createLB() {
             return new Element(OSIS_ELEMENT_LB);
@@ -557,6 +567,8 @@ public final class OSISUtil {
 
         /**
          * Highlight
+         * 
+         * @return a hi element
          */
         public Element createHI() {
             return new Element(OSIS_ELEMENT_HI);
@@ -564,6 +576,8 @@ public final class OSISUtil {
 
         /**
          * Text
+         * 
+         * @return a text element
          */
         public Text createText(String text) {
             return new Text(text);
@@ -574,6 +588,7 @@ public final class OSISUtil {
      * Dig past the osis and osisText element, if present, to get the meaningful
      * content of the document.
      * 
+     * @param element the element from which to get a fragment
      * @return a fragment
      */
     public static List<Content> getFragment(Element root) {
@@ -706,6 +721,8 @@ public final class OSISUtil {
      * A simplified plain text version of the data in this Element with all the
      * markup stripped out.
      * 
+     * @param root
+     *            the whole osis document.
      * @return The Bible text without markup
      */
     public static String getPlainText(Element root) {
@@ -716,6 +733,8 @@ public final class OSISUtil {
     /**
      * A space separate string containing Strong's numbers.
      * 
+     * @param root
+     *            the whole osis document.
      * @return The Strong's numbers in the text
      */
     public static String getStrongsNumbers(Element root) {
@@ -724,6 +743,7 @@ public final class OSISUtil {
 
     /**
      * A '@' separated list of morphologies and strong numbers
+     * 
      * @param root the osis element in question
      * @return the string
      */
@@ -733,8 +753,9 @@ public final class OSISUtil {
 
     /**
      * concatenates strong and morphology information together
-     * @param root
-     * @param includeMorphology
+     * 
+     * @param root the osis element in question
+     * @param includeMorphology whether to include morphology
      * @return root of the element
      */
     public static String getLexicalInformation(Element root, boolean includeMorphology) {
@@ -778,6 +799,8 @@ public final class OSISUtil {
      *
      * @param book the book to which the references refer
      * @param key the verse containing the cross references
+     * @param v11n the versification
+     * @param root the osis element in question
      * @return The references in the text
      */
     public static String getReferences(Book book, Key key, Versification v11n, Element root) {
@@ -802,6 +825,7 @@ public final class OSISUtil {
     /**
      * The text of non-reference notes.
      * 
+     * @param root the whole OSIS document
      * @return The references in the text
      */
     public static String getNotes(Element root) {
@@ -824,6 +848,7 @@ public final class OSISUtil {
     /**
      * The text of non-reference notes.
      * 
+     * @param root the whole OSIS document
      * @return The references in the text
      */
     public static String getHeadings(Element root) {
@@ -907,6 +932,10 @@ public final class OSISUtil {
     /**
      * Find all the instances of elements of type <code>find</code> under the
      * element <code>div</code>.
+     * 
+     * @param div the element to trawl
+     * @param name the element name to search
+     * @return the collection of matching content
      */
     public static Collection<Content> getDeepContent(Element div, String name) {
         List<Content> reply = new ArrayList<Content>();
@@ -917,6 +946,7 @@ public final class OSISUtil {
     /**
      * Walk up the tree from the W to find out what verse we are in.
      * 
+     * @param v11n the versification
      * @param ele
      *            The start point for our verse hunt.
      * @return The verse we are in
@@ -945,6 +975,9 @@ public final class OSISUtil {
     /**
      * Helper method to create the boilerplate headers in an OSIS document from
      * the current metadata object
+     * 
+     * @param bmd the book's meta data
+     * @return the root of an OSIS document
      */
     public static Element createOsisFramework(BookMetaData bmd) {
         Element osis = factory().createOsis();
@@ -1152,6 +1185,10 @@ public final class OSISUtil {
     /**
      * Find all the instances of elements of type <code>find</code> under the
      * element <code>div</code>. For internal use only.
+     * 
+     * @param start the node under which searches occur
+     * @param name element name to search
+     * @param reply the list to modify with matching content
      */
     private static void recurseDeepContent(Element start, String name, List<Content> reply) {
         if (start.getName().equals(name)) {
@@ -1171,6 +1208,9 @@ public final class OSISUtil {
     /**
      * If we have a String just add it to the buffer, but if we have an Element
      * then try to dig the strings out of it.
+     * 
+     * @param sub a sub element or text node
+     * @param buffer the buffer to build on match
      */
     private static void recurseElement(Object sub, StringBuilder buffer) {
         if (sub instanceof Text) {

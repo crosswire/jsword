@@ -22,7 +22,7 @@ package org.crosswire.common.config;
 
 import java.util.ResourceBundle;
 
-import org.crosswire.common.util.Convert;
+import org.crosswire.common.util.StringUtil;
 import org.jdom2.Element;
 
 /**
@@ -62,7 +62,7 @@ public class StringArrayChoice extends AbstractReflectedChoice {
      */
     @Override
     public String convertToString(Object orig) {
-        return Convert.stringArray2String((String[]) orig, separator);
+        return StringUtil.join((String[]) orig, separator);
     }
 
     /*
@@ -74,7 +74,7 @@ public class StringArrayChoice extends AbstractReflectedChoice {
      */
     @Override
     public Object convertToObject(String orig) {
-        return Convert.string2StringArray(orig, separator);
+        return StringUtil.split(orig, separator);
     }
 
     private String separator = " ";

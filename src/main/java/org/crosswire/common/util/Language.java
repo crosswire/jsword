@@ -276,7 +276,8 @@ public class Language implements Comparable<Language> {
 
     /**
      * Split the specification on '-' into 1 to 3 parts.
-     * @param spec
+     * 
+     * @param spec the specification to parse
      */
     private void parse(String spec) {
         String specification = spec;
@@ -357,8 +358,9 @@ public class Language implements Comparable<Language> {
 
     /**
      * Equal if both a and b are the same.
-     * @param a
-     * @param b
+     * 
+     * @param a a string to compare
+     * @param b a string to compare
      * @return true if both are the same.
      */
     private boolean compareStrings(String a, String b) {

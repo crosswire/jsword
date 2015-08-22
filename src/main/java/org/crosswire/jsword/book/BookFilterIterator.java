@@ -35,6 +35,7 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book> {
     /**
      * Simple ctor
      * 
+     * @param books an iterator over a set of books
      * @param filter
      *            The filter to use, if null, will iterate over all values
      */
@@ -77,6 +78,8 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book> {
 
     /**
      * Find the next (if there is one)
+     * 
+     * @return the next book
      */
     private Book findNext() {
         while (it.hasNext()) {

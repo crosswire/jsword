@@ -10,9 +10,9 @@ import org.crosswire.jsword.passage.Key;
 import org.jdom2.Content;
 
 /**
- * An abstract definition of a Backend.
+ * Uniform representation of all Backends.
  *
- * @param <T> The OpenFileState that holds the files for this Backend.
+ * @param <T> The type of the OpenFileState that this class extends.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
@@ -20,7 +20,7 @@ import org.jdom2.Content;
 public interface Backend<T extends OpenFileState> {
 
     /**
-     * @return the Sword BookMetaData.
+     * @return Returns the Sword BookMetaData.
      */
     SwordBookMetaData getBookMetaData();
 

@@ -29,12 +29,12 @@ import org.crosswire.jsword.versification.system.Versifications;
  * A QualifiedKey represents the various left and right sides of a map entry.
  * <p>
  * The QualifiedKey is Qualified:
+ * </p>
  * <ul>
  * <li><strong>DEFAULT</strong> - This QualifiedKey is either a Verse or a VerseRange.</li>
  * <li><strong>ABSENT_IN_KJV</strong> - This QualifiedKey has a section name for what is absent in the KJV (the right hand of the map entry).</li>
  * <li><strong>ABSENT_IN_LEFT</strong> - This QualifiedKey has no other content.</li>
  * </ul>
- * </p>
  * <p>
  * The mapping can indicate a part of a verse. This is an internal implementation detail of the Versification mapping code.
  * Here it is used to distinguish one QualifiedKey from another in equality tests and in containers.

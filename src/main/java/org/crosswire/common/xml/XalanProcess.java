@@ -44,7 +44,7 @@ public final class XalanProcess {
     /**
      * Run xalan's xslt process main.
      * 
-     * @param args
+     * @param args the arguments for the xslt process
      */
     public static void main(String[] args) {
         Class<?> clazz = null;
@@ -52,7 +52,7 @@ public final class XalanProcess {
         try {
             // Try for 1.5.x
             clazz = ClassUtil.forName("com.sun.org.apache.xalan.internal.xslt.Process");
-                    main = clazz.getMethod("_main", new Class[] { String[].class});
+            main = clazz.getMethod("_main", new Class[] { String[].class});
         } catch (ClassNotFoundException e) {
             try {
                 // Try for 1.4.x

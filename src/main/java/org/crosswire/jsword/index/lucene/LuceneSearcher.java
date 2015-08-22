@@ -37,7 +37,7 @@ import org.crosswire.jsword.passage.Key;
  * <ul>
  * <li>A simple search syntax that goes something like this.
  * <ul>
- * <li>aaron, moses (verses containing aaron and moses. Can also use & or +)
+ * <li>aaron, moses (verses containing aaron and moses. Can also use &amp; or +)
  * <li>aaron/moses (verses containing aaron or moses. Can also use |)
  * <li>aaron - moses (verses containing aaron but not moses)
  * <li>aaron ~5 , moses (verses with aaron within 5 verses of moses)

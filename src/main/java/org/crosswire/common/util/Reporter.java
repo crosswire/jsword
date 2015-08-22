@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.jsword.JSMsg;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -42,8 +43,11 @@ import org.slf4j.LoggerFactory;
  * <li>The class being implemented may implement an interface that disallows
  * nested exceptions and yet does not want to loose the root cause error
  * information. (This is the weakest of the above arguments, but probably still
- * valid.)</li> However in many of the times this class is used, this is the
+ * valid.)</li>
+ * </ul>
+ * However in many of the times this class is used, this is the
  * reason:
+ * <ul>
  * <li>Within UI specific code - to throw up a dialog box (or whatever). Now
  * this use is currently tolerated, however it is probably a poor idea to use
  * GUI agnostic messaging in a GUI specific context. But I'm not bothered enough
@@ -72,10 +76,11 @@ public final class Reporter {
      * @param source
      *            The cause of the problem, a Component if possible.
      * @param prob
+     *            The Exception that was thrown
      */
     public static void informUser(Object source, Throwable prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
+        Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -95,7 +100,7 @@ public final class Reporter {
      */
     public static void informUser(Object source, LucidException prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
+        Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -115,7 +120,7 @@ public final class Reporter {
      */
     public static void informUser(Object source, LucidRuntimeException prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
+        Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -131,7 +136,7 @@ public final class Reporter {
      *            The message to pass to the user
      */
     public static void informUser(Object source, String message) {
-        log.debug(message);
+        LOGGER.debug(message);
 
         fireCapture(new ReporterEvent(source, message));
     }
@@ -139,6 +144,8 @@ public final class Reporter {
     /**
      * Add an Exception listener to the list of things wanting to know whenever
      * we capture an Exception
+     * 
+     * @param li the interested listener
      */
     public static void addReporterListener(ReporterListener li) {
         LISTENERS.add(li);
@@ -147,6 +154,8 @@ public final class Reporter {
     /**
      * Remove an Exception listener from the list of things wanting to know
      * whenever we capture an Exception
+     * 
+     * @param li the disinterested listener
      */
     public static void removeReporterListener(ReporterListener li) {
         LISTENERS.remove(li);
@@ -154,10 +163,12 @@ public final class Reporter {
 
     /**
      * Log a message.
+     * 
+     * @param ev the event to capture
      */
     protected static void fireCapture(ReporterEvent ev) {
         if (LISTENERS.size() == 0) {
-            log.warn("Nothing to listen to report: message={}", ev.getMessage(), ev.getException());
+            LOGGER.warn("Nothing to listen to report: message={}", ev.getMessage(), ev.getException());
         }
 
         for (ReporterListener listener : LISTENERS) {
@@ -171,6 +182,8 @@ public final class Reporter {
 
     /**
      * Sets the parent of any exception windows.
+     * 
+     * @param grab whether to grab AWT exceptions or not
      */
     public static void grabAWTExecptions(boolean grab) {
         if (grab) {
@@ -198,6 +211,8 @@ public final class Reporter {
 
         /**
          * Handle AWT exceptions
+         * 
+         * @param ex the exception to handle
          */
         public void handle(Throwable ex) {
             // Only allow one to be reported every so often.
@@ -231,5 +246,5 @@ public final class Reporter {
     /**
      * The log stream
      */
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(Reporter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 }

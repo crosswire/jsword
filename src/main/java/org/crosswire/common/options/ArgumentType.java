@@ -46,14 +46,17 @@ public enum ArgumentType {
 
     /**
      * @param name
-     *            The name of the DataType
+     *            The name of the ArgumentType
      */
     private ArgumentType(String name) {
         this.name = name;
     }
 
     /**
-     * Lookup method to convert from a String
+     * Lookup method to find an ArgumentType by name
+     * 
+     * @param name the name of the ArgumentType
+     * @return the ArgumentType or null
      */
     public static ArgumentType fromString(String name) {
         for (ArgumentType v : values()) {

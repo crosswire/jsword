@@ -48,6 +48,7 @@ public final class Job implements Progress {
      * Create a new Job. This will automatically fire a workProgressed event to
      * all WorkListeners, with the work property of this job set to 0.
      * 
+     * @param jobID the job identifier
      * @param jobName
      *            Short description of this job
      * @param worker
@@ -306,7 +307,7 @@ public final class Job implements Progress {
         }
     }
 
-    /* (non-Javadoc)
+   /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#isFinished()
      */
     public boolean isFinished() {
@@ -333,6 +334,8 @@ public final class Job implements Progress {
 
     /**
      * Add a listener to the list
+     * 
+     * @param li the interested listener
      */
     public synchronized void addWorkListener(WorkListener li) {
         List<WorkListener> temp = new ArrayList<WorkListener>();
@@ -346,6 +349,8 @@ public final class Job implements Progress {
 
     /**
      * Remote a listener from the list
+     * 
+     * @param li the disinterested listener
      */
     public synchronized void removeWorkListener(WorkListener li) {
         if (listeners.contains(li)) {
@@ -380,6 +385,7 @@ public final class Job implements Progress {
     /**
      * Get estimated the percent progress
      * 
+     * @param now the current point in progress
      * @return true if there is an update to progress.
      */
     protected synchronized boolean updateProgress(long now) {
@@ -399,6 +405,8 @@ public final class Job implements Progress {
 
     /**
      * Load the predictive timings if any
+     * 
+     * @return the length of progress
      */
     private int loadPredictions() {
         int maxAge = UNKNOWN;

@@ -48,7 +48,7 @@ public class SwordDictionary extends AbstractBook {
     /**
      * Construct an SwordDictionary given the BookMetaData and the AbstractBackend.
      * 
-     * @param bmd the metadata that describes the book
+     * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
     protected SwordDictionary(SwordBookMetaData sbmd, Backend backend) {
@@ -62,9 +62,9 @@ public class SwordDictionary extends AbstractBook {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean, boolean)
      */
-    public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty, final boolean allowGenTitles) throws BookException {
         assert key != null;
 
         List<Content> content = new ArrayList<Content>();

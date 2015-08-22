@@ -38,21 +38,23 @@ import java.util.NoSuchElementException;
  */
 public final class IteratorEnumeration<E> implements Enumeration<E> {
     /**
-     * Create an Enumeration that proxies to an Iterator
+     * Create an Enumeration that proxies to an Iterator.
+     * 
+     * @param it the iterator to wrap.
      */
     public IteratorEnumeration(Iterator<E> it) {
         this.it = it;
     }
 
-    /**
-     * Returns true if the iteration has more elements
+    /* (non-Javadoc)
+     * @see java.util.Enumeration#hasMoreElements()
      */
     public boolean hasMoreElements() {
         return it.hasNext();
     }
 
-    /**
-     * Returns the next element in the interation
+    /* (non-Javadoc)
+     * @see java.util.Enumeration#nextElement()
      */
     public E nextElement() throws NoSuchElementException {
         return it.next();

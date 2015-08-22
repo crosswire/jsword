@@ -40,6 +40,8 @@ public final class CallContext {
 
     /**
      * Singleton accessor
+     * 
+     * @return this singleton
      */
     public static CallContext instance() {
         return resolver;
@@ -47,6 +49,8 @@ public final class CallContext {
 
     /**
      * When called from a method it will return the class calling that method.
+     * 
+     * @return the immediate calling class
      */
     public static Class<?> getCallingClass() {
         return getCallingClass(1); // add 1 for this method
@@ -57,6 +61,8 @@ public final class CallContext {
      * method, up the call chain. If used with a -1 it will return the class
      * making the call -2 and -3 will return this class
      * 
+     * @param i the i-th coller
+     * @return the desired calling class
      * @throws ArrayIndexOutOfBoundsException
      *             if the index is not valid
      */

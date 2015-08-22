@@ -67,7 +67,9 @@ public enum CompressorType {
 
     /**
      * Get a compressor.
+     * 
      * @param input the stream to compress or to uncompress.
+     * @return the compressor for the stream
      */
     public abstract Compressor getCompressor(byte[] input);
 

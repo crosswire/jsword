@@ -46,8 +46,8 @@ import org.crosswire.jsword.versification.Versification;
  * The first, second, and third books of Ezra or Esdras (so named according to
  * Slavonic Orthodox tradition) have the OSIS names Ezra, 1Esd, and 2Esd,
  * respectively. This is due to the strange history of the books of Ezra/Esdras
- * in the eastern & western Churches and the standard naming conventions
- * proscribed by the SBL (which BTG & OSIS follow). <br>
+ * in the eastern &amp; western Churches and the standard naming conventions
+ * proscribed by the SBL (which BTG &amp; OSIS follow). <br>
  * The Epistle of Jeremiah and Baruch are two separate books.
  *
  *

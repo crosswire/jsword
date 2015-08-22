@@ -57,6 +57,8 @@ public final class Activator {
 
     /**
      * If we need to tighten things up a bit we can save memory with this
+     * 
+     * @param amount the amount by which to to reduce memory
      */
     public static void reduceMemoryUsage(Kill amount) {
         amount.reduceMemoryUsage();

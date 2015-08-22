@@ -51,8 +51,6 @@ import org.slf4j.LoggerFactory;
 public class TreeKeyIndex implements Activatable {
     /**
      * Simple ctor
-     * 
-     * @throws BookException
      */
     public TreeKeyIndex(SwordBookMetaData sbmd) {
         bmd = sbmd;

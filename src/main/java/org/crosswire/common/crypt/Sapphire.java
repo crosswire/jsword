@@ -47,7 +47,7 @@ package org.crosswire.common.crypt;
  * <li>Key setup fast enough to support frequent key change operations but slow
  * enough to discourage brute force attack on the key.</li>
  * 
- * <li>Fast enough to not significantly impact file read & write operations on
+ * <li>Fast enough to not significantly impact file read &amp; write operations on
  * most current platforms.</li>
  * 
  * <li>Portable among common computers and efficient in C, C++, and Pascal.</li>
@@ -323,7 +323,7 @@ package org.crosswire.common.crypt;
  * even if you could figure out how to do it (and I haven't). If anyone has a
  * method to solve for such a block of data, though, I would be most interested
  * in finding out what it is. Please email me at
- * &lt;m.p.johnson&#064ieee.org&gt; if you find one.
+ * &lt;m.p.johnson&#064;ieee.org&gt; if you find one.
  * </p>
  * 
  * <p>
@@ -365,7 +365,7 @@ package org.crosswire.common.crypt;
  * be useful for determining any key bytes or permutation vector bytes, but it
  * is the reason why post-conditioning is required when computing a
  * cryptographic hash with the Sapphire Stream Cipher. Thanks to Bryan G.
- * Olson's &lt;olson&#064umbc.edu&gt; continued attacks on the Sapphire Stream
+ * Olson's &lt;olson&#064;umbc.edu&gt; continued attacks on the Sapphire Stream
  * Cipher, I have come up with the Sapphire II Stream Cipher. Thanks again to
  * Bryan for his valuable help.
  * </p>
@@ -458,7 +458,7 @@ package org.crosswire.common.crypt;
  *                  |                                                           |
  *  |\  /| |        | Michael Paul Johnson  Colorado Catacombs BBS 303-772-1062 |
  *  | \/ |o|        | PO Box 1151, Longmont CO 80502-1151 USA      John 3:16-17 |
- *  |    | | /  _   | mpj&amp;#064csn.org aka mpj&amp;#064netcom.com m.p.johnson&amp;#064ieee.org       |
+ *  |    | | /  _   | mpj&#064;csn.org aka mpj&#064;netcom.com m.p.johnson&#064;ieee.org       |
  *  |    |||/  /_\  | ftp://ftp.csn.net/mpj/README.MPJ          CIS: 71331,2332 |
  *  |    |||\  (    | ftp://ftp.netcom.com/pub/mp/mpj/README  -. --- ----- .... |
  *  |    ||| \ \_/  | PGPprint=F2 5E A1 C1 A6 CF EF 71  12 1F 91 92 6A ED AE A9 |
@@ -479,6 +479,8 @@ public class Sapphire {
 
     /**
      * Construct a Sapphire Stream Cipher from a key, possibly null or empty.
+     * 
+     * @param aKey the cipher key
      */
     public Sapphire(byte[] aKey) {
         byte[] key = aKey;
@@ -498,6 +500,7 @@ public class Sapphire {
      * 
      * @param b
      *            the next byte to decipher
+     * @return the enciphered byte
      */
     public byte cipher(byte b) {
         // Picture a single enigma rotor with 256 positions, rewired
@@ -536,6 +539,9 @@ public class Sapphire {
         return (byte) lastPlain;
     }
 
+    /**
+     * Destroy the key and state information in RAM.
+     */
     public void burn() {
         // Destroy the key and state information in RAM.
         for (int i = 0; i < 256; i++) {
@@ -549,7 +555,7 @@ public class Sapphire {
     }
 
     /**
-     * @param hash
+     * @param hash the destination
      */
     public void hashFinal(byte[] hash) { // Destination
         for (int i = 255; i >= 0; i--) {

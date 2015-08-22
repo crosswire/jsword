@@ -55,6 +55,7 @@ public class History {
      *            (or lower) will put everything in the forward list. Indexes
      *            beyond the end of the list will put everything in the back
      *            list.
+     * @return the specified item in history
      */
     public Object select(int index) {
         int i = index;
@@ -212,7 +213,7 @@ public class History {
     /**
      * Note that this object has been seen at this time.
      * 
-     * @param obj
+     * @param obj the object that has been seen
      */
     private void visit(Object obj) {
         history.put(obj, Long.valueOf(System.currentTimeMillis()));

@@ -168,11 +168,16 @@ public abstract class AbstractReflectedChoice implements Choice {
 
     /**
      * Convert from a reflection return value to a String for storage
+     * 
+     * @param orig the object to be converted to a string
+     * @return the marshaled representation of the object
      */
     public abstract String convertToString(Object orig);
 
     /**
      * Convert from a stored string to an object to use with reflection
+     * @param orig the marshaled representation of the object
+     * @return the reconstituted object
      */
     public abstract Object convertToObject(String orig);
 

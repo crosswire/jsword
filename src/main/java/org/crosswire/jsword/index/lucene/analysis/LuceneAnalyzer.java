@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * This is book specific since it is possible that each book has specialized
  * search requirements.
  * 
- * Uses AnalyzerFactory for InstalledIndexVersion > 1.1
+ * Uses AnalyzerFactory for InstalledIndexVersion &gt; 1.1
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -57,7 +57,7 @@ public class LuceneAnalyzer extends Analyzer {
             analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
             //analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING, myNaturalLanguageAnalyzer);  //heading to use same analyzer as BODY
             //analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO, myNaturalLanguageAnalyzer);
-            log.debug(book.getBookMetaData().getInternalName() + " Using languageAnalyzer: " + myNaturalLanguageAnalyzer.getClass().getName());
+            log.debug("{}: Using languageAnalyzer: {}", book.getBookMetaData().getInternalName(), myNaturalLanguageAnalyzer.getClass().getName());
         }
 
         // Keywords are normalized to osisIDs

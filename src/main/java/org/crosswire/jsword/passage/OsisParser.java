@@ -123,7 +123,6 @@ public final class OsisParser {
         }
 
         // Now there is exactly 1 beginning and 1 ending 3-part verse only beyond this point
-
         Verse start = parseOsisID(v11n, startOsisIDParts);
         if (start == null) {
             return null;

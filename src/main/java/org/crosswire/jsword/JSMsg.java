@@ -34,8 +34,8 @@ public final class JSMsg extends MsgBase {
      * Get the internationalized text, but return key if key is unknown.
      * The text requires one or more parameters to be passed.
      * 
-     * @param key
-     * @param params
+     * @param key the formatted key to internationalize
+     * @param params the parameters to use in creating the message
      * @return the formatted, internationalized text
      */
     public static String gettext(String key, Object... params) {

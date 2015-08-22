@@ -51,7 +51,7 @@ public class XMLProcess {
     /**
      * Process an xml file according to the arguments.
      * 
-     * @param argv
+     * @param argv the command-line arguments
      */
     public static void main(String[] argv) {
         XMLProcess checker = new XMLProcess();
