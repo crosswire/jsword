@@ -79,7 +79,7 @@ public class SwordGenBook extends AbstractBook {
 
         map = new HashMap<String, Key>();
         for (Key key : set) {
-            map.put(key.getName(), key);
+            map.put(key.getOsisRef(), key);
         }
 
         global = new ReadOnlyKeyList(set, false);
