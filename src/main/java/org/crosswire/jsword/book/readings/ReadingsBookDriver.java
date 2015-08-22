@@ -83,6 +83,8 @@ public class ReadingsBookDriver extends AbstractBookDriver {
 
     /**
      * Get a list of the available readings sets
+     *
+     * @return all the installed reading sets
      */
     public String[] getInstalledReadingsSets() {
         try {

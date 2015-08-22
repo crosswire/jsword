@@ -1,9 +1,9 @@
 # Distribution License:
 # JSword is free software; you can redistribute it and/or modify it under
-# the terms of the GNU Lesser General Public License, version 2.1 or later
-# as published by the Free Software Foundation. This program is distributed
-# in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
-# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# the terms of the GNU Lesser General Public License, version 2.1 or later as published
+# by the Free Software Foundation. This program is distributed in the hope
+# that it will be useful, but WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Lesser General Public License for more details.
 #
 # The License is available on the internet at:
@@ -13,10 +13,13 @@
 #      59 Temple Place - Suite 330
 #      Boston, MA 02111-1307, USA
 #
-# Copyright: 2005-2011
+# Copyright: 2005-2013
 #     The copyright to this program is held by it's authors.
 #
 
 Installer.1=sword-http,CrossWire,www.crosswire.org,/ftpmirror/pub/sword/packages/rawzip,/ftpmirror/pub/sword/raw,,,
 Installer.2=sword-http,Bible.org,ftp.bible.org,/sword/packages/rawzip,/sword/raw,,,
-Installer.3=sword-http,Crosswire Beta,www.crosswire.org,/ftpmirror/pub/sword/betapackages/rawzip,/ftpmirror/pub/sword/betaraw,,,
+Installer.3=sword-http,Crosswire AV,www.crosswire.org,/ftpmirror/pub/sword/avpackages/rawzip,/ftpmirror/pub/sword/avraw,,,
+Installer.4=sword-http,Crosswire Beta,www.crosswire.org,/ftpmirror/pub/sword/betapackages/rawzip,/ftpmirror/pub/sword/betaraw,,,
+Installer.5=sword-http,IBT,ibt.org.ru,/ftpmirror/pub/modsword/rawzip,/ftpmirror/pub/modsword/raw,,,
+Installer.6=sword-http,Xiphos,ftp.xiphos.org,/sword/zip,/sword,,,

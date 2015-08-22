@@ -24,20 +24,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * The Project class looks after the source of project files. These are per user
  * files and as such have a different location on different operating systems.
- * These are:<br>
+ * These are:<br/>
  * 
- * <table summary=" ">
+ * <table>
  * <tr>
  * <td>Mac OS X</td>
  * <td>~/Library/Application Support/JSword</td>
  * </tr>
  * <tr>
- * <td>Win NT/2000/XP/ME/9x/...</td>
+ * <td>Win NT/2000/XP/ME/9x</td>
  * <td>~/Application Data/JSword (~ is all over the place, but Java figures it
  * out)</td>
  * </tr>
@@ -67,8 +68,6 @@ import org.slf4j.LoggerFactory;
 public final class CWProject {
     /**
      * Accessor for the resource singleton.
-     * 
-     * @return the singleton
      */
     public static CWProject instance() {
         return instance;
@@ -95,6 +94,33 @@ public final class CWProject {
         CWProject.homeAltDirectory = altHomeDir;
         instance().establishProjectHome();
     }
+
+    /**
+     * Sets the name of the front-end. This then informs the read/write directory of the front-end.
+     * @param frontendName
+     */
+    public void setFrontendName(String frontendName) {
+        this.frontendName = frontendName;
+    }
+
+    /**
+     * @return the writable home for the front-end settings, that can be kept separate from JSword's
+     * configuration, as well from other front-ends.
+     */
+    public URI getWritableFrontendProjectDir() {
+        establishProjectHome();
+        return this.writableFrontEndHome;
+    }
+
+    /**
+     * @return the readable home for the front-end settings, that can be kept separate from JSword's
+     * configuration, as well from other front-ends.
+     */
+    public URI getReadableFrontendProjectDir() {
+        establishProjectHome();
+        return this.frontendReadHome;
+    }
+
 
     /**
      * Get the writable user project directory.
@@ -149,11 +175,9 @@ public final class CWProject {
      * 
      * @param subject
      *            A name for the subdirectory of the Project directory.
-     * @param create whether to create the directory if it does not exist
      * @return A file: URI pointing at a local writable directory.
-     * @throws IOException a problem with I/O happened
      */
-    public URI getWriteableProjectSubdir(String subject, boolean create) throws IOException {
+    public URI getWritableProjectSubdir(String subject, boolean create) throws IOException {
         URI temp = NetUtil.lengthenURI(getWritableProjectDir(), subject);
 
         if (create && !NetUtil.isDirectory(temp)) {
@@ -219,22 +243,33 @@ public final class CWProject {
                 };
             }
 
-            // Now that we know the "home" we can set other global notions of
-            // home.
+            // Now that we know the "home" we can set other global notions of home.
             // TODO(dms): refactor this to CWClassLoader and NetUtil.
             CWClassLoader.setHome(getProjectResourceDirs());
 
             try {
-                URI uricache = getWriteableProjectSubdir(DIR_NETCACHE, true);
+                URI uricache = getWritableProjectSubdir(DIR_NETCACHE, true);
                 File filecache = new File(uricache.getPath());
                 NetUtil.setURICacheDir(filecache);
             } catch (IOException ex) {
-                // This isn't fatal, it just means that NetUtil will try to use
-                // $TMP
+                // This isn't fatal, it just means that NetUtil will try to use $TMP
                 // in place of a more permanent solution.
-                log.warn("Failed to get directory for NetUtil.setURICacheDir()", ex);
+                LOGGER.warn("Failed to get directory for NetUtil.setURICacheDir()", ex);
             }
 
+            //also attempt to create the front-end home
+            try {
+                if (this.frontendName != null) {
+                    this.writableFrontEndHome = getWritableProjectSubdir(this.frontendName, true);
+                }
+            } catch (IOException ex) {
+                LOGGER.warn("Failed to create writable front-end home.", ex);
+            }
+
+            //attempt to set front-end readable home, if different
+            if (readHome != null && this.frontendName != null) {
+                this.frontendReadHome = NetUtil.lengthenURI(this.readHome, this.frontendName);
+            }
         }
     }
 
@@ -286,10 +321,26 @@ public final class CWProject {
     private URI writeHome;
 
     /**
+     * The name of the front-end application. This allows front-ends to store information
+     * under the jsword directory, separate from other front-ends
+     */
+    private String frontendName;
+
+    /**
      * The readable home for this application, specified by the system property
      * jsword.home. Null, if jsword.home is also writable.
      */
     private URI readHome;
+
+    /**
+     * Front-end home, where the app can write information to it. Could be null if failed to create
+     */
+    private URI writableFrontEndHome;
+
+    /**
+     * Front-end read home, could be null if not present
+     */
+    private URI frontendReadHome;
 
     /**
      * System property for home directory
@@ -314,5 +365,5 @@ public final class CWProject {
     /**
      * The log stream
      */
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CWProject.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CWProject.class);
 }

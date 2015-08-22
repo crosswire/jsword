@@ -294,6 +294,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
      *
+     * @param book the book of the Bible
      * @return The full name of the book or null if not in this versification
      */
     public String getLongName(BibleBook book) {
@@ -307,6 +308,7 @@ public class Versification implements ReferenceSystem, Serializable {
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
      *
+     * @param book the book of the Bible
      * @return The short name of the book or null if not in this versification
      */
     public String getShortName(BibleBook book) {

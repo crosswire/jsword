@@ -68,6 +68,9 @@ import org.slf4j.LoggerFactory;
 public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * Constructor for ReadingsBook.
+     * @param driver the driver for this book
+     * @param setname the name of this book
+     * @param type the type of book
      */
     public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type) {
         super(null, null); // set the book metadata later and no backend

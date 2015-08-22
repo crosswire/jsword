@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2103
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -25,39 +25,46 @@ import java.util.regex.Pattern;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Version;
 import org.crosswire.jsword.book.BookCategory;
+import org.crosswire.jsword.book.BookMetaData;
 
 /**
- * Constants for the keys in a Sword Config file. Taken from
- * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout<br>
- * now located at
- * http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout<br>
- * now located at http://www.crosswire.org/wiki/index.php/DevTools:Modules<br>
- * now located at http://www.crosswire.org/wiki/DevTools:confFiles<br>
+ * Enumeration of SWORD config file keys and their characteristics.
+ * The purpose of this enumeration is to allow validation of a SWORD config file.
+ * <pre>
+ * Originally from:
+ *     http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
+ * Then located at:
+ *     http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout
+ * Then located at:
+ *     http://www.crosswire.org/wiki/index.php/DevTools:Modules
+ * Now located at:
+ *     http://www.crosswire.org/wiki/DevTools:confFiles
+ * </pre>
  * <p>
  * Note: This file is organized the same as the latest wiki documentation.
+ * </p>
+ * Key characteristics:
+ * <ul>
+ * <li><b>Data Type</b> -- Most values are text, but some are integer, date, boolean.</li>
+ * <li><b>Data Format</b> -- Some text is constrained to patterns.</li>
+ * <li><b>Multiple Values</b> -- Some keys allow more than one value. Others only allow only one</li>
+ * <li><b>RTF</b> -- Some keys allow RTF formatting of values.</li>
+ * <li><b>HTML</b> -- Some keys allow HTML.</li>
+ * <li><b>Pick list</b> -- Some keys allow a value from a pick list</li>
+ * <li><b>Default values</b> -- Some keys have default values.</li>
+ * <li><b>Localization</b> -- Some keys can be internationalized and localized.</li>
+ * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-public enum ConfigEntryType {
-    /**
-     * The abbreviated name by which this book is known. This is in the [] on
-     * the first non-blank line of the conf. JSword uses this for display and
-     * access purposes.
-     */
-    INITIALS("Initials") {
-        @Override
-        public boolean isSynthetic() {
-            return true;
-        }
-    },
-
+/* protected */ enum ConfigEntryType {
     /**
      * Relative path to the data files, some issues with this
      */
-    DATA_PATH("DataPath") {
+    DATA_PATH(SwordBookMetaData.KEY_DATA_PATH) {
         @Override
         public boolean isAllowed(String value) {
             return true;
@@ -67,12 +74,12 @@ public enum ConfigEntryType {
     /**
      * The full name of this book
      */
-    DESCRIPTION("Description"),
+    DESCRIPTION(SwordBookMetaData.KEY_DESCRIPTION),
 
     /**
      * This indicates how the book was stored.
      */
-    MOD_DRV("ModDrv", -1,
+    MOD_DRV(SwordBookMetaData.KEY_MOD_DRV,
         "RawText",
         "zText",
         "RawCom",
@@ -88,9 +95,9 @@ public enum ConfigEntryType {
 
     /**
      * The type of compression in use. While LZSS is the default, it is not used.
-     * At least so far.
+     * At least so far. GZIP, BZIP2 and XZ were just added by SWORD.
      */
-    COMPRESS_TYPE("CompressType", 0,
+    COMPRESS_TYPE(SwordBookMetaData.KEY_COMPRESS_TYPE,
         "LZSS",
         "ZIP",
         "GZIP",
@@ -101,7 +108,7 @@ public enum ConfigEntryType {
     /**
      * The level at which compression is applied, BOOK, CHAPTER, or VERSE
      */
-    BLOCK_TYPE("BlockType", 1,
+    BLOCK_TYPE(SwordBookMetaData.KEY_BLOCK_TYPE,
         "BOOK",
         "CHAPTER",
         "VERSE"
@@ -111,7 +118,12 @@ public enum ConfigEntryType {
      * single value integer, unknown use, some indications that we ought to be
      * using it
      */
-    BLOCK_COUNT("BlockCount", "200") {
+    BLOCK_COUNT(SwordBookMetaData.KEY_BLOCK_COUNT) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public boolean isAllowed(String aValue) {
             try {
@@ -135,7 +147,7 @@ public enum ConfigEntryType {
     /**
      * The kind of key that a Generic Book uses.
      */
-    KEY_TYPE("KeyType", 0,
+    KEY_TYPE(SwordBookMetaData.KEY_KEY_TYPE,
         "TreeKey",
         "VerseKey"
     ),
@@ -144,12 +156,12 @@ public enum ConfigEntryType {
      * If this exists in the conf, then the book is encrypted. The value is used
      * to unlock the book. The encryption algorithm is Sapphire.
      */
-    CIPHER_KEY("CipherKey"),
+    CIPHER_KEY(SwordBookMetaData.KEY_CIPHER_KEY),
 
     /**
      * This indicates the versification of the book, with KJV being the default.
      */
-    VERSIFICATION("Versification", 3,
+    VERSIFICATION(BookMetaData.KEY_VERSIFICATION,
         "Catholic",
         "Catholic2",
         "German",
@@ -171,7 +183,7 @@ public enum ConfigEntryType {
      * Global Option Filters are the names of routines in SWORD that can be used
      * to display the data. These are not used by JSword.
      */
-    GLOBAL_OPTION_FILTER("GlobalOptionFilter", -1,
+    GLOBAL_OPTION_FILTER(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER,
         "GBFStrongs",
         "GBFFootnotes",
         "GBFMorph",
@@ -188,6 +200,8 @@ public enum ConfigEntryType {
         "UTF8Cantillation",
         "UTF8GreekAccents",
         "UTF8HebrewPoints",
+        "OSISLemma",
+        "OSISMorphSegmentation",
         "OSISStrongs",
         "OSISFootnotes",
         "OSISScripref",
@@ -195,9 +209,8 @@ public enum ConfigEntryType {
         "OSISHeadings",
         "OSISVariants",
         "OSISRedLetterWords",
-        "OSISLemma",
-        "OSISRuby", // Deprecated, replaced by OSISGlosses
         "OSISGlosses",
+        "OSISRuby", // Deprecated, replaced by OSISGlosses
         "OSISXlit",
         "OSISEnum",
         "OSISReferenceLinks"
@@ -211,10 +224,10 @@ public enum ConfigEntryType {
 
     /**
      * The layout direction of the text in the book. Hebrew, Arabic and Farsi
-     * RtoL. Most are 'LtoR'. Some are 'bidi', bi-directional. E.g.
-     * hebrew-english glossary.
+     * RtoL. Most are 'LtoR'. Some are 'bidi', bidirectional. E.g.
+     * Hebrew-English glossary.
      */
-    DIRECTION("Direction", 0,
+    DIRECTION(SwordBookMetaData.KEY_DIRECTION,
         "LtoR",
         "RtoL",
         "bidi"
@@ -222,8 +235,9 @@ public enum ConfigEntryType {
 
     /**
      * This indicates the kind of markup used for the book.
+     * In SWORD, Plaintext uses the GBF filter.
      */
-    SOURCE_TYPE("SourceType", 0,
+    SOURCE_TYPE(SwordBookMetaData.KEY_SOURCE_TYPE,
         "Plaintext",
         "GBF",
         "ThML",
@@ -233,17 +247,27 @@ public enum ConfigEntryType {
 
     /**
      * The character encoding. Only Latin-1 and UTF-8 are supported.
+     * Internally, SWORD supports SCSU and UTF-16.
+     * Currently, there is no way to build these modules.
+     * JSword does not support SCSU.
      */
-    ENCODING("Encoding", 0,
+    ENCODING(SwordBookMetaData.KEY_ENCODING,
         "Latin-1",
-        "UTF-8"
+        "UTF-8",
+        "UTF-16",
+        "SCSU"
     ),
 
     /**
      * Display level is used by GenBooks to do auto expansion in the tree. A
      * level of 2 indicates that the first two levels should be shown.
      */
-    DISPLAY_LEVEL("DisplayLevel", "1") {
+    DISPLAY_LEVEL(SwordBookMetaData.KEY_DISPLAY_LEVEL) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public boolean isAllowed(String value) {
             try {
@@ -267,17 +291,22 @@ public enum ConfigEntryType {
     /**
      * A recommended font to use for the book.
      */
-    FONT("Font"),
+    FONT(BookMetaData.KEY_FONT),
 
     /**
-     * When false do not show quotation marks for OSIS text that has &lt;q&gt;
+     * When false do not show quotation marks for OSIS text that has <q>
      * elements.
      */
-    OSIS_Q_TO_TICK("OSISqToTick", 0,
+    OSIS_Q_TO_TICK(SwordBookMetaData.KEY_OSIS_Q_TO_TICK,
         "true",
         "false"
     )
     {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public Object convert(String input) {
             return Boolean.valueOf(input);
@@ -287,7 +316,7 @@ public enum ConfigEntryType {
     /**
      * A Feature describes a characteristic of the Book.
      */
-    FEATURE("Feature", -1,
+    FEATURE(SwordBookMetaData.KEY_FEATURE,
         "StrongsNumbers",
         "GreekDef",
         "HebrewDef",
@@ -309,7 +338,12 @@ public enum ConfigEntryType {
      * Books with a Feature of Glossary are used to map words FROM one language
      * TO another.
      */
-    GLOSSARY_FROM("GlossaryFrom") {
+    GLOSSARY_FROM(SwordBookMetaData.KEY_GLOSSARY_FROM) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public Object convert(String input) {
             return new Language(input);
@@ -328,7 +362,12 @@ public enum ConfigEntryType {
      * Books with a Feature of Glossary are used to map words FROM one language
      * TO another.
      */
-    GLOSSARY_TO("GlossaryTo") {
+    GLOSSARY_TO(SwordBookMetaData.KEY_GLOSSARY_TO) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public Object convert(String input) {
             return new Language(input);
@@ -344,14 +383,26 @@ public enum ConfigEntryType {
     },
 
     /**
+     * Names a file in the module's DataPath that should be referenced for the renderer as CSS display controls.
+     * Generality is advised: Use controls that are not specific to any particular rendering engine, e.g. WebKit.
+     */
+    PREFERRED_CSS_XHTML(SwordBookMetaData.KEY_PREFERRED_CSS_XHTML),
+
+    /**
+     * Names a file in the module's DataPath that should be referenced for the renderer as CSS display controls.
+     * Generality is advised: Use controls that are not specific to any particular rendering engine, e.g. WebKit.
+     */
+    STRONGS_PADDING(SwordBookMetaData.KEY_STRONGS_PADDING),
+
+    /**
      * The short name of this book.
      */
-    ABBREVIATION("Abbreviation"),
+    ABBREVIATION(SwordBookMetaData.KEY_ABBREVIATION),
 
     /**
      * Contains rtf that describes the book.
      */
-    ABOUT("About") {
+    ABOUT(SwordBookMetaData.KEY_ABOUT) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -366,7 +417,12 @@ public enum ConfigEntryType {
     /**
      * An informational string indicating the current version of the book.
      */
-    VERSION("Version", "1.0") {
+    VERSION(SwordBookMetaData.KEY_VERSION) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public boolean isAllowed(String aValue) {
             try {
@@ -376,6 +432,7 @@ public enum ConfigEntryType {
                 return false;
             }
         }
+
         @Override
         public Object convert(String input) {
             try {
@@ -392,15 +449,10 @@ public enum ConfigEntryType {
      * the value with it. The x.y corresponds to a current or prior Version
      * value.
      */
-    HISTORY("History") {
+    HISTORY(SwordBookMetaData.KEY_HISTORY) {
         @Override
         public boolean mayRepeat() {
             return true;
-        }
-
-        @Override
-        public boolean reportDetails() {
-            return false;
         }
     },
 
@@ -408,12 +460,12 @@ public enum ConfigEntryType {
      * single value version number, lowest sword c++ version that can read this
      * book JSword does not use this value.
      */
-    MINIMUM_VERSION("MinimumVersion", "1.5.1a"),
+    MINIMUM_VERSION(SwordBookMetaData.KEY_MINIMUM_VERSION),
 
     /**
      * The Category of the book. Used on the web to classify books into a tree.
      */
-    CATEGORY("Category", 0,
+    CATEGORY(BookMetaData.KEY_CATEGORY,
         "Other",
         "Daily Devotional",
         "Glossaries",
@@ -437,12 +489,17 @@ public enum ConfigEntryType {
      * Library of Congress Subject Heading. Typically this is of the form
      * BookCategory Scope Language, where scope is typically O.T., N.T.
      */
-    LCSH("LCSH"),
+    LCSH(SwordBookMetaData.KEY_LCSH),
 
     /**
      * single value string, defaults to en, the language of the book
      */
-    LANG("Lang", "en") {
+    LANG(BookMetaData.KEY_LANG) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public Object convert(String input) {
             return new Language(input);
@@ -461,7 +518,12 @@ public enum ConfigEntryType {
      * The installed size of the book in bytes. This is not the size of the zip
      * that is downloaded.
      */
-    INSTALL_SIZE("InstallSize") {
+    INSTALL_SIZE(SwordBookMetaData.KEY_INSTALL_SIZE) {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
         @Override
         public boolean isAllowed(String value) {
             try {
@@ -486,7 +548,7 @@ public enum ConfigEntryType {
      * The date that this version of the book was last updated. Informational
      * only.
      */
-    SWORD_VERSION_DATE("SwordVersionDate") {
+    SWORD_VERSION_DATE(SwordBookMetaData.KEY_SWORD_VERSION_DATE) {
         @Override
         public boolean isAllowed(String value) {
             return validDatePattern.matcher(value).matches();
@@ -500,15 +562,10 @@ public enum ConfigEntryType {
      * TODO(dms): when a user installs a book with an obsoletes that matches
      * an installed book, offer the user the opportunity to delete the old book.
      */
-    OBSOLETES("Obsoletes") {
+    OBSOLETES(SwordBookMetaData.KEY_OBSOLETES) {
         @Override
         public boolean mayRepeat() {
             return true;
-        }
-
-        @Override
-        public boolean reportDetails() {
-            return false;
         }
     },
 
@@ -516,12 +573,12 @@ public enum ConfigEntryType {
      * Single value version number, lowest sword c++ version that can read this
      * book JSword does not use this value.
      */
-    OSIS_VERSION("OSISVersion"),
+    OSIS_VERSION(SwordBookMetaData.KEY_OSIS_VERSION),
 
     /**
      * Informational copyright notice.
      */
-    COPYRIGHT("Copyright") {
+    COPYRIGHT(SwordBookMetaData.KEY_COPYRIGHT) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -531,13 +588,13 @@ public enum ConfigEntryType {
     /**
      * single value string, unknown use
      */
-    COPYRIGHT_HOLDER("CopyrightHolder"),
+    COPYRIGHT_HOLDER(SwordBookMetaData.KEY_COPYRIGHT_HOLDER),
 
     /**
      * Copyright info. Informational only.
      * This is a year, a year range or a comma separated list of these.
      */
-    COPYRIGHT_DATE("CopyrightDate") {
+    COPYRIGHT_DATE(SwordBookMetaData.KEY_COPYRIGHT_DATE) {
         @Override
         public boolean isAllowed(String value) {
             return validDatePattern.matcher(value).matches();
@@ -549,7 +606,7 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    COPYRIGHT_NOTES("CopyrightNotes") {
+    COPYRIGHT_NOTES(SwordBookMetaData.KEY_COPYRIGHT_NOTES) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -564,7 +621,7 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    COPYRIGHT_CONTACT_NAME("CopyrightContactName") {
+    COPYRIGHT_CONTACT_NAME(SwordBookMetaData.KEY_COPYRIGHT_CONTACT_NAME) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -579,8 +636,7 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    COPYRIGHT_CONTACT_NOTES("CopyrightContactNotes") {
-
+    COPYRIGHT_CONTACT_NOTES(SwordBookMetaData.KEY_COPYRIGHT_CONTACT_NOTES) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -595,7 +651,7 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    COPYRIGHT_CONTACT_ADDRESS("CopyrightContactAddress") {
+    COPYRIGHT_CONTACT_ADDRESS(SwordBookMetaData.KEY_COPYRIGHT_CONTACT_ADDRESS) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -610,22 +666,22 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    COPYRIGHT_CONTACT_EMAIL("CopyrightContactEmail"),
+    COPYRIGHT_CONTACT_EMAIL(SwordBookMetaData.KEY_COPYRIGHT_CONTACT_EMAIL),
 
     /**
      * A one line promo statement, required by Lockman for NASB
      */
-    SHORT_PROMO("ShortPromo"),
+    SHORT_PROMO(SwordBookMetaData.KEY_SHORT_PROMO),
 
     /**
      * A one line copyright statement, required by Lockman for NASB
      */
-    SHORT_COPYRIGHT("ShortCopyright"),
+    SHORT_COPYRIGHT(SwordBookMetaData.KEY_SHORT_COPYRIGHT),
 
     /**
      * Copyright info. Informational only.
      */
-    DISTRIBUTION_LICENSE("DistributionLicense", 0,
+    DISTRIBUTION_LICENSE(SwordBookMetaData.KEY_DISTRIBUTION_LICENSE,
         "Public Domain",
         "Copyrighted",
         "Copyrighted; Free non-commercial distribution",
@@ -646,8 +702,7 @@ public enum ConfigEntryType {
     /**
      * Copyright info. Informational only.
      */
-    DISTRIBUTION_NOTES("DistributionNotes") {
-
+    DISTRIBUTION_NOTES(SwordBookMetaData.KEY_DISTRIBUTION_NOTES) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -657,8 +712,7 @@ public enum ConfigEntryType {
     /**
      * Information on where the book's text was obtained.
      */
-    TEXT_SOURCE("TextSource") {
-
+    TEXT_SOURCE(SwordBookMetaData.KEY_TEXT_SOURCE) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -666,16 +720,15 @@ public enum ConfigEntryType {
     },
 
     /**
-     * Contains the URL (a bare URL, not an HTML &lt;a&gt; link) of a web page for unlocking instructions/payment.
+     * Contains the URL (a bare URL, not an HTML <a> link) of a web page for unlocking instructions/payment.
      */
-    UNLOCK_URL("UnlockURL"),
+    UNLOCK_URL(SwordBookMetaData.KEY_UNLOCK_URL),
 
     /**
      * Deliberately not in wiki. Similar to DataPath. It gives where on the CrossWire server the book can
      * be found. Informational only.
      */
-    DISTRIBUTION_SOURCE("DistributionSource") {
-
+    DISTRIBUTION_SOURCE(SwordBookMetaData.KEY_DISTRIBUTION_SOURCE) {
         @Override
         public boolean allowsContinuation() {
             return true;
@@ -685,72 +738,52 @@ public enum ConfigEntryType {
     /**
      * New. Not in wiki. Present in SWORD engine. Present in hesychius.conf w/ PapyriPlain
      */
-    LOCAL_STRIP_FILTER("LocalStripFilter"),
+    LOCAL_STRIP_FILTER(SwordBookMetaData.KEY_LOCAL_STRIP_FILTER),
 
     /**
      * New. Not in wiki. Present in SWORD engine. Present in hesychius.conf w/ IncludeKeyInSearch
      */
-    SEARCH_OPTION("SearchOption"),
+    SEARCH_OPTION(SwordBookMetaData.KEY_SEARCH_OPTION),
 
     /**
-     * The location of a collection of modules. JSword uses this to install and
-     * delete a module.
+     * New. Not supported by Sword but supported by IBT. Scope is an OSIS Reference of all keys
+     * contained in the book
      */
-    LIBRARY_URL("LibraryURL") {
-        @Override
-        public boolean isSynthetic() {
-            return true;
-        }
-    },
+    SCOPE(BookMetaData.KEY_SCOPE),
 
     /**
-     * The location of the module. JSword uses this to access a module.
+     * New. Not supported by Sword. Lists of books contained in the module. Usually derived and cached in the JSword
+     * configuration files.
      */
-    LOCATION_URL("LocationURL") {
-        @Override
-        public boolean isSynthetic() {
-            return true;
-        }
-    };
+    BOOK_LIST(BookMetaData.KEY_BOOKLIST);
 
     /**
      * Simple ctor
      */
     private ConfigEntryType(String name) {
         this.name = name;
-        this.defaultValue = null;
         this.picks = null;
+        String defValue = SwordBookMetaData.DEFAULTS.get(name);
+        this.defaultValue = defValue == null ? null : convert(defValue);
     }
 
     /**
      * Simple ctor
      */
-    private ConfigEntryType(String name, String defaultValue) {
+    private ConfigEntryType(String name, String... picks) {
         this.name = name;
-        this.defaultValue = convert(defaultValue);
-        this.picks = null;
-    }
-
-    /**
-     * Simple ctor
-     */
-    private ConfigEntryType(String name, int defaultPick, String... picks) {
-        this.name = name;
-        if (defaultPick >= 0 && defaultPick < picks.length) {
-            this.defaultValue = convert(picks[defaultPick]);
-        } else {
-            this.defaultValue = null;
-        }
         this.picks = picks;
+        String defValue = SwordBookMetaData.DEFAULTS.get(name);
+        this.defaultValue = defValue == null ? null : convert(defValue);
     }
 
     /**
-     * Returns the normalized name of this ConfigEntry.
+     * Some keys can be converted to something other than a string.
      * 
-     * @return the name
+     * @return true if this ConfigEntryType is a string
      */
-    public String getName() {
-        return name;
+    public boolean isText() {
+        return true;
     }
 
     /**
@@ -833,15 +866,6 @@ public enum ConfigEntryType {
     }
 
     /**
-     * Determines the level of detail stored in the histogram.
-     * 
-     * @return true if the ConfigEntry should report histogram for repetitions
-     */
-    public boolean reportDetails() {
-        return true;
-    }
-
-    /**
      * Some keys can repeat. When this happens each is a single value pick from
      * a list of choices.
      * 
@@ -849,17 +873,6 @@ public enum ConfigEntryType {
      */
     protected boolean hasChoices() {
         return picks != null;
-    }
-
-    /**
-     * Synthetic keys are those that are not in the Sword Book's conf, but are
-     * needed by the program. Typically, these are derived by the program from
-     * the other entries.
-     * 
-     * @return true if this is synthetic
-     */
-    public boolean isSynthetic() {
-        return false;
     }
 
     /**

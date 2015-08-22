@@ -529,7 +529,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
      */
-    @Override
     public String getProperty(String key) {
         if (KEY_LANGUAGE.equals(key)) {
             return getLanguage().getName();
@@ -540,7 +539,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String, boolean)
      */
-    @Override
     public void putProperty(String key, String value, boolean forFrontend) {
         MetaDataLocator mdl = forFrontend ? SwordMetaDataLocator.FRONTEND : SwordMetaDataLocator.JSWORD;
         IniSection config = forFrontend ? this.configFrontend : this.configJSword;

@@ -20,6 +20,7 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
 
@@ -267,7 +268,6 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * @param key the entry that we are saving
      * @param value the value of the entry
      * @param forFrontend when {@code true} save to front end storage, else in shared storage
-     * @throws IOException
      */
     void putProperty(String key, String value, boolean forFrontend);
 
