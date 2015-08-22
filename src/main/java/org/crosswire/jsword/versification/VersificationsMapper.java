@@ -137,7 +137,7 @@ public final class VersificationsMapper {
             kjvVerses = new ArrayList<QualifiedKey>();
             final Verse reversifiedVerse = v.reversify(KJV);
             //check that the key actually exists
-            if(reversifiedVerse != null) {
+            if (reversifiedVerse != null) {
                 kjvVerses.add(new QualifiedKey(reversifiedVerse));
             }
         } else {
@@ -166,7 +166,7 @@ public final class VersificationsMapper {
         VerseKey finalKeys = new RangedPassage(targetVersification);
         for (QualifiedKey qualifiedKey : kjvVerses) {
             final VerseKey verseKey = targetMapper.unmap(qualifiedKey);
-            if(verseKey != null) {
+            if (verseKey != null) {
                 //verse key exists in the target versification
                 finalKeys.addAll(verseKey);
             }
@@ -188,7 +188,7 @@ public final class VersificationsMapper {
         for (QualifiedKey qualifiedKey : kjvVerses) {
             if (qualifiedKey.getKey() != null) {
                 final VerseKey key = qualifiedKey.reversify(targetVersification).getKey();
-                if(key != null) {
+                if (key != null) {
                     //verse key exists in target versification
                     finalKeys.addAll(key);
                 }

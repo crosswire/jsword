@@ -57,7 +57,7 @@ public class LuceneAnalyzer extends Analyzer {
             analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
             //analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING, myNaturalLanguageAnalyzer);  //heading to use same analyzer as BODY
             //analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO, myNaturalLanguageAnalyzer);
-            log.debug(book.getBookMetaData().getInitials()+" Using languageAnalyzer: "+ myNaturalLanguageAnalyzer.getClass().getName());
+            log.debug(book.getBookMetaData().getInternalName() + " Using languageAnalyzer: " + myNaturalLanguageAnalyzer.getClass().getName());
         }
 
         // Keywords are normalized to osisIDs

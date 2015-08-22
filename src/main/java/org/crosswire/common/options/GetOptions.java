@@ -27,9 +27,9 @@ import java.util.Map;
 
 /**
  * GetOptions parses an argument list for requested arguments given by an
- * OptionList.<br/>
+ * OptionList.<br>
  * 
- * This supports short and long options:<br/>
+ * This supports short and long options:<br>
  * Short Options have the following characteristics.
  * <ul>
  * <li>A single dash, '-', starts a flag or a flag sequence. An example of a

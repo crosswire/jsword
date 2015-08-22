@@ -258,7 +258,6 @@ public class SystemMT extends Versification {
             8,   9,   4,   8,   5,   6,   5,   6,   8,   8,
             3,  18,   3,   3,  21,  26,   9,   8,  24,  14,
            10,   8,  12,  15,  21,  10,  20,  14,   9,   6,
-         
         },
         // Job
         {

@@ -54,7 +54,7 @@ public class DwrBridgeMissingAssets {
         String[][] bibles = dwrBridge.getInstalledBooks("Category=Biblical Texts");
         assertTrue(bibles.length > 1);
 
-        String[][] dicts = dwrBridge.getInstalledBooks("Category=Dictionaries");
+        String[][] dicts = dwrBridge.getInstalledBooks("Category=Lexicons / Dictionaries");
         assertTrue(dicts.length > 1);
     }
 

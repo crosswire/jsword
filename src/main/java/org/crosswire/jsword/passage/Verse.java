@@ -222,7 +222,6 @@ public final class Verse implements VerseKey<Verse> {
         return buf.toString();
     }
 
-   
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
@@ -311,8 +310,8 @@ public final class Verse implements VerseKey<Verse> {
             if (newVersification.validate(book, chapter, verse, true)) {
                 return new Verse(newVersification, book, chapter, verse);
             }
-        } catch(NoSuchVerseException ex) {
-            //will never happen
+        } catch (NoSuchVerseException ex) {
+            // will never happen
             log.error("Contract for validate was changed to thrown an exception when silent mode is true", ex);
         }
         return null;

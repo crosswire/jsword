@@ -43,18 +43,18 @@ import org.crosswire.jsword.index.IndexStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/*
+//todo
+  use org.apache.lucene.util.Version when upgrading Lucene;
+
+  OPEN questions
+*/
 /**
  * An implementation of IndexManager for Lucene indexes.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- */
-/*
-//todo
-    use org.apache.lucene.util.Version when upgrading Lucene;
-
-    OPEN questions
  */
 public class LuceneIndexManager implements IndexManager {
     /**
@@ -65,7 +65,7 @@ public class LuceneIndexManager implements IndexManager {
         try {
             baseFolderURI = CWProject.instance().getWritableProjectSubdir(DIR_LUCENE, false);
         } catch (IOException ex) {
-            log.error("Failed to find lucene index storage area. "+ex.getMessage(), ex);
+            log.error("Failed to find lucene index storage area. " + ex.getMessage(), ex);
 
         }
     }
@@ -75,7 +75,9 @@ public class LuceneIndexManager implements IndexManager {
      */
     public boolean isIndexed(Book book) {
         try {
-            if(book==null) return false;
+            if (book == null) {
+                return false;
+            }
             URI storage = getStorageArea(book);
             return NetUtil.isDirectory(storage);
         } catch (IOException ex) {
@@ -120,20 +122,13 @@ public class LuceneIndexManager implements IndexManager {
         boolean reindex = false;
 
         //check for index version
-        try {
-
-            //should Clients use IndexStatus.INVALID
+        //should Clients use IndexStatus.INVALID
 
 
-            float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
-            if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
-                reindex = true;
-                log.info(book.getBookMetaData().getInitials()+": needs reindexing, Installed index version @"+installedV);
-            }
-            
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+        float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
+        if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
             reindex = true;
+            log.info(book.getBookMetaData().getInternalName() + ": needs reindexing, Installed index version @" + installedV);
         }
 
         return reindex;
@@ -270,18 +265,18 @@ public class LuceneIndexManager implements IndexManager {
     protected URI getStorageArea(Book book) throws IOException {
         BookMetaData bmd = book.getBookMetaData();
         String driverName = bmd.getDriverName();
-        String bookName = bmd.getInitials();
+        String bookName = bmd.getInternalName();
 
         assert driverName != null;
         assert bookName != null;
 
 
         //URI driver = NetUtil.lengthenURI(baseFolderURI, driverName);
-        return NetUtil.lengthenURI(baseFolderURI, driverName+ NetUtil.SEPARATOR+ bookName);
+        return NetUtil.lengthenURI(baseFolderURI, driverName + NetUtil.SEPARATOR + bookName);
     }
 
     private IndexPolicy policy;
-    private URI baseFolderURI ;
+    private URI baseFolderURI;
 
     /**
      * The created indexes

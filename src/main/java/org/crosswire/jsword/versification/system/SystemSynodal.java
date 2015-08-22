@@ -36,18 +36,18 @@ import org.crosswire.jsword.versification.Versification;
  * Polish translation and an OCS Bible, which employ very similar
  * versifications, were also consulted.
  *
- * Some details that may not be immediately obvious: <br/>
+ * Some details that may not be immediately obvious: <br>
  * The Prologue to Sirach is neither a separate book nor a separate chapter of
- * Sirach. It should be placed within the introduction of Sirach (Sir.0.0). <br/>
+ * Sirach. It should be placed within the introduction of Sirach (Sir.0.0). <br>
  * The Prayer of Manasseh (PrMan) is a separate book, following 2Chr. This is
  * primarily for referencing purposes, but also because PrMan is explicitly NOT
  * the final chapter of 2Chr, though it is often printed as an appendix to that
- * book. <br/>
+ * book. <br>
  * The first, second, and third books of Ezra or Esdras (so named according to
  * Slavonic Orthodox tradition) have the OSIS names Ezra, 1Esd, and 2Esd,
  * respectively. This is due to the strange history of the books of Ezra/Esdras
  * in the eastern & western Churches and the standard naming conventions
- * proscribed by the SBL (which BTG & OSIS follow). <br/>
+ * proscribed by the SBL (which BTG & OSIS follow). <br>
  * The Epistle of Jeremiah and Baruch are two separate books.
  *
  *

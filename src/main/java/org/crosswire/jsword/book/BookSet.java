@@ -177,7 +177,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         }
 
         public boolean test(Book book) {
-            Object property = book.getProperty(key);
+            String property = book.getProperty(key);
             return property != null && property.equals(value);
         }
 

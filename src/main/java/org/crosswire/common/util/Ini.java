@@ -376,7 +376,7 @@ final class Ini {
                 in.close();
                 in = null;
             }
-        }        
+        }
     }
 
     /**
@@ -461,7 +461,7 @@ final class Ini {
     private IniSection getSection(String sectionName) {
         return sectionMap.get(sectionName);
     }
- 
+
     /**
      * Get a section, creating it if necessary.
      *
@@ -559,8 +559,7 @@ final class Ini {
      * @return true if the line is empty or starts with one of the comment
      *         characters
      */
-    private boolean isCommentLine(final String line)
-    {
+    private boolean isCommentLine(final String line) {
         if (line == null) {
             return false;
         }
@@ -619,8 +618,7 @@ final class Ini {
      * @param line the trimmed string to check
      * @return whether this line continues
      */
-    private static boolean more(final String line)
-    {
+    private static boolean more(final String line) {
         int length = line.length();
         return length > 0 && line.charAt(length - 1) == '\\';
     }

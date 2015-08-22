@@ -54,7 +54,7 @@ public final class DataPolice {
         StringBuilder buf = new StringBuilder();
         BookMetaData bmd = book.getBookMetaData();
         if (bmd != null) {
-            buf.append(bmd.getInitials());
+            buf.append(bmd.getInternalName());
         }
         if (bmd != null && key != null) {
             buf.append(':');

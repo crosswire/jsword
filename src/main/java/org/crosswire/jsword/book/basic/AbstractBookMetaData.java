@@ -223,7 +223,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         // The real bit ...
         BookMetaData that = (BookMetaData) obj;
 
-        return getBookCategory().equals(that.getBookCategory()) && getName().equals(that.getName()) && getInitials().equals(that.getInitials());
+        return getBookCategory().equals(that.getBookCategory()) && getName().equals(that.getName()) && getInternalName().equals(that.getInternalName());
     }
 
     @Override
@@ -239,8 +239,10 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     public int compareTo(BookMetaData obj) {
         int result = this.getBookCategory().compareTo(obj.getBookCategory());
         if (result == 0) {
-            // module names normally (always?) use English characters so ignore case should be fine
-            result = this.getInitials().compareToIgnoreCase(obj.getInitials());
+            result = this.getInitials().compareTo(obj.getInitials());
+        }
+        if (result == 0) {
+            result = this.getInternalName().compareTo(obj.getInternalName());
         }
         if (result == 0) {
             result = this.getName().compareTo(obj.getName());
@@ -250,7 +252,16 @@ public abstract class AbstractBookMetaData implements BookMetaData {
 
     @Override
     public String toString() {
-        return getInitials();
+        String internal = getInternalName();
+        String abbreviation = getInitials();
+        if (internal.equals(abbreviation)) {
+            return internal;
+        }
+        StringBuffer buf = new StringBuffer(internal);
+        buf.append('(');
+        buf.append(abbreviation);
+        buf.append(')');
+        return buf.toString();
     }
 
     private BookDriver driver;

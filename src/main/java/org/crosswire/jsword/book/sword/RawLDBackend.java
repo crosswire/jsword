@@ -193,7 +193,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             }
 
             return entrySize;
-     
         } catch (IOException e) {
             return 0;
         } catch (BookException e) {

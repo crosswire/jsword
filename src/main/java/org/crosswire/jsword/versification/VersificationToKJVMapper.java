@@ -60,9 +60,9 @@ import org.slf4j.LoggerFactory;
  * </p>
  * <p>
  * You can specify a range on either side. If a range is present on both sides, they have to have the same number of
- * verses, i.e. verses are mapped verse by verse to each other<br/>
- * Gen.1.1-Gen.1.2=Gen.1.2-Gen.1.3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3<br/>
- *<br/>
+ * verses, i.e. verses are mapped verse by verse to each other<br>
+ * Gen.1.1-Gen.1.2=Gen.1.2-Gen.1.3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3<br>
+ * <br>
  * Note: if the cardinality of the left & KJV sides are different by only one, the algorithm makes the
  * assumption that verse 0 should be disregarded in both ranges.
  * </p>
@@ -70,7 +70,7 @@ import org.slf4j.LoggerFactory;
  * Mappings can be specified by offset. In this case, be aware this maps verse 0 as well. So for example:
  * </p>
  * <p>
- * Ps.19-Ps.20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.<br/>
+ * Ps.19-Ps.20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.<br>
  * It does not make much sense to have an offset for a single verse, so this is not supported.
  * Offsetting for multiple ranges however does, and operates range by range, i.e. each range is calculated separately.
  * Offsetting is somewhat equivalent to specifying ranges, and as a result, the verse 0 behaviour is identical.
@@ -80,16 +80,16 @@ import org.slf4j.LoggerFactory;
  * losing resolution of the verse.
  * </p>
  * <p>
- * For example,<br/>
- * if V1 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen1.1<br/>
- * if V2 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen.1.1<br/>
+ * For example,<br>
+ * if V1 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen1.1<br>
+ * if V2 defines Gen.1.1=Gen.1.1, Gen.1.2=Gen.1.1<br>
  * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1=>Gen.1.1-Gen.1.2 which is inaccurate if in fact
  * V1(Gen.1.1) actually equals V2(Gen.1.1). So instead, we use a split on the right hand-side:
  * </p>
  * <p>
- * For example,<br/>
- * V1 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br/>
- * V2 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br/>
+ * For example,<br>
+ * V1 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br>
+ * V2 defines Gen.1.1=Gen1.1!a, Gen.1.2=Gen.1.1!b<br>
  * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1!a=>Gen.1.1, which is now accurate.
  * A part is a string fragment placed after the end of a key reference. We cannot use # because that is commonly known
  * as a comment in real properties-file. Using a marker, means we can have meaningful part names if we so choose.
@@ -107,14 +107,14 @@ import org.slf4j.LoggerFactory;
  * </p>
  * <p>
  * Since not specifying a verse mappings means there is a 1-2-1 unchanged mapping, we need a way of specifying
- * absent verses altogether:<br/>
- * ?=Gen.1.1<br/>
- * ?=Gen.1.5<br/>
+ * absent verses altogether:<br>
+ * ?=Gen.1.1<br>
+ * ?=Gen.1.5<br>
  * means that the non-KJV book simply does not contain verses Gen.1.1 and Gen.1.5 and therefore can't
  * be mapped.
  * </p>
  * <p>
- * We allow some global flags (one at present):<br/>
+ * We allow some global flags (one at present):<br>
  * !zerosUnmapped : means that any mapping to or from a zero verse
  * </p>
  * <p>
@@ -481,10 +481,10 @@ public class VersificationToKJVMapper {
              end = versification.add(start, vr.getCardinality() - 1);
          }
 
-        if(start == null || end == null) {
-            hasErrors = true;
-            LOGGER.error("Verse range with offset did not map to correct range in target versification. This mapping will be set to an empty unmapped key.");
-        }
+         if (start == null || end == null) {
+             hasErrors = true;
+             LOGGER.error("Verse range with offset did not map to correct range in target versification. This mapping will be set to an empty unmapped key.");
+         }
 
          return start != null && end != null ? new QualifiedKey(new VerseRange(versification, start, end)) : new QualifiedKey(versesKey);
     }
@@ -655,7 +655,7 @@ public class VersificationToKJVMapper {
     private Map<VerseKey, List<QualifiedKey>> toKJVMappings;
     private Map<QualifiedKey, Passage> fromKJVMappings;
     private boolean hasErrors;
-    
+
     private OsisParser osisParser = new OsisParser();
 
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);

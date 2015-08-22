@@ -16,18 +16,9 @@
  *
  * Copyright: 2015
  *     The copyright to this program is held by it's authors.
- *
- * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
 package org.crosswire.common.util;
 
-/**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith
- */
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +29,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
+ * Defines a List that maintains the uniqueness of elements
  *
+ * @param <E> The type of the element in this ListSet.
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith
  */
 public class ListSet<E> extends AbstractCollection<E> implements Set<E> {
 
@@ -161,8 +157,8 @@ public class ListSet<E> extends AbstractCollection<E> implements Set<E> {
                 current = null;
             }
 
-            Iterator<E> itr = list.iterator();
-            E current = null;
+            private Iterator<E> itr = list.iterator();
+            private E current;
         };
     }
 

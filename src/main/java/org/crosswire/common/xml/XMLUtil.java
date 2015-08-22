@@ -159,7 +159,7 @@ public final class XMLUtil {
     /**
      * For each entity in the input that is not allowed in XML, replace the
      * entity with its unicode equivalent or remove it. For each instance of a
-     * bare &, replace it with &amp;<br/>
+     * bare &, replace it with &amp;<br>
      * XML only allows 4 entities: &amp;amp;, &amp;quot;, &amp;lt; and &amp;gt;.
      * 
      * @param broken
@@ -237,7 +237,7 @@ public final class XMLUtil {
      * Remove all invalid characters in the input, replacing them with a space. XML has stringent
      * requirements as to which characters are or are not allowed. The set of
      * allowable characters are:<br />
-     * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br/>
+     * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br>
      * Note: Java handles to \uFFFF
      * 
      * @param broken
@@ -266,29 +266,39 @@ public final class XMLUtil {
         // close tags again
         List<String> openTags = new ArrayList<String>();
         Matcher m = Pattern.compile("</?[a-zA-Z]+").matcher(result);
-        boolean lTagFound = false, lgTagFound = false;
+        boolean lTagFound = false;
+        boolean lgTagFound = false;
         while (m.find()) {
             String match = m.group();
             if (match.startsWith("</")) {
-                if (openTags.size() == 0 && match.equals("</l") && !lTagFound) {
-                    return recloseTags("<l>"+broken);
+                if (openTags.size() == 0 && "</l".equals(match) && !lTagFound) {
+                    return recloseTags("<l>" + broken);
                 }
-                if (openTags.size() == 0 && match.equals("</lg") && !lgTagFound) {
-                    return recloseTags("<lg>"+broken);
+                if (openTags.size() == 0 && "</lg".equals(match) && !lgTagFound) {
+                    return recloseTags("<lg>" + broken);
                 }
-                if (openTags.size() == 0)
+                if (openTags.size() == 0) {
                     return null;
+                }
                 String lastTag = openTags.remove(openTags.size() - 1);
-                if (!match.equals("</" + lastTag))
+                if (!match.equals("</" + lastTag)) {
                     return null;
+                }
             } else {
                 int closePos = result.indexOf('>', m.end());
-                if (closePos == -1)
+                if (closePos == -1) {
                     return null;
-                while (Character.isWhitespace(result.charAt(closePos-1))) closePos--;
-                if (result.charAt(closePos-1) != '/') {
-                    if(match.equals("<l")) lTagFound = true;
-                    if(match.equals("<lg")) lgTagFound = true;
+                }
+                while (Character.isWhitespace(result.charAt(closePos - 1))) {
+                    --closePos;
+                }
+                if (result.charAt(closePos - 1) != '/') {
+                    if ("<l".equals(match)) {
+                        lTagFound = true;
+                    }
+                    if ("<lg".equals(match)) {
+                        lgTagFound = true;
+                    }
                     openTags.add(match.substring(1));
                 }
             }

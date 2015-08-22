@@ -26,15 +26,12 @@ import org.crosswire.common.util.CWProject;
 import org.crosswire.jsword.book.MetaDataLocator;
 
 /**
- *
+ * The different levels of configuration. The order in this enum is important as it determines the precedence.
+ * The higher the ordinal, the higher the precedence (i.e. override).
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
- */
-/**
- * The different levels of configuration. The order in this enum is important as it determines the precedence.
- * The higher the ordinal, the higher the precedence (i.e. override).
  */
 public enum SwordMetaDataLocator implements MetaDataLocator {
     SWORD {

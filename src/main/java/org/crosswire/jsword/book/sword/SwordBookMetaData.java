@@ -146,9 +146,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_UNLOCK_URL = "UnlockURL";
     public static final String KEY_VERSION = "Version";
     // Some keys have defaults
-    public static final Map<String,String> DEFAULTS;
+    public static final Map<String, String> DEFAULTS;
     static {
-        Map<String,String> tempMap = new HashMap<String,String>();
+        Map<String, String> tempMap = new HashMap<String, String>();
         tempMap.put(KEY_COMPRESS_TYPE, "LZSS");
         tempMap.put(KEY_BLOCK_TYPE, "CHAPTER");
         tempMap.put(KEY_BLOCK_COUNT, "200");
@@ -452,14 +452,22 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials() {
-        return configAll.getName();
+        String abbreviation = getProperty(KEY_ABBREVIATION);
+        if (abbreviation != null && abbreviation.length() > 0) {
+            return abbreviation;
+        }
+        return getInternalName();
     }
 
     /**
      * @return the internal name of the module, useful when re-constructing all
      *         the meta-information, after installation for example
      */
-    String getInternalName() {
+    public String getInternalName() {
+        String abbreviation = getProperty(KEY_ABBREVIATION);
+        if (abbreviation != null && abbreviation.length() > 0) {
+            return abbreviation;
+        }
         return configAll.getName();
     }
 
@@ -486,8 +494,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     @Override
     public boolean hasFeature(FeatureType feature) {
         String name = feature.toString();
-        // Features are a positive statement. If we find it mentioned anywhere,
-        // then it true
+        // Features are a positive statement.
+        // If we find it mentioned anywhere, then it true
         if (configAll.containsValue(KEY_FEATURE, name)) {
             return true;
         }
@@ -523,6 +531,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public String getProperty(String key) {
+        if (KEY_LANGUAGE.equals(key)) {
+            return getLanguage().getName();
+        }
         return configAll.get(key, DEFAULTS.get(key));
     }
 
@@ -608,7 +619,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         for (String key : config.getKeys()) {
             ConfigEntryType type = ConfigEntryType.fromString(key);
             for (String value : config.getValues(key)) {
-                if (type.mayRepeat()) {
+                if (type != null && type.mayRepeat()) {
                     if (!configAll.containsValue(key, value)) {
                         configAll.add(key, value);
                     }
@@ -651,12 +662,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     private Element toRow(OSISUtil.OSISFactory factory, String key) {
-        ConfigEntryType type = ConfigEntryType.fromString(key);
         int size = configAll.size(key);
         if (size == 0) {
             return null;
         }
 
+        // See if it is a predefined type
+        ConfigEntryType type = ConfigEntryType.fromString(key);
         Element nameEle = toKeyCell(factory, key);
 
         Element valueElement = factory.createCell();
@@ -666,11 +678,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
 
             String text = configAll.get(key, j);
-            if (!type.isText() && type.isAllowed(text)) {
+            if (type != null && !type.isText() && type.isAllowed(text)) {
                 text = type.convert(text).toString();
             }
             text = XMLUtil.escape(text);
-            if (type.allowsRTF()) {
+            if (type != null && type.allowsRTF()) {
                 valueElement.addContent(OSISUtil.rtfToOsis(text));
             } else {
                 valueElement.addContent(text);
@@ -843,6 +855,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 continue;
             }
 
+            if (type == null) {
+                if (key.contains("_")) {
+                    String baseKey = key.substring(0, key.indexOf('_'));
+                    type = ConfigEntryType.fromString(baseKey);
+                }
+            }
+
             for (int i = 1; i < count; i++) {
                 value = configAll.get(key, i);
                 if (value == null) {
@@ -856,6 +875,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                     continue;
                 }
 
+                if (type == null) {
+                    continue;
+                }
+
                 // Filter known types of entries
                 value = type.filter(value);
 
@@ -864,18 +887,12 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                     log.info("Unexpected RTF for [{}]{} = {}", configAll.getName(), key, value);
                 }
 
-                if (type.mayRepeat()) {
-                    if (!type.isAllowed(value)) {
-                        log.info("Unknown config value for [{}]{} = {}", configAll.getName(), key, value);
-                    }
-                } else {
-                    if (value != null) {
-                        log.info("Unexpected additional entry for [{}]{} = {}", configAll.getName(), key, value);
-                    } else {
-                        if (!type.isAllowed(value)) {
-                            log.info("Unknown config value for [{}]{} = {}", configAll.getName(), key, value);
-                        }
-                    }
+                if (!type.isAllowed(value)) {
+                    log.info("Unknown config value for [{}]{} = {}", configAll.getName(), key, value);
+                }
+
+                if (count > 1 && !type.mayRepeat()) {
+                    log.info("Unexpected repeated config key for [{}]{} = {}", configAll.getName(), key, value);
                 }
             }
 
@@ -954,6 +971,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
 
     private static final String[] OSIS_INFO = {
+            KEY_ABBREVIATION,
             KEY_DESCRIPTION,
             KEY_CATEGORY,
             KEY_LCSH,
@@ -1003,6 +1021,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     private static final String[] HIDDEN = {
         KEY_CIPHER_KEY,
+        KEY_LANGUAGE
     };
 
     private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+");

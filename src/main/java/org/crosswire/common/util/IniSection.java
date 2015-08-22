@@ -357,7 +357,7 @@ public final class IniSection implements Iterable {
                 in.close();
                 in = null;
             }
-        }        
+        }
     }
 
     /**
@@ -576,8 +576,7 @@ public final class IniSection implements Iterable {
      * @return true if the line is empty or starts with one of the comment
      *         characters
      */
-    private boolean isCommentLine(final String line)
-    {
+    private boolean isCommentLine(final String line) {
         if (line == null) {
             return false;
         }
@@ -636,8 +635,7 @@ public final class IniSection implements Iterable {
      * @param line the trimmed string to check
      * @return whether this line continues
      */
-    private static boolean more(final String line)
-    {
+    private static boolean more(final String line) {
         int length = line.length();
         return length > 0 && line.charAt(length - 1) == '\\';
     }

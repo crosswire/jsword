@@ -20,7 +20,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
 
@@ -50,9 +49,7 @@ import org.jdom2.Document;
 public interface BookMetaData extends Comparable<BookMetaData> {
     /**
      * The name of the book, for example "King James Version" or
-     * "Bible in Basic English" or "Greek". In general it should be possible to
-     * deduce the initials from the name by removing all the non-capital
-     * letters. Although this is only a generalization. This method should not
+     * "Bible in Basic English" or "Greek". This method should not
      * return null or a blank string.
      * 
      * @return The name of this book
@@ -103,6 +100,13 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * @return The book's initials
      */
     String getInitials();
+
+    /**
+     * The internal name of this book.
+     * 
+     * @return The book's internal name
+     */
+    String getInternalName();
 
     /**
      * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()
@@ -304,6 +308,11 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * The key for the language in the properties map
      */
     String KEY_LANG = "Lang";
+
+    /**
+     * The key for the language in the properties map
+     */
+    String KEY_LANGUAGE = "Language";
 
     /**
      * The key for the font in the properties map

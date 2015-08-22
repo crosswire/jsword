@@ -609,9 +609,9 @@ public final class PassageKeyFactory {
             if (wasNumberOrMarker) {
                 if (isNumber) {
                     buf.append(AbstractPassage.REF_PREF_DELIM);
-                } else if(isEndMarker) {
+                } else if (isEndMarker) {
                     buf.append(VerseRange.RANGE_OSIS_DELIM);
-                }else if (Character.isLetter(curChar)) {
+                } else if (Character.isLetter(curChar)) {
                     buf.append(' ');
                 }
 

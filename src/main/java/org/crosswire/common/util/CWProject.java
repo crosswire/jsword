@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The Project class looks after the source of project files. These are per user
  * files and as such have a different location on different operating systems.
- * These are:<br/>
+ * These are:
  * 
  * <table>
  * <tr>

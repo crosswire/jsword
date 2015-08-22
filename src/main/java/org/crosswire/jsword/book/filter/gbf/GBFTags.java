@@ -476,7 +476,7 @@ public final class GBFTags {
 
             if (word == null) {
                 word = OSIS_FACTORY.createW();
-                empty = true;                    
+                empty = true;
             }
 
             String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);

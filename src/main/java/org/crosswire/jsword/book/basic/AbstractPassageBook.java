@@ -303,7 +303,8 @@ public abstract class AbstractPassageBook extends AbstractBook {
             BibleBook bibleBook = v11nBookIterator.next();
             // test some random verses - normally ch1 v 1 is sufficient - but we don't want to miss any
             if (scope.contains(new Verse(v11n, bibleBook, 1, 1))
-                || scope.contains(new Verse(v11n, bibleBook, 1, 2))) {
+                || scope.contains(new Verse(v11n, bibleBook, 1, 2)))
+            {
                 bookList.add(bibleBook);
             }
         }

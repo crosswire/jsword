@@ -84,7 +84,7 @@ public enum AccuracyType {
             int verse = 1;
             final String subIdentifier = getSubIdentifier(parts);
             final boolean hasSub = subIdentifier != null;
-            
+
             //can be of form, BCV, BCV!sub, BV, BV!a
             //we only have a chapter and verse number if
             // a- BCV (3 parts) or b- BCV!sub (4 parts)
@@ -403,7 +403,7 @@ public enum AccuracyType {
     public static AccuracyType fromText(Versification v11n, String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         int partsLength = parts.length;
         String lastPart = parts[partsLength - 1];
-        if (lastPart.length()>0 && lastPart.charAt(0) == '!') {
+        if (lastPart.length() > 0 && lastPart.charAt(0) == '!') {
             --partsLength;
         }
         switch (partsLength) {

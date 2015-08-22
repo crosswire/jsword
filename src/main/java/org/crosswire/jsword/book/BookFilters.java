@@ -271,8 +271,8 @@ public final class BookFilters {
 
     /**
      * A simple default filter that returns everything. The match parameter is a
-     * set of name value pairs like this: <br/>
-     * <code>initials=ESV;type=Bible;driverName=Sword</code><br/>
+     * set of name value pairs like this: <br>
+     * <code>initials=ESV;type=Bible;driverName=Sword</code><br>
      * Before the = there must be the name of a property on Book and after the
      * value to match (.toString()) is called on the results of the getter.
      * 
@@ -311,7 +311,7 @@ public final class BookFilters {
         public boolean test(Book book) {
             for (int i = 0; i < tests.length; i++) {
                 Test test = tests[i];
-                Object property = book.getProperty(test.property);
+                String property = book.getProperty(test.property);
                 if (property == null) {
                     return false;
                 }
@@ -321,8 +321,7 @@ public final class BookFilters {
                     if ((result.indexOf(test.result) > -1) != test.expected) {
                         return false;
                     }
-                }
-                else if (test.result.equals(result) != test.expected) {
+                } else if (test.result.equals(result) != test.expected) {
                     return false;
                 }
             }
@@ -344,7 +343,7 @@ public final class BookFilters {
                 property = parts[0];
                 result = parts[1];
                 int len = property.length();
-                this.expected = (property.charAt(len - 1) != '!');
+                this.expected = property.charAt(len - 1) != '!';
                 if (!expected) {
                     property = property.substring(0, len - 1);
                 }

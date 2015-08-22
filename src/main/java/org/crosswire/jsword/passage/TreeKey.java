@@ -161,21 +161,21 @@ public class TreeKey extends AbstractKeyList {
             return false;
         }
 
-        TreeKey otherTreeKey = (TreeKey)obj;
+        TreeKey otherTreeKey = (TreeKey) obj;
         if (!getName().equals(otherTreeKey.getName())) {
             return false;
         }
 
         // names match so now work up the tree comparing parents
 
-        if (getParent()==null) {
-            return otherTreeKey.getParent()==null;
+        if (getParent() == null) {
+            return otherTreeKey.getParent() == null;
         }
-        
+
         // KeyTrees nodes can have the same name but different parents
         return getParent().equals(otherTreeKey.getParent());
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */

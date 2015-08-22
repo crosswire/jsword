@@ -871,7 +871,7 @@ import org.crosswire.jsword.book.BookMetaData;
      * 
      * @return true if this ConfigEntryType can occur more than once
      */
-    protected boolean hasChoices() {
+    public boolean hasChoices() {
         return picks != null;
     }
 

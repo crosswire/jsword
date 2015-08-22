@@ -101,7 +101,7 @@ public final class OpenFileStateManager {
      * a no-op will occur. No need for double-checked locking here
      */
     public static synchronized void init(final int cleanupIntervalSeconds, final int maxExpiry) {
-        if(manager == null) {
+        if (manager == null) {
             manager = new OpenFileStateManager(cleanupIntervalSeconds, maxExpiry);
         } else {
             // already intialised
@@ -112,10 +112,10 @@ public final class OpenFileStateManager {
 
     /**
      * Singleton instance method to return the one and only Open File State Manager
-     * @return
+     * @return the singleton
      */
     public static OpenFileStateManager instance() {
-        if(manager == null) {
+        if (manager == null) {
             synchronized (OpenFileStateManager.class) {
                 init(60, 60);
             }
@@ -210,7 +210,7 @@ public final class OpenFileStateManager {
         //gives you a snapshot at some point in time, though not necessarily consistent, so just in case this remains
         //in access of the iterator() functionality, we update the last access date to avoid it being destroyed while we
         //use it
-        if(state != null) {
+        if (state != null) {
             state.setLastAccess(System.currentTimeMillis());
         }
         return state;

@@ -43,6 +43,9 @@ public final class IndexMetadata {
 
     /* latest version on top*/
     public static final float INDEX_VERSION_1_2 = 1.2f;
+    /**
+     *  @deprecated use latest
+     */
     @Deprecated
     public static final float INDEX_VERSION_1_1 = 1.1f;
 
@@ -50,6 +53,9 @@ public final class IndexMetadata {
     public static final String LUCENE_VERSION = "Lucene.Version";
 
     public static final String PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE = "Latest.Index.Version.Book.";
+    /**
+     * @deprecated use latest
+     */
     @Deprecated
     public static final String INDEX_VERSION = "Installed.Index.Version";
     /**
@@ -77,16 +83,19 @@ public final class IndexMetadata {
         String value = props.get(LATEST_INDEX_VERSION, "1.2");
         return Float.parseFloat(value);
     }
+
     public String getLatestIndexVersionStr() {
         String value = props.get(LATEST_INDEX_VERSION, "1.2");
         return value;
     }
 
     public float getLatestIndexVersion(Book b) {
-        if(b==null) return getLatestIndexVersion();
+        if (b == null) {
+            return getLatestIndexVersion();
+        }
 
-        String value = props.get(PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE+IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
-                        props.get(LATEST_INDEX_VERSION) );
+        String value = props.get(PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE + IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
+                        props.get(LATEST_INDEX_VERSION));
         return Float.parseFloat(value);
     }
 
@@ -94,13 +103,12 @@ public final class IndexMetadata {
     //used in property keys e.g.  Installed.Index.Version.Book.ESV[1.0.1]
     public static String getBookIdentifierPropSuffix(BookMetaData meta) {
         String moduleVer = null;
-        if(meta.getProperty("Version") !=null)
+        if (meta.getProperty("Version") != null) {
             moduleVer = '[' + meta.getProperty("Version") + ']';
-
-        return
-                meta.getInitials()+ moduleVer;
-
+        }
+        return meta.getInternalName() + moduleVer;
     }
+
     public float getLuceneVersion() {
         return Float.parseFloat(props.get(LUCENE_VERSION));
     }
@@ -115,18 +123,20 @@ public final class IndexMetadata {
 
     //a index status summary in English
     public static String generateInstalledBooksIndexVersionReport() {
-        StringBuilder toReturn= new StringBuilder();
-        int installedBookCount=0, searchEnabledBookCount=0, reindexMandatoryBookCount=0;
+        StringBuilder toReturn = new StringBuilder();
+        int installedBookCount = 0;
+        int searchEnabledBookCount = 0;
+        int reindexMandatoryBookCount = 0;
         LuceneIndexManager indexManager = (LuceneIndexManager) IndexManagerFactory.getIndexManager();
         Books myBooks = Books.installed();
         toReturn.append("InstalledBooks:");
-        for(Book insBook: myBooks.getBooks()) {
-            installedBookCount++;
-            toReturn.append("\n\t").append(insBook.getBookMetaData().getInitials()).append(": ");
-            if(indexManager.isIndexed( insBook)) {
+        for (Book insBook: myBooks.getBooks()) {
+            ++installedBookCount;
+            toReturn.append("\n\t").append(insBook.getBookMetaData().getInternalName()).append(": ");
+            if (indexManager.isIndexed(insBook)) {
                 searchEnabledBookCount++;
                 toReturn.append("search enabled, ");
-                if(indexManager.needsReindexing( insBook)) {
+                if (indexManager.needsReindexing(insBook)) {
                     reindexMandatoryBookCount++;
                     toReturn.append("index outdated, ");
                 }
