@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2007-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.examples;
@@ -41,8 +41,7 @@ import org.jdom2.Element;
 /**
  * Analyze Strong's Numbers in a module.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class StrongsAnalysis {

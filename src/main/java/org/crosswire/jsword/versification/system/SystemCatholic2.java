@@ -15,7 +15,7 @@
  *      Boston,  MA 02111-1307, USA
  *
  * Copyright: 2012
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification.system;
@@ -28,8 +28,7 @@ import org.crosswire.jsword.versification.Versification;
  * Esther 10 has 13 verses rather than 3 and Esther has 16
  * chapters rather than 10.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class SystemCatholic2 extends Versification {

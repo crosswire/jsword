@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book;
@@ -42,9 +42,8 @@ import org.slf4j.LoggerFactory;
  * The Books class (along with Book) is the central point of contact between the
  * rest of the world and this set of packages.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  * @author DM Smith
  */
 public final class Books extends AbstractBookList {

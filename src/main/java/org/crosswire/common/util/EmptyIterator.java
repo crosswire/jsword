@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.common.util;
@@ -28,9 +28,8 @@ import java.util.NoSuchElementException;
  * nothing.
  * 
  * @param <E> The type of the element that this empty iterator will never return.
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author DM Smith
  */
 public class EmptyIterator<E> implements Iterator<E> {
 

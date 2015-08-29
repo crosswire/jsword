@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.internationalisation;
@@ -25,8 +25,7 @@ import java.util.Locale;
 /**
  * A default Locale provider simply returns Locale.getDefault()
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Chris Burrell
  */
 public class DefaultLocaleProvider implements LocaleProvider {

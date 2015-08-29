@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2008
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -33,8 +33,7 @@ import org.crosswire.jsword.passage.RestrictionType;
  * A Backend that can be used as a global key list.
  * 
  * @param <T> The type of the OpenFileState that this class extends.
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public abstract class AbstractKeyBackend<T extends OpenFileState> extends AbstractBackend<T> implements Key {

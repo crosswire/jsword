@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2008 - 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.bridge;
@@ -36,8 +36,7 @@ import org.junit.Test;
  * KJV, Strong's Greek and Hebrew Dictionaries, Robinson's morphological codes,
  * ... are installed and that the KJV is indexed.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 // TODO: make this test use mocks or setup its own environment

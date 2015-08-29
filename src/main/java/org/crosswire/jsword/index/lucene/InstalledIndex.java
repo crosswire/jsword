@@ -24,9 +24,8 @@ import org.slf4j.LoggerFactory;
  * /org.crosswire.jsword.index.lucene.InstalledIndex.properties
  *
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Sijo Cherian
  */
 public final class InstalledIndex {
     public static final String INSTALLED_INDEX_DEFAULT_VERSION = "Installed.Index.DefaultVersion";

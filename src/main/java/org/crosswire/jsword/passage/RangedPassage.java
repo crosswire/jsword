@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.passage;
@@ -52,9 +52,8 @@ import org.crosswire.jsword.versification.Versification;
  * I'm not sure which will be best. So I'm starting with 1 and optimizing later
  * ... Maybe the best is to allow the user to choose?
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public class RangedPassage extends AbstractPassage {
     /**

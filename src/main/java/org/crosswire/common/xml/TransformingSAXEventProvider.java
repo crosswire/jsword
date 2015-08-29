@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.common.xml;
@@ -51,9 +51,8 @@ import org.xml.sax.SAXException;
  * A SAXEventProvider that gets its output data from an XSL stylesheet and
  * another SAXEventProvider (supplying input XML).
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public class TransformingSAXEventProvider extends Transformer implements SAXEventProvider {
     /**

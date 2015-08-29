@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2012
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification.system;
@@ -51,8 +51,7 @@ import org.crosswire.jsword.versification.Versification;
  * The Epistle of Jeremiah and Baruch are two separate books.
  *
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class SystemSynodal extends Versification {

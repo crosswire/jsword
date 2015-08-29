@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -82,10 +82,9 @@ import org.slf4j.LoggerFactory;
  * <p>
  * \ is used as a continuation line.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Mark Goodwin [mark at thorubio dot org]
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Mark Goodwin
+ * @author Joe Walker
  * @author Jacky Cheung
  * @author DM Smith
  */

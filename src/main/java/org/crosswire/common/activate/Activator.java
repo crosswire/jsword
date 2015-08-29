@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.common.activate;
@@ -28,11 +28,10 @@ import java.util.Set;
  * 
  * Activator should be used to manage all activate()ions and deactivate()ions so
  * that it can keep a track of exactly what is active and what can be
- * deactivate()d is save memory.
+ * deactivated is save memory.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public final class Activator {
     /**

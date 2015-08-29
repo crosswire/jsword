@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * The copyright to this program is held by it's authors.
+ * The copyright to this program is held by its authors.
  */
 package org.crosswire.jsword.book.sword;
 
@@ -28,9 +28,8 @@ import org.crosswire.jsword.passage.PreferredKey;
 /**
  * A book that has a preferred key of today's date.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author DM Smith
  */
 public class SwordDailyDevotion extends SwordDictionary implements PreferredKey {
     /**

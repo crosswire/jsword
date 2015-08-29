@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -23,12 +23,10 @@ package org.crosswire.jsword.book.sword;
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Mark Goodwin [mark at thorubio dot org]
- * @author Joe Walker [joe at eireneh dot com]
- * @author The Sword project (don't know who - no credits in original files
- *         (canon.h))
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Mark Goodwin
+ * @author Joe Walker
+ * @author The SWORD Project (don't know who - no credits in original files (canon.h))
  */
 public final class SwordConstants {
     /**

@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2007-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.index.lucene;
@@ -36,9 +36,8 @@ import org.slf4j.LoggerFactory;
  * A singleton that Reads and Maintains IndexMetadata from properties file All
  * version number in the properties file must be float.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Sijo Cherian
  */
 public final class IndexMetadata {
 

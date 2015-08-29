@@ -15,9 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
- *
- * ID: $Id:BaseQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
+ *     The copyright to this program is held by its authors.
  */
 package org.crosswire.jsword.index.query;
 
@@ -28,8 +26,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * A base query is the smallest unit of search that the index can perform.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class BaseQuery extends AbstractQuery {

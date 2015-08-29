@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -23,8 +23,7 @@ package org.crosswire.jsword.book.sword;
 /**
  * Intercepts values from the configuration before these are widely distributed to the rest of the application.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Chris Burrell
  */
 public interface ConfigValueInterceptor {

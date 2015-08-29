@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005 - 2012
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -28,8 +28,7 @@ import java.util.Map;
  * A BibleBook is a book of the Bible. It may or may not be canonical.
  * Note that the ordering of these books varies from one Versification to another.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public enum BibleBook {

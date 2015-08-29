@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -46,10 +46,10 @@ import org.slf4j.LoggerFactory;
 /**
  * This represents all of the Sword Books (aka modules).
  *
- * @author Joe Walker [joe at eireneh dot com]
+ * @author Joe Walker
  * @author DM Smith
- * @see gnu.lgpl.License for license details.<br>
- * The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
+ * The copyright to this program is held by its authors.
  */
 public class SwordBookDriver extends AbstractBookDriver {
     /**

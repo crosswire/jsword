@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2013 - 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -121,8 +121,7 @@ import org.slf4j.LoggerFactory;
  * TODO(CJB): think about whether when returning, we should clone, or make things immutable.
  * </p>
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author chrisburrell
  */
 public class VersificationToKJVMapper {

@@ -14,7 +14,7 @@
 #      Boston, MA 02111-1307, USA
 #
 # Copyright: 2005-2011
-#     The copyright to this program is held by it's authors.
+#     The copyright to this program is held by its authors.
 #
 #sword-ftp=org.crosswire.jsword.book.install.sword.FtpSwordInstallerFactory
 sword-http=org.crosswire.jsword.book.install.sword.HttpSwordInstallerFactory

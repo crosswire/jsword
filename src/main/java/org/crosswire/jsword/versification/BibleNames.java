@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -35,9 +35,8 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 /**
  * BibleNames deals with locale sensitive BibleBook name lookup conversions.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  * @author DM Smith
  */
 public final class BibleNames {
@@ -206,9 +205,9 @@ public final class BibleNames {
      * NameList is the internal, internationalize list of names
      * for a locale.
      *
-     * @see gnu.lgpl.License for license details.<br>
-     *      The copyright to this program is held by it's authors.
-     * @author DM Smith [dmsmith555 at yahoo dot com]
+     * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
+     *      The copyright to this program is held by its authors.
+     * @author DM Smith
      */
     private class NameList {
         /**

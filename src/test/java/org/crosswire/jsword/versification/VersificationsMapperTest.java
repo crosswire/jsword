@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -34,8 +34,7 @@ import static org.junit.Assert.assertEquals;
  * Tests a simple two step versifications. And the edge cases,
  * of wanting to go to KJV.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author chrisburrell
  */
 public class VersificationsMapperTest {

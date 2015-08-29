@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005-2013
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.basic;
@@ -56,9 +56,9 @@ import org.slf4j.LoggerFactory;
  * An abstract implementation of Book that lets implementors just concentrate on
  * reading book data.
  *
- * @author Joe Walker [joe at eireneh dot com]
- * @see gnu.lgpl.License for license details.<br>
- * The copyright to this program is held by it's authors.
+ * @author Joe Walker
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
+ * The copyright to this program is held by its authors.
  */
 public abstract class AbstractPassageBook extends AbstractBook {
 

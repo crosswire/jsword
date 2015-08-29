@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.basic;
@@ -29,9 +29,8 @@ import org.crosswire.jsword.book.BookException;
  * The AbstractBookDriver class implements some BibleDriver methods, making a
  * simple read-only BibleDriver.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public abstract class AbstractBookDriver implements BookDriver {
     /*

@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.passage;
@@ -24,9 +24,8 @@ package org.crosswire.jsword.passage;
  * A default implementation of KeyVisitor that does nothing, for use in
  * inheritance where you want to save space by not overriding all methods.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public class DefaultKeyVisitor implements KeyVisitor {
     /*

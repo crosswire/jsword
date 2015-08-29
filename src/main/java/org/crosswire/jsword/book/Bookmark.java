@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2007
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book;
@@ -29,8 +29,7 @@ import org.crosswire.jsword.index.search.SearchRequest;
  * A Bookmark remembers a particular view of one or more Books. What is viewed
  * regarding a book set is either a SearchRequest or a key lookup request.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public interface Bookmark extends Serializable, Cloneable {

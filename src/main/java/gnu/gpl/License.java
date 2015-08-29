@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package gnu.gpl;
@@ -366,9 +366,8 @@ package gnu.gpl;
  * Public License instead of this License.
  * </pre>
  * 
- * @see gnu.gpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.gpl.License for license details.
+ * @author Joe Walker
  * @author DM Smith
  */
 public class License {

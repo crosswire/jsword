@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package gnu.gpl;
@@ -25,8 +25,7 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Compile safe Msg resource settings.
  * 
- * @see gnu.gpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.gpl.License for license details.
  * @author DM Smith
  */
 final class GPLMsg extends MsgBase {

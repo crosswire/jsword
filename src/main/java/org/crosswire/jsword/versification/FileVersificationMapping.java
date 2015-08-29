@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2013 - 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -36,8 +36,7 @@ import java.util.List;
  * we're not quite using the 'properties' file definition because we allow
  * duplicate keys on either side of the '=' sign, we need to do the processing ourselves.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author chrisburrell
  */
 public class FileVersificationMapping {

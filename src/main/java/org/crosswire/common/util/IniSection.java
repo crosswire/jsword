@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2015
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  */
 package org.crosswire.common.util;
 
@@ -82,8 +82,8 @@ import org.slf4j.LoggerFactory;
  *
 
  * @author DM Smith
- * @see gnu.lgpl.License for license details.<br>
- *     The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
+ *     The copyright to this program is held by its authors.
  */
 public final class IniSection implements Iterable {
 

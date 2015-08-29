@@ -13,7 +13,13 @@
 #      59 Temple Place - Suite 330
 #      Boston, MA 02111-1307, USA
 #
-# Copyright: 2005-2011
+# Copyright: 2015
 #     The copyright to this program is held by its authors.
 #
-default=org.crosswire.jsword.index.lucene.LuceneIndexManager
+
+JSword Authors:
+Joe Walker [joe at eireneh dot com]
+DM Smith [dmsmith at crosswire dot org]
+Mark Goodwin [goodwinster at gmail dot com or mark at thorubio dot org]
+Jacky Cheung
+Sijo Cherian [sijocherian at yahoo dot com]

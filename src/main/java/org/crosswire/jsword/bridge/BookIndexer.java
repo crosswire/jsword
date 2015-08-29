@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2008
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.bridge;
@@ -33,8 +33,7 @@ import org.crosswire.jsword.index.IndexStatusListener;
  * BookIndexer allows one to check the status of an index, build an index or
  * delete an index. This is similar to SWORD's mkfastmod.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class BookIndexer {

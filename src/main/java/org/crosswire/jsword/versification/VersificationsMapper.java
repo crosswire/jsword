@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2013 - 2014
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -58,8 +58,7 @@ import org.slf4j.LoggerFactory;
  * target Versifications. That it uses the KJV as an intermediary is an
  * implementation detail that may change. Do not rely on it.
  * </p>
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author chrisburrell
  */
 public final class VersificationsMapper {

@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.common.xml;
@@ -30,8 +30,7 @@ import org.crosswire.common.util.ClassUtil;
  * application. Java 5 has renamed the main routine to _main. This class
  * normalizes the difference between Java 1.4 and 1.5 (aka 5).
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public final class XalanProcess {

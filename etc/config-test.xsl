@@ -15,7 +15,7 @@ import java.io.File;
  * without needed all the code-generation tools.</p>
  * see ../../etc/config-test.xsl
  * see ../../resource/config.xml
- * @author Joe Walker [joe at eireneh dot com]
+ * @author Joe Walker
  */
 public class ConfigTest
 {

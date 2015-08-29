@@ -14,7 +14,7 @@
 #      Boston, MA 02111-1307, USA
 #
 # Copyright: 2005-2011
-#     The copyright to this program is held by it's authors.
+#     The copyright to this program is held by its authors.
 #
 # see org.crosswire.jsword.util.ConverterFactory which has a hardcoded
 # default from this list. There might be a better way to do this?

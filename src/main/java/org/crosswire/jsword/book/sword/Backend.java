@@ -13,8 +13,7 @@ import org.jdom2.Content;
  * Uniform representation of all Backends.
  *
  * @param <T> The type of the OpenFileState that this class extends.
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public interface Backend<T extends OpenFileState> {

@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2012
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.versification;
@@ -28,8 +28,7 @@ import java.util.NoSuchElementException;
  * A BibleBookList is an ordered list of one or more BibleBooks.
  * Typically, a BibleBookList is a member of a Versification.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 /* pkg protected */ class BibleBookList implements Iterable<BibleBook>, Serializable {

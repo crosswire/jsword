@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.common.crypt;
@@ -468,12 +468,10 @@ package org.crosswire.common.crypt;
  * Regarding this port to Java and not the original code, the following license
  * applies:
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Michael Paul Johnson [ kahunapule at mpj dot cx] Original code
  * @author unascribed Sword's C++ implementation
- * @author DM Smith [ dmsmith555 at yahoo dot com] Java port from Sword's C++
- *         implementation
+ * @author DM Smith Java port from Sword's C++ implementation
  */
 public class Sapphire {
 

@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2012
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.sword.processing;
@@ -30,8 +30,7 @@ import org.jdom2.Content;
  * This interface declares operations to be carried out after Raw Text
  *  has been read from a backend, before it is returned as OSIS to the caller.
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public interface RawTextToXmlProcessor {

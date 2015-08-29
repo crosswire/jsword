@@ -15,9 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
- *
- * ID: $Id:LuceneSearcher.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
+ *     The copyright to this program is held by its authors.
  */
 package org.crosswire.jsword.index.lucene;
 
@@ -49,9 +47,8 @@ import org.crosswire.jsword.passage.Key;
  * <li>The ability to add soundslike type extensions.
  * </ul>
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Joe Walker
  */
 public class LuceneSearcher implements Searcher {
     /*

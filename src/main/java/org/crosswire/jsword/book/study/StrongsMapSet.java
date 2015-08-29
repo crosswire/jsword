@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2007
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by its authors.
  *
  */
 package org.crosswire.jsword.book.study;
@@ -32,8 +32,7 @@ import java.util.TreeSet;
  * zero padded to 4 digits. The value for a MapEntry is a Set of Strings, which
  * are the various ways a Strong's Number is marked up.
  * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class StrongsMapSet {

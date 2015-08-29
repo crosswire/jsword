@@ -4,8 +4,7 @@ package org.crosswire.jsword.book;
  * An object implementing this interface is able to unaccent the texts. If set on the BookData, then the texts are cleansed before parsing
  *
  *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public interface UnAccenter {
