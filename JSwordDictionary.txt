@@ -260,3 +260,4 @@ multimap
 plaintext
 bidi
 wiki
+deduplication

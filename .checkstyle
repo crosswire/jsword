@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fileset-config file-format-version="1.1.0" simple-config="true">
-<fileset name="all" check-config-name="JSword Coding Style" enabled="true"><file-match-pattern match-pattern="." include-pattern="true"/>
-</fileset>
-<filter name="FilesFromPackage" enabled="true"><filter-data value="java/limbo"/>
-<filter-data value="java/jswordtest"/>
-</filter>
-<filter name="NonSrcDirs" enabled="true"/>
+
+<fileset-config file-format-version="1.2.0" simple-config="true" sync-formatter="false">
+  <fileset name="all" enabled="true" check-config-name="JSword" local="false">
+    <file-match-pattern match-pattern="." include-pattern="true"/>
+  </fileset>
+  <filter name="FilesFromPackage" enabled="true">
+    <filter-data value="java/limbo"/>
+    <filter-data value="java/jswordtest"/>
+  </filter>
 </fileset-config>
