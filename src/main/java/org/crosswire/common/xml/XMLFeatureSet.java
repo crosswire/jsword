@@ -94,7 +94,7 @@ public final class XMLFeatureSet {
      * Allow for XMLFeatures to be set from command line.
      * 
      * @param argv the specification of XMLFeatures to turn on or off
-     * @see printUsage See printUsage for details
+     * @see #printUsage See printUsage for details
      */
     public void setFeatureStates(String[] argv) {
         // process arguments

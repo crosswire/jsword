@@ -132,6 +132,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     /**
      * Read an existing index and use it.
      * 
+     * @param book the book
+     * @param storage 
      * @throws BookException
      *             If we fail to read the index files
      */
@@ -150,6 +152,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     /**
      * Generate an index to use, telling the job about progress as you go.
      * 
+     * @param book the book
+     * @param storage 
+     * @param policy 
      * @throws BookException
      *             If we fail to read the index files
      */
@@ -502,6 +507,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * 
      * Note: by using this method, you need to ensure you don't close the searcher while it is being used.
      * See {@link org.crosswire.jsword.index.IndexManager#closeAllIndexes()} for more information
+     * @return the searcher
      */
     public Searcher getSearcher() {
         return searcher;

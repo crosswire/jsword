@@ -173,6 +173,8 @@ public class DataEntry {
      * 
      * @param cipherKey
      *            the key to the cipher
+     * @param offset
+     *            the start of the cipher data
      */
     public void cipher(byte[] cipherKey, int offset) {
         if (cipherKey != null && cipherKey.length > 0) {

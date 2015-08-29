@@ -43,6 +43,8 @@ public class XRefAnalyzer extends AbstractBookAnalyzer {
 
     /**
      * Construct an XRefAnalyzer tied to a book.
+     * 
+     * @param book the book
      */
     public XRefAnalyzer(Book book) {
         setBook(book);

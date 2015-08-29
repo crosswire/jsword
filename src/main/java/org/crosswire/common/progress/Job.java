@@ -551,6 +551,7 @@ public final class Job implements Progress {
 
     /**
      * The Job ID associated with this job
+     * @return the job ID
      */
     public String getJobID() {
         return jobID;

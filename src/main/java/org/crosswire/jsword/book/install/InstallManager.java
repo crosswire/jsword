@@ -115,6 +115,8 @@ public final class InstallManager {
 
     /**
      * The names of all the known InstallerFactories
+     * 
+     * @return the set of all installer factory names
      */
     public Set<String> getInstallerFactoryNames() {
         return Collections.unmodifiableSet(factories.keySet());
@@ -124,6 +126,9 @@ public final class InstallManager {
      * Find the registered name of the InstallerFactory that created the given
      * installer. There isn't a nice way to do this right now so we just do a
      * trawl through all the known factories looking!
+     * 
+     * @param installer the installer
+     * @return the name of the factory for the installer
      */
     public String getFactoryNameForInstaller(Installer installer) {
         Class<? extends Installer> match = installer.getClass();
@@ -150,6 +155,9 @@ public final class InstallManager {
      * Find the registered name of the Installer. There isn't a nice way to do
      * this right now so we just do a trawl through all the known factories
      * looking!
+     * 
+     * @param installer the installer
+     * @return the name of the installer
      */
     public String getInstallerNameForInstaller(Installer installer) {
         for (String name : installers.keySet()) {
@@ -188,6 +196,7 @@ public final class InstallManager {
 
     /**
      * Accessor for the known installers
+     * @return a map of named installers
      */
     public Map<String, Installer> getInstallers() {
         return Collections.unmodifiableMap(installers);

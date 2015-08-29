@@ -51,6 +51,10 @@ public final class IndexDownloader {
      * 
      * @param book
      *            The book to get an index for
+     * @param installer 
+     * @throws IOException 
+     * @throws InstallException 
+     * @throws BookException 
      */
     public static void downloadIndex(Book book, Installer installer) throws IOException, InstallException, BookException {
         // Get a temp home

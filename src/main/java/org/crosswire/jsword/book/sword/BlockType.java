@@ -67,6 +67,9 @@ public enum BlockType {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the string representation of the block type
+     * @return the matching block type
      */
     public static BlockType fromString(String name) {
         for (BlockType v : values()) {
@@ -75,7 +78,7 @@ public enum BlockType {
             }
         }
 
-        throw new ClassCastException(JSOtherMsg.lookupText("DataType {0} is not defined!", name));
+        throw new ClassCastException(JSOtherMsg.lookupText("BlockType {0} is not defined!", name));
     }
 
     /* (non-Javadoc)

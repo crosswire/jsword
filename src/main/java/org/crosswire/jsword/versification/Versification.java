@@ -851,6 +851,8 @@ public class Versification implements ReferenceSystem, Serializable {
 
     /**
      * Get the testament of a given verse
+     * @param ordinal the ordinal position of the verse in the whole Bible
+     * @return the testament in which that verse is found
      */
     public Testament getTestament(int ordinal) {
         if (ordinal > otMaxOrdinal) {

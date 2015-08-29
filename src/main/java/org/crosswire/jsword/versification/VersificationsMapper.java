@@ -114,6 +114,7 @@ public final class VersificationsMapper {
     /**
      * @param v                   the verse
      * @param targetVersification the final versification that we want
+     * @return the key for the verse
      */
     public VerseKey mapVerse(Verse v, Versification targetVersification) {
         if (v.getVersification().equals(targetVersification)) {

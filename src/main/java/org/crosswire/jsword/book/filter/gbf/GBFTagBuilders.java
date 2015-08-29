@@ -70,7 +70,9 @@ public final class GBFTagBuilders {
     }
 
     /**
-     * @param name
+     * @param book the book
+     * @param key the key
+     * @param name the tag name
      * @return return a GBF Tag for the given tag name
      */
     public static Tag getTag(Book book, Key key, String name) {

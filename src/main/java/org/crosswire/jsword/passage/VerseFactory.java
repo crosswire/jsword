@@ -42,6 +42,8 @@ public final class VerseFactory {
      * computer. The following initial letters can not be matched at all -
      * 'bfquvwx'.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param original
      *            The text string to be converted
      * @return the Verse representation of the string
@@ -62,6 +64,8 @@ public final class VerseFactory {
      * Construct a Verse from a String and a VerseRange. For example given "2:2"
      * and a basis of Gen 1:1 - 12 the result would be Gen 2:2
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param original
      *            The string describing the verse e.g "2:2"
      * @param verseRangeBasis

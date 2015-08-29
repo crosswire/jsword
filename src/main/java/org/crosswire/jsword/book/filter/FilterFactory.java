@@ -45,6 +45,9 @@ public final class FilterFactory {
     /**
      * Find a filter given a lookup string. If lookup is null or the filter is
      * not found then the default filter will be used.
+     * 
+     * @param lookup the lookup string for the filter
+     * @return the matching filter
      */
     public static Filter getFilter(String lookup) {
         Filter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
@@ -58,6 +61,8 @@ public final class FilterFactory {
 
     /**
      * Find a filter given a lookup string
+     * 
+     * @return the default filter
      */
     public static Filter getDefaultFilter() {
         return deft.clone();
@@ -65,6 +70,9 @@ public final class FilterFactory {
 
     /**
      * Add to our list of known filters
+     * 
+     * @param name 
+     * @param instance 
      */
     public static void addFilter(String name, Filter instance) {
         filters.put(name.toLowerCase(Locale.ENGLISH), instance);

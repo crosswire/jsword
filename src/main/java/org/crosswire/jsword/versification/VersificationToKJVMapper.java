@@ -128,6 +128,7 @@ import org.slf4j.LoggerFactory;
 public class VersificationToKJVMapper {
 
     /**
+     * @param nonKjv a versification that is not the KJV
      * @param mapping the mappings from one versification to another
      */
     public VersificationToKJVMapper(Versification nonKjv, final FileVersificationMapping mapping) {
@@ -546,6 +547,7 @@ public class VersificationToKJVMapper {
     /**
      * Converts a KJV verse to the target versification, from a qualified key, rather than a real key
      *
+     * @param kjvVerse the verse from the KJV
      * @return the key in the left-hand versification
      */
     public VerseKey unmap(final QualifiedKey kjvVerse) {

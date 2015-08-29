@@ -86,6 +86,7 @@ public final class XMLUtil {
      * @param provider
      *            The source of SAX events
      * @return a serialized string
+     * @throws SAXException 
      */
     public static String writeToString(SAXEventProvider provider) throws SAXException {
         ContentHandler ser = new PrettySerializingContentHandler();
@@ -112,6 +113,7 @@ public final class XMLUtil {
 
     /**
      * Show the attributes of an element as debug
+     * @param attrs 
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
@@ -121,6 +123,8 @@ public final class XMLUtil {
 
     /**
      * Normalizes the given string
+     * @param s 
+     * @return the escaped string
      */
     public static String escape(String s) {
         if (s == null) {
@@ -236,7 +240,7 @@ public final class XMLUtil {
     /**
      * Remove all invalid characters in the input, replacing them with a space. XML has stringent
      * requirements as to which characters are or are not allowed. The set of
-     * allowable characters are:<br />
+     * allowable characters are:<br>
      * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br>
      * Note: Java handles to \uFFFF
      * 
@@ -331,6 +335,8 @@ public final class XMLUtil {
      * another go. We define a tag to start at a &lt; and end at the end of the
      * next word (where a word is what comes in between spaces) that does not
      * contain an = sign, or at a >, whichever is earlier.
+     * @param broken 
+     * @return the string without any tags
      */
     public static String cleanAllTags(String broken) {
         if (broken == null) {

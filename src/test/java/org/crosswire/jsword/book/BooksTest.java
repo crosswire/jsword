@@ -128,6 +128,8 @@ public class BooksTest {
 
     /** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
      *	This tests the deduplication code in AbstractPassageBook.
+     *
+     * @throws Exception 
      */
     @Test
     public void testBookList() throws Exception {
@@ -139,6 +141,8 @@ public class BooksTest {
 
 	/** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
 	 *	This tests the deduplication code in AbstractPassageBook.
+	 *
+	 * @throws Exception 
 	 */
     @Test
 	public void testLinkedVersesNotDuplicated() throws Exception {
@@ -158,6 +162,8 @@ public class BooksTest {
 
     /** 
      * Books like Josephus have hierarchical chapters.  Only the current chapter should be returned, not child chapters.
+     * 
+     * @throws Exception 
      */
     @Test
     public void testHierarchicalBook() throws Exception {

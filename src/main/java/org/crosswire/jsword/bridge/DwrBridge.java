@@ -114,6 +114,11 @@ public class DwrBridge {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, for one or more keys
+     * @param start 
+     * @param count 
+     * @return the OSIS as a string
+     * @throws BookException 
+     * @throws NoSuchKeyException 
      */
     public String getOSISString(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException {
         String result = "";
@@ -154,6 +159,11 @@ public class DwrBridge {
      * Get close matches for a target in a book whose keys have a meaningful
      * sort. This is not true of keys that are numeric or contain numbers.
      * (unless the numbers are 0 filled.)
+     * 
+     * @param bookInitials 
+     * @param searchRequest 
+     * @param maxMatchCount 
+     * @return the matches
      */
     public String[] match(String bookInitials, String searchRequest, int maxMatchCount) {
         Book book = BookInstaller.getInstalledBook(bookInitials);

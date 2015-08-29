@@ -342,7 +342,6 @@ final class Ini {
      * Remove the key if present.
      * If it were the last key for the section, the section is removed.
      * 
-     * @param sectionName the name of the section
      * @param key the key for the section
      * @return whether the key was present and removed
      */
@@ -356,7 +355,6 @@ final class Ini {
      * A null for key or value is not allowed.
      * An empty string for a key is not allowed.
      *
-     * @param sectionName the name of the section
      * @param key the key for the section
      * @param value the value for the key
      * @return {@code true} if the element was added or already was present
@@ -404,6 +402,7 @@ final class Ini {
      * mods.d.tar.gz file.
      *
      * @param buffer the buffer to load
+     * @param encoding the character encoding for this INI
      * @throws IOException
      */
     public void load(byte[] buffer, String encoding) throws IOException {

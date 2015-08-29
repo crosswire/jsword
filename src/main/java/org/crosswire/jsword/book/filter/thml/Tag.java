@@ -45,6 +45,8 @@ public interface Tag {
      * Make changes to the specified OSIS element given the attributes passed in
      * the source document.
      * 
+     * @param book the book
+     * @param key the key
      * @param ele
      *            The OSIS element to use as a parent
      * @param attrs
@@ -56,6 +58,8 @@ public interface Tag {
     /**
      * Do additional processing of the tag after the element has been created.
      * 
+     * @param book the book
+     * @param key the key
      * @param ele
      *            the created element to process
      */

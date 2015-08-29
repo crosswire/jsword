@@ -49,6 +49,9 @@ public class GatherAllReferences {
 
     /**
      * Read all the books that we can get our hands on.
+     * 
+     * @param args 
+     * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
         out = new PrintWriter(new BufferedWriter(new FileWriter("passages.log")));

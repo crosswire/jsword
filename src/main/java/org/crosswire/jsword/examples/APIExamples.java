@@ -91,6 +91,9 @@ public class APIExamples {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
+     * @return the plain text for the reference
+     * @throws BookException 
+     * @throws NoSuchKeyException 
      */
     public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException {
         Book book = getBook(bookInitials);
@@ -111,6 +114,10 @@ public class APIExamples {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
+     * @param maxKeyCount 
+     * @return a SAX Event Provider to retrieve the reference
+     * @throws BookException 
+     * @throws NoSuchKeyException 
      */
     public SAXEventProvider getOSIS(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException {
         if (bookInitials == null || reference == null) {
@@ -147,7 +154,12 @@ public class APIExamples {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
+     * @param maxKeyCount 
      * @return the styled text
+     * @throws NoSuchKeyException 
+     * @throws BookException 
+     * @throws TransformerException 
+     * @throws SAXException 
      * @see Book
      * @see SAXEventProvider
      */
@@ -179,6 +191,7 @@ public class APIExamples {
      * slightly different way. It is also worth looking at the JavaDoc for Book
      * that has a way of treating Bible, Commentary and Dictionary the same.
      * 
+     * @throws BookException 
      * @see Book
      */
     public void readDictionary() throws BookException {
@@ -202,6 +215,8 @@ public class APIExamples {
 
     /**
      * An example of how to search for various bits of data.
+     * 
+     * @throws BookException 
      */
     public void search() throws BookException {
         Book bible = Books.installed().getBook(BIBLE_NAME);
@@ -447,6 +462,7 @@ public class APIExamples {
 
     /**
      * Quick Demo
+     * @param args 
      * 
      * @throws NoSuchKeyException
      * @throws BookException

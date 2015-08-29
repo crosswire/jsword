@@ -246,6 +246,8 @@ public enum BookType {
 
     /**
      * The category of this book
+     * 
+     * @return the category of this book
      */
     public BookCategory getBookCategory() {
         return category;
@@ -275,6 +277,8 @@ public enum BookType {
     /**
      * Create a Book appropriate for the BookMetaData
      * 
+     * @param sbmd the book metadata 
+     * @return a book for that metadata
      * @throws BookException
      */
     public Book createBook(SwordBookMetaData sbmd) throws BookException {
@@ -308,6 +312,9 @@ public enum BookType {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the string representation of a book type
+     * @return the matching book type
      */
     public static BookType fromString(String name) {
         for (BookType v : values()) {

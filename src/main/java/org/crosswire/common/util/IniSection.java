@@ -95,6 +95,7 @@ public final class IniSection implements Iterable {
     }
     /**
      * Create an empty INI Config.
+     * @param name the section name
      */
     public IniSection(String name) {
         this.name = name;
@@ -316,7 +317,6 @@ public final class IniSection implements Iterable {
      * If it were the last value for the key, the key is removed.
      * 
      * @param key the key for the section
-     * @param value the value for the key
      * @return whether the value was present and removed
      */
     public boolean remove(String key) {
@@ -333,6 +333,7 @@ public final class IniSection implements Iterable {
      *
      * @param key the key for the section
      * @param value the value for the key
+     * @return whether the replace happened
      */
     public boolean replace(String key, String value) {
         if (!allowed(key, value)) {
@@ -387,6 +388,7 @@ public final class IniSection implements Iterable {
      * mods.d.tar.gz file.
      *
      * @param buffer the buffer to load
+     * @param encoding the character encoding of this INI
      * @throws IOException
      */
     public void load(byte[] buffer, String encoding) throws IOException {

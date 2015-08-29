@@ -49,6 +49,9 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     /**
      * Ctor with some default values. A call to setBook() is still required
      * after this ctor is called
+     * @param driver the driver for this book
+     * @param name the name of this book
+     * @param type the type of this book
      */
     public DefaultBookMetaData(BookDriver driver, String name, BookCategory type) {
         props = new HashMap<String, String>();

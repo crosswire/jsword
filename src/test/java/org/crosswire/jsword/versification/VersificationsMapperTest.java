@@ -90,6 +90,8 @@ public class VersificationsMapperTest {
 
     /**
      * Tests that we can resolve an entire passage
+     * 
+     * @throws NoSuchKeyException 
      */
     @Test
     public void testPassageResolves() throws NoSuchKeyException {

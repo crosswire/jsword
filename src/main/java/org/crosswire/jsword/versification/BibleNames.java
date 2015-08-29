@@ -75,6 +75,7 @@ public final class BibleNames {
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
      *
+     * @param book the book
      * @return The full name of the book or blank if not in this versification
      */
     public String getLongName(BibleBook book) {
@@ -85,6 +86,7 @@ public final class BibleNames {
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
      *
+     * @param book the book
      * @return The short name of the book or blank if not in this versification
      */
     public String getShortName(BibleBook book) {

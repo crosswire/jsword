@@ -33,6 +33,7 @@ public class IndexStatusEvent extends EventObject {
     /**
      * Basic constructor
      * 
+     * @param source the source for the event
      * @param status
      *            The new status of the book.
      */

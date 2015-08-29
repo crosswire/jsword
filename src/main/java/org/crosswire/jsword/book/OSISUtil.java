@@ -577,6 +577,7 @@ public final class OSISUtil {
         /**
          * Text
          * 
+         * @param text the text for this element
          * @return a text element
          */
         public Text createText(String text) {
@@ -588,7 +589,7 @@ public final class OSISUtil {
      * Dig past the osis and osisText element, if present, to get the meaningful
      * content of the document.
      * 
-     * @param element the element from which to get a fragment
+     * @param root the element from which to get a fragment
      * @return a fragment
      */
     public static List<Content> getFragment(Element root) {
@@ -950,6 +951,7 @@ public final class OSISUtil {
      * @param ele
      *            The start point for our verse hunt.
      * @return The verse we are in
+     * @throws BookException 
      */
     public static Verse getVerse(Versification v11n, Element ele) throws BookException {
         if (ele.getName().equals(OSIS_ELEMENT_VERSE)) {

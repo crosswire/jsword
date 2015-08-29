@@ -74,6 +74,7 @@ public final class IndexMetadata {
     /**
      * default Installed IndexVersion
      * 
+     * @return the index version
      * @deprecated see InstalledIndex.java
      */
     @Deprecated

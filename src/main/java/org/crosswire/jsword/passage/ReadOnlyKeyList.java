@@ -34,6 +34,9 @@ import org.crosswire.jsword.JSOtherMsg;
 public class ReadOnlyKeyList implements Key {
     /**
      * Simple ctor
+     * 
+     * @param keys the keys
+     * @param ignore 
      */
     public ReadOnlyKeyList(Key keys, boolean ignore) {
         this.keys = keys;

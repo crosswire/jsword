@@ -35,6 +35,8 @@ import org.xml.sax.Attributes;
 public class AliasTag extends AbstractTag {
     /**
      * simple ctor
+     * @param alias 
+     * @param tag 
      */
     public AliasTag(String alias, Tag tag) {
         this.alias = alias;

@@ -46,6 +46,7 @@ public abstract class AbstractBookTokenFilter extends TokenFilter {
     /**
      * Create a TokenFilter tied to a Book.
      * 
+     * @param book the book
      * @param input
      *            the token stream to filter
      */

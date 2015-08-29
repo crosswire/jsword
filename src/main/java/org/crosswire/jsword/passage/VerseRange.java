@@ -538,6 +538,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
     /**
      * Enumerate the subranges in this range
      * 
+     * @param restrict 
      * @return a range iterator
      */
     public Iterator<VerseRange> rangeIterator(RestrictionType restrict) {

@@ -59,7 +59,7 @@ import java.util.NoSuchElementException;
      * then the return value of this routine is -1.
      *
      * @param book
-     * return the ordinal value of the book or -1 if not present
+     * @return the ordinal value of the book or -1 if not present
      */
     public int getOrdinal(BibleBook book) {
         return bookMap[book.ordinal()];

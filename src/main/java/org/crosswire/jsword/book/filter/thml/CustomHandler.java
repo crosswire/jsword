@@ -50,6 +50,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public class CustomHandler extends DefaultHandler {
     /**
      * Simple ctor
+     * 
+     * @param book the book
+     * @param key the key
      */
     public CustomHandler(Book book, Key key) {
         this.book = book;
@@ -57,6 +60,9 @@ public class CustomHandler extends DefaultHandler {
         this.stack = new LinkedList<Content>();
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
     @Override
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException {
         Element ele = null;
@@ -85,6 +91,9 @@ public class CustomHandler extends DefaultHandler {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+     */
     @Override
     public void characters(char[] data, int offset, int length) {
         // what we are adding
@@ -130,6 +139,9 @@ public class CustomHandler extends DefaultHandler {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public void endElement(String uri, String localname, String qname) {
         if (stack.isEmpty()) {
@@ -154,6 +166,9 @@ public class CustomHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * @return the root element
+     */
     public Element getRootElement() {
         return rootElement;
     }

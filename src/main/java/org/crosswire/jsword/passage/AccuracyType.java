@@ -261,6 +261,8 @@ public enum AccuracyType {
     };
 
     /**
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param verseRangeBasis
      *            the range that stood before the string reference
      * @param parts
@@ -271,6 +273,8 @@ public enum AccuracyType {
     public abstract Verse createStartVerse(Versification v11n, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException;
 
     /**
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param verseBasis
      *            the verse at the beginning of the range
      * @param endParts
@@ -307,6 +311,8 @@ public enum AccuracyType {
      * Interprets the chapter value, which is either a number or "ff" or "$"
      * (meaning "what follows")
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param lbook
      *            the book
      * @param chapter
@@ -326,6 +332,8 @@ public enum AccuracyType {
      * Interprets the verse value, which is either a number or "ff" or "$"
      * (meaning "what follows")
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param lbook
      *            the integer representation of the book
      * @param lchapter
@@ -343,7 +351,9 @@ public enum AccuracyType {
     }
 
     /**
-     * Get an integer representation for this RestrictionType
+     * Get an integer representation for this AccuracyType
+     * 
+     * @return the ordinal representation
      */
     public int toInteger() {
         return ordinal();
@@ -352,6 +362,8 @@ public enum AccuracyType {
     /**
      * Determine how closely the string defines a verse.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param original
      * @param parts
      *            is a reference split into parts
@@ -363,6 +375,8 @@ public enum AccuracyType {
     }
 
     /**
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param original
      * @param parts
      * @param verseAccuracy
@@ -374,6 +388,8 @@ public enum AccuracyType {
     }
 
     /**
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param original
      * @param parts
      * @param basis
@@ -396,6 +412,9 @@ public enum AccuracyType {
      * <li>fromText("1") == AccuracyType.VERSE_ONLY;</li>
      * </ul>
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
+     * @param original 
      * @param parts
      * @param verseAccuracy
      * @param basis

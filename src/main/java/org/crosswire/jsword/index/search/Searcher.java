@@ -47,6 +47,7 @@ public interface Searcher {
      * @param request
      *            The request
      * @return The matching verses
+     * @throws BookException 
      */
     Key search(SearchRequest request) throws BookException;
 
@@ -56,6 +57,7 @@ public interface Searcher {
      * @param request
      *            The request
      * @return The matching verses
+     * @throws BookException 
      */
     Key search(Query request) throws BookException;
 }

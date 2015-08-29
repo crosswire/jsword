@@ -52,6 +52,7 @@ public interface StatefulFileBackedBackend<T extends OpenFileState> {
      * @param key
      *            the verse that is sought
      * @return the raw text
+     * @throws BookException 
      * @throws IOException
      *             something went wrong when reading the verse
      */
@@ -79,6 +80,8 @@ public interface StatefulFileBackedBackend<T extends OpenFileState> {
       * range Gen.1.1-3 then setAliasKey should be called for Gen.1.1.2 and
       * Gen.1.1.3
       * 
+      * @param state 
+      *            the open file state
       * @param alias
       *            Alias Key
       * @param source

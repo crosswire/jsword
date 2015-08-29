@@ -134,6 +134,8 @@ import org.slf4j.LoggerFactory;
 public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     /**
      * Simple ctor
+     * @param sbmd 
+     * @param blockType 
      */
     public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType) {
         super(sbmd);

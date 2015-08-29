@@ -37,6 +37,7 @@ public interface Filter extends Cloneable {
     /**
      * Converter from plain (encoded) text to OSIS data
      * 
+     * @param book the book
      * @param key
      *            The key for the text
      * @param plain

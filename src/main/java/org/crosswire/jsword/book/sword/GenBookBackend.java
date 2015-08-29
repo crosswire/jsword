@@ -44,6 +44,8 @@ import org.slf4j.LoggerFactory;
 public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     /**
      * Simple ctor
+     * 
+     * @param sbmd 
      */
     public GenBookBackend(SwordBookMetaData sbmd) {
         super(sbmd);

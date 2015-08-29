@@ -42,6 +42,8 @@ public final class QueryDecoratorFactory {
 
     /**
      * Create a new QueryDecorator.
+     * 
+     * @return a new query decorator
      */
     public static QueryDecorator getSearchSyntax() {
         return instance;

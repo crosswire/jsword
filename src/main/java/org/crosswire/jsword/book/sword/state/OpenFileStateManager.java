@@ -97,15 +97,18 @@ public final class OpenFileStateManager {
     }
 
     /**
-     * Allow the caller to initialise with their own settings. Should the OpenFileStateManager already be initialised
+     * Allow the caller to initialize with their own settings. Should the OpenFileStateManager already be initialized
      * a no-op will occur. No need for double-checked locking here
+     * 
+     * @param cleanupIntervalSeconds seconds before cleanup
+     * @param maxExpiry 
      */
     public static synchronized void init(final int cleanupIntervalSeconds, final int maxExpiry) {
         if (manager == null) {
             manager = new OpenFileStateManager(cleanupIntervalSeconds, maxExpiry);
         } else {
-            // already intialised
-            LOGGER.warn("The OpenFileStateManager has already been initialised, potentially with its default settings. The following values were ignored: cleanUpInterval [{}], maxExpiry=[{}]", cleanupIntervalSeconds, maxExpiry);
+            // already intialized
+            LOGGER.warn("The OpenFileStateManager has already been initialised, potentially with its default settings. The following values were ignored: cleanUpInterval [{}], maxExpiry=[{}]", Integer.toString(cleanupIntervalSeconds), Integer.toString(maxExpiry));
         }
 
     }

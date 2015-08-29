@@ -65,6 +65,9 @@ public enum IndexStatus {
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name 
+     * @return the matching index status
      */
     public static IndexStatus fromString(String name) {
         for (IndexStatus o : IndexStatus.values()) {

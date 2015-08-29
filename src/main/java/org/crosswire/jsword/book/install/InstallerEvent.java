@@ -36,6 +36,7 @@ public class InstallerEvent extends EventObject {
     /**
      * Basic constructor
      * 
+     * @param source the originator of the event
      * @param installer
      *            The installer, or null if there is more than one change.
      * @param added
@@ -59,6 +60,7 @@ public class InstallerEvent extends EventObject {
 
     /**
      * Is this an addition event?
+     * @return whether this is an addition event
      */
     public boolean isAddition() {
         return added;

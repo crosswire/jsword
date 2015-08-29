@@ -85,6 +85,7 @@ public class BookInstaller {
      * 
      * @param filter
      *            The book filter
+     * @return the list of matching books
      * @see BookFilter
      * @see Books
      */
@@ -97,6 +98,7 @@ public class BookInstaller {
      * 
      * @param filterSpec
      *            The filter string
+     * @return the list of matching books
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
@@ -128,8 +130,11 @@ public class BookInstaller {
     /**
      * Get a list of books in a repository by BookFilter.
      * 
+     * @param repositoryName 
+     *            The name of the repository
      * @param filter
      *            The book filter
+     * @return the matching books
      * @see BookFilter
      * @see Books
      */
@@ -140,8 +145,11 @@ public class BookInstaller {
     /**
      * Get a list of books in a repository by CustomFilter specification
      * 
+     * @param repositoryName 
+     *            the name of the repository
      * @param filterSpec
      *            The filter string
+     * @return the list of books
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
@@ -152,6 +160,8 @@ public class BookInstaller {
     /**
      * Get a particular installed book by initials.
      * 
+     * @param repositoryName 
+     *            the name of the repository
      * @param bookInitials
      *            The book name to search for
      * @return The found book. Null otherwise.

@@ -112,11 +112,16 @@ public enum SearchType {
 
     /**
      * Decorate a string with the given type of decoration.
+     * @param queryWords 
+     * @return the decorated query
      */
     public abstract String decorate(String queryWords);
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name 
+     * @return the matching search type
      */
     public static SearchType fromString(String name) {
         for (SearchType v : values()) {

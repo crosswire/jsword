@@ -35,6 +35,7 @@ import org.crosswire.jsword.book.test.Speed;
 public class Bench {
     /**
      * Basic constructor
+     * @param args 
      */
     public static void main(String[] args) {
         Book version = null;

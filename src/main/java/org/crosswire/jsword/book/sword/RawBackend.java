@@ -52,6 +52,9 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
 
     /**
      * Simple ctor
+     * 
+     * @param sbmd 
+     * @param datasize 
      */
     public RawBackend(SwordBookMetaData sbmd, int datasize) {
         super(sbmd);

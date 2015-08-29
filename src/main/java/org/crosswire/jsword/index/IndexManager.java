@@ -36,6 +36,7 @@ public interface IndexManager {
     /**
      * Detects if index data has been stored and is valid for this Bible.
      * 
+     * @param book the book
      * @return true if the book has a usable index
      */
     boolean isIndexed(Book book);
@@ -43,7 +44,9 @@ public interface IndexManager {
     /**
      * Create a new Searcher.
      * 
+     * @param book the book
      * @return an index that can be searched.
+     * @throws BookException 
      */
     Index getIndex(Book book) throws BookException;
 
@@ -79,6 +82,7 @@ public interface IndexManager {
      *            The book that we downloaded an index for
      * @param tempDest
      *            The URI of a zip file to install
+     * @throws BookException 
      */
     void installDownloadedIndex(Book book, URI tempDest) throws BookException;
 
@@ -87,6 +91,7 @@ public interface IndexManager {
      * you created.
      * 
      * @param book the book who's index should be deleted.
+     * @throws BookException 
      */
     void deleteIndex(Book book) throws BookException;
 

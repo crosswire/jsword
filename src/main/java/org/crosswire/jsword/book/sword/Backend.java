@@ -42,6 +42,8 @@ public interface Backend<T extends OpenFileState> {
     /**
      * Initialize a AbstractBackend before use. This method needs to call
      * addKey() a number of times on GenBookBackend
+     * 
+     * @return the list of all keys for the book
      * @deprecated no replacement
      */
     @Deprecated

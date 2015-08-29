@@ -36,6 +36,10 @@ import org.jdom2.Content;
 public interface Tag {
     /**
      * Sub-classes should implement this method to generate OSIS Object
+     * 
+     * @param book the book having this tag
+     * @param key 
+     * @param osisStack 
      */
     void updateOsisStack(Book book, Key key, LinkedList<Content> osisStack);
 }

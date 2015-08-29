@@ -215,6 +215,7 @@ public final class StackTrace {
 
     /**
      * Base class for the real enumeration implementations below
+     * @param <T> the type of the object in the stack
      */
     public abstract class AbstractStackIterator<T> implements Iterator<T> {
         /* (non-Javadoc)
@@ -232,7 +233,8 @@ public final class StackTrace {
         }
 
         /**
-         * @return Returns the level.
+         * @return the level.
+         * @throws NoSuchElementException 
          */
         public int getAndIncrementLevel() throws NoSuchElementException {
             return level++;

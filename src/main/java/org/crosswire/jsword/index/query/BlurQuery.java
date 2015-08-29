@@ -41,6 +41,7 @@ public class BlurQuery extends AbstractBinaryQuery {
      * 
      * @param theLeftQuery
      * @param theRightQuery
+     * @param theFactor the amount of blurring
      */
     public BlurQuery(Query theLeftQuery, Query theRightQuery, int theFactor) {
         super(theLeftQuery, theRightQuery);

@@ -350,6 +350,9 @@ public class RangedPassage extends AbstractPassage {
         /**
          * Create a basic iterator that is a proxy for the RangedPassage
          * Passages iterator, with remove() overridden.
+         * @param v11n
+         *            the versification to which this reference pertains
+         * @param it 
          */
         public VerseIterator(Versification v11n, Iterator<VerseRange> it) {
             Set<Key> temp = new TreeSet<Key>();
@@ -400,6 +403,8 @@ public class RangedPassage extends AbstractPassage {
     private static final class VerseRangeIterator implements Iterator<VerseRange> {
         /**
          * Simple ctor
+         * @param it 
+         * @param restrict 
          */
         public VerseRangeIterator(Iterator<VerseRange> it, RestrictionType restrict) {
             this.restrict = restrict;

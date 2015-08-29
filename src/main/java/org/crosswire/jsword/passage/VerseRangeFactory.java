@@ -49,6 +49,7 @@ public final class VerseRangeFactory {
      *            The versification for this VerseRange
      * @param orginal
      *            The textual representation
+     * @return the verse range for the string
      * @exception NoSuchVerseException
      *                If the text can not be understood
      */
@@ -76,6 +77,7 @@ public final class VerseRangeFactory {
      * @param basis
      *            The verse that forms the basis by which to understand the
      *            original.
+     * @return the verse range
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */

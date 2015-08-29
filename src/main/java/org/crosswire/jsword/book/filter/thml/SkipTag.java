@@ -34,6 +34,8 @@ import org.jdom2.Element;
 public class SkipTag extends AnonymousTag {
     /**
      * Simple ctor
+     * @param name 
+     * 
      */
     public SkipTag(String name) {
         super(name);

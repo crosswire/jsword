@@ -170,14 +170,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Loads a sword config from a given File.
      *
-     * @param parent
-     *            the parent metadata object, could be null
-     * @param mfLevel
-     *            the level/hierarchy of the sword metadata object.
      * @param file
      *            the config file
-     * @param internal
-     *            @throws IOException
+     * @param bookRootPath
+     *            the root path for the book
+     * @throws IOException
      * @throws BookException
      *             indicates missing data files
      */

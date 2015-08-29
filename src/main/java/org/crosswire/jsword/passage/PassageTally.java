@@ -1026,6 +1026,11 @@ public class PassageTally extends AbstractPassage {
     private static final class OrderedVerseRangeIterator<T> implements Iterator<VerseRange> {
         /**
          * Find the first unused verse
+         * 
+         * @param v11n
+         *            the versification to which this reference pertains
+         * @param vit 
+         * @param board 
          */
         public OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
             Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();

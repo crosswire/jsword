@@ -73,6 +73,7 @@ public class StrongsNumber {
      * 
      * @param language
      * @param strongsNumber
+     * @param part 
      */
     public StrongsNumber(char language, short strongsNumber, String part) {
         this.language = language;

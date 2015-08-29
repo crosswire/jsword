@@ -42,6 +42,8 @@ public final class QueryBuilderFactory {
 
     /**
      * Create a new QueryBuilder.
+     * 
+     * @return the singleton query builder
      */
     public static QueryBuilder getQueryBuilder() {
         return instance;

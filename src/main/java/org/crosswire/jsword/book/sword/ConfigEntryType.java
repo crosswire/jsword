@@ -888,6 +888,7 @@ import org.crosswire.jsword.book.BookMetaData;
      * Convert the string value from the conf into the representation of this
      * ConfigEntryType.
      * 
+     * @param input the text to convert
      * @return the converted object
      */
     public Object convert(String input) {
@@ -897,7 +898,8 @@ import org.crosswire.jsword.book.BookMetaData;
     /**
      * Return the original representation of the object.
      * 
-     * @return the converted object
+     * @param internal the object to convert
+     * @return the original string
      */
     public String unconvert(Object internal) {
         if (internal == null) {
@@ -908,6 +910,9 @@ import org.crosswire.jsword.book.BookMetaData;
 
     /**
      * Lookup method to convert from a String
+     * 
+     * @param name the key for the entry
+     * @return the matching type
      */
     public static ConfigEntryType fromString(String name) {
         if (name != null) {

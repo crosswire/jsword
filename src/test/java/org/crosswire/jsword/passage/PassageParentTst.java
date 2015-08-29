@@ -103,6 +103,8 @@ public class PassageParentTst {
      * performing tests aimed at writing after optimizing for reads is allowed
      * to be a bad performer (which includes using lots of memory) So the
      * problem is with the tests and not with the Passages.
+     * 
+     * @throws Exception 
      */
     @Before
     public void setUp() throws Exception {

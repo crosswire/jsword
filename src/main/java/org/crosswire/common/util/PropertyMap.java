@@ -63,7 +63,6 @@ public class PropertyMap extends LinkedHashMap<String, String> {
      * @param   key   the lookup key.
      * @return  the value in this property list with the specified key value.
      * @see     java.util.Properties#setProperty
-     * @see     #defaults
      */
     public String get(String key) {
         String value = super.get(key);
@@ -81,7 +80,6 @@ public class PropertyMap extends LinkedHashMap<String, String> {
      *
      * @return  the value in this property list with the specified key value.
      * @see     java.util.Properties#setProperty
-     * @see     #defaults
      */
     public String get(String key, String defaultValue) {
         String value = get(key);

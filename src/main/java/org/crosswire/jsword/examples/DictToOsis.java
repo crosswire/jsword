@@ -53,6 +53,8 @@ public class DictToOsis {
 
     /**
      * @param args
+     * @throws BookException 
+     * @throws IOException 
      */
     public static void main(String[] args) throws BookException, IOException {
         new DictToOsis().dump(BOOK_NAME);

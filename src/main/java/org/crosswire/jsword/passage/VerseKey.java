@@ -49,7 +49,7 @@ public interface VerseKey<T extends VerseKey> extends Key {
      * verses are in both Versifications. You have been warned.
      * </p>
      * 
-     * 
+     * @param newVersification 
      * @return this VerseKey Versification.
      */
     T reversify(Versification newVersification);

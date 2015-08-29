@@ -119,6 +119,8 @@ public enum RestrictionType {
     /**
      * Are the two verses in the same scope.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param start
      *            the first verse
      * @param end
@@ -131,6 +133,8 @@ public enum RestrictionType {
      * Blur a verse range the specified amount. Since verse ranges are
      * immutable, it creates a new one.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param range
      * @param blurDown
      * @param blurUp
@@ -142,6 +146,8 @@ public enum RestrictionType {
      * Blur a verse the specified amount. Since verse are immutable and refer to
      * a single verse, it creates a verse range.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param verse
      * @param blurDown
      * @param blurUp
@@ -152,6 +158,8 @@ public enum RestrictionType {
     /**
      * Create a range from the verse having the specified number of verses.
      * 
+     * @param v11n
+     *            the versification to which this reference pertains
      * @param verse
      * @param count
      * @return a verse range created by extending a verse forward.
@@ -160,6 +168,8 @@ public enum RestrictionType {
 
     /**
      * Get an integer representation for this RestrictionType
+     * 
+     * @return the integer representation
      */
     public int toInteger() {
         return ordinal();
@@ -167,6 +177,8 @@ public enum RestrictionType {
 
     /**
      * Lookup method to convert from a String
+     * @param name 
+     * @return the matching restriction type
      */
     public static RestrictionType fromString(String name) {
         for (RestrictionType v : values()) {
@@ -182,6 +194,9 @@ public enum RestrictionType {
 
     /**
      * Lookup method to convert from an integer
+     * 
+     * @param i 
+     * @return the restriction type from its ordinal value
      */
     public static RestrictionType fromInteger(int i) {
         for (RestrictionType v : values()) {

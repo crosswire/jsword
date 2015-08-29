@@ -43,6 +43,7 @@ public interface Index {
      * @param query
      *            The text to search for
      * @return The references to the word
+     * @throws BookException 
      */
     Key find(String query) throws BookException;
 

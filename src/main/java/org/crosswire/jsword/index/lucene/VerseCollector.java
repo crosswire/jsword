@@ -43,9 +43,13 @@ public class VerseCollector extends Collector {
 
     /**
      * Create a collector for the searcher that populates results.
+     * @param v11n
+     *            the versification to which referenced pertains
+     * @param searcher 
+     * @param results 
      */
-    public VerseCollector(Versification refSystem, Searcher searcher, Key results) {
-        this.v11n = refSystem;
+    public VerseCollector(Versification v11n, Searcher searcher, Key results) {
+        this.v11n = v11n;
         this.searcher = searcher;
         this.results = results;
     }

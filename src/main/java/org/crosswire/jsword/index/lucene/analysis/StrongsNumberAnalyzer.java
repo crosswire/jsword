@@ -43,6 +43,8 @@ public class StrongsNumberAnalyzer extends AbstractBookAnalyzer {
 
     /**
      * Construct an StrongsNumberAnalyzer tied to a book.
+     * 
+     * @param book the book
      */
     public StrongsNumberAnalyzer(Book book) {
         setBook(book);

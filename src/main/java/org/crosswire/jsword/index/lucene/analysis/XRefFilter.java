@@ -35,6 +35,7 @@ import org.crosswire.jsword.book.Book;
 public class XRefFilter extends AbstractBookTokenFilter {
     /**
      * Construct filtering <i>in</i>.
+     * @param in 
      */
     public XRefFilter(TokenStream in) {
         this(null, in);

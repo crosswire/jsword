@@ -42,6 +42,8 @@ public final class IndexManagerFactory {
 
     /**
      * Create a new IndexManager.
+     * 
+     * @return the singleton index manager
      */
     public static IndexManager getIndexManager() {
         return instance;

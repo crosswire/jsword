@@ -56,6 +56,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     /**
      * Simple ctor
      * 
+     * @param sbmd 
      * @param datasize
      *            We need to know how many bytes in the size portion of the
      *            index

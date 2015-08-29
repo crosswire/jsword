@@ -289,6 +289,7 @@ public final class SwordUtil {
      * is bad then it just does it as a string.
      * Note: this may modify data. Don't use it to examine data.
      * 
+     * @param key the key
      * @param data
      *            The byte array to be converted
      * @param charset
@@ -304,6 +305,7 @@ public final class SwordUtil {
      * the encoding is bad then it just does it as a string.
      * Note: this may modify data. Don't use it to examine data.
      * 
+     * @param key the key
      * @param data
      *            The byte array to be converted
      * @param length
@@ -321,6 +323,7 @@ public final class SwordUtil {
      * given the encoding. If the encoding is bad then it just does it as a
      * string. Note: this may modify data. Don't use it to examine data.
      * 
+     * @param key the key
      * @param data
      *            The byte array to be converted
      * @param offset

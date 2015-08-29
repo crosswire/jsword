@@ -92,11 +92,15 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
     /**
      * Returns false if the receiver is a leaf node and can not have children.
      * Any attempt to add()/remove() will throw
+     * 
+     * @return true if the key can have children
      */
     boolean canHaveChildren();
 
     /**
      * Returns the number of children that this node has. Leaf nodes return 0.
+     * 
+     * @return the number of children for the node
      */
     int getChildCount();
 
@@ -205,6 +209,7 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
      * This needs to be declared here so that it is visible as a method on a
      * derived Key.
      * 
+     * @param obj 
      * @return true if equal
      */
     boolean equals(Object obj);

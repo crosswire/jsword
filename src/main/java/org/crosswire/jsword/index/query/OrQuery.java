@@ -37,18 +37,15 @@ import org.crosswire.jsword.passage.PassageTally;
 public class OrQuery extends AbstractBinaryQuery {
 
     /**
-     *
+     * @param theLeftQuery 
+     * @param theRightQuery 
      */
     public OrQuery(Query theLeftQuery, Query theRightQuery) {
         super(theLeftQuery, theRightQuery);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
-     * .index.search.Index)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.query.Query#find(org.crosswire.jsword.index.Index)
      */
     public Key find(Index index) throws BookException {
         Key left = getLeftQuery().find(index);

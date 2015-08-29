@@ -41,6 +41,8 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
 
     /**
      * Construct filtering <i>in</i>.
+     * 
+     * @param in 
      */
     public StrongsNumberFilter(TokenStream in) {
         this(null, in);
@@ -48,6 +50,9 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
 
     /**
      * Construct filtering <i>in</i>.
+     * 
+     * @param book the book
+     * @param in 
      */
     public StrongsNumberFilter(Book book, TokenStream in) {
         super(book, in);

@@ -63,6 +63,8 @@ import org.crosswire.jsword.passage.PassageTally;
 public class Speed implements Runnable {
     /**
      * Basic constructor
+     * 
+     * @param book the book
      */
     public Speed(Book book) {
         this.book = book;
@@ -134,7 +136,9 @@ public class Speed implements Runnable {
     }
 
     /**
-     * Accessor for the version that we are testing
+     * Accessor for the speed of the test
+     * 
+     * @return the benchmark for the test
      */
     public long getBenchmark() {
         if (start_time == 0 || end_time == 0) {
@@ -153,6 +157,8 @@ public class Speed implements Runnable {
 
     /**
      * Accessor for the version that we are testing
+     * 
+     * @param book the book
      */
     public void setBook(Book book) {
         this.book = book;

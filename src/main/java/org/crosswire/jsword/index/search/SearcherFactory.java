@@ -47,6 +47,10 @@ public final class SearcherFactory {
 
     /**
      * Create a new Searcher.
+     * 
+     * @param book the book
+     * @return the searcher
+     * @throws InstantiationException 
      */
     public static Searcher createSearcher(Book book) throws InstantiationException {
         try {

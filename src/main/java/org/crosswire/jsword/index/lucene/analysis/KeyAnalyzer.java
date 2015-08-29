@@ -43,6 +43,8 @@ public class KeyAnalyzer extends AbstractBookAnalyzer {
 
     /**
      * Construct an KeyAnalyzer tied to a book.
+     * 
+     * @param book the book
      */
     public KeyAnalyzer(Book book) {
         setBook(book);

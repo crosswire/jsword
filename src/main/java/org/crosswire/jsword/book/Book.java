@@ -397,7 +397,6 @@ public interface Book extends Activatable, Comparable<Book> {
      * @param key the entry that we are saving
      * @param value the value of the entry
      * @param forFrontend when {@code true} save to front end storage, else in shared storage
-     * @throws IOException
      */
     void putProperty(String key, String value, boolean forFrontend);
 

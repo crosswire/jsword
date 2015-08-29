@@ -34,6 +34,7 @@ import org.jdom2.Element;
 public class IgnoreTag extends AnonymousTag {
     /**
      * Simple ctor
+     * @param name the name of the tag to ignore
      */
     public IgnoreTag(String name) {
         super(name);
