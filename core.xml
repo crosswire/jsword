@@ -907,7 +907,7 @@
 	<property name="javancss.version"		value="33.54" />
 	<property name="javancss.home"			location="${tools.home}/javancss-${javancss.version}" />
 	<property name="javancss.report"		location="${report.dir}/javancss" />
-	<property name="javancss.url"			value="http://javancss.codehaus.org/javancss-${javancss.version}.zip"/>
+	<property name="javancss.url"			value="http://javancss.mojohaus.org/javancss-${javancss.version}.zip"/>
 	<property name="javancss.zip"			location="${tools.home}/javancss-${javancss.version}.zip" />
 
 	<target name="javancss"
