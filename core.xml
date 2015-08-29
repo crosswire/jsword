@@ -467,7 +467,7 @@
 	=========================================================================-->
 	<target	name="tools"
 			description="Run QA reports"
-			depends="javancss, checkstyle, findbugs, pmd, cpd, jdepend, java2html"
+			depends="checkstyle, findbugs, pmd, cpd, jdepend, java2html"
 			if="src.main.java.present"/>
 
 	<!--=======================================================================
