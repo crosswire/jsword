@@ -260,8 +260,8 @@
 				destdir="${dest.main.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.7"
-			    source="1.7">
+				target="1.6"
+			    source="1.6">
 			<classpath refid="classpath.buildtime" />
 		</javac>
 	</target>
@@ -299,8 +299,8 @@
 				destdir="${dest.test.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.7"
-		        source="1.7">
+				target="1.6"
+		        source="1.6">
 			<classpath refid="classpath.test" />
 		</javac>
 	</target>
