@@ -12,9 +12,9 @@ export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly/webstart
 
 export KEYSTORE_FILE=../jsword/crosswire.keystore
 
-export EMAIL="joe@eireneh.com dmsmith555@yahoo.com"
+export EMAIL="dmsmith555@yahoo.com"
 export ANT_HOME=/home/jsword/ant
-export JAVA_HOME=/home/jsword/jdk1.5
+export JAVA_HOME=/home/jsword/jdk1.6
 
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/bin

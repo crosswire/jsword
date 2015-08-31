@@ -74,6 +74,8 @@
 	=========================================================================-->
 	<patternset	id="patternset.runtime">
 		<exclude name="**/junit*.jar" />
+		<exclude name="**/hamcrest*.jar" />
+		<exclude name="**/mockito*.jar" />
 		<include name="**/*.jar" />
 	</patternset>
 	<path id="classpath.runtime">
@@ -193,9 +195,10 @@
 
 	<!--=======================================================================
 	== Build everything that has changed, test it and then install the changes.
+			depends="incremental.dependency, prepare, build, test, tools, install"
 	=========================================================================-->
 	<target	name="incremental"
-			depends="incremental.dependency, prepare, build, test, tools, install"
+			depends="incremental.dependency, prepare, build, install"
 			description="Run a build/test/install cycle">
 	</target>
 
