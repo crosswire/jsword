@@ -189,9 +189,11 @@ public final class Versifications {
         known.add(SystemKJVA.V11N_NAME);
         known.add(SystemLeningrad.V11N_NAME);
         known.add(SystemLuther.V11N_NAME);
+        known.add(SystemLXX.V11N_NAME);
         known.add(SystemMT.V11N_NAME);
         known.add(SystemNRSV.V11N_NAME);
         known.add(SystemNRSVA.V11N_NAME);
+        known.add(SystemOrthodox.V11N_NAME);
         known.add(SystemSynodal.V11N_NAME);
         known.add(SystemSynodalProt.V11N_NAME);
         known.add(SystemVulg.V11N_NAME);
