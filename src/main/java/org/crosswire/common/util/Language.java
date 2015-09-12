@@ -237,6 +237,9 @@ public class Language implements Comparable<Language> {
      */
     @Override
     public int hashCode() {
+        if (found==null) {
+            getName();
+        }
         return found.hashCode();
     }
 
