@@ -116,7 +116,7 @@ public class LuceneIndexManager implements IndexManager {
         //should Clients use IndexStatus.INVALID
         float installedV = InstalledIndex.instance().getInstalledIndexVersion(book);
         if (installedV < IndexMetadata.instance().getLatestIndexVersion(book)) {
-            log.info("{}: needs reindexing, Installed index version @{}", book.getBookMetaData().getInternalName(), Float.toString(installedV));
+            log.info("{}: needs reindexing, Installed index version @{}", book.getBookMetaData().getInitials(), Float.toString(installedV));
             return true;
         }
         return false;
@@ -253,7 +253,7 @@ public class LuceneIndexManager implements IndexManager {
     protected URI getStorageArea(Book book) throws IOException {
         BookMetaData bmd = book.getBookMetaData();
         String driverName = bmd.getDriverName();
-        String bookName = bmd.getInternalName();
+        String bookName = bmd.getInitials();
 
         assert driverName != null;
         assert bookName != null;

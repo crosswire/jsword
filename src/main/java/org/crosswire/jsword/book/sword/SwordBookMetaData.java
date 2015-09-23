@@ -448,23 +448,26 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials() {
-        String abbreviation = getProperty(KEY_ABBREVIATION);
-        if (abbreviation != null && abbreviation.length() > 0) {
-            return abbreviation;
-        }
-        return getInternalName();
+        return configAll.getName();
     }
 
     /**
      * @return the internal name of the module, useful when re-constructing all
      *         the meta-information, after installation for example
      */
-    public String getInternalName() {
+    String getInternalName() {
+        return configAll.getName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getAbbreviation()
+     */
+    public String getAbbreviation() {
         String abbreviation = getProperty(KEY_ABBREVIATION);
         if (abbreviation != null && abbreviation.length() > 0) {
             return abbreviation;
         }
-        return configAll.getName();
+        return getInitials();
     }
 
     /* (non-Javadoc)

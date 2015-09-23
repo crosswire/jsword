@@ -254,10 +254,17 @@ public interface Book extends Activatable, Comparable<Book> {
     Language getLanguage();
 
     /**
-     * The initials of this book - how people familiar with this book will know
+     * The abbreviation of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
      * 
      * @return The book's initials
+     */
+    String getAbbreviation();
+
+    /**
+     * The internal name of this book.
+     * 
+     * @return The book's internal name
      */
     String getInitials();
 

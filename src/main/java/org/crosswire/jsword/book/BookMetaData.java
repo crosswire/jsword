@@ -100,14 +100,14 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * 
      * @return The book's initials
      */
-    String getInitials();
+    String getAbbreviation();
 
     /**
      * The internal name of this book.
      * 
      * @return The book's internal name
      */
-    String getInternalName();
+    String getInitials();
 
     /**
      * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()

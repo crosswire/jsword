@@ -198,6 +198,13 @@ public abstract class AbstractBook implements Book {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getAbbreviation()
+     */
+    public String getAbbreviation() {
+        return bmd.getAbbreviation();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getInitials()
      */
     public String getInitials() {

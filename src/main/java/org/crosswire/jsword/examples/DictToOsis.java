@@ -84,7 +84,7 @@ public class DictToOsis {
 
         Writer writer = null;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInternalName() + ".xml"), "UTF-8");
+            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8");
             writer.write(buf.toString());
         } finally {
             if (writer != null) {
@@ -93,7 +93,7 @@ public class DictToOsis {
         }
         XMLProcess parser = new XMLProcess();
         // parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv");
-        parser.parse(bmd.getInternalName() + ".xml");
+        parser.parse(bmd.getInitials() + ".xml");
     }
 
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd) {

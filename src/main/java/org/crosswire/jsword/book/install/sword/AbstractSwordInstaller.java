@@ -175,7 +175,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // First check for exact matches
         for (Book book : books) {
             BookMetaData bmd = book.getBookMetaData();
-            if (name.equals(bmd.getInternalName())) {
+            if (name.equals(bmd.getInitials())) {
                 return book;
             }
         }
@@ -183,7 +183,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // Next check for case-insensitive matches
         for (Book book : books) {
             BookMetaData bmd = book.getBookMetaData();
-            if (name.equalsIgnoreCase(bmd.getInternalName())) {
+            if (name.equalsIgnoreCase(bmd.getInitials())) {
                 return book;
             }
         }

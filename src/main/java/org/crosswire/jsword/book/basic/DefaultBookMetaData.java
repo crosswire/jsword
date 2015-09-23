@@ -107,16 +107,16 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getInitials()
+     * @see org.crosswire.jsword.book.BookMetaData#getAbbreviation()
      */
-    public String getInitials() {
+    public String getAbbreviation() {
         return initials;
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getInternalName()
+     * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
-    public String getInternalName() {
+    public String getInitials() {
         return initials;
     }
 
@@ -197,7 +197,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     public Document toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
-        addRow(factory, ele, "Initials", getInternalName());
+        addRow(factory, ele, "Initials", getInitials());
         addRow(factory, ele, "Description", getName());
         addRow(factory, ele, "Key", getBookCategory().toString());
         addRow(factory, ele, "Language", getLanguage().getName());
