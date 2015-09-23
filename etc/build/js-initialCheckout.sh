@@ -6,7 +6,7 @@ export PATH=/home/jsword/bin:$PATH
 umask -S u=rwx,g=rwx,o=rx > /dev/null
 
 export SVNROOT=http://www.crosswire.org/svn/jsword/trunk
-export GITROOT=http://github.com/crosswire
+export GITROOT=https://github.com/crosswire
 export BUILD_HOME=~jsword/build
 export WEB_HOME=~jsword/html
 

@@ -12,7 +12,7 @@ export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly/webstart
 
 export KEYSTORE_FILE=../jsword/crosswire.keystore
 
-export EMAIL="dmsmith555@yahoo.com"
+export EMAIL=dmsmith@crosswire.com
 export ANT_HOME=/home/jsword/ant
 export JAVA_HOME=/home/jsword/jdk1.6
 
