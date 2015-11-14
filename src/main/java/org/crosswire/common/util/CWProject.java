@@ -75,6 +75,14 @@ public final class CWProject {
     }
 
     /**
+     * Required for reset of statics during testing
+     */
+    @SuppressWarnings("unused")
+    private static void reset() {
+        instance = new CWProject(); 
+    }
+    
+    /**
      * Establish how this project finds it's resources.
      * 
      * @param homeProperty

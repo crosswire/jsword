@@ -36,7 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ConfigEntryTableTest.class,
     RawFileBackendTest.class,
     SwordBookDriverTest.class,
-    //SwordBookMetaDataTest.class, // bad test
+    SwordBookMetaDataTest.class,
     SwordBookTest.class
 })
 public class AllTests {
