@@ -539,15 +539,45 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String, boolean)
      */
     public void putProperty(String key, String value, boolean forFrontend) {
-        MetaDataLocator mdl = forFrontend ? SwordMetaDataLocator.FRONTEND : SwordMetaDataLocator.JSWORD;
-        IniSection config = forFrontend ? this.configFrontend : this.configJSword;
-        config.replace(key, value);
+        SwordMetaDataLocator mdl = forFrontend ? SwordMetaDataLocator.FRONTEND : SwordMetaDataLocator.JSWORD;
+        putProperty(key, value, mdl);
+    }
+
+    /**
+     * Allow specification of a specific SwordMetaDataLocator when saving a property.
+     * 
+     * @param key the entry that we are saving
+     * @param value the value of the entry
+     * @param metaDataLocator Place to save - front end storage, shared storage, or don't save(transient)
+     */
+    public void putProperty(String key, String value, SwordMetaDataLocator metaDataLocator) {
+        // allow fetch of this property for this session 
         configAll.replace(key, value);
-        try {
-            config.save(new File(mdl.getWriteLocation(), bookConf), getBookCharset());
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        
+        // persist property for future sessions if JSword or Frontend metadatalocator
+        IniSection config;
+        switch (metaDataLocator) {
+        case FRONTEND:
+            config = this.configFrontend;
+            break;
+        case JSWORD:
+            config = this.configJSword;
+            break;
+        case TRANSIENT:
+        case SWORD:
+        default:
+            config = null;
+            break;
+        }
+
+        if (config!=null) {
+            config.replace(key, value);
+            try {
+                config.save(new File(metaDataLocator.getWriteLocation(), bookConf), getBookCharset());
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
         }
     }
 

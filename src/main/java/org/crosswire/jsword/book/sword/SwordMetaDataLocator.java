@@ -49,6 +49,16 @@ public enum SwordMetaDataLocator implements MetaDataLocator {
             return null;
         }
     },
+    TRANSIENT {
+        @Override
+        public File getReadLocation() {
+            return null;
+        }
+        @Override
+        public File getWriteLocation() {
+            return null;
+        }
+    },
     JSWORD {
         @Override
         public File getReadLocation() {
