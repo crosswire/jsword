@@ -280,7 +280,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             int mid = (low + high) >>> 1;
 
             // Get the key for the item at "mid"
-            String entryKey = getEntry(state, key, mid).getKey();
+            String entryKey = normalizeForSearch(getEntry(state, key, mid).getKey());
             int cmp = entryKey.compareTo(normalizeForSearch(external2internal(key, entryKey)));
             if (cmp < 0) {
                 low = mid;
@@ -298,8 +298,17 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         }
 
         // Many dictionaries have an introductory entry, so check it for a match.
-        if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(key) == 0) {
+        if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(normalizeForSearch(key)) == 0) {
             return 0;
+        }
+
+        // It wasn't found so see if it is present in a linear search if case sensitive keys are used.
+        if ("true".equalsIgnoreCase(getBookMetaData().getProperty(SwordBookMetaData.KEY_CASE_SENSITIVE_KEYS))) {
+           for (int i = 0; i < total; i++) {
+               if (getEntry(state, key, i).getKey().compareTo(key) == 0) {
+                   return i;
+               }       
+           }
         }
 
         return -(high + 1);
@@ -409,7 +418,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     private String normalizeForSearch(String internalKey) {
         SwordBookMetaData bmd = getBookMetaData();
         String keytitle = internalKey;
-        if (!BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
+        String caseSensitive = bmd.getProperty(SwordBookMetaData.KEY_CASE_SENSITIVE_KEYS);
+        if (!"true".equalsIgnoreCase(caseSensitive) && !BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
             return keytitle.toUpperCase(Locale.US);
         }
 
