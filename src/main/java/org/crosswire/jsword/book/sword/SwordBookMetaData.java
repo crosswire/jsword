@@ -102,6 +102,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_ABOUT = "About";
     public static final String KEY_BLOCK_COUNT = "BlockCount";
     public static final String KEY_BLOCK_TYPE = "BlockType";
+    public static final String KEY_CASE_SENSITIVE_KEYS = "CaseSensitiveKeys";
     public static final String KEY_CIPHER_KEY = "CipherKey";
     public static final String KEY_COMPRESS_TYPE = "CompressType";
     public static final String KEY_COPYRIGHT = "Copyright";
@@ -144,6 +145,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_TEXT_SOURCE = "TextSource";
     public static final String KEY_UNLOCK_URL = "UnlockURL";
     public static final String KEY_VERSION = "Version";
+
     // Some keys have defaults
     public static final Map<String, String> DEFAULTS;
     static {
@@ -163,6 +165,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         tempMap.put(KEY_CATEGORY, "Other");
         tempMap.put(KEY_LANG, "en");
         tempMap.put(KEY_DISTRIBUTION_LICENSE, "Public Domain");
+        tempMap.put(KEY_CASE_SENSITIVE_KEYS, "false");
         DEFAULTS = Collections.unmodifiableMap(tempMap);
     }
 
@@ -184,11 +187,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         this.configSword = load(file);
         this.configAll = new IniSection(configSword);
-        this.configJSword = addConfig(SwordMetaDataLocator.JSWORD);
-        this.configFrontend = addConfig(SwordMetaDataLocator.FRONTEND);
+        this.configJSword = addConfig(MetaDataLocator.JSWORD);
+        this.configFrontend = addConfig(MetaDataLocator.FRONTEND);
 
         adjustConfig();
-        report();
+        report(configSword);
         setLibrary(bookRootPath);
     }
 
@@ -208,7 +211,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         this.configFrontend = new IniSection(configSword.getName());
 
         adjustConfig();
-        report();
+        report(configSword);
     }
 
     /* (non-Javadoc)
@@ -248,15 +251,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return cipher != null && cipher.length() == 0;
     }
 
-    /* Unlock always happens at the top-level (front-end/jsword/sword)
-     */
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#unlock(java.lang.String)
      */
     @Override
     public boolean unlock(String unlockKey) {
-        putProperty(KEY_CIPHER_KEY, unlockKey);
-        //Reporter.informUser(this, JSMsg.gettext("Unable to save the book's unlock key."));
+        // Persist the unlock key so that all can see it
+        putProperty(KEY_CIPHER_KEY, unlockKey, false);
         return true;
     }
 
@@ -536,10 +537,18 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setProperty(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void setProperty(String key, String value) {
+        configAll.replace(key, value);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String, boolean)
      */
     public void putProperty(String key, String value, boolean forFrontend) {
-        SwordMetaDataLocator mdl = forFrontend ? SwordMetaDataLocator.FRONTEND : SwordMetaDataLocator.JSWORD;
+        MetaDataLocator mdl = forFrontend ? MetaDataLocator.FRONTEND : MetaDataLocator.JSWORD;
         putProperty(key, value, mdl);
     }
 
@@ -550,9 +559,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @param value the value of the entry
      * @param metaDataLocator Place to save - front end storage, shared storage, or don't save(transient)
      */
-    public void putProperty(String key, String value, SwordMetaDataLocator metaDataLocator) {
-        // allow fetch of this property for this session 
-        configAll.replace(key, value);
+    public void putProperty(String key, String value, MetaDataLocator metaDataLocator) {
+        // Set the property for all to see
+        setProperty(key, value);
         
         // persist property for future sessions if JSword or Frontend metadatalocator
         IniSection config;
@@ -564,19 +573,18 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             config = this.configJSword;
             break;
         case TRANSIENT:
-        case SWORD:
         default:
             config = null;
             break;
         }
 
-        if (config!=null) {
+        File writeLocation = metaDataLocator.getWriteLocation();
+        if (config != null && writeLocation != null) {
             config.replace(key, value);
             try {
-                config.save(new File(metaDataLocator.getWriteLocation(), bookConf), getBookCharset());
+                config.save(new File(writeLocation, bookConf), getBookCharset());
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                log.error("Unable to save {}={}: conf file for [{}]; error={}", key, value, configSword.getName(), e1);
             }
         }
     }
@@ -651,7 +659,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                         configAll.add(key, value);
                     }
                 } else {
-                    configAll.replace(key, value);
+                    setProperty(key, value);
                 }
             }
         }
@@ -761,14 +769,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         if (langFrom != null || langTo != null) {
             if (langFrom == null) {
                 langFrom = lang;
-                configAll.replace(KEY_GLOSSARY_FROM, langFrom);
+                setProperty(KEY_GLOSSARY_FROM, langFrom);
                 log.warn("Missing data for [{}]. Assuming {}={}", configSword.getName(), KEY_GLOSSARY_FROM, langFrom);
             }
             testLanguage(KEY_GLOSSARY_FROM, langFrom);
 
             if (langTo == null) {
                 langTo = Language.DEFAULT_LANG.getGivenSpecification();
-                configAll.replace(KEY_GLOSSARY_TO, langTo);
+                setProperty(KEY_GLOSSARY_TO, langTo);
                 log.warn("Missing data for [{}]. Assuming {}={}", configSword.getName(), KEY_GLOSSARY_TO, langTo);
             }
             testLanguage(KEY_GLOSSARY_TO, langTo);
@@ -829,14 +837,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             focusedCategory = bookType.getBookCategory();
         }
 
-        configAll.replace(KEY_CATEGORY, focusedCategory.getName());
+        setProperty(KEY_CATEGORY, focusedCategory.getName());
     }
 
     private void adjustName() {
         // If there is no name then use the initials name
         if (configAll.get(KEY_DESCRIPTION) == null) {
             log.error("Malformed conf file: missing [{}]{}=. Using {}", configSword.getName(), KEY_DESCRIPTION, configSword.getName());
-            configAll.replace(KEY_DESCRIPTION, configSword.getName());
+            setProperty(KEY_DESCRIPTION, configSword.getName());
         }
     }
 
@@ -860,25 +868,23 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         }
     }
 
-    protected void report() {
-        for (String key : configAll.getKeys()) {
-            int count = configAll.size(key);
+    public void report(final IniSection config) {
+        StringBuilder buf = new StringBuilder();
+        for (String key : config.getKeys()) {
+            int count = config.size(key);
             if (count == 0) {
-                log.error("Entry has no values [{}]{}", configAll.getName(), key);
+                buf.append("Entry has no value: ").append(key).append('\n');
+                //log.error("Entry has no values [{}]{}", config.getName(), key);
                 continue;
             }
 
             ConfigEntryType type = ConfigEntryType.fromString(key);
-            String value = configAll.get(key);
-
-            if (value == null) {
-                log.error("Entry has a null value [{}]{}", configAll.getName(), key);
-                continue;
-            }
+            String value = config.get(key);
 
             // Only CIPHER_KEYS that are empty are not ignored
             if (value.length() == 0 && type != ConfigEntryType.CIPHER_KEY) {
-                log.warn("Unexpected empty entry in [{}]{} = ", configAll.getName(), key);
+                buf.append("A: Unexpected empty entry: ").append(key).append(" count=").append(count).append('\n');
+                //log.warn("Unexpected empty entry in [{}]{} = ", config.getName(), key);
                 continue;
             }
 
@@ -890,15 +896,12 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
 
             for (int i = 1; i < count; i++) {
-                value = configAll.get(key, i);
-                if (value == null) {
-                    log.error("Entry has a null value [{}]{}", configAll.getName(), key);
-                    continue;
-                }
+                value = config.get(key, i);
 
                 // Only CIPHER_KEYS that are empty are not ignored
                 if (value.length() == 0 && type != ConfigEntryType.CIPHER_KEY) {
-                    log.warn("Unexpected empty entry in [{}]{} = ", configAll.getName(), key);
+                    buf.append("B: Unexpected empty entry: ").append(key).append('\n');
+                    //log.warn("Unexpected empty entry in [{}]{} = ", config.getName(), key);
                     continue;
                 }
 
@@ -911,22 +914,29 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
                 // Report on fields that shouldn't have RTF but do
                 if (!type.allowsRTF() && RTF_PATTERN.matcher(value).find()) {
-                    log.info("Unexpected RTF for [{}]{} = {}", configAll.getName(), key, value);
+                    buf.append("Unexpected RTF: ").append(key).append(" = ").append(value).append('\n');
+                    //log.info("Unexpected RTF for [{}]{} = {}", config.getName(), key, value);
                 }
 
                 if (!type.isAllowed(value)) {
-                    log.info("Unknown config value for [{}]{} = {}", configAll.getName(), key, value);
+                    buf.append("Unknown config value: ").append(key).append(" = ").append(value).append('\n');
+                    //log.info("Unknown config value for [{}]{} = {}", config.getName(), key, value);
                 }
 
                 if (count > 1 && !type.mayRepeat()) {
-                    log.info("Unexpected repeated config key for [{}]{} = {}", configAll.getName(), key, value);
+                    buf.append("Unexpected repeated config key: ").append(key).append(" = ").append(value).append('\n');
+                    //log.info("Unexpected repeated config key for [{}]{} = {}", config.getName(), key, value);
                 }
             }
 
             if (type == null) {
-                log.info("Unknown entry in [{}]{} = {}", configAll.getName(), key, value);
+                buf.append("Unknown entry: ").append(key).append(" = ").append(value).append('\n');
+                //log.info("Unknown entry in [{}]{} = {}", config.getName(), key, value);
                 continue;
             }
+        }
+        if (buf.length() > 0) {
+            log.info("Conf report for [{}]\n{}", config.getName(), buf.toString());
         }
     }
 

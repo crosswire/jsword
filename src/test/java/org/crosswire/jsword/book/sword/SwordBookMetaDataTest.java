@@ -33,6 +33,7 @@ import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.IniSection;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.MetaDataLocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -63,7 +64,7 @@ public class SwordBookMetaDataTest {
         CWProject.instance().setFrontendName("jsword-app");
         
         // ensure the ui property dir exists or an exception occurs
-        SwordMetaDataLocator.FRONTEND.getWriteLocation().mkdirs();
+        MetaDataLocator.FRONTEND.getWriteLocation().mkdirs();
         
         swordBookMetaData = createTestSwordBookMetaData();
     }
@@ -99,7 +100,7 @@ public class SwordBookMetaDataTest {
         assertEquals("uivalue", swordBookMetaData.getProperty("uikey"));
 
         // Transient property
-        swordBookMetaData.putProperty("transientkey", "transientvalue", SwordMetaDataLocator.TRANSIENT);
+        swordBookMetaData.putProperty("transientkey", "transientvalue", MetaDataLocator.TRANSIENT);
         assertEquals("transientvalue", swordBookMetaData.getProperty("transientkey"));
     }
 
@@ -107,7 +108,7 @@ public class SwordBookMetaDataTest {
     public void testPropertyPersistence() throws Exception {
         swordBookMetaData.putProperty("jswordkey", "jswordvalue");
         swordBookMetaData.putProperty("uikey", "uivalue", true);
-        swordBookMetaData.putProperty("transientkey", "transientvalue", SwordMetaDataLocator.TRANSIENT);
+        swordBookMetaData.putProperty("transientkey", "transientvalue", MetaDataLocator.TRANSIENT);
         
         // jsword and ui properties should be persisted, and therefore restored into another SwordBookMetaData but not transient properties
         SwordBookMetaData anotherSwordBookMetaData = createTestSwordBookMetaData();

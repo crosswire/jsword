@@ -20,6 +20,9 @@
 package org.crosswire.jsword.book;
 
 import java.io.File;
+import java.net.URI;
+
+import org.crosswire.common.util.CWProject;
 
 /**
  * A MetaDataLocator allows one to define where BookMetaData for a Book may be found.
@@ -27,20 +30,67 @@ import java.io.File;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public interface MetaDataLocator {
-    /**
-     * A read-only folder containing configuration data for books.
-     * May return null or a folder that does not exist.
-     * 
-     * @return the config folder
-     */
-    File getReadLocation();
+public enum MetaDataLocator {
+    TRANSIENT {
+        @Override
+        public File getReadLocation() {
+            return null;
+        }
+        @Override
+        public File getWriteLocation() {
+            return null;
+        }
+    },
+    JSWORD {
+        @Override
+        public File getReadLocation() {
+            URI[] dirs = CWProject.instance().getProjectResourceDirs();
+            if (dirs.length > 1) {
+                return getFile(dirs[1]);
+            }
+            return null;
+        }
+        @Override
+        public File getWriteLocation() {
+            URI[] dirs = CWProject.instance().getProjectResourceDirs();
+            if (dirs.length > 0) {
+                return getFile(dirs[0]);
+            }
+            return null;
+        }
+    },
+    FRONTEND {
+        @Override
+        public File getReadLocation() {
+            return getFile(CWProject.instance().getReadableFrontendProjectDir());
+        }
+        @Override
+        public File getWriteLocation() {
+            return getFile(CWProject.instance().getWritableFrontendProjectDir());
+        }
+    };
 
     /**
-     * A writable folder containing configuration data for books.
-     * May return null or a folder that does not exist.
-     * 
-     * @return the config folder
+     * Safely creates the file location, or null if the parent can't exist
+     *
+     * @param u the parent URI
+     * @return the file representing the config
      */
-    File getWriteLocation();
+    protected static File getFile(URI u) {
+        if (u == null) {
+            return null;
+        }
+
+        final File parent = new File(u);
+        return new File(parent, DIR_CONF_OVERRIDE);
+    }
+
+    public abstract File getReadLocation();
+    public abstract File getWriteLocation();
+
+    /**
+     * The configuration directory for overrides
+     */
+    private static final String DIR_CONF_OVERRIDE = "jsword-mods.d";
+
 }

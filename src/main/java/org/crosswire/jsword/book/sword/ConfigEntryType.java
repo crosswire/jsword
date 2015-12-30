@@ -152,6 +152,25 @@ import org.crosswire.jsword.book.BookMetaData;
     ),
 
     /**
+     * The kind of key that a Generic Book uses.
+     */
+    CASE_SENSITIVE_KEYS(SwordBookMetaData.KEY_CASE_SENSITIVE_KEYS,
+        "true",
+        "false"
+    )
+    {
+        @Override
+        public boolean isText() {
+            return false;
+        }
+
+        @Override
+        public Object convert(String input) {
+            return Boolean.valueOf(input);
+        }
+    },
+
+    /**
      * If this exists in the conf, then the book is encrypted. The value is used
      * to unlock the book. The encryption algorithm is Sapphire.
      */
@@ -199,6 +218,7 @@ import org.crosswire.jsword.book.BookMetaData;
         "UTF8Cantillation",
         "UTF8GreekAccents",
         "UTF8HebrewPoints",
+        "UTF8ArabicPoints",
         "OSISLemma",
         "OSISMorphSegmentation",
         "OSISStrongs",

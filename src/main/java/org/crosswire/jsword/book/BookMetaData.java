@@ -251,6 +251,16 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     String getProperty(String key);
 
     /**
+     * Store a transient property..
+     * 
+     * @param key
+     *            the key of the property to set
+     * @param value
+     *            the value of the property
+     */
+    void setProperty(String key, String value);
+
+    /**
      * Save to shared storage.
      * 
      * @param key
