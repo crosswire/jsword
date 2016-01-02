@@ -82,7 +82,9 @@ public enum MetaDataLocator {
         }
 
         final File parent = new File(u);
-        return new File(parent, DIR_CONF_OVERRIDE);
+        final File override = new File(parent, DIR_CONF_OVERRIDE);
+        override.mkdirs();
+        return override;
     }
 
     public abstract File getReadLocation();

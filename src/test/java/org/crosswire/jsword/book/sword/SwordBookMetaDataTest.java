@@ -63,9 +63,6 @@ public class SwordBookMetaDataTest {
         // required for setting ui properties
         CWProject.instance().setFrontendName("jsword-app");
         
-        // ensure the ui property dir exists or an exception occurs
-        MetaDataLocator.FRONTEND.getWriteLocation().mkdirs();
-        
         swordBookMetaData = createTestSwordBookMetaData();
     }
 
