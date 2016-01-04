@@ -232,7 +232,8 @@ import org.crosswire.jsword.book.BookMetaData;
         "OSISRuby", // Deprecated, replaced by OSISGlosses
         "OSISXlit",
         "OSISEnum",
-        "OSISReferenceLinks"
+        "OSISReferenceLinks|*",
+        "OSISDictionary" // Deprecated, no replacement
     )
     {
         @Override
@@ -241,6 +242,14 @@ import org.crosswire.jsword.book.BookMetaData;
         }
     },
 
+    /**
+     * SiglumN defines the n-th label for an OSISGlosses. Used for variant readings
+     */
+    SIGLUM1(SwordBookMetaData.KEY_SIGLUM1),
+    SIGLUM2(SwordBookMetaData.KEY_SIGLUM2),
+    SIGLUM3(SwordBookMetaData.KEY_SIGLUM3),
+    SIGLUM4(SwordBookMetaData.KEY_SIGLUM4),
+    SIGLUM5(SwordBookMetaData.KEY_SIGLUM5),
     /**
      * The layout direction of the text in the book. Hebrew, Arabic and Farsi
      * RtoL. Most are 'LtoR'. Some are 'bidi', bidirectional. E.g.
@@ -419,7 +428,7 @@ import org.crosswire.jsword.book.BookMetaData;
     ABBREVIATION(SwordBookMetaData.KEY_ABBREVIATION),
 
     /**
-     * Contains rtf that describes the book.
+     * Contains RTF that describes the book.
      */
     ABOUT(SwordBookMetaData.KEY_ABOUT) {
         @Override
@@ -690,7 +699,12 @@ import org.crosswire.jsword.book.BookMetaData;
     /**
      * A one line promo statement, required by Lockman for NASB
      */
-    SHORT_PROMO(SwordBookMetaData.KEY_SHORT_PROMO),
+    SHORT_PROMO(SwordBookMetaData.KEY_SHORT_PROMO) {
+        @Override
+        public boolean allowsHTML() {
+            return true;
+        }
+    },
 
     /**
      * A one line copyright statement, required by Lockman for NASB
@@ -704,18 +718,19 @@ import org.crosswire.jsword.book.BookMetaData;
         "Public Domain",
         "Copyrighted",
         "Copyrighted; Free non-commercial distribution",
-        "Copyrighted; Permission to distribute granted to CrossWire",
+        "Copyrighted; Permission to distribute granted to *",
         "Copyrighted; Freely distributable",
         "Copyrighted; Permission granted to distribute non-commercially in SWORD format",
         "GFDL",
         "GPL",
-        "Creative Commons: by-nc-nd",
-        "Creative Commons: by-nc-sa",
-        "Creative Commons: by-nc",
-        "Creative Commons: by-nd",
-        "Creative Commons: by-sa",
-        "Creative Commons: by",
-        "Creative Commons: CC0"
+        "Creative Commons: by-nc-nd*",
+        "Creative Commons: by-nc-sa*",
+        "Creative Commons: by-nc*",
+        "Creative Commons: by-nd*",
+        "Creative Commons: by-sa*",
+        "Creative Commons: by*",
+        "Creative Commons: CC0*",
+        "General public license for distribution for any purpose" // In kjv.conf
     ),
 
     /**
@@ -814,16 +829,31 @@ import org.crosswire.jsword.book.BookMetaData;
      * @return true if the string is allowed
      */
     public boolean isAllowed(String value) {
+        if (value == null) {
+            return false;
+        }
         if (hasChoices()) {
-            for (String pick : picks) {
-                if (pick.equalsIgnoreCase(value)) {
+            for (String item : picks) {
+                String val = value;
+                String pick = item;
+                // If the pick ends with *
+                // then we want to do a "startsWithCaseInsensitive"
+                // with what is before the *
+                if (pick.endsWith("*")) {
+                    int len = pick.length() - 1;
+                    pick = pick.substring(0, len);
+                    if (val.length() > len) {
+                        val = val.substring(0, len);
+                    }
+                }
+                if (pick.equalsIgnoreCase(val)) {
                     return true;
                 }
             }
 
             return false;
         }
-        return value != null;
+        return true;
     }
 
     /**
@@ -860,6 +890,15 @@ import org.crosswire.jsword.book.BookMetaData;
      * @return true if RTF is allowed
      */
     public boolean allowsRTF() {
+        return false;
+    }
+
+    /**
+     * HTML is allowed in a few config entries.
+     * 
+     * @return true if HTML is allowed
+     */
+    public boolean allowsHTML() {
         return false;
     }
 

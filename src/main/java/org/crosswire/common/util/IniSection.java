@@ -39,9 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A utility class for a section of an INI style configuration file.
  * Keys and values are maintained in insertion order. A key may have more than one value.
@@ -101,6 +98,7 @@ public final class IniSection implements Iterable {
         this.name = name;
         section = new TreeMap<String, ListSet<String>>(String.CASE_INSENSITIVE_ORDER);
         list = new ArrayList<String>();
+        warnings = new StringBuilder();
     }
 
     /**
@@ -225,7 +223,7 @@ public final class IniSection implements Iterable {
 
         Collection<String> values = getOrCreateValues(key);
         if (values.contains(value)) {
-            LOGGER.warn("Duplicate value [{}]{} = {}", name, key, value);
+            warnings.append("Duplicate value: ").append(key).append(" = ").append(value).append('\n');
             return true;
         }
         return values.add(value);
@@ -341,9 +339,6 @@ public final class IniSection implements Iterable {
         }
 
         Collection<String> values = getOrCreateValues(key);
-        if (values.size() > 1) {
-            LOGGER.warn("Replacing more than one value with [{}]{} = {}", name, key, value);
-        }
         values.clear();
         return values.add(value);
     }
@@ -457,6 +452,7 @@ public final class IniSection implements Iterable {
         writer.print("]");
         writer.println();
 
+        boolean first = true;
         Iterator<String> keys = list.iterator();
         while (keys.hasNext()) {
             String key = keys.next();
@@ -464,16 +460,28 @@ public final class IniSection implements Iterable {
             Iterator<String> iter = values.iterator();
             String value;
             while (iter.hasNext()) {
+                if (!first) {
+                    writer.println();
+                    first = false;
+                }
                 value = iter.next();
                 writer.print(key);
                 writer.print(" = ");
                 writer.print(format(value));
                 writer.println();
             }
-            writer.println();
         }
 
         writer.flush();
+    }
+
+    /**
+     * Obtain a report of issues with this IniSection.
+     * 
+     * @return the report with one issue per line or an empty string if there are no issues
+     */
+    public String report() {
+        return warnings.toString();
     }
 
     /**
@@ -530,14 +538,11 @@ public final class IniSection implements Iterable {
                 // Is this a key line?
                 int splitPos = getSplitPos(line);
                 if (splitPos < 0) {
-                    LOGGER.warn("Expected to see '=' in [{}]: {}", name, line);
+                    warnings.append("Expected to see '=' in: ").append(line).append('\n');
                     continue;
                 }
 
                 String key = line.substring(0, splitPos).trim();
-                if (key.length() == 0) {
-                    LOGGER.warn("Empty key in [{}]: {}", name, line);
-                }
                 String value = more(bin, line.substring(splitPos + 1).trim());
                 add(key, value);
             }
@@ -626,6 +631,13 @@ public final class IniSection implements Iterable {
             if (moreCowBell) {
                 buf.append('\n');
                 line = advance(bin);
+                // Is this new line a potential key line?
+                // It cannot both continue the prior
+                // and also be a key line.
+                int splitPos = getSplitPos(line);
+                if (splitPos >= 0) {
+                    warnings.append("Possible trailing continuation on previous line. Found: ").append(line).append('\n');                    
+                }
             }
         } while (moreCowBell && line != null);
         return buf.toString();
@@ -645,12 +657,12 @@ public final class IniSection implements Iterable {
     private boolean allowed(String key, String value) {
         if (key == null || key.length() == 0 || value == null) {
             if (key == null) {
-                LOGGER.warn("Null keys not allowed [{}] = {}", name, value);
-            } else {
-                LOGGER.warn("Empty keys are not allowed [{}] = {}", name, value);
+                warnings.append("Null keys not allowed: ").append(" = ").append(value).append('\n');
+            } else if (key.length() == 0) {
+                warnings.append("Empty keys not allowed: ").append(" = ").append(value).append('\n');
             }
             if (value == null) {
-                LOGGER.warn("Null values are not allowed [{}]{} = ", name, key);
+                warnings.append("Null values are not allowed: ").append(key).append(" = ").append('\n');
             }
             return false;
         }
@@ -676,13 +688,10 @@ public final class IniSection implements Iterable {
 
     private String charset;
 
+    private StringBuilder warnings;
+
     /**
      * Buffer size is based on file size but keep it with within reasonable limits
      */
     private static final int MAX_BUFF_SIZE = 8 * 1024;
-
-    /**
-     * The log stream
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(IniSection.class);
 }

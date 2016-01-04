@@ -22,11 +22,15 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,6 +127,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_ENCODING = "Encoding";
     public static final String KEY_FEATURE = "Feature";
     public static final String KEY_GLOBAL_OPTION_FILTER = "GlobalOptionFilter";
+    public static final String KEY_SIGLUM1 = "Siglum1";
+    public static final String KEY_SIGLUM2 = "Siglum2";
+    public static final String KEY_SIGLUM3 = "Siglum3";
+    public static final String KEY_SIGLUM4 = "Siglum4";
+    public static final String KEY_SIGLUM5 = "Siglum5";
     public static final String KEY_GLOSSARY_FROM = "GlossaryFrom";
     public static final String KEY_GLOSSARY_TO = "GlossaryTo";
     public static final String KEY_HISTORY = "History";
@@ -445,6 +454,66 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return new Document(table);
     }
 
+    public static void normalize(Writer out, final IniSection config, final String[] order) {
+        PrintWriter writer = null;
+        if (out instanceof PrintWriter) {
+            writer = (PrintWriter) out;
+        } else {
+            writer = new PrintWriter(out);
+        }
+        IniSection copy = new IniSection(config);
+        // History is a special case
+        adjustHistory(copy);
+
+        List<String> knownKeys = new ArrayList(copy.getKeys());
+        writer.print("[");
+        writer.print(copy.getName());
+        writer.print("]");
+        writer.println();
+
+        // Get the keys out in the specified order
+        for (String key : order) {
+            knownKeys.remove(key);
+            if (!copy.containsKey(key)) {
+                continue;
+            }
+            Collection<String> values = copy.getValues(key);
+            Iterator<String> iter = values.iterator();
+            String value;
+            while (iter.hasNext()) {
+                value = iter.next();
+                String newKey = key;
+                // When key is History, it needs to be reversed
+                if (KEY_HISTORY.equalsIgnoreCase(key)) {
+                    int pos = value.indexOf(' ');
+                    newKey += '_' + value.substring(0, pos);
+                    value = value.substring(pos + 1);
+                }
+                writer.print(newKey);
+                writer.print("=");
+                writer.print(value.replaceAll("\n", " \\\\\n"));
+                writer.println();
+            }
+        }
+
+        Iterator<String> keys = knownKeys.iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Collection<String> values = copy.getValues(key);
+            Iterator<String> iter = values.iterator();
+            String value;
+            while (iter.hasNext()) {
+                value = iter.next();
+                writer.print(key);
+                writer.print("=");
+                writer.print(value.replaceAll("\n", " \\\\\n"));
+                writer.println();
+            }
+        }
+
+        writer.flush();
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
@@ -755,7 +824,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         adjustLanguage();
         adjustBookType();
         adjustName();
-        adjustHistory();
+        adjustHistory(configAll);
     }
 
     private void adjustLanguage() {
@@ -851,42 +920,27 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     // History is a special case. It is of the form History_x.x
     // The ConfigEntryType is History without the _x.x.
     // We want to put x.x at the beginning of the string
-    private void adjustHistory() {
+    private static void adjustHistory(IniSection config) {
         // Iterate over a copy of the keys so that we don't get
         // a concurrent modification exception when we remove matching keys
         // and when we add new keys
-        List<String> keys = new ArrayList(configAll.getKeys());
+        List<String> keys = new ArrayList(config.getKeys());
         for (String key : keys) {
-            String value = configAll.get(key);
+            String value = config.get(key);
             ConfigEntryType type = ConfigEntryType.fromString(key);
             if (ConfigEntryType.HISTORY.equals(type)) {
-                configAll.remove(key);
+                config.remove(key);
                 int pos = key.indexOf('_');
                 value = key.substring(pos + 1) + ' ' + value;
-                configAll.add(KEY_HISTORY, value);
+                config.add(KEY_HISTORY, value);
             }
         }
     }
 
-    public void report(final IniSection config) {
-        StringBuilder buf = new StringBuilder();
+    public static void report(final IniSection config) {
+        StringBuilder buf = new StringBuilder(config.report());
         for (String key : config.getKeys()) {
-            int count = config.size(key);
-            if (count == 0) {
-                buf.append("Entry has no value: ").append(key).append('\n');
-                //log.error("Entry has no values [{}]{}", config.getName(), key);
-                continue;
-            }
-
             ConfigEntryType type = ConfigEntryType.fromString(key);
-            String value = config.get(key);
-
-            // Only CIPHER_KEYS that are empty are not ignored
-            if (value.length() == 0 && type != ConfigEntryType.CIPHER_KEY) {
-                buf.append("A: Unexpected empty entry: ").append(key).append(" count=").append(count).append('\n');
-                //log.warn("Unexpected empty entry in [{}]{} = ", config.getName(), key);
-                continue;
-            }
 
             if (type == null) {
                 if (key.contains("_")) {
@@ -895,17 +949,20 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 }
             }
 
-            for (int i = 1; i < count; i++) {
-                value = config.get(key, i);
 
-                // Only CIPHER_KEYS that are empty are not ignored
-                if (value.length() == 0 && type != ConfigEntryType.CIPHER_KEY) {
-                    buf.append("B: Unexpected empty entry: ").append(key).append('\n');
-                    //log.warn("Unexpected empty entry in [{}]{} = ", config.getName(), key);
+            int count = config.size(key);
+            for (int i = 0; i < count; i++) {
+                String value = config.get(key, i);
+
+                // If it is still unknown, report and skip
+                if (type == null) {
+                    buf.append("Unknown entry: ").append(key).append(" = ").append(value).append('\n');
                     continue;
                 }
 
-                if (type == null) {
+                // Only CIPHER_KEYS that are empty are not ignored
+                if (value.length() == 0 && type != ConfigEntryType.CIPHER_KEY) {
+                    buf.append("Unexpected empty entry: ").append(key).append(" = ").append(value).append('\n');
                     continue;
                 }
 
@@ -915,24 +972,19 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 // Report on fields that shouldn't have RTF but do
                 if (!type.allowsRTF() && RTF_PATTERN.matcher(value).find()) {
                     buf.append("Unexpected RTF: ").append(key).append(" = ").append(value).append('\n');
-                    //log.info("Unexpected RTF for [{}]{} = {}", config.getName(), key, value);
+                }
+
+                if (!type.allowsHTML() && HTML_PATTERN.matcher(value).find()) {
+                    buf.append("Unexpected HTML: ").append(key).append(" = ").append(value).append('\n');
                 }
 
                 if (!type.isAllowed(value)) {
                     buf.append("Unknown config value: ").append(key).append(" = ").append(value).append('\n');
-                    //log.info("Unknown config value for [{}]{} = {}", config.getName(), key, value);
                 }
 
                 if (count > 1 && !type.mayRepeat()) {
                     buf.append("Unexpected repeated config key: ").append(key).append(" = ").append(value).append('\n');
-                    //log.info("Unexpected repeated config key for [{}]{} = {}", config.getName(), key, value);
                 }
-            }
-
-            if (type == null) {
-                buf.append("Unknown entry: ").append(key).append(" = ").append(value).append('\n');
-                //log.info("Unknown entry in [{}]{} = {}", config.getName(), key, value);
-                continue;
             }
         }
         if (buf.length() > 0) {
@@ -1010,14 +1062,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     private static final String[] OSIS_INFO = {
             KEY_ABBREVIATION,
             KEY_DESCRIPTION,
+            KEY_LANG,
             KEY_CATEGORY,
             KEY_LCSH,
             KEY_SWORD_VERSION_DATE,
             KEY_VERSION,
             KEY_HISTORY,
             KEY_OBSOLETES,
-            KEY_INSTALL_SIZE,
-            KEY_LANG,
             KEY_GLOSSARY_FROM,
             KEY_GLOSSARY_TO,
             KEY_ABOUT,
@@ -1037,6 +1088,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             KEY_TEXT_SOURCE,
             KEY_FEATURE,
             KEY_GLOBAL_OPTION_FILTER,
+            KEY_SIGLUM1,
+            KEY_SIGLUM2,
+            KEY_SIGLUM3,
+            KEY_SIGLUM4,
+            KEY_SIGLUM5,
             KEY_FONT,
             KEY_DATA_PATH,
             KEY_MOD_DRV,
@@ -1052,6 +1108,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             KEY_KEY_TYPE,
             KEY_DISPLAY_LEVEL,
             KEY_VERSIFICATION,
+            KEY_INSTALL_SIZE,
             KEY_SCOPE,
             KEY_BOOKLIST
     };
@@ -1062,6 +1119,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     };
 
     private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+");
+    private static final Pattern HTML_PATTERN = Pattern.compile("(<[a-zA-Z]|[a-zA-Z]>)");
 
     /**
      * Sword only recognizes two encodings for its modules: UTF-8 and Latin-1
