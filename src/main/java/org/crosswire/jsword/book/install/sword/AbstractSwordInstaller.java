@@ -368,7 +368,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                             continue;
                         }
 
-                        if (internal.startsWith(SwordConstants.DIR_CONF + '/')) {
+                        // If it begins with mods.d/ then remove it.
+                        if (internal.startsWith(SwordConstants.PATH_CONF)) {
                             internal = internal.substring(7);
                         }
 

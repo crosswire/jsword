@@ -74,4 +74,9 @@ public final class SwordConstants {
      * The configuration directory
      */
     public static final String DIR_CONF = "mods.d";
+
+    /**
+     * The configuration directory with a trailing /
+     */
+    public static final String PATH_CONF = "mods.d/";
 }

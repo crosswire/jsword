@@ -343,11 +343,30 @@ public final class IniSection implements Iterable {
         return values.add(value);
     }
 
+    /**
+     * Load the INI from an InputStream using the given encoding.
+     *
+     * @param is the InputStream to read from
+     * @param encoding the encoding of the file
+     * @throws IOException
+     */
     public void load(InputStream is, String encoding) throws IOException {
+        load(is, encoding, null);
+    }
+
+    /**
+     * Load the INI from an InputStream using the given encoding. Filter keys as specified.
+     *
+     * @param is the InputStream to read from
+     * @param encoding the encoding of the file
+     * @param filter the filter, possibly null, for the desired keys
+     * @throws IOException
+     */
+    public void load(InputStream is, String encoding, Filter<String> filter) throws IOException {
         Reader in = null;
         try {
             in = new InputStreamReader(is, encoding);
-            load(in);
+            load(in, filter);
         } finally {
             if (in != null) {
                 in.close();
@@ -364,12 +383,23 @@ public final class IniSection implements Iterable {
      * @throws IOException
      */
     public void load(File file, String encoding) throws IOException {
+        load(file, encoding, null);
+    }
+    /**
+     * Load the INI from a file using the given encoding. Filter keys as specified.
+     *
+     * @param file the file to load
+     * @param encoding the encoding of the file
+     * @param filter the filter, possibly null, for the desired keys
+     * @throws IOException
+     */
+    public void load(File file, String encoding, Filter<String> filter) throws IOException {
         this.configFile = file;
         this.charset = encoding;
         InputStream in = null;
         try {
             in = new FileInputStream(file);
-            load(in, encoding);
+            load(in, encoding, filter);
         } finally {
             if (in != null) {
                 in.close();
@@ -387,10 +417,23 @@ public final class IniSection implements Iterable {
      * @throws IOException
      */
     public void load(byte[] buffer, String encoding) throws IOException {
+        load(buffer, encoding, null);
+    }
+
+    /**
+     * Load the conf from a buffer. Filter keys as specified.
+     * This is used to load conf entries from the mods.d.tar.gz file.
+     *
+     * @param buffer the buffer to load
+     * @param encoding the character encoding of this INI
+     * @param filter the filter, possibly null, for the desired keys
+     * @throws IOException
+     */
+    public void load(byte[] buffer, String encoding, Filter<String> filter) throws IOException {
         InputStream in = null;
         try {
             in = new ByteArrayInputStream(buffer);
-            load(in, encoding);
+            load(in, encoding, filter);
         } finally {
             if (in != null) {
                 in.close();
@@ -476,12 +519,14 @@ public final class IniSection implements Iterable {
     }
 
     /**
-     * Obtain a report of issues with this IniSection.
+     * Obtain a report of issues with this IniSection. It only reports once per load.
      * 
      * @return the report with one issue per line or an empty string if there are no issues
      */
     public String report() {
-        return warnings.toString();
+        String str = report;
+        report = "";
+        return str;
     }
 
     /**
@@ -506,7 +551,7 @@ public final class IniSection implements Iterable {
         return values;
     }
 
-    private void load(Reader in) throws IOException {
+    private void load(Reader in, Filter<String> filter) throws IOException {
         BufferedReader bin = null;
         try {
             if (in instanceof BufferedReader) {
@@ -519,10 +564,7 @@ public final class IniSection implements Iterable {
                 bin = new BufferedReader(in, MAX_BUFF_SIZE);
             }
 
-            StringBuilder buf = new StringBuilder();
             while (true) {
-                // Empty out the buffer
-                buf.setLength(0);
                 String line = advance(bin);
                 if (line == null) {
                     break;
@@ -538,14 +580,19 @@ public final class IniSection implements Iterable {
                 // Is this a key line?
                 int splitPos = getSplitPos(line);
                 if (splitPos < 0) {
-                    warnings.append("Expected to see '=' in: ").append(line).append('\n');
+                    warnings.append("Skipping: Expected to see '=' in: ").append(line).append('\n');
                     continue;
                 }
 
                 String key = line.substring(0, splitPos).trim();
                 String value = more(bin, line.substring(splitPos + 1).trim());
-                add(key, value);
+                if (filter != null && filter.test(key)) {
+                    add(key, value);
+                }
             }
+            report = warnings.toString();
+            warnings.setLength(0);
+            warnings.trimToSize();
         } finally {
             if (bin != null) {
                 bin.close();
@@ -640,7 +687,10 @@ public final class IniSection implements Iterable {
                 }
             }
         } while (moreCowBell && line != null);
-        return buf.toString();
+        String cowBell = buf.toString();
+        buf = null;
+        line = null;
+        return cowBell;
     }
 
     /**
@@ -690,8 +740,10 @@ public final class IniSection implements Iterable {
 
     private StringBuilder warnings;
 
+    private String report;
+
     /**
      * Buffer size is based on file size but keep it with within reasonable limits
      */
-    private static final int MAX_BUFF_SIZE = 8 * 1024;
+    private static final int MAX_BUFF_SIZE = 2 * 1024;
 }

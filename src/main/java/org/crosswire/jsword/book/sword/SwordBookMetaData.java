@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -194,7 +195,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         this.configFile = file;
         this.bookConf = file.getName();
 
-        this.configAll = load(file);
+        this.configAll = load(file, keyKeepers);
         adjustConfig();
         report(configAll);
         setLibrary(bookRootPath);
@@ -214,7 +215,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public SwordBookMetaData(byte[] buffer, String bookConf) throws IOException {
         this.supported = true;
         this.bookConf = bookConf;
-        this.configAll = load(buffer);
+        this.configAll = load(buffer, keyKeepers);
+        adjustConfig();
+        report(configAll);
 
         this.configJSword = new IniSection(configAll.getName());
         this.configFrontend = new IniSection(configAll.getName());
@@ -662,15 +665,15 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      *            the file to load
      * @throws IOException
      */
-    private IniSection load(File file) throws IOException {
+    private IniSection load(File file, org.crosswire.common.util.Filter<String> keepers) throws IOException {
         IniSection config = new IniSection();
         configFile = file;
 
-        config.load(file, ENCODING_UTF8);
+        config.load(file, ENCODING_UTF8, keepers);
         String encoding = config.get(KEY_ENCODING);
         if (!ENCODING_UTF8.equalsIgnoreCase(encoding)) {
             config.clear();
-            config.load(file, ENCODING_LATIN1);
+            config.load(file, ENCODING_LATIN1, keepers);
         }
         return config;
     }
@@ -683,9 +686,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      *            the buffer to load
      * @throws IOException
      */
-    private IniSection load(byte[] buffer) throws IOException {
+    private IniSection load(byte[] buffer, org.crosswire.common.util.Filter<String> keepers) throws IOException {
         IniSection config = new IniSection();
-        config.load(buffer, ENCODING_UTF8);
+        config.load(buffer, ENCODING_UTF8, keepers);
         String encoding = config.get(KEY_ENCODING);
         if (!ENCODING_UTF8.equalsIgnoreCase(encoding)) {
             config.clear();
@@ -1028,19 +1031,67 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     private File configFile;
 
     /**
-     * These are the elements that JSword requires. They are a superset of those
-     * that Sword requires.
+     * These are the elements that JSword uses for control when present in a conf.
      */
-    /*
-     * For documentation purposes at this time.
-     * private static final String[] REQUIRED = {
-     *         KEY_INITIALS,
-     *         KEY_DESCRIPTION,
-     *         KEY_CATEGORY, // may not be present in conf
-     *         KEY_DATA_PATH,
-     *         KEY_MOD_DRV,
-     * };
+    private static final String[] REQUIRED = {
+            KEY_ABBREVIATION,
+            KEY_DESCRIPTION,
+            KEY_LANG,
+            KEY_CATEGORY,
+            KEY_FEATURE,
+            KEY_GLOBAL_OPTION_FILTER,
+            KEY_SIGLUM1,
+            KEY_SIGLUM2,
+            KEY_SIGLUM3,
+            KEY_SIGLUM4,
+            KEY_SIGLUM5,
+            KEY_FONT,
+            KEY_DATA_PATH,
+            KEY_MOD_DRV,
+            KEY_SOURCE_TYPE,
+            KEY_BLOCK_TYPE,
+            KEY_BLOCK_COUNT,
+            KEY_COMPRESS_TYPE,
+            KEY_ENCODING,
+            KEY_DIRECTION,
+            KEY_KEY_TYPE,
+            KEY_DISPLAY_LEVEL,
+            KEY_VERSIFICATION,
+            KEY_CASE_SENSITIVE_KEYS,
+            KEY_LOCAL_STRIP_FILTER,
+            KEY_PREFERRED_CSS_XHTML,
+            KEY_STRONGS_PADDING,
+            KEY_SEARCH_OPTION,
+            KEY_INSTALL_SIZE,
+            KEY_SCOPE,
+            KEY_BOOKLIST,
+            KEY_CIPHER_KEY
+    };
+    
+    /**
+     * KeyFilter returns true for keys that should always be present.
+     * A partially loaded SwordBookMetaData will satisfy this filter.
      */
+    private static final class KeyFilter implements org.crosswire.common.util.Filter<String> {
+        /**
+         * Create a KeyFilter for the expected keys.
+         * @param keepers the list of keys that should be retained
+         */
+        public KeyFilter(String[] keepers) {
+            this.keepers = new HashSet();
+
+            // Load up the keepers set
+            for (String key : keepers) {
+                this.keepers.add(key);
+            }
+        }
+        public boolean test(String key) {
+            return keepers.contains(key);
+        }
+        private Set keepers;
+    }
+    
+    private static final org.crosswire.common.util.Filter keyKeepers = new KeyFilter(REQUIRED);
 
     private static final String[] OSIS_INFO = {
             KEY_ABBREVIATION,
