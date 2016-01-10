@@ -692,7 +692,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         String encoding = config.get(KEY_ENCODING);
         if (!ENCODING_UTF8.equalsIgnoreCase(encoding)) {
             config.clear();
-            config.load(buffer, ENCODING_LATIN1);
+            config.load(buffer, ENCODING_LATIN1, keepers);
         }
         return config;
     }

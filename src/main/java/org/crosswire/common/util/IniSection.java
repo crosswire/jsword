@@ -586,7 +586,7 @@ public final class IniSection implements Iterable {
 
                 String key = line.substring(0, splitPos).trim();
                 String value = more(bin, line.substring(splitPos + 1).trim());
-                if (filter != null && filter.test(key)) {
+                if (filter == null || filter.test(key)) {
                     add(key, value);
                 }
             }
