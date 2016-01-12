@@ -408,7 +408,7 @@
 	== Use ivy to manage external jars.
 	== These are properties related to ivy.
 	=========================================================================-->
-	<property name="ivy.version"			value="2.3.0" />
+	<property name="ivy.version"			value="2.4.0" />
 	<property name="ivy.home"				location="${tools.home}/ivy" />
 	<property name="ivy.url"				value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />
 	<property name="ivy.jar.file"			location="${ivy.home}/ivy-${ivy.version}.jar" />

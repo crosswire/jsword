@@ -261,3 +261,4 @@ plaintext
 bidi
 wiki
 deduplication
+closeable
