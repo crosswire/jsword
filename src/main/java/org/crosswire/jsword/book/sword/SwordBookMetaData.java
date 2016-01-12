@@ -37,6 +37,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.crosswire.common.util.Filter;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.IniSection;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
@@ -50,8 +52,8 @@ import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.MetaDataLocator;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
-import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterFactory;
+import org.crosswire.jsword.book.filter.SourceFilter;
+import org.crosswire.jsword.book.filter.SourceFilterFactory;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -172,7 +174,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         tempMap.put(KEY_OSIS_Q_TO_TICK, "true");
         tempMap.put(KEY_VERSION, "1.0");
         tempMap.put(KEY_MINIMUM_VERSION, "1.5.1a");
-        tempMap.put(KEY_CATEGORY, "Other");
+        tempMap.put(KEY_CATEGORY, "Biblical Texts");
         tempMap.put(KEY_LANG, "en");
         tempMap.put(KEY_DISTRIBUTION_LICENSE, "Public Domain");
         tempMap.put(KEY_CASE_SENSITIVE_KEYS, "false");
@@ -191,36 +193,70 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      *             indicates missing data files
      */
     public SwordBookMetaData(File file, URI bookRootPath) throws IOException, BookException {
-        this.supported = true;
+        this.installed = true;
         this.configFile = file;
-        this.bookConf = file.getName();
-
-        this.configAll = load(file, keyKeepers);
-        adjustConfig();
-        report(configAll);
+        this.bookConf = file.getName(); // something like kjv.conf
         setLibrary(bookRootPath);
 
-        this.configJSword = addConfig(MetaDataLocator.JSWORD);
-        this.configFrontend = addConfig(MetaDataLocator.FRONTEND);
-
+        this.configAll = new IniSection();
+        reload(keyKeepers);
     }
 
     /**
-     * Loads a sword config from a buffer.
+     * Loads a sword config from a buffer gotten from mods.d.tar.gz or mods.d.zip.
      *
      * @param buffer
      * @param bookConf
      * @throws IOException
+     * @throws BookException
      */
-    public SwordBookMetaData(byte[] buffer, String bookConf) throws IOException {
+    public SwordBookMetaData(byte[] buffer, String bookConf) throws IOException, BookException {
+        this.installed = false;
+        this.bookConf = bookConf; // something like .../mods.d.zip!mods.d/kjv.conf
         this.supported = true;
-        this.bookConf = bookConf;
-        this.configAll = load(buffer, keyKeepers);
+        this.configAll = new IniSection();
+        loadBuffer(buffer, keyKeepers);
         adjustConfig();
         report(configAll);
+    }
 
-        this.configJSword = new IniSection(configAll.getName());
-        this.configFrontend = new IniSection(configAll.getName());
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#reload()
+     */
+    @Override
+    public void reload() throws BookException {
+        reload(null);
+    }
+
+    public void reload(Filter<String> keepers) throws BookException {
+        // Always run if it is filtered
+        // Always run if a filter is supplied
+        // Do not run if it is already not filtered and no filter is supplied
+        if (!filtered && keepers == null) {
+            return;
+        }
+        this.supported = true;
+        if (configJSword != null) {
+            configJSword.clear();
+        }
+        if (configFrontend != null) {
+            configFrontend.clear();
+        }
+        try {
+            if (installed) {
+                loadFile(keepers);
+            } else {
+                byte[] buffer = IOUtil.getZipEntry(bookConf);
+                loadBuffer(buffer, keepers);
+            }
+            adjustConfig();
+            report(configAll);
+    
+            this.configJSword = addConfig(MetaDataLocator.JSWORD);
+            this.configFrontend = addConfig(MetaDataLocator.FRONTEND);
+        } catch (IOException ex) {
+            throw new BookException("unable to load conf", ex);
+        }
     }
 
     /* (non-Javadoc)
@@ -320,11 +356,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
-     * @return the Filter based upon the SourceType.
+     * @return the SourceFilter based upon the SourceType.
      */
-    public Filter getFilter() {
+    public SourceFilter getFilter() {
         String sourcetype = getProperty(KEY_SOURCE_TYPE);
-        return FilterFactory.getFilter(sourcetype);
+        return SourceFilterFactory.getFilter(sourcetype);
     }
 
     /**
@@ -337,71 +373,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return configFile;
     }
 
-    /* This method sets the library on the sword conf file.
-     *
-     * (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
-     */
-    @Override
-    public void setLibrary(URI library) throws BookException {
-        // Ignore it if it is not supported.
-        if (!supported) {
-            return;
-        }
-
-        super.setLibrary(library);
-
-        // Previously, all DATA_PATH entries end in / to indicate dirs
-        // or not to indicate file prefixes.
-        // This is no longer true.
-        // Now we need to test the file/url to see if it exists and is a
-        // directory.
-        String datapath = getProperty(KEY_DATA_PATH);
-        int lastSlash = datapath.lastIndexOf('/');
-
-        // There were modules that did not have a valid DataPath.
-        // This should not be necessary
-        if (lastSlash == -1) {
-            return;
-        }
-
-        // DataPath typically ends in a '/' to indicate a directory.
-        // If so remove it.
-        boolean isDirectoryPath = false;
-        if (lastSlash == datapath.length() - 1) {
-            isDirectoryPath = true;
-            datapath = datapath.substring(0, lastSlash);
-        }
-
-        URI location = NetUtil.lengthenURI(library, datapath);
-        File bookDir = new File(location.getPath());
-        // For some modules, the last element of the DataPath
-        // is a prefix for file names.
-        if (!bookDir.isDirectory()) {
-            if (isDirectoryPath) {
-                // TRANSLATOR: This indicates that the Book is only partially installed.
-                throw new BookException(JSMsg.gettext("The book {0} is missing its data files", configAll.getName()));
-            }
-
-            // not a directory path
-            // try appending .dat on the end to see if we have a file, if not,
-            // then
-            if (!new File(location.getPath() + ".dat").exists()) {
-                // TRANSLATOR: This indicates that the Book is only partially
-                // installed.
-                throw new BookException(JSMsg.gettext("The book {0} is missing its data files", configAll.getName()));
-            }
-
-            // then we have a module that has a prefix
-            // Shorten it by one segment and test again.
-            lastSlash = datapath.lastIndexOf('/');
-            datapath = datapath.substring(0, lastSlash);
-            location = NetUtil.lengthenURI(library, datapath);
-        }
-
-        super.setLocation(location);
-    }
-
     /* Cannot be overridden by a front-end/jsword
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
@@ -412,7 +383,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             if (bookCat == BookCategory.OTHER) {
                 BookType bt = getBookType();
                 if (bt == null) {
-                    return null;
+                    return bookCat;
                 }
                 bookCat = bt.getBookCategory();
             }
@@ -608,7 +579,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setProperty(java.lang.String, java.lang.String)
      */
-    @Override
     public void setProperty(String key, String value) {
         configAll.replace(key, value);
     }
@@ -631,24 +601,39 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public void putProperty(String key, String value, MetaDataLocator metaDataLocator) {
         // Set the property for all to see
         setProperty(key, value);
+
+        // Properties are only saved for installed books.
+        if (!installed) {
+            return;
+        }
         
+        File writeLocation = metaDataLocator.getWriteLocation();
+        // Properties are only saved if there is a place for saving
+        if (writeLocation == null) {
+            return;
+        }
         // persist property for future sessions if JSword or Front-end MetaDataLocator
-        IniSection config;
+        // Wait until the first write to actually create the appropriate internal storage.
+        IniSection config = null;
         switch (metaDataLocator) {
         case FRONTEND:
+            if (this.configFrontend == null) {
+                this.configFrontend = new IniSection(configAll.getName());
+            }
             config = this.configFrontend;
             break;
         case JSWORD:
+            if (this.configJSword == null) {
+                this.configJSword = new IniSection(configAll.getName());
+            }
             config = this.configJSword;
             break;
         case TRANSIENT:
         default:
-            config = null;
             break;
         }
 
-        File writeLocation = metaDataLocator.getWriteLocation();
-        if (config != null && writeLocation != null) {
+        if (config != null) {
             config.replace(key, value);
             try {
                 config.save(new File(writeLocation, bookConf), getBookCharset());
@@ -661,44 +646,42 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Load the conf from a file.
      *
-     * @param file
-     *            the file to load
+     * @param keepers
+     *            the keys to keep. When null keep all
      * @throws IOException
      */
-    private IniSection load(File file, org.crosswire.common.util.Filter<String> keepers) throws IOException {
-        IniSection config = new IniSection();
-        configFile = file;
+    private void loadFile(Filter<String> keepers) throws IOException {
+        filtered = keepers != null;
 
-        config.load(file, ENCODING_UTF8, keepers);
-        String encoding = config.get(KEY_ENCODING);
+        configAll.clear();
+        configAll.load(configFile, ENCODING_UTF8, keepers);
+        String encoding = configAll.get(KEY_ENCODING);
         if (!ENCODING_UTF8.equalsIgnoreCase(encoding)) {
-            config.clear();
-            config.load(file, ENCODING_LATIN1, keepers);
+            configAll.clear();
+            configAll.load(configFile, ENCODING_LATIN1, keepers);
         }
-        return config;
     }
 
     /**
-     * Load the conf from a buffer. This is used to load conf entries from the
-     * mods.d.tar.gz file.
+     * Load the conf from a buffer. This is used to load conf entries from the cached mods.d.tar.gz or mods.d.zip file.
      *
      * @param buffer
      *            the buffer to load
      * @throws IOException
      */
-    private IniSection load(byte[] buffer, org.crosswire.common.util.Filter<String> keepers) throws IOException {
-        IniSection config = new IniSection();
-        config.load(buffer, ENCODING_UTF8, keepers);
-        String encoding = config.get(KEY_ENCODING);
+    private void loadBuffer(byte[] buffer, Filter<String> keepers) throws IOException {
+        filtered = keepers != null;
+
+        configAll.clear();
+        configAll.load(buffer, ENCODING_UTF8, keepers);
+        String encoding = configAll.get(KEY_ENCODING);
         if (!ENCODING_UTF8.equalsIgnoreCase(encoding)) {
-            config.clear();
-            config.load(buffer, ENCODING_LATIN1, keepers);
+            configAll.clear();
+            configAll.load(buffer, ENCODING_LATIN1, keepers);
         }
-        return config;
     }
 
     private IniSection addConfig(MetaDataLocator locator) {
-        IniSection config = new IniSection();
         // The write location supersedes the read location
         File conf = new File(locator.getWriteLocation(), bookConf);
         if (!conf.exists()) {
@@ -709,14 +692,16 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             // The additional confs have the same encoding as the SWORD conf.
             String encoding = getProperty(KEY_ENCODING);
             try {
+                IniSection config = new IniSection();
                 config.load(conf, encoding);
                 mergeConfig(config);
+                return config;
             } catch (IOException e) {
                 log.error("Unable to load conf {}:{}", conf, e);
             }
         }
 
-        return config;
+        return null;
     }
 
     private void mergeConfig(IniSection config) {
@@ -811,7 +796,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return nameEle;
     }
 
-    private void adjustConfig() {
+    private void adjustConfig() throws BookException {
+        adjustLocation();
         adjustLanguage();
         adjustBookType();
         adjustName();
@@ -863,7 +849,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         BookCategory focusedCategory = (BookCategory) getValue(KEY_CATEGORY);
         questionable = focusedCategory == BookCategory.QUESTIONABLE;
 
-        // From the config map, extract the important bean properties
         String modTypeName = getProperty(KEY_MOD_DRV);
         if (modTypeName == null) {
             log.error("Book not supported: malformed conf file for [{}] no {} found.", configAll.getName(), KEY_MOD_DRV);
@@ -885,19 +870,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             return;
         }
 
-        BookCategory basicCategory = bookType.getBookCategory();
-        if (basicCategory == null) {
-            supported = false;
-            return;
-        }
-
         // The book type represents the underlying category of book.
         // Fine tune it here.
-        if (focusedCategory == BookCategory.OTHER || focusedCategory == BookCategory.QUESTIONABLE) {
+        if (focusedCategory == BookCategory.OTHER) {
             focusedCategory = bookType.getBookCategory();
         }
 
-        setProperty(KEY_CATEGORY, focusedCategory.getName());
+        //setProperty(KEY_CATEGORY, focusedCategory.getName());
     }
 
     private void adjustName() {
@@ -906,6 +885,66 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             log.error("Malformed conf file: missing [{}]{}=. Using {}", configAll.getName(), KEY_DESCRIPTION, configAll.getName());
             setProperty(KEY_DESCRIPTION, configAll.getName());
         }
+    }
+
+    /* This method sets the location on the sword conf file for an installed Book.
+     */
+    private void adjustLocation() throws BookException {
+
+        URI library = getLibrary();
+        if (library == null) {
+            return;
+        }
+
+        // Previously, all DATA_PATH entries end in / to indicate dirs
+        // or not to indicate file prefixes.
+        // This is no longer true.
+        // Now we need to test the file/url to see if it exists and is a
+        // directory.
+        String datapath = getProperty(KEY_DATA_PATH);
+        int lastSlash = datapath.lastIndexOf('/');
+
+        // There were modules that did not have a valid DataPath.
+        // This should not be necessary
+        if (lastSlash == -1) {
+            return;
+        }
+
+        // DataPath typically ends in a '/' to indicate a directory.
+        // If so remove it.
+        boolean isDirectoryPath = false;
+        if (lastSlash == datapath.length() - 1) {
+            isDirectoryPath = true;
+            datapath = datapath.substring(0, lastSlash);
+        }
+
+        URI location = NetUtil.lengthenURI(library, datapath);
+        File bookDir = new File(location.getPath());
+        // For some modules, the last element of the DataPath
+        // is a prefix for file names.
+        if (!bookDir.isDirectory()) {
+            if (isDirectoryPath) {
+                // TRANSLATOR: This indicates that the Book is only partially installed.
+                throw new BookException(JSMsg.gettext("The book {0} is missing its data files", configAll.getName()));
+            }
+
+            // not a directory path
+            // try appending .dat on the end to see if we have a file, if not,
+            // then
+            if (!new File(location.getPath() + ".dat").exists()) {
+                // TRANSLATOR: This indicates that the Book is only partially
+                // installed.
+                throw new BookException(JSMsg.gettext("The book {0} is missing its data files", configAll.getName()));
+            }
+
+            // then we have a module that has a prefix
+            // Shorten it by one segment and test again.
+            lastSlash = datapath.lastIndexOf('/');
+            datapath = datapath.substring(0, lastSlash);
+            location = NetUtil.lengthenURI(library, datapath);
+        }
+
+        setLocation(location);
     }
 
     // History is a special case. It is of the form History_x.x
@@ -982,6 +1021,17 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             log.info("Conf report for [{}]\n{}", config.getName(), buf.toString());
         }
     }
+
+    /**
+     * Indicates whether the Book is installed or not.
+     */
+    private boolean installed;
+
+    /**
+     * When true this BookMetaData is filtered and only partially loaded.
+     * Reloading without a filter will change this to false.
+     */
+    private boolean filtered;
 
     /**
      * The name of the conf file, such as kjv.conf.
@@ -1072,7 +1122,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * KeyFilter returns true for keys that should always be present.
      * A partially loaded SwordBookMetaData will satisfy this filter.
      */
-    private static final class KeyFilter implements org.crosswire.common.util.Filter<String> {
+    private static final class KeyFilter implements Filter<String> {
         /**
          * Create a KeyFilter for the expected keys.
          * @param keepers the list of keys that should be retained
@@ -1091,7 +1141,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         private Set keepers;
     }
     
-    private static final org.crosswire.common.util.Filter keyKeepers = new KeyFilter(REQUIRED);
+    private static final Filter keyKeepers = new KeyFilter(REQUIRED);
 
     private static final String[] OSIS_INFO = {
             KEY_ABBREVIATION,

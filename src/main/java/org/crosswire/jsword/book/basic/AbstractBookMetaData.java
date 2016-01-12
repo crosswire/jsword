@@ -183,6 +183,13 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#reload()
+     */
+    public void reload() throws BookException {
+        // over ride this if partial loads are allowed
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String)
      */
     public void putProperty(String key, String value) {

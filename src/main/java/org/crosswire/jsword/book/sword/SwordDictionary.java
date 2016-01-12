@@ -28,7 +28,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
-import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.SourceFilter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
@@ -168,6 +168,6 @@ public class SwordDictionary extends AbstractBook {
     /**
      * The filter to use to convert to OSIS.
      */
-    private Filter filter;
+    private SourceFilter filter;
 
 }

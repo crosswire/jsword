@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
-import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.SourceFilter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -307,14 +307,14 @@ public class SwordBook extends AbstractPassageBook {
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     @Override
-    protected Filter getFilter() {
+    protected SourceFilter getFilter() {
         return filter;
     }
 
     /**
      * The filter to use to convert to OSIS.
      */
-    private Filter filter;
+    private SourceFilter filter;
 
     /**
      * A cached representation of the global key list.

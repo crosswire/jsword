@@ -43,7 +43,7 @@ public class AnalyzerFactoryTest {
 
     /**
      * Test method for
-     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory#createAnalyzer(java.lang.String)}
+     * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory#createAnalyzer(org.crosswire.jsword.book.Book)}
      * .
      */
     @Test

@@ -305,7 +305,6 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         return SwordUtil.decode(name, data, getBookMetaData().getBookCharset());
     }
 
-
     /**
      * How many bytes in the size count in the index
      */

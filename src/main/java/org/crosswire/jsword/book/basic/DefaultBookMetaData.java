@@ -80,7 +80,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setProperty(java.lang.String, java.lang.String)
      */
-    @Override
     public void setProperty(String key, String value) {
         props.put(key, value);
     }

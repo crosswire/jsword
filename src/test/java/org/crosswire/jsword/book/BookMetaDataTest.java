@@ -53,6 +53,8 @@ public class BookMetaDataTest {
             assertFalse("Different initials should not equal", bmKJV.equals(bmKJVA));
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (BookException e) {
+            e.printStackTrace();
         }
     }
 
@@ -82,6 +84,8 @@ public class BookMetaDataTest {
             assertEquals("KJV should be last in sorted book list", bmKJV, mdList.get(2));
             
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BookException e) {
             e.printStackTrace();
         }
     }

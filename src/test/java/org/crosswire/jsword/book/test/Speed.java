@@ -149,6 +149,7 @@ public class Speed implements Runnable {
 
     /**
      * Accessor for the version that we are testing
+     * @return the book
      */
     public Book getBook() {
         return book;

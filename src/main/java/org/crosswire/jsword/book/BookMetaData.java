@@ -233,6 +233,14 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     void setLocation(URI library);
 
     /**
+     * If this BookMetaData is partially loaded, reload it fully.
+     * If it is fully loaded, don't do it again.
+     * 
+     * @throws BookException when a problem is encountered loading the file
+     */
+    void reload() throws BookException;
+
+    /**
      * Get a list of all the properties available to do with this Book. The
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
@@ -251,7 +259,7 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     String getProperty(String key);
 
     /**
-     * Store a transient property..
+     * Store a transient property.
      * 
      * @param key
      *            the key of the property to set

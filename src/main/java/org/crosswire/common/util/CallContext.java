@@ -81,5 +81,5 @@ public final class CallContext {
      */
     private static final int CALL_CONTEXT_OFFSET = 3;
 
-    private static CallContext resolver = new CallContext();;
+    private static CallContext resolver = new CallContext();
 }

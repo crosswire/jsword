@@ -29,16 +29,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple container for all the known filters.
+ * A simple container for all the known SourceFilters.
  * 
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Joe Walker
  */
-public final class FilterFactory {
+public final class SourceFilterFactory {
     /**
      * Prevent instantiation
      */
-    private FilterFactory() {
+    private SourceFilterFactory() {
     }
 
     /**
@@ -48,8 +48,8 @@ public final class FilterFactory {
      * @param lookup the lookup string for the filter
      * @return the matching filter
      */
-    public static Filter getFilter(String lookup) {
-        Filter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
+    public static SourceFilter getFilter(String lookup) {
+        SourceFilter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
 
         if (reply == null) {
             reply = deft;
@@ -63,7 +63,7 @@ public final class FilterFactory {
      * 
      * @return the default filter
      */
-    public static Filter getDefaultFilter() {
+    public static SourceFilter getDefaultFilter() {
         return deft.clone();
     }
 
@@ -73,35 +73,35 @@ public final class FilterFactory {
      * @param name 
      * @param instance 
      */
-    public static void addFilter(String name, Filter instance) {
+    public static void addFilter(String name, SourceFilter instance) {
         filters.put(name.toLowerCase(Locale.ENGLISH), instance);
     }
 
     /**
      * The lookup table of filters
      */
-    private static Map<String, Filter> filters = new HashMap<String, Filter>();
+    private static Map<String, SourceFilter> filters = new HashMap<String, SourceFilter>();
 
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(FilterFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(SourceFilterFactory.class);
 
     /**
      * The lookup table of filters
      */
-    private static volatile Filter deft;
+    private static volatile SourceFilter deft;
 
     /**
      * Populate the lookup table of filters and the default from the properties
      * file.
      */
     static {
-        Map<String, Class<Filter>> map = PluginUtil.getImplementorsMap(Filter.class);
+        Map<String, Class<SourceFilter>> map = PluginUtil.getImplementorsMap(SourceFilter.class);
 
         // the default value
         try {
-            Class<Filter> cdeft = map.remove("default");
+            Class<SourceFilter> cdeft = map.remove("default");
             deft = cdeft.newInstance();
         } catch (InstantiationException e) {
             log.error("Failed to get default filter, will attempt to use first", e);
@@ -110,10 +110,10 @@ public final class FilterFactory {
         }
 
         // the lookup table
-        Filter instance = null;
-        for (Map.Entry<String, Class<Filter>> entry : map.entrySet()) {
+        SourceFilter instance = null;
+        for (Map.Entry<String, Class<SourceFilter>> entry : map.entrySet()) {
             try {
-                Class<Filter> clazz = entry.getValue();
+                Class<SourceFilter> clazz = entry.getValue();
                 instance = clazz.newInstance();
                 addFilter(entry.getKey(), instance);
             } catch (InstantiationException ex) {

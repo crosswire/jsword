@@ -220,6 +220,7 @@ public final class BookName {
      * 
      * @param str
      *            the string to normalize
+     * @param locale the locale that should be used for normalization
      * @return the normalized string
      */
     public static String normalize(String str, Locale locale) {

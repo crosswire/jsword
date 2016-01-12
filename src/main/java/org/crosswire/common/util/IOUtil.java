@@ -28,9 +28,9 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.crosswire.jsword.JSMsg;
 import org.slf4j.LoggerFactory;
 
@@ -77,16 +77,15 @@ public final class IOUtil {
      * @throws IOException
      *            If there is an file error
      */
-    @SuppressWarnings("resource")
     public static void unpackZip(File file, File destdir, boolean include, String... includeExcludes) throws IOException {
         // unpack the zip.
         byte[] dbuf = new byte[4096];
         ZipFile zf = null;
         try {
             zf = new ZipFile(file);
-            Enumeration<? extends ZipEntry> entries = zf.entries();
+            Enumeration<ZipArchiveEntry> entries = zf.getEntries();
             while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
+                ZipArchiveEntry entry = entries.nextElement();
                 String entrypath = entry.getName();
 
                 //check filters
@@ -148,19 +147,39 @@ public final class IOUtil {
     }
 
     /**
-     * Closes any {@link Closeable} object
-     *
-     * @param closeable
-     *            The zip file to close
+     * Get a zip entry by specification, returning a buffer of the contents.
+     * If there is an error, return a zero length buffer.
+     * 
+     * @param entrySpec This is of the form /path/to/zip!entryName
+     * @return the contents as a buffer
+     * @throws IOException 
      */
-    public static void close(Closeable closeable) {
-        if (null != closeable) {
-            try {
-                closeable.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
+    public static byte[] getZipEntry(String entrySpec) throws IOException {
+        // Get the buffer
+        byte[] buffer = new byte[0];
+        String[] parts = StringUtil.split(entrySpec, '!');
+        ZipFile zipFile = null;
+        InputStream zin = null;
+        try {
+            zipFile = new ZipFile(parts[0]);
+            ZipArchiveEntry entry = zipFile.getEntry(parts[1]);
+            zin = zipFile.getInputStream(entry);
+            int size = (int) entry.getSize();
+            buffer = new byte[size];
+            // Repeatedly read until all has been read
+            int offset = 0;
+            while (offset < size) {
+                offset += zin.read(buffer, offset, size - offset);
             }
+
+            if (offset != size) {
+                log.error("Error: Could not read {} bytes, instead {}, for {} from {}", Integer.toString(size), Integer.toString(offset), parts[1], parts[0]);
+            }
+        } finally {
+            IOUtil.close(zin);
+            IOUtil.close(zipFile);
         }
+        return buffer;
     }
 
     /**
@@ -169,7 +188,7 @@ public final class IOUtil {
      * @param closeable
      *            The zip file to close
      */
-    public static void close(ZipFile closeable) {
+    public static void close(Closeable closeable) {
         if (null != closeable) {
             try {
                 closeable.close();

@@ -27,7 +27,7 @@ import java.util.List;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.SourceFilter;
 import org.crosswire.jsword.passage.Key;
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -41,7 +41,7 @@ import org.jdom2.Element;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Joe Walker
  */
-public class GBFFilter implements Filter {
+public class GBFFilter implements SourceFilter {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
