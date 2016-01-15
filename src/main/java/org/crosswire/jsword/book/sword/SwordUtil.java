@@ -78,6 +78,17 @@ public final class SwordUtil {
         int size = theSize;
         long rafSize = raf.length();
 
+        // It is common to have an entry that points to nothing.
+        // That is the equivalent of an empty string.
+        if (size == 0) {
+            return new byte[0];
+        }
+
+        if (size < 0) {
+            log.error("Nothing to read at offset = {} returning empty because negative size={}", Long.toString(offset), Integer.toString(size));
+            return new byte[0];
+        }
+
         if (offset >= rafSize) {
             log.error("Attempt to read beyond end. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             return new byte[0];
@@ -86,11 +97,6 @@ public final class SwordUtil {
         if (offset + size > raf.length()) {
             log.error("Need to reduce size to avoid EOFException. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             size = (int) (raf.length() - offset);
-        }
-
-        if (size < 1) {
-            log.error("Nothing to read at offset = {} returning empty because size={}", Long.toString(offset), Integer.toString(size));
-            return new byte[0];
         }
 
         byte[] read = new byte[size];
