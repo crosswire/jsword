@@ -174,7 +174,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         tempMap.put(KEY_OSIS_Q_TO_TICK, "true");
         tempMap.put(KEY_VERSION, "1.0");
         tempMap.put(KEY_MINIMUM_VERSION, "1.5.1a");
-        tempMap.put(KEY_CATEGORY, "Biblical Texts");
+        tempMap.put(KEY_CATEGORY, "Other");
         tempMap.put(KEY_LANG, "en");
         tempMap.put(KEY_DISTRIBUTION_LICENSE, "Public Domain");
         tempMap.put(KEY_CASE_SENSITIVE_KEYS, "false");
@@ -876,7 +876,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             focusedCategory = bookType.getBookCategory();
         }
 
-        //setProperty(KEY_CATEGORY, focusedCategory.getName());
+        setProperty(KEY_CATEGORY, focusedCategory.getName());
     }
 
     private void adjustName() {

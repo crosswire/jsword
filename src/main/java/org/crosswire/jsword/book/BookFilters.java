@@ -350,8 +350,14 @@ public final class BookFilters {
         public boolean test(Book book) {
             for (int i = 0; i < tests.length; i++) {
                 Test test = tests[i];
-                Object result = book.getProperty(test.property);
-                if (result == null || !test.result.equals(result.toString())) {
+                if ("initials".equalsIgnoreCase(test.property)) {
+                    if (!test.result.equals(book.getInitials())) {
+                        return false;
+                    }
+                    continue;
+                }
+                String result = book.getProperty(test.property);
+                if (result == null || !test.result.equals(result)) {
                     return false;
                 }
             }

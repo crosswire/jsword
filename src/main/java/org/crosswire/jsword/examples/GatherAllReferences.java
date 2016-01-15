@@ -18,7 +18,7 @@
  *     The copyright to this program is held by its authors.
  *
  */
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.examples;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -28,6 +28,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
 import org.slf4j.Logger;
