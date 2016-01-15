@@ -64,6 +64,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         super(sbmd);
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
+        //if (sbmd.getInitials().equals("ERde_en")) { dumpIdxRaf(); }
     }
 
     public String readRawContent(RawLDBackendState state, Key key) throws IOException {
@@ -75,21 +76,20 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     private String readRawContent(RawLDBackendState state, String key) throws IOException {
+        if (key == null || key.length() == 0) {
+            return "";
+        }
         int pos = search(state, key);
         if (pos >= 0) {
-            DataEntry entry = getEntry(state, key, pos);
+            DataIndex index = getIndex(state, pos);
+            DataEntry entry = getEntry(state, key, index);
             entry = getEntry(state, entry);
             if (entry.isLinkEntry()) {
                 return readRawContent(state, entry.getLinkTarget());
             }
-//            // If the ZLDBackend is linked then the above isn't linked but
-//            // the raw text is.
-//            String raw = getRawText(state, entry);
-//            if (raw.startsWith("@LINK")) {
-//                return readRawContent(state, raw.substring(6).trim());
-//            }
             return getRawText(entry);
         }
+
         // TRANSLATOR: Error condition: Indicates that something could not
         // be found in the book. {0} is a placeholder for the unknown key.
         throw new IOException(JSMsg.gettext("Key not found {0}", key));
@@ -138,7 +138,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             state = initState();
 
             if (index < getCardinality()) {
-                DataEntry entry = getEntry(state, getBookMetaData().getInitials(), index);
+                DataIndex dataIndex = getIndex(state, index);
+                DataEntry entry = getEntry(state, getBookMetaData().getInitials(), dataIndex);
                 String keytitle = internal2external(entry.getKey());
                 return new DefaultLeafKeyList(keytitle);
             }
@@ -209,7 +210,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * @return the index of the entry
      * @throws IOException
      */
-    private DataIndex getIndex(RawLDBackendState state, long entry) throws IOException {
+    protected DataIndex getIndex(RawLDBackendState state, long entry) throws IOException {
         // Read the offset and size for this key from the index
         byte[] buffer = SwordUtil.readRAF(state.getIdxRaf(), entry * entrysize, entrysize);
         int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
@@ -235,8 +236,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * @return the text for the entry.
      * @throws IOException
      */
-    private DataEntry getEntry(RawLDBackendState state, String reply, int index) throws IOException {
-        DataIndex dataIndex = getIndex(state, index);
+    private DataEntry getEntry(RawLDBackendState state, String reply, DataIndex dataIndex) throws IOException {
+//        DataIndex dataIndex = getIndex(state, index);
         // Now read the data file for this key using the offset and size
         byte[] data = SwordUtil.readRAF(state.getDatRaf(), dataIndex.getOffset(), dataIndex.getSize());
         return new DataEntry(reply, data, getBookMetaData().getBookCharset());
@@ -274,14 +275,32 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         int low = 0;
         int high = total;
         int match = -1;
+        DataIndex dataIndex = null;
 
+        String suppliedKey = null;
         while (high - low > 1) {
             // use >>> to keep mid always in range
             int mid = (low + high) >>> 1;
 
             // Get the key for the item at "mid"
-            String entryKey = normalizeForSearch(getEntry(state, key, mid).getKey());
-            int cmp = entryKey.compareTo(normalizeForSearch(external2internal(key, entryKey)));
+            dataIndex = getIndex(state, mid);
+            // Occasionally there's a bogus index entry (size == 0)
+            // in the middle of the index. It needs to be skipped.
+            while (dataIndex.getSize() == 0) {
+                // reset mid toward the longer end
+                mid += high - mid > mid - low ? 1 : -1;
+                // ensure that we are in bounds.
+                if (mid < low || mid > high) {
+                    break;
+                }
+                dataIndex = getIndex(state, mid);
+            }
+            String entryKey = normalizeForSearch(getEntry(state, key, dataIndex).getKey());
+            // Normalize the key based upon the first entry looked at.
+            if (suppliedKey == null) {
+                suppliedKey = normalizeForSearch(external2internal(key, entryKey));
+            }
+            int cmp = entryKey.compareTo(suppliedKey);
             if (cmp < 0) {
                 low = mid;
             } else if (cmp > 0) {
@@ -298,14 +317,20 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         }
 
         // Many dictionaries have an introductory entry, so check it for a match.
-        if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(normalizeForSearch(key)) == 0) {
+        dataIndex = getIndex(state, 0);
+        String entryKey = normalizeForSearch(getEntry(state, key, dataIndex).getKey());
+        if (suppliedKey == null) {
+            suppliedKey = normalizeForSearch(external2internal(key, entryKey));
+        }
+        if (entryKey.compareTo(suppliedKey) == 0) {
             return 0;
         }
 
         // It wasn't found so see if it is present in a linear search if case sensitive keys are used.
         if ("true".equalsIgnoreCase(getBookMetaData().getProperty(SwordBookMetaData.KEY_CASE_SENSITIVE_KEYS))) {
            for (int i = 0; i < total; i++) {
-               if (getEntry(state, key, i).getKey().compareTo(key) == 0) {
+               dataIndex = getIndex(state, i);
+               if (getEntry(state, key, dataIndex).getKey().compareTo(key) == 0) {
                    return i;
                }       
            }
@@ -323,9 +348,17 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * @return the internal representation of the key.
      */
     private String external2internal(String externalKey, String pattern) {
+        if (externalKey.length() == 0) {
+            return externalKey;
+        }
         SwordBookMetaData bmd = getBookMetaData();
         String keytitle = externalKey;
         if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
+            // Is it already in internal format? If so, just return it.
+            Matcher m = DEVOTION_PATTERN.matcher(keytitle);
+            if (m.matches()) {
+                return keytitle;
+            }
             Calendar greg = new GregorianCalendar();
             DateFormatter nameDF = DateFormatter.getDateInstance();
             nameDF.setLenient(true);
@@ -341,64 +374,96 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             // Is the string valid?
             Matcher m = STRONGS_PATTERN.matcher(keytitle);
             if (!m.matches()) {
-                return keytitle.toUpperCase(Locale.US);
+                return keytitle;
             }
-
-            // NASB has trailing letters!
-            int pos = keytitle.length() - 1;
-            char lastLetter = keytitle.charAt(pos);
-            boolean hasTrailingLetter = Character.isLetter(lastLetter);
-            if (hasTrailingLetter) {
-                keytitle = keytitle.substring(0, pos);
-                // And it might be preceded by a !
-                pos--;
-                if (pos > 0 && keytitle.charAt(pos) == '!') {
+            if ("true".equalsIgnoreCase(bmd.getProperty(SwordBookMetaData.KEY_STRONGS_PADDING))) {
+                // pad to 4 digits
+                // NASB has trailing letters!
+                int pos = keytitle.length() - 1;
+                char lastLetter = keytitle.charAt(pos);
+                boolean hasTrailingLetter = Character.isLetter(lastLetter);
+                if (hasTrailingLetter) {
                     keytitle = keytitle.substring(0, pos);
+                    // And it might be preceded by a !
+                    pos--;
+                    if (pos > 0 && keytitle.charAt(pos) == '!') {
+                        keytitle = keytitle.substring(0, pos);
+                    }
                 }
+
+                // Get the G or the H.
+                char type = keytitle.charAt(0);
+
+                // Get the number after the G or H
+                int strongsNumber = Integer.parseInt(keytitle.substring(1));
+                // If it has both Greek and Hebrew, then the G and H are needed.
+                StringBuilder buf = new StringBuilder();
+                if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) && bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
+                    // The convention is that a Strong's dictionary with both Greek
+                    // and Hebrew have G or H prefix
+                    buf.append(type);
+                    buf.append(getZero4Pad().format(strongsNumber));
+
+                    // The NAS lexicon has some entries that end in A-Z, but it is
+                    // not preceded by a !
+                    if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
+                        buf.append(lastLetter);
+                    }
+                    return buf.toString();
+                }
+
+                m = STRONGS_PATTERN.matcher(pattern);
+                if (m.matches()) {
+                    buf.append(type);
+                    int numLength = m.group(2).length();
+                    if (numLength == 4) {
+                        buf.append(getZero4Pad().format(strongsNumber));
+                    } else {
+                        buf.append(getZero5Pad().format(strongsNumber));
+                    }
+                    // The NAS lexicon has some entries that end in A-Z, but it is
+                    // not preceded by a !
+                    if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
+                        buf.append(lastLetter);
+                    }
+                    return buf.toString();
+                }
+
+                // It is just the number
+                return getZero5Pad().format(strongsNumber);
             }
-
-            // Get the G or the H.
-            char type = keytitle.charAt(0);
-
-            // Get the number after the G or H
-            int strongsNumber = Integer.parseInt(keytitle.substring(1));
-            // If it has both Greek and Hebrew, then the G and H are needed.
-            StringBuilder buf = new StringBuilder();
-            if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) && bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
+            // else unpad, E.g. G0001 to G1
+            // This test is merely an optimization to prevent unnecessary work.
+            if (keytitle.charAt(1) == '0') {
+                char type = keytitle.charAt(0);
+                // NASB has trailing letters!
+                int pos = keytitle.length() - 1;
+                char lastLetter = keytitle.charAt(pos);
+                boolean hasTrailingLetter = Character.isLetter(lastLetter);
+                if (hasTrailingLetter) {
+                    keytitle = keytitle.substring(0, pos);
+                    // And it might be preceded by a !
+                    pos--;
+                    if (pos > 0 && keytitle.charAt(pos) == '!') {
+                        keytitle = keytitle.substring(0, pos);
+                    }
+                }
+                // Get the number after the G or H
+                int strongsNumber = Integer.parseInt(keytitle.substring(1));                
                 // The convention is that a Strong's dictionary with both Greek
                 // and Hebrew have G or H prefix
-                buf.append(Character.toUpperCase(type));
-                buf.append(getZero4Pad().format(strongsNumber));
+                StringBuilder buf = new StringBuilder();
+                buf.append(type);
+                buf.append(strongsNumber);
 
                 // The NAS lexicon has some entries that end in A-Z, but it is
                 // not preceded by a !
                 if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
-                    buf.append(Character.toUpperCase(lastLetter));
+                    buf.append(lastLetter);
                 }
-                return buf.toString();
             }
-
-            m = STRONGS_PATTERN.matcher(pattern);
-            if (m.matches()) {
-                buf.append(Character.toUpperCase(type));
-                int numLength = m.group(2).length();
-                if (numLength == 4) {
-                    buf.append(getZero4Pad().format(strongsNumber));
-                } else {
-                    buf.append(getZero5Pad().format(strongsNumber));
-                }
-                // The NAS lexicon has some entries that end in A-Z, but it is
-                // not preceded by a !
-                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
-                    buf.append(Character.toUpperCase(lastLetter));
-                }
-                return buf.toString();
-            }
-
-            // It is just the number
-            return getZero5Pad().format(strongsNumber);
         }
-        return keytitle.toUpperCase(Locale.US);
+        return keytitle;
     }
 
     private String internal2external(String internalKey) {
@@ -451,6 +516,55 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         is.defaultReadObject();
     }
 
+    /** 
+     * Experimental code.
+     */
+    public void dumpIdxRaf() {
+        RawLDBackendState state = null;
+        long end = -1;
+        try {
+            state = initState();
+            end = getCardinality();
+            StringBuilder buf = new StringBuilder();
+            System.out.println("index\toffset\tsize\tkey\tvalue");
+            for (long i = 0; i < end; ++i) {
+                DataIndex index = getIndex(state, i);
+                int offset = index.getOffset();
+                int size   = index.getSize();
+                buf.setLength(0);
+                buf.append(i);
+                buf.append('\t');
+                buf.append(offset);
+                buf.append('\t');
+                buf.append(size);
+                if (size > 0) {
+                    // Now read the data file for this key using the offset and size
+                    byte[] data = SwordUtil.readRAF(state.getDatRaf(), offset, size);
+                    DataEntry entry = new DataEntry(Long.toString(i), data, getBookMetaData().getBookCharset());
+                    buf.append('\t');
+                    buf.append(entry.getKey());
+                    buf.append('\t');
+                    String raw = getRawText(entry);
+                    if (raw.length() > 43) {
+                        buf.append(raw.substring(0, 40));
+                        buf.append("...");
+                    } else {
+                        buf.append(raw);
+                    }
+                } else {
+                    buf.append("\t\t");
+                }
+                System.out.println(buf.toString());
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BookException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Date formatter
      */
@@ -462,6 +576,10 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * letter.
      */
     private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$");
+    /**
+     * This is the pattern of a date for a DailyDevotion, DD.MM
+     */
+    private static final Pattern DEVOTION_PATTERN = Pattern.compile("^\\d\\d\\.\\d\\d$");
 
     /**
      * The number of bytes in the size count in the index
