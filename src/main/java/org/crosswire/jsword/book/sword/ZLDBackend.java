@@ -45,7 +45,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
      */
     public ZLDBackend(SwordBookMetaData sbmd) {
         super(sbmd, 4);
-        if (sbmd.getInitials().equals("BosworthToller")) { dumpIdxRaf(); }
+        //if (sbmd.getInitials().equals("BosworthToller")) { dumpIdxRaf(); }
     }
 
     /* (non-Javadoc)
