@@ -122,7 +122,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
             state = initState();
             return readRawContent(state, key);
         } catch (IOException e) {
-            throw new BookException("Unable to obtain raw content from backend", e);
+            throw new BookException("Unable to obtain raw content from backend for key='" + key + '\'', e);
         } finally {
             OpenFileStateManager.instance().release(state);
         }
