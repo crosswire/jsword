@@ -257,7 +257,7 @@ final class Ini {
      * 
      * @return the keys of the first section
      */
-    public List<String> getKeys() {
+    public Collection<String> getKeys() {
         IniSection section = getSection();
         return section == null ? null : section.getKeys();
     }
