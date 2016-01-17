@@ -199,6 +199,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         setLibrary(bookRootPath);
 
         this.configAll = new IniSection();
+        this.filtered = true; // Force it to run.
         reload(keyKeepers);
     }
 
@@ -215,6 +216,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         this.bookConf = bookConf; // something like .../mods.d.zip!mods.d/kjv.conf
         this.supported = true;
         this.configAll = new IniSection();
+        this.filtered = true; // Force it to run.
         loadBuffer(buffer, keyKeepers);
         adjustConfig();
         report(configAll);
@@ -638,11 +640,29 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             try {
                 config.save(new File(writeLocation, bookConf), getBookCharset());
             } catch (IOException e1) {
-                log.error("Unable to save {}={}: conf file for [{}]; error={}", key, value, configAll.getName(), e1);
+                LOGGER.error("Unable to save {}={}: conf file for [{}]; error={}", key, value, configAll.getName(), e1);
             }
         }
     }
 
+    
+    /**
+     * Allow for partial loading of a minimum set of keys, saving time and space.
+     * If partial, call reload(null) to fill it in before showing the conf contents to a user.
+     * 
+     * @param partial
+     */
+    public static void setPartialLoading(boolean partial) {
+     
+        if (partial != partialLoading) {
+            if (partial) {
+                keyKeepers = new KeyFilter(REQUIRED);
+            } else {
+                keyKeepers = null;
+            }
+        }
+        partialLoading = partial;
+    }
     /**
      * Load the conf from a file.
      *
@@ -697,7 +717,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 mergeConfig(config);
                 return config;
             } catch (IOException e) {
-                log.error("Unable to load conf {}:{}", conf, e);
+                LOGGER.error("Unable to load conf {}:{}", conf, e);
             }
         }
 
@@ -816,20 +836,20 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             if (langFrom == null) {
                 langFrom = lang;
                 setProperty(KEY_GLOSSARY_FROM, langFrom);
-                log.warn("Missing data for [{}]. Assuming {}={}", configAll.getName(), KEY_GLOSSARY_FROM, langFrom);
+                LOGGER.warn("Missing data for [{}]. Assuming {}={}", configAll.getName(), KEY_GLOSSARY_FROM, langFrom);
             }
             testLanguage(KEY_GLOSSARY_FROM, langFrom);
 
             if (langTo == null) {
                 langTo = Language.DEFAULT_LANG.getGivenSpecification();
                 setProperty(KEY_GLOSSARY_TO, langTo);
-                log.warn("Missing data for [{}]. Assuming {}={}", configAll.getName(), KEY_GLOSSARY_TO, langTo);
+                LOGGER.warn("Missing data for [{}]. Assuming {}={}", configAll.getName(), KEY_GLOSSARY_TO, langTo);
             }
             testLanguage(KEY_GLOSSARY_TO, langTo);
 
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang)) {
-                log.error("Data error in [{}]. Neither {} or {} match {}", configAll.getName(), KEY_GLOSSARY_FROM, KEY_GLOSSARY_TO, KEY_LANG);
+                LOGGER.error("Data error in [{}]. Neither {} or {} match {}", configAll.getName(), KEY_GLOSSARY_FROM, KEY_GLOSSARY_TO, KEY_LANG);
             }
         }
 
@@ -839,7 +859,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     private void testLanguage(String key, String lang) {
         Language language = new Language(lang);
         if (!language.isValidLanguage()) {
-            log.warn("Unknown language [{}]{}={}", configAll.getName(), key, lang);
+            LOGGER.warn("Unknown language [{}]{}={}", configAll.getName(), key, lang);
         }
     }
 
@@ -851,21 +871,21 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         String modTypeName = getProperty(KEY_MOD_DRV);
         if (modTypeName == null) {
-            log.error("Book not supported: malformed conf file for [{}] no {} found.", configAll.getName(), KEY_MOD_DRV);
+            LOGGER.error("Book not supported: malformed conf file for [{}] no {} found.", configAll.getName(), KEY_MOD_DRV);
             supported = false;
             return;
         }
 
         String v11n = getProperty(KEY_VERSIFICATION);
         if (!Versifications.instance().isDefined(v11n)) {
-            log.error("Book not supported: Unknown versification for [{}]{}={}.", configAll.getName(), KEY_VERSIFICATION, v11n);
+            LOGGER.error("Book not supported: Unknown versification for [{}]{}={}.", configAll.getName(), KEY_VERSIFICATION, v11n);
             supported = false;
             return;
         }
 
         bookType = BookType.fromString(modTypeName);
         if (bookType == null) {
-            log.error("Book not supported: malformed conf file for [{}] no book type found", configAll.getName());
+            LOGGER.error("Book not supported: malformed conf file for [{}] no book type found", configAll.getName());
             supported = false;
             return;
         }
@@ -882,7 +902,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     private void adjustName() {
         // If there is no name then use the initials name
         if (configAll.get(KEY_DESCRIPTION) == null) {
-            log.error("Malformed conf file: missing [{}]{}=. Using {}", configAll.getName(), KEY_DESCRIPTION, configAll.getName());
+            LOGGER.error("Malformed conf file: missing [{}]{}=. Using {}", configAll.getName(), KEY_DESCRIPTION, configAll.getName());
             setProperty(KEY_DESCRIPTION, configAll.getName());
         }
     }
@@ -1018,7 +1038,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
         }
         if (buf.length() > 0) {
-            log.info("Conf report for [{}]\n{}", config.getName(), buf.toString());
+            LOGGER.info("Conf report for [{}]\n{}", config.getName(), buf.toString());
         }
     }
 
@@ -1088,6 +1108,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             KEY_DESCRIPTION,
             KEY_LANG,
             KEY_CATEGORY,
+            KEY_VERSION,
             KEY_FEATURE,
             KEY_GLOBAL_OPTION_FILTER,
             KEY_SIGLUM1,
@@ -1140,8 +1161,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         }
         private Set keepers;
     }
-    
-    private static final Filter keyKeepers = new KeyFilter(REQUIRED);
+ 
+    private static boolean partialLoading = false;
+ 
+    private static Filter keyKeepers = null;
 
     private static final String[] OSIS_INFO = {
             KEY_ABBREVIATION,
@@ -1226,6 +1249,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(SwordBookMetaData.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SwordBookMetaData.class);
 
 }

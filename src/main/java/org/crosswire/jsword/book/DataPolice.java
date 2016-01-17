@@ -50,6 +50,9 @@ public final class DataPolice {
      *            the police report.
      */
     public static void report(Book book, Key key, String message) {
+        if (!reporting) {
+            return;
+        }
         StringBuilder buf = new StringBuilder();
         BookMetaData bmd = book.getBookMetaData();
         if (bmd != null) {
@@ -63,11 +66,31 @@ public final class DataPolice {
         }
         buf.append(": ");
         buf.append(message);
-        log.info(buf.toString());
+        LOGGER.info(buf.toString());
     }
+
+    /**
+     * @return Returns whether to report found problems.
+     */
+    public static synchronized boolean isReporting() {
+        return reporting;
+    }
+
+    /**
+     * @param reporting
+     *            Turn on reporting of found problems
+     */
+    public static synchronized void setReporting(boolean reporting) {
+        DataPolice.reporting = reporting;
+    }
+
+    /**
+     * Whether to report problems or not. By default, reporting is off.
+     */
+    private static boolean reporting = false;
 
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(DataPolice.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataPolice.class);
 }
