@@ -271,7 +271,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      */
     public String readRawContent(ZVerseBackendState rafBook, Key key) throws IOException {
 
-        SwordBookMetaData bookMetaData = getBookMetaData();
+        BookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
         final String compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE);
 

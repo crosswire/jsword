@@ -30,7 +30,7 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +54,8 @@ public class GenBookBackendState extends AbstractOpenFileState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    GenBookBackendState(SwordBookMetaData bookMetaData) {
-        this.bookMetaData = bookMetaData;
+    GenBookBackendState(BookMetaData bookMetaData) {
+        super(bookMetaData);
         URI path = null;
         try {
             path = SwordUtil.getExpandedDataPath(bookMetaData);
@@ -80,7 +80,7 @@ public class GenBookBackendState extends AbstractOpenFileState {
             //failed to open the files, so close them now
             IOUtil.close(bdtRaf);
 
-            log.error("failed to open files", ex);
+            LOGGER.error("failed to open files", ex);
             bdtRaf = null;
         }
     }
@@ -98,13 +98,6 @@ public class GenBookBackendState extends AbstractOpenFileState {
     }
 
     /**
-     * @return the bookMetaData
-     */
-    public SwordBookMetaData getBookMetaData() {
-        return bookMetaData;
-    }
-
-    /**
      * Raw GenBook file extensions
      */
     private static final String EXTENSION_BDT = ".bdt";
@@ -118,10 +111,9 @@ public class GenBookBackendState extends AbstractOpenFileState {
      * The random access file for the raw data
      */
     private RandomAccessFile bdtRaf;
-    private SwordBookMetaData bookMetaData;
 
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(GenBookBackendState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenBookBackendState.class);
 }

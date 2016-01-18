@@ -178,6 +178,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         tempMap.put(KEY_LANG, "en");
         tempMap.put(KEY_DISTRIBUTION_LICENSE, "Public Domain");
         tempMap.put(KEY_CASE_SENSITIVE_KEYS, "false");
+        tempMap.put(KEY_STRONGS_PADDING, "true");
         DEFAULTS = Collections.unmodifiableMap(tempMap);
     }
 
@@ -327,11 +328,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return getProperty(KEY_DESCRIPTION);
     }
 
-    /**
-     * Returns the Charset of the book based on the encoding attribute. This
-     * cannot be override
-     *
-     * @return the charset of the book.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBookCharset()
      */
     public String getBookCharset() {
         return ENCODING_JAVA.get(getProperty(KEY_ENCODING));

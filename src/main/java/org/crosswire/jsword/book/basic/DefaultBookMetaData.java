@@ -61,6 +61,13 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getBookCharset()
+     */
+    public String getBookCharset() {
+        return DEFAULT_CHARSET;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getPropertyKeys()
      */
     public Set<String> getPropertyKeys() {
@@ -219,7 +226,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         throw new UnsupportedOperationException();
     }
 
-
     private void addRow(OSISUtil.OSISFactory factory, Element table, String key, String value) {
         if (value == null) {
             return;
@@ -248,4 +254,5 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     private String name;
     private String initials;
     private Map<String, String> props;
+    private static final String DEFAULT_CHARSET = "UTF-8";
 }

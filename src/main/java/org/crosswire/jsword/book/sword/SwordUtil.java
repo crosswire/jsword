@@ -28,6 +28,7 @@ import java.net.URI;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -386,7 +387,7 @@ public final class SwordUtil {
      * @return the URI locating the resource
      * @throws BookException thrown if an issue is encountered, e.g. missing data files.
      */
-    public static URI getExpandedDataPath(SwordBookMetaData bookMetaData) throws BookException {
+    public static URI getExpandedDataPath(BookMetaData bookMetaData) throws BookException {
         URI loc = NetUtil.lengthenURI(bookMetaData.getLibrary(), bookMetaData.getProperty(SwordBookMetaData.KEY_DATA_PATH));
 
         if (loc == null) {

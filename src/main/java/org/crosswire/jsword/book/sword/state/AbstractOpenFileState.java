@@ -20,13 +20,23 @@
  */
 package org.crosswire.jsword.book.sword.state;
 
+import org.crosswire.jsword.book.BookMetaData;
+
 /**
-  *
+ *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public abstract class AbstractOpenFileState implements OpenFileState {
-    private long lastAccess = System.currentTimeMillis();
+    /**
+     * Create an AbstractOpenFileState tied to a BookMetaData.
+     * 
+     * @param bmd the BookMetaData for this OpenFileState
+     */
+    public AbstractOpenFileState(BookMetaData bmd) {
+        bookMetaData = bmd;
+        lastAccess = System.currentTimeMillis();
+    }
 
     /**
      * Allows us to decide whether to release the resources or continue using them
@@ -35,6 +45,14 @@ public abstract class AbstractOpenFileState implements OpenFileState {
         OpenFileStateManager.instance().release(this);
     }
 
+    /**
+     * Get the BookMetaData for this OpenFileState.
+     * 
+     * @return the BookMetaData
+     */
+    public BookMetaData getBookMetaData() {
+        return bookMetaData;
+    }
     /**
       * @return latest access before releasing back to the pool
      */
@@ -48,4 +66,14 @@ public abstract class AbstractOpenFileState implements OpenFileState {
     public void setLastAccess(final long lastAccess) {
         this.lastAccess = lastAccess;
     }
+
+    /**
+     * The BookMetaData for this OpenFileState. Used to locate files.
+     */
+    private BookMetaData bookMetaData;
+
+    /**
+     * The time of last access, used for LRU expiration of state.
+     */
+    private long lastAccess;
 }

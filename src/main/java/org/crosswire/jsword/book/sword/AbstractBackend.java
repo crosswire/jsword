@@ -30,6 +30,7 @@ import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
@@ -72,7 +73,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.Backend#getBookMetaData()
      */
-    public SwordBookMetaData getBookMetaData() {
+    public BookMetaData getBookMetaData() {
         return bmd;
     }
 

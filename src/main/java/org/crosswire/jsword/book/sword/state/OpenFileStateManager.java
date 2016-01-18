@@ -31,8 +31,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.BlockType;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,11 +42,11 @@ import org.slf4j.LoggerFactory;
  * example we may be carrying out a contains() operation followed by a read to
  * disk for a particular key
  * 
- * Each {@link SwordBookMetaData} has a corresponding a file state which is
+ * Each {@link BookMetaData} has a corresponding a file state which is
  * different to another. Furthermore, concurrent accesses cannot share this file
  * state as the {@link OpenFileState} records where in the file it is, for
  * reading several verses together for example. As a result, we want to key a
- * lookup by {@link SwordBookMetaData}, which then gives us a pool of available
+ * lookup by {@link BookMetaData}, which then gives us a pool of available
  * file states... We create some more if none are available.
  * 
  * In order to prevent memory leaks (OpenFileStates might be quite heavy as they do some internal caching of file data..
@@ -106,7 +106,7 @@ public final class OpenFileStateManager {
         if (manager == null) {
             manager = new OpenFileStateManager(cleanupIntervalSeconds, maxExpiry);
         } else {
-            // already intialized
+            // already initialized
             LOGGER.warn("The OpenFileStateManager has already been initialised, potentially with its default settings. The following values were ignored: cleanUpInterval [{}], maxExpiry=[{}]", Integer.toString(cleanupIntervalSeconds), Integer.toString(maxExpiry));
         }
 
@@ -125,7 +125,7 @@ public final class OpenFileStateManager {
         return manager;
     }
 
-    public RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
+    public RawBackendState getRawBackendState(BookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawBackendState state = getInstance(metadata);
@@ -138,7 +138,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
+    public RawFileBackendState getRawFileBackendState(BookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawFileBackendState state = getInstance(metadata);
@@ -151,7 +151,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
+    public GenBookBackendState getGenBookBackendState(BookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         GenBookBackendState state = getInstance(metadata);
@@ -164,7 +164,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public RawLDBackendState getRawLDBackendState(SwordBookMetaData metadata) throws BookException {
+    public RawLDBackendState getRawLDBackendState(BookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         RawLDBackendState state = getInstance(metadata);
@@ -177,7 +177,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public ZLDBackendState getZLDBackendState(SwordBookMetaData metadata) throws BookException {
+    public ZLDBackendState getZLDBackendState(BookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
         ZLDBackendState state = getInstance(metadata);
@@ -190,7 +190,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    public ZVerseBackendState getZVerseBackendState(SwordBookMetaData metadata, BlockType blockType) throws BookException {
+    public ZVerseBackendState getZVerseBackendState(BookMetaData metadata, BlockType blockType) throws BookException {
         ensureNotShuttingDown();
 
         ZVerseBackendState state = getInstance(metadata);
@@ -204,7 +204,7 @@ public final class OpenFileStateManager {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends OpenFileState> T getInstance(SwordBookMetaData metadata) {
+    private <T extends OpenFileState> T getInstance(BookMetaData metadata) {
         Queue<OpenFileState> availableStates = getQueueForMeta(metadata);
         final T state = (T) availableStates.poll();
 
@@ -218,7 +218,7 @@ public final class OpenFileStateManager {
         return state;
     }
 
-    private Queue<OpenFileState> getQueueForMeta(SwordBookMetaData metadata) {
+    private Queue<OpenFileState> getQueueForMeta(BookMetaData metadata) {
         Queue<OpenFileState> availableStates = metaToStates.get(metadata);
         if (availableStates == null) {
             synchronized (OpenFileState.class) {
@@ -239,7 +239,7 @@ public final class OpenFileStateManager {
         fileState.setLastAccess(System.currentTimeMillis());
 
         // instead of releasing, we add to our queue
-        SwordBookMetaData bmd = fileState.getBookMetaData();
+        BookMetaData bmd = fileState.getBookMetaData();
         Queue<OpenFileState> queueForMeta = getQueueForMeta(bmd);
         LOGGER.trace("Offering to releasing: {}", bmd.getInitials());
         boolean offered = queueForMeta.offer(fileState);
@@ -272,7 +272,7 @@ public final class OpenFileStateManager {
     }
 
     private final ScheduledFuture<?> monitoringThread;
-    private final Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
+    private final Map<BookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<BookMetaData, Queue<OpenFileState>>();
     private volatile boolean shuttingDown;
 
     private static volatile OpenFileStateManager manager;

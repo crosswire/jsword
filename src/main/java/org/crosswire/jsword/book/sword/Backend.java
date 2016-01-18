@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.Key;
@@ -21,7 +22,7 @@ public interface Backend<T extends OpenFileState> {
     /**
      * @return Returns the Sword BookMetaData.
      */
-    SwordBookMetaData getBookMetaData();
+    BookMetaData getBookMetaData();
 
     /**
      * Decipher the data in place, if it is enciphered and there is a key to

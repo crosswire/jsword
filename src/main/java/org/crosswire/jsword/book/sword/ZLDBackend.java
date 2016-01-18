@@ -45,7 +45,6 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
      */
     public ZLDBackend(SwordBookMetaData sbmd) {
         super(sbmd, 4);
-        //if (sbmd.getInitials().equals("BosworthToller")) { dumpIdxRaf(); }
     }
 
     /* (non-Javadoc)
@@ -157,31 +156,32 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
                 buf.append(offset);
                 buf.append('\t');
                 buf.append(size);
-                buf.append('\t');
                 if (size > 0) {
                     // Now read the data file for this key using the offset and size
                     byte[] data = SwordUtil.readRAF(state.getDatRaf(), offset, size);
                     DataEntry blockEntry = new DataEntry(Long.toString(i), data, getBookMetaData().getBookCharset());
                     DataIndex block = blockEntry.getBlockIndex();
                     DataEntry dataEntry = getEntry(state, blockEntry);
-                    buf.append(blockEntry.getKey());
+                    String key = blockEntry.getKey();
+                    buf.append('\t');
+                    buf.append(key);
                     buf.append('\t');
                     buf.append(block.getOffset());
                     buf.append('\t');
                     buf.append(block.getSize());
+                    String raw;
+                    buf.append('\t');
                     if (dataEntry.isLinkEntry()) {
-                        String raw = dataEntry.getLinkTarget();
-                        buf.append('\t').append("Linked to: ").append(raw);
-//                    // If the ZLDBackend is linked then the above isn't linked but
-//                    // the raw text is.
-//                    String raw = getRawText(state, entry);
-//                    if (raw.startsWith("@LINK")) {
-//                        return readRawContent(state, raw.substring(6).trim());
-//                    }
+                        raw = dataEntry.getLinkTarget();
+                        buf.append("Linked to: ").append(raw.replace('\n', ' '));
                     } else {
-                        buf.append('\t');
-                        String raw = getRawText(dataEntry);
+                        raw = getRawText(dataEntry);
+                        if (raw.length() > 43) {
+                            buf.append(raw.substring(0, 40).replace('\n', ' '));
+                            buf.append("...");
+                        } else {
                             buf.append(raw);
+                        }
                     }
                 }
                 System.out.println(buf.toString());
@@ -192,6 +192,8 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
         } catch (BookException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            OpenFileStateManager.instance().release(state);
         }
     }
 

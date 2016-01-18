@@ -89,9 +89,6 @@ public abstract class AbstractBook implements Book {
         this.bmd = bmd;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getBookMetaData()
-     */
     public final Backend getBackend() {
         return backend;
     }

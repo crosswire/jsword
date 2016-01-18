@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class RawFileBackendState extends RawBackendState {
      * @param bookMetaData
      *            the appropriate metadata for the book
      */
-    RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    RawFileBackendState(BookMetaData bookMetaData) throws BookException {
         super(bookMetaData);
         incfileValue = -1;
     }
@@ -99,7 +99,7 @@ public class RawFileBackendState extends RawBackendState {
                 fis = new FileInputStream(this.incfile);
                 byte[] buffer = new byte[4];
                 if (fis.read(buffer) != 4) {
-                    log.error("Read data is not of appropriate size of 4 bytes!");
+                    LOGGER.error("Read data is not of appropriate size of 4 bytes!");
                     throw new IOException("Incfile is not 4 bytes long");
                 }
                 ret = SwordUtil.decodeLittleEndian32(buffer, 0);
@@ -107,7 +107,7 @@ public class RawFileBackendState extends RawBackendState {
                 // also store this
                 this.incfileValue = ret;
             } catch (FileNotFoundException e) {
-                log.error("Error on writing to incfile, file should exist already!: {}", e.getMessage(), e);
+                LOGGER.error("Error on writing to incfile, file should exist already!: {}", e.getMessage(), e);
             } finally {
                 IOUtil.close(fis);
             }
@@ -123,7 +123,7 @@ public class RawFileBackendState extends RawBackendState {
                 this.incfile = tempIncfile;
             }
         } catch (BookException e) {
-            log.error("Error on checking incfile: {}", e.getMessage(), e);
+            LOGGER.error("Error on checking incfile: {}", e.getMessage(), e);
             this.incfile = null;
         }
     }
@@ -136,7 +136,7 @@ public class RawFileBackendState extends RawBackendState {
             try {
                 readIncfile();
             } catch (IOException e) {
-                log.error("IO Error: {}", e.getMessage(), e);
+                LOGGER.error("IO Error: {}", e.getMessage(), e);
             }
         }
 
@@ -172,5 +172,5 @@ public class RawFileBackendState extends RawBackendState {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(RawFileBackendState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawFileBackendState.class);
 }

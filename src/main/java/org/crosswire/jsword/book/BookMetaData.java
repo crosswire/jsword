@@ -56,6 +56,13 @@ public interface BookMetaData extends Comparable<BookMetaData> {
     String getName();
 
     /**
+     * With which Charset is this Book encoded?
+     * 
+     * @return the encoding of the Book
+     */
+    public String getBookCharset();
+
+    /**
      * How this Book organizes it's keys.
      * 
      * @return the organization of keys of this Book

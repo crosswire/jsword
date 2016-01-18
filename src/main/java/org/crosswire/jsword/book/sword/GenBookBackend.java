@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.state.GenBookBackendState;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.passage.DefaultKeyList;
@@ -168,7 +169,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
 
     @Override
     public Key readIndex() {
-        SwordBookMetaData bmd = getBookMetaData();
+        BookMetaData bmd = getBookMetaData();
         Key reply = new DefaultKeyList(null, bmd.getName());
 
         try {

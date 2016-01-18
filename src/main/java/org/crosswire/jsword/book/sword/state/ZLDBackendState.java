@@ -30,7 +30,7 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class ZLDBackendState extends RawLDBackendState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-     ZLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+     ZLDBackendState(BookMetaData bookMetaData) throws BookException {
         super(bookMetaData);
         zdxFile = null;
         zdtFile = null;
@@ -97,7 +97,7 @@ public class ZLDBackendState extends RawLDBackendState {
             IOUtil.close(zdxRaf);
             IOUtil.close(zdtRaf);
 
-            log.error("failed to open files", ex);
+            LOGGER.error("failed to open files", ex);
             zdxRaf = null;
             zdtRaf = null;
             return;
@@ -195,5 +195,5 @@ public class ZLDBackendState extends RawLDBackendState {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(ZLDBackendState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZLDBackendState.class);
 }

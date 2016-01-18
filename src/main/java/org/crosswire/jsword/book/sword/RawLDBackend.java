@@ -37,6 +37,7 @@ import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawLDBackendState;
@@ -64,7 +65,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         super(sbmd);
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
-        //if (sbmd.getInitials().equals("ERde_en")) { dumpIdxRaf(); }
     }
 
     public String readRawContent(RawLDBackendState state, Key key) throws IOException {
@@ -351,7 +351,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         if (externalKey.length() == 0) {
             return externalKey;
         }
-        SwordBookMetaData bmd = getBookMetaData();
+        BookMetaData bmd = getBookMetaData();
         String keytitle = externalKey;
         if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
             // Is it already in internal format? If so, just return it.
@@ -467,7 +467,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     private String internal2external(String internalKey) {
-        SwordBookMetaData bmd = getBookMetaData();
+        BookMetaData bmd = getBookMetaData();
         String keytitle = internalKey;
         if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory()) && keytitle.length() >= 3) {
             Calendar greg = new GregorianCalendar();
@@ -481,7 +481,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     private String normalizeForSearch(String internalKey) {
-        SwordBookMetaData bmd = getBookMetaData();
+        BookMetaData bmd = getBookMetaData();
         String keytitle = internalKey;
         String caseSensitive = bmd.getProperty(SwordBookMetaData.KEY_CASE_SENSITIVE_KEYS);
         if (!"true".equalsIgnoreCase(caseSensitive) && !BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
@@ -541,15 +541,16 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
                     // Now read the data file for this key using the offset and size
                     byte[] data = SwordUtil.readRAF(state.getDatRaf(), offset, size);
                     DataEntry entry = new DataEntry(Long.toString(i), data, getBookMetaData().getBookCharset());
-                    buf.append('\t');
-                    buf.append(entry.getKey());
-                    buf.append('\t');
+                    String key = entry.getKey();
                     String raw = getRawText(entry);
+                    buf.append('\t');
+                    buf.append(key);
+                    buf.append('\t');
                     if (raw.length() > 43) {
-                        buf.append(raw.substring(0, 40));
+                        buf.append(raw.substring(0, 40).replace('\n', ' '));
                         buf.append("...");
                     } else {
-                        buf.append(raw);
+                        buf.append(raw.replace('\n', ' '));
                     }
                 } else {
                     buf.append("\t\t");
@@ -562,9 +563,49 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (BookException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            OpenFileStateManager.instance().release(state);
         }
     }
 
+    /** 
+     * Experimental code.
+     */
+    public void toIMP() {
+        RawLDBackendState state = null;
+        long end = -1;
+        try {
+            state = initState();
+            end = getCardinality();
+            StringBuilder buf = new StringBuilder();
+            for (long i = 0; i < end; ++i) {
+                DataIndex index = getIndex(state, i);
+                int offset = index.getOffset();
+                int size   = index.getSize();
+                buf.setLength(0);
+                buf.append("$$$");
+                if (size > 0) {
+                    // Now read the data file for this key using the offset and size
+                    byte[] data = SwordUtil.readRAF(state.getDatRaf(), offset, size);
+                    DataEntry entry = new DataEntry(Long.toString(i), data, getBookMetaData().getBookCharset());
+                    String key = entry.getKey();
+                    String raw = getRawText(entry);
+                    buf.append(key);
+                    buf.append("\n");
+                    buf.append(raw);
+                }
+                System.out.println(buf.toString());
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BookException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            OpenFileStateManager.instance().release(state);
+        }
+    }
     /**
      * Date formatter
      */
