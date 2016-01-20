@@ -308,7 +308,7 @@ public class BackendTest {
             return;
         }
 
-        Key key = currentBook.getKey("The_Life_of_Flavius_Josephus").get(5);
+        Key key = currentBook.getKey("The Life of Flavius Josephus").get(5);
         backendTest(currentBook, key, assertion);
     }
 
