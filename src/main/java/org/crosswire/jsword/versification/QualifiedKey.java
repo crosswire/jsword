@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2013 - 2016
  *
  */
 package org.crosswire.jsword.versification;
@@ -40,7 +39,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * Here it is used to distinguish one QualifiedKey from another in equality tests and in containers.
  * </p>
  *
- * @author chrisburrell
+ * @author Chris Burrell
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
  * The copyright to this program is held by its authors.
  */
@@ -48,7 +47,7 @@ public final class QualifiedKey {
     /**
      * A Qualifier indicates whether the verse is numbered the same in both the KJV and the other, is missing in the KJV or the other.
      */
-    static enum Qualifier {
+    enum Qualifier {
         /**
          * The DEFAULT Qualifier indicates a Verse or a VerseRange.
          */
@@ -90,7 +89,7 @@ public final class QualifiedKey {
      *
      * @param key the verse from which to create this QualifiedKey
      */
-    public QualifiedKey(Verse key) {
+    protected QualifiedKey(Verse key) {
         setKey(key);
         this.absentType = Qualifier.DEFAULT;
     }

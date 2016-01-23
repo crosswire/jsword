@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2013 - 2016
  *
  */
 package org.crosswire.jsword.versification;
@@ -122,7 +121,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- * @author chrisburrell
+ * @author Chris Burrell
  */
 public class VersificationToKJVMapper {
 

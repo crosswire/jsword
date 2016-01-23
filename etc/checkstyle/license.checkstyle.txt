@@ -1,0 +1,17 @@
+\W*
+\W* Distribution License:
+\W* \w+ is free software; you can redistribute it and/or modify it( under)?
+\W*( under)? the terms of the GNU( Lesser)? General Public License, version 2(.1)? or later
+\W* as published by the Free Software Foundation. This program is distributed
+\W* in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+\W* the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+\W* See the GNU( Lesser)? General Public License for more details.
+\W*
+\W* The License is available on the internet at:
+\W*      http://www.gnu.org/copyleft/(l)?gpl.html
+\W* or by writing to:
+\W*      Free Software Foundation, Inc.
+\W*      59 Temple Place - Suite 330
+\W*      Boston, MA 02111-1307, USA
+\W*
+\W* (©|Copyright) CrossWire Bible Society, 20\d\d - 2016

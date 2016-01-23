@@ -8,22 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -35,6 +29,7 @@ import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,9 +40,9 @@ import org.junit.Test;
  * @author Joe Walker
  */
 public class BooksTest {
-    protected Key[] gen11 = null;
-    protected BookMetaData[] bmds = null;
-    protected Book[] bibles = null;
+    protected Key[] gen11;
+    protected BookMetaData[] bmds;
+    protected Book[] bibles;
 
     //protected Class[] ignorebibles = {};
 
@@ -72,7 +67,7 @@ public class BooksTest {
     public void testGetBible() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
-            assertTrue(bible != null);
+            Assert.assertTrue(bible != null);
         }
     }
 
@@ -81,7 +76,7 @@ public class BooksTest {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
-            assertEquals(bmds[i], bmd);
+            Assert.assertEquals(bmds[i], bmd);
         }
     }
 
@@ -90,10 +85,10 @@ public class BooksTest {
         for (int i = 0; i < bmds.length; i++) {
             BookMetaData bmd = bmds[i];
 
-            assertTrue(bmd.getInitials() != null);
-            assertTrue(bmd.getInitials().length() > 0);
-            assertTrue(bmd.getName() != null);
-            assertTrue(bmd.getName().length() > 0);
+            Assert.assertTrue(bmd.getInitials() != null);
+            Assert.assertTrue(bmd.getInitials().length() > 0);
+            Assert.assertTrue(bmd.getName() != null);
+            Assert.assertTrue(bmd.getName().length() > 0);
         }
     }
 
@@ -102,7 +97,7 @@ public class BooksTest {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
-            assertEquals(bmds[i], bmd);
+            Assert.assertEquals(bmds[i], bmd);
         }
     }
 
@@ -112,7 +107,7 @@ public class BooksTest {
             Book bible = bibles[i];
             Key key = bible.getKey("Gen 1:1");
             BookData data = new BookData(bible, key);
-            assertNotNull(data);
+            Assert.assertNotNull(data);
         }
     }
 
@@ -121,12 +116,12 @@ public class BooksTest {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookData data = new BookData(bible, gen11[i]);
-            assertNotNull(data.getOsisFragment());
+            Assert.assertNotNull(data.getOsisFragment());
         }
     }
 
     /** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
-     *	This tests the deduplication code in AbstractPassageBook.
+     * This tests the deduplication code in AbstractPassageBook.
      *
      * @throws Exception 
      */
@@ -134,30 +129,31 @@ public class BooksTest {
     public void testBookList() throws Exception {
         //part of the pre-requisites
         AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV");
-        assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
+        Assert.assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
     }
 
 
-	/** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
-	 *	This tests the deduplication code in AbstractPassageBook.
-	 *
-	 * @throws Exception 
-	 */
+    /**
+     * Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
+     * This tests the deduplication code in AbstractPassageBook.
+     *
+     * @throws Exception 
+     */
     @Test
-	public void testLinkedVersesNotDuplicated() throws Exception {
-		Book turNTB = Books.installed().getBook("TurNTB");
-		if (turNTB!=null) {
-			// Eph 2:4,5 are merged/linked in TurNTB
-			Key eph245 = VerseRangeFactory.fromString(Versifications.instance().getVersification("KJV"), "Eph 2:4-5");
-			BookData bookData = new BookData(turNTB, eph245);
-			final Element osisFragment = bookData.getOsisFragment();
+    public void testLinkedVersesNotDuplicated() throws Exception {
+        Book turNTB = Books.installed().getBook("TurNTB");
+        if (turNTB != null) {
+            // Eph 2:4,5 are merged/linked in TurNTB
+            Key eph245 = VerseRangeFactory.fromString(Versifications.instance().getVersification("KJV"), "Eph 2:4-5");
+            BookData bookData = new BookData(turNTB, eph245);
+            final Element osisFragment = bookData.getOsisFragment();
 
-			final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-			String xml = xmlOutputter.outputString(osisFragment);
+            final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+            String xml = xmlOutputter.outputString(osisFragment);
 
-			assertTrue("Probable duplicate text", xml.length()<300);
-		}
-	}
+            Assert.assertTrue("Probable duplicate text", xml.length() < 300);
+        }
+    }
 
     /** 
      * Books like Josephus have hierarchical chapters.  Only the current chapter should be returned, not child chapters.
@@ -167,21 +163,21 @@ public class BooksTest {
     @Test
     public void testHierarchicalBook() throws Exception {
         Book josephus = Books.installed().getBook("Josephus");
-        String Section1Text = "THOSE who undertake to write histories";
+        String section1Text = "THOSE who undertake to write histories";
         if (josephus != null) {
             // navigate down to the Preface
             Key theAntiquitiesOfTheJewsKey = josephus.getGlobalKeyList().get(1);
             Key prefaceKey = theAntiquitiesOfTheJewsKey.get(0);
             String prefaceText = josephus.getRawText(prefaceKey);
-            assertFalse("Child keys returned in raw text", prefaceText.contains(Section1Text));
-            
+            Assert.assertFalse("Child keys returned in raw text", prefaceText.contains(section1Text));
+
             // Now attempt to parse a key but get the problem is that all child text is returned too 
             BookData bookData = new BookData(josephus, prefaceKey);
             final Element osisFragment = bookData.getOsisFragment();
 
             final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
             String prefaceXml = xmlOutputter.outputString(osisFragment);
-            assertFalse("Child keys returned in xml", prefaceXml.contains(Section1Text));
+            Assert.assertFalse("Child keys returned in xml", prefaceXml.contains(section1Text));
         }
     }
     /*
@@ -190,7 +186,7 @@ public class BooksTest {
      * something vaguely sensible // I assume that find() just calls
      * findPassage(), where the real tests are for (int i = 0; i <
      * bibles.length; i++) { Book bible = bibles[i]; Key key = bible.find(new
-     * Search("aaron", false)); assertNotNull("bible=" +
+     * Search("aaron", false)); Assert.assertNotNull("bible=" +
      * bible.getFullName(), key); } }
      * 
      * FIXME: These are only valid if all bibles are English public void
@@ -198,7 +194,7 @@ public class BooksTest {
      * i++) { Book ver = bibles[i];
      * 
      * Key key = ver.find(new Search("aaron", false));
-     * assertTrue(key != null); } }
+     * Assert.assertTrue(key != null); } }
      * 
      * FIXME: These are only valid if all bibles are English public void
      * testFindPassage2() throws Exception { for (int i = 0; i < bibles.length;
@@ -209,33 +205,33 @@ public class BooksTest {
      * (skip) continue; log.debug("thorough testing bible: {}", ver.getFullName());
      * 
      * Key key = ver.find(new Search("aaron", false)); Passage ref
-     * = KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
+     * = KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 10); key =
      * ver.find(new Search("jerusalem", false)); ref =
-     * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
+     * KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 10); key =
      * ver.find(new Search("god", false)); ref =
-     * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
+     * KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 10); key =
      * ver.find(new Search("GOD", false)); ref =
-     * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
+     * KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 10); key =
      * ver.find(new Search("brother's", false)); ref =
-     * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 2); key =
+     * KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 2); key =
      * ver.find(new Search("BROTHER'S", false)); ref =
-     * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 2);
+     * KeyUtil.getPassage(key); Assert.assertTrue(ref.countVerses() > 2);
      * 
      * key = ver.find(new Search("maher-shalal-hash-baz", false));
      * ref = KeyUtil.getPassage(key); if (ref.isEmpty()) { key = ver.find(new
      * Search("mahershalalhashbaz", false)); ref =
      * KeyUtil.getPassage(key); } if (ref.isEmpty()) { key = ver.find(new
      * Search("maher*", false)); ref = KeyUtil.getPassage(key); }
-     * assertEquals(ref.countVerses(), 2); assertEquals(ref.getVerseAt(0), new
-     * Verse("Isa 8:1")); assertEquals(ref.getVerseAt(1), new
+     * Assert.assertEquals(ref.countVerses(), 2); Assert.assertEquals(ref.getVerseAt(0), new
+     * Verse("Isa 8:1")); Assert.assertEquals(ref.getVerseAt(1), new
      * Verse("Isa 8:3"));
      * 
      * key = ver.find(new Search("MAHER-SHALAL-HASH-BAZ", false));
      * ref = KeyUtil.getPassage(key); if (ref.isEmpty()) { key = ver.find(new
      * Search("MAHERSHALALHASHBAZ", false)); ref =
-     * KeyUtil.getPassage(key); } assertEquals(ref.countVerses(), 2);
-     * assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
-     * assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); } }
+     * KeyUtil.getPassage(key); } Assert.assertEquals(ref.countVerses(), 2);
+     * Assert.assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
+     * Assert.assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); } }
      */
     /*
      * public void testGetStartsWith() throws Exception { for (int i=0;
@@ -243,7 +239,7 @@ public class BooksTest {
      * 
      * if (ver instanceof SearchableBible) { String[] sa =
      * Sentance2Util.toStringArray(((SearchableBible)
-     * ver).getSearcher().getStartsWith("a")); assertTrue(sa != null); } } }
+     * ver).getSearcher().getStartsWith("a")); Assert.assertTrue(sa != null); } } }
      * 
      * public void testGetStartsWith2() throws Exception { for (int i=0;
      * i<bibles.length; i++) { // Check that this is a type that we expect to
@@ -256,23 +252,23 @@ public class BooksTest {
      * if (origver instanceof SearchableBible) { SearchableBible ver =
      * (SearchableBible) origver; String[] sa =
      * Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("jos"));
-     * assertTrue(sa.length > 5); sa =
+     * Assert.assertTrue(sa.length > 5); sa =
      * Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("jerusale"));
-     * assertEquals(sa[0], "jerusalem"); sa =
+     * Assert.assertEquals(sa[0], "jerusalem"); sa =
      * Sentance2Util.toStringArray(ver.getSearcher
      * ().getStartsWith("maher-shalal")); if (sa.length == 0) { sa =
      * Sentance2Util
      * .toStringArray(ver.getSearcher().getStartsWith("mahershalal"));
-     * assertEquals(sa[0], "mahershalalhashbaz"); } else { assertEquals(sa[0],
-     * "maher-shalal-hash-baz"); } assertEquals(sa.length, 1); sa =
+     * Assert.assertEquals(sa[0], "mahershalalhashbaz"); } else { Assert.assertEquals(sa[0],
+     * "maher-shalal-hash-baz"); } Assert.assertEquals(sa.length, 1); sa =
      * Sentance2Util
      * .toStringArray(ver.getSearcher().getStartsWith("MAHER-SHALAL")); if
      * (sa.length == 0) { sa =
      * Sentance2Util.toStringArray(ver.getSearcher().getStartsWith
-     * ("MAHERSHALAL")); assertEquals(sa[0], "mahershalalhashbaz"); } else {
-     * assertEquals(sa[0], "maher-shalal-hash-baz"); } assertEquals(sa.length,
+     * ("MAHERSHALAL")); Assert.assertEquals(sa[0], "mahershalalhashbaz"); } else {
+     * Assert.assertEquals(sa[0], "maher-shalal-hash-baz"); } Assert.assertEquals(sa.length,
      * 1); sa =
      * Sentance2Util.toStringArray(ver.getSearcher().getStartsWith("XXX"));
-     * assertEquals(sa.length, 0); } } }
+     * Assert.assertEquals(sa.length, 0); } } }
      */
 }

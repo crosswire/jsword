@@ -8,27 +8,26 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2014 - 2016
  *
  */
 package org.crosswire.jsword.book.filter.thml;
-
-import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom2.Content;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -45,9 +44,9 @@ public class ATagTest {
             THMLFilter thmlFilter = new THMLFilter();
             Book dummyBook = Books.installed().getBook("KJV");
             List<Content> out = thmlFilter.toOSIS(dummyBook, dummyBook.getKey("Gen.1.1"), "<a href=\"sword://StrongsRealGreek/01909\">1909</a>");
-            assertEquals("THML reference not handled correctly", "<reference osisRef=\"sword://StrongsRealGreek/01909\">1909</reference>", new XMLOutputter().outputString((Element)out.get(0)));
-        } catch (Exception e) {
-            e.printStackTrace();
+            Assert.assertEquals("THML reference not handled correctly", "<reference osisRef=\"sword://StrongsRealGreek/01909\">1909</reference>", new XMLOutputter().outputString((Element) out.get(0)));
+        } catch (NoSuchKeyException e) {
+            Assert.fail();
         }
     }
 

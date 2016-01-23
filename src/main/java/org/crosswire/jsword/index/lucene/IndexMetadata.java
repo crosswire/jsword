@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.jsword.index.lucene;
@@ -90,11 +89,6 @@ public final class IndexMetadata {
         return Float.parseFloat(value);
     }
 
-    public String getLatestIndexVersionStr() {
-        String value = props.get(LATEST_INDEX_VERSION, "1.2");
-        return value;
-    }
-
     public float getLatestIndexVersion(Book b) {
         if (b == null) {
             return getLatestIndexVersion();
@@ -103,6 +97,11 @@ public final class IndexMetadata {
         String value = props.get(PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE + IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                 props.get(LATEST_INDEX_VERSION));
         return Float.parseFloat(value);
+    }
+
+    public String getLatestIndexVersionStr() {
+        String value = props.get(LATEST_INDEX_VERSION, "1.2");
+        return value;
     }
 
     // used in property keys e.g. Installed.Index.Version.Book.ESV[1.0.1]

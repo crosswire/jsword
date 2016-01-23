@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 /*
@@ -171,7 +170,7 @@ public final class XMLFeatureSet {
          * @param feature the XMLFeature
          * @param state whether that XMLFeature is on or off
          */
-        public XMLFeatureState(XMLFeature feature, boolean state) {
+        XMLFeatureState(XMLFeature feature, boolean state) {
             this.feature = feature;
             this.state = state;
         }
@@ -180,7 +179,7 @@ public final class XMLFeatureSet {
          * An XMLFeature that is turned off.
          * @param feature the XMLFeature
          */
-        public XMLFeatureState(XMLFeature feature) {
+        XMLFeatureState(XMLFeature feature) {
             this(feature, false);
         }
 

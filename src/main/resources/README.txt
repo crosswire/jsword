@@ -7,14 +7,13 @@
 # See the GNU Lesser General Public License for more details.
 #
 # The License is available on the internet at:
-#       http://www.gnu.org/copyleft/lgpl.html
+#      http://www.gnu.org/copyleft/lgpl.html
 # or by writing to:
 #      Free Software Foundation, Inc.
 #      59 Temple Place - Suite 330
 #      Boston, MA 02111-1307, USA
 #
-# Copyright: 2005-2011
-#     The copyright to this program is held by its authors.
+# Copyright CrossWire Bible Society, 2005 - 2016
 #
 This iso639_all.txt is generated from:
 	http://www.sil.org/iso639-3/iso-639-3_YYYYMMDD.tab
@@ -91,13 +90,13 @@ print("# Distribution License:\
 # See the GNU Lesser General Public License for more details.\
 #\
 # The License is available on the internet at:\
-#       http://www.gnu.org/copyleft/lgpl.html\
+#      http://www.gnu.org/copyleft/lgpl.html\
 # or by writing to:\
 #      Free Software Foundation, Inc.\
 #      59 Temple Place - Suite 330\
 #      Boston, MA 02111-1307, USA\
 #\
-# Copyright: 2005-2013\
+# Copyright CrossWire Bible Society, 2005 - 2016\
 #     The copyright to this program is held by its authors.\
 #\
 # This file is compiled from the data at www.sil.org/iso639-3\

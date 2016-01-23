@@ -8,19 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
-
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -30,6 +27,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -49,16 +47,16 @@ public class AnalyzerFactoryTest {
     @Test
     public void testCreateAnalyzer() {
         Analyzer myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(null);
-        assertTrue(myAnalyzer != null);
+        Assert.assertTrue(myAnalyzer != null);
 
         myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(null);
-        assertTrue(myAnalyzer != null);
+        Assert.assertTrue(myAnalyzer != null);
     }
 
     @Test
     public void testCustomStopWordFiltering() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
 
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
@@ -69,44 +67,44 @@ public class AnalyzerFactoryTest {
 
         Query query = parser.parse(testInput);
 
-        assertTrue(query.toString().indexOf(field + ":shalt") == -1);
-        assertTrue(query.toString().indexOf(field + ":thy") == -1);
-        assertTrue(query.toString().indexOf(field + ":upon") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":shalt") == -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":thy") == -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":upon") > -1);
     }
 
     @Test
     public void testDiacriticFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
 
         Query query = parser.parse(testInput);
 
-        assertTrue(query.toString().indexOf(field + ":sure ") > -1);
-        assertTrue(query.toString().indexOf(field + ":everi") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":sure ") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":everi") > -1);
     }
 
     @Test
     public void testStopWordsFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
         // enable stop words
         myAnalyzer.setDoStopWords(true);
         Query query = parser.parse(testInput);
 
-        assertTrue(query.toString().indexOf(field + ":will") == -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":will") == -1);
     }
 
     @Test
     public void testWithStemmingDisabled() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
         String testInput = "Surely will every man walketh";
         myAnalyzer.setDoStemming(false);
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":surely") > -1);
-        assertTrue(query.toString().indexOf(field + ":every") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":surely") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":every") > -1);
     }
 
     /*
@@ -117,16 +115,16 @@ public class AnalyzerFactoryTest {
      * QueryParser parser = new QueryParser(field, myAnalyzer);
      * 
      * String testInput = "test \u00D9\u00EB\u0153";
-     * assertTrue(myAnalyzer instanceof SimpleLuceneAnalyzer); Query query =
+     * Assert.assertTrue(myAnalyzer instanceof SimpleLuceneAnalyzer); Query query =
      * parser.parse(testInput); //After Diacritic filtering
-     * assertTrue(query.toString().indexOf(field+":ueoe") > -1);
+     * Assert.assertTrue(query.toString().indexOf(field+":ueoe") > -1);
      * 
      * testInput = "A\u00C1"; query = parser.parse(testInput);
      * //After Diacritic filtering
-     * assertTrue(query.toString().indexOf(field+":aa") > -1);
+     * Assert.assertTrue(query.toString().indexOf(field+":aa") > -1);
      * 
      * 
      * }
      */
-    protected static final String field = "content";
+    protected static final String FIELD = "content";
 }

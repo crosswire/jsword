@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -112,12 +111,12 @@ public final class Verse implements VerseKey<Verse> {
      *            The chapter number
      * @param verse
      *            The verse number
-     * @param patch_up
+     * @param patchUp
      *            True to trigger reference fixing
      */
-    public Verse(Versification v11n, BibleBook book, int chapter, int verse, boolean patch_up) {
-        if (!patch_up) {
-            throw new IllegalArgumentException(JSOtherMsg.lookupText("Use patch=true."));
+    public Verse(Versification v11n, BibleBook book, int chapter, int verse, boolean patchUp) {
+        if (!patchUp) {
+            throw new IllegalArgumentException(JSOtherMsg.lookupText("Use patchUp=true."));
         }
 
         this.v11n = v11n;

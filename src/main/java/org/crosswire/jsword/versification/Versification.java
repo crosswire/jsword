@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2012 - 2016
  *
  */
 package org.crosswire.jsword.versification;
@@ -210,11 +209,42 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
+     * Get a book from its name.
+     *
+     * @param find
+     *            The string to identify
+     * @return The BibleBook, On error null
+     */
+    public BibleBook getBook(String find) {
+        BibleBook book = BibleNames.instance().getBook(find);
+        if (containsBook(book)) {
+            return book;
+        }
+        return null;
+    }
+
+    /**
      * Get the number of books in this Versification.
      * @return the number of books
      */
     public int getBookCount() {
         return bookList.getBookCount();
+    }
+
+    /**
+     * The number of books between two verses includes
+     * the books of the two verses and everything in between.
+     * 
+     * @param start
+     *            The first Verse in the range
+     * @param end The last Verse in the range
+     * @return The number of books. Always &gt;= 1.
+     */
+    public int getBookCount(Verse start, Verse end) {
+        int startBook = bookList.getOrdinal(start.getBook());
+        int endBook = bookList.getOrdinal(end.getBook());
+
+        return endBook - startBook + 1;
     }
 
     /**
@@ -316,21 +346,6 @@ public class Versification implements ReferenceSystem, Serializable {
         }
         return null;
       }
-
-    /**
-     * Get a book from its name.
-     *
-     * @param find
-     *            The string to identify
-     * @return The BibleBook, On error null
-     */
-    public BibleBook getBook(String find) {
-        BibleBook book = BibleNames.instance().getBook(find);
-        if (containsBook(book)) {
-            return book;
-        }
-        return null;
-    }
 
     /**
      * Is the given string a valid book name. If this method returns true then
@@ -734,22 +749,6 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * The number of books between two verses includes
-     * the books of the two verses and everything in between.
-     * 
-     * @param start
-     *            The first Verse in the range
-     * @param end The last Verse in the range
-     * @return The number of books. Always &gt;= 1.
-     */
-    public int getBookCount(Verse start, Verse end) {
-        int startBook = bookList.getOrdinal(start.getBook());
-        int endBook = bookList.getOrdinal(end.getBook());
-
-        return endBook - startBook + 1;
-    }
-
-    /**
      * The maximum number of verses in the Bible, including module, testament, book and chapter introductions.
      *
      * @return the number of addressable verses in this versification.
@@ -796,6 +795,25 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
+     * Determine the ordinal value for this versification given the
+     * ordinal value in a testament. If the ordinal is out of bounds it
+     * is constrained to be within the boundaries of the testament.
+     * This unwinds getTestamentOrdinal.
+     * 
+     * @param testament the testament in which the ordinal value pertains
+     * @param testamentOrdinal the ordinal value within the testament
+     * @return the ordinal value for the versification as a whole
+     */
+    public int getOrdinal(Testament testament, int testamentOrdinal) {
+        int ordinal = testamentOrdinal >= 0 ? testamentOrdinal : 0;
+        if (Testament.NEW == testament) {
+            ordinal = otMaxOrdinal + testamentOrdinal;
+            return ordinal <= ntMaxOrdinal ? ordinal : ntMaxOrdinal;
+        }
+        return ordinal <= otMaxOrdinal ? ordinal : otMaxOrdinal;
+    }
+
+    /**
      * Where does this verse come in the Bible. The value that this returns should be treated as opaque, useful for a bit set.
      * The introductions to the Book, OT/NT Testaments, Bible books and chapters are included here.
      * <ul>
@@ -822,30 +840,11 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The ordinal number of the Verse within its Testament
      */
     public int getTestamentOrdinal(int ordinal) {
-        int nt_ordinal = otMaxOrdinal + 1;
-        if (ordinal >= nt_ordinal) {
-            return ordinal - nt_ordinal + 1;
+        int ntOrdinal = otMaxOrdinal + 1;
+        if (ordinal >= ntOrdinal) {
+            return ordinal - ntOrdinal + 1;
         }
         return ordinal;
-    }
-
-    /**
-     * Determine the ordinal value for this versification given the
-     * ordinal value in a testament. If the ordinal is out of bounds it
-     * is constrained to be within the boundaries of the testament.
-     * This unwinds getTestamentOrdinal.
-     * 
-     * @param testament the testament in which the ordinal value pertains
-     * @param testamentOrdinal the ordinal value within the testament
-     * @return the ordinal value for the versification as a whole
-     */
-    public int getOrdinal(Testament testament, int testamentOrdinal) {
-        int ordinal = testamentOrdinal >= 0 ? testamentOrdinal : 0;
-        if (Testament.NEW == testament) {
-            ordinal = otMaxOrdinal + testamentOrdinal;
-            return ordinal <= ntMaxOrdinal ? ordinal : ntMaxOrdinal;
-        }
-        return ordinal <= otMaxOrdinal ? ordinal : otMaxOrdinal;
     }
 
     /**

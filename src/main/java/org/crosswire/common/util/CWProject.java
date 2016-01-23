@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2008 - 2016
  *
  */
 package org.crosswire.common.util;
@@ -79,9 +78,9 @@ public final class CWProject {
      */
     @SuppressWarnings("unused")
     private static void reset() {
-        instance = new CWProject(); 
+        instance = new CWProject();
     }
-    
+
     /**
      * Establish how this project finds it's resources.
      * 

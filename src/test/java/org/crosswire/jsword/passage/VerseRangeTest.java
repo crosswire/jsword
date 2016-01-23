@@ -8,21 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 
@@ -32,6 +27,7 @@ import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,36 +44,36 @@ public class VerseRangeTest {
     private boolean fullName;
 
     private Versification v11n;
-    private VerseRange gen10_9 = null;
-    private VerseRange gen10_1 = null;
-    private VerseRange gen11_1 = null;
-    private VerseRange gen10_2 = null;
-    private VerseRange gen11_2 = null;
-    private VerseRange gen11_9 = null;
-    private VerseRange gen10_a = null;
-    private VerseRange gen11_a = null;
-    private VerseRange gen12_1 = null;
-    private VerseRange gen_all = null;
-    private VerseRange gen_ex1 = null;
-    private VerseRange gen_exo = null;
-    private VerseRange gen_rev = null;
-    private VerseRange rev99_9 = null;
-    private VerseRange rev11_9 = null;
-    private VerseRange rev99_1 = null;
+    private VerseRange rangeGenC1V0to31;
+    private VerseRange rangeGenC1V01;
+    private VerseRange rangeGenC1V1;
+    private VerseRange rangeGenC1V02;
+    private VerseRange rangeGenC1V12;
+    private VerseRange rangeGenC1V1to31;
+    private VerseRange rangeGenC1V0to34;
+    private VerseRange rangeGenC1V1to33;
+    private VerseRange rangeGenC1V2;
+    private VerseRange rangeGenC0V0toEnd;
+    private VerseRange rangeGenC0V0toExoC1V1;
+    private VerseRange rangeGenC0V0toExoEnd;
+    private VerseRange rangeGenC1V1toRevEnd;
+    private VerseRange rangeRevC22V0toEnd;
+    private VerseRange rangeRevC0V0toEnd;
+    private VerseRange rangeRevC22V21;
 
-    private Verse gen00 = null;
-    private Verse gen11 = null;
-    private Verse gen12 = null;
-    private Verse gen19 = null;
-    private Verse gen21 = null;
-    private Verse gen99 = null;
-    private Verse exo11 = null;
-    private Verse rev00 = null;
-    private Verse rev11 = null;
-    private Verse rev12 = null;
-    private Verse rev99 = null;
-    private Verse rev90 = null;
-    private Verse rev91 = null;
+    private Verse genC0V0;
+    private Verse genC1V1;
+    private Verse genC1V2;
+    private Verse genC1V31;
+    private Verse genC2V1;
+    private Verse genC50V26;
+    private Verse exoC1V1;
+    private Verse revC0V0;
+    private Verse revC1V1;
+    private Verse revC1V2;
+    private Verse revC22V21;
+    private Verse revC22V0;
+    private Verse revC22V1;
 
     @Before
     public void setUp() throws Exception {
@@ -88,36 +84,36 @@ public class VerseRangeTest {
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getVersification("KJV");
 
-        gen10_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 32);
-        gen10_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 2);
-        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 1);
-        gen10_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 3);
-        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 2);
-        gen11_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 31);
-        gen10_a = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 34);
-        gen11_a = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 33);
-        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 2), 1);
-        gen_all = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1584);
-        gen_ex1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1587);
-        gen_exo = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 2838);
-        gen_rev = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 32356);
-        rev99_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 0), 22);
-        rev11_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 0, 0), 428);
-        rev99_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 21), 1);
+        rangeGenC1V0to31 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 32);
+        rangeGenC1V01 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 2);
+        rangeGenC1V1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 1);
+        rangeGenC1V02 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 3);
+        rangeGenC1V12 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 2);
+        rangeGenC1V1to31 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 31);
+        rangeGenC1V0to34 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 34);
+        rangeGenC1V1to33 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 33);
+        rangeGenC1V2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 2), 1);
+        rangeGenC0V0toEnd = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1584);
+        rangeGenC0V0toExoC1V1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1587);
+        rangeGenC0V0toExoEnd = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 2838);
+        rangeGenC1V1toRevEnd = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 32356);
+        rangeRevC22V0toEnd = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 0), 22);
+        rangeRevC0V0toEnd = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 0, 0), 428);
+        rangeRevC22V21 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 21), 1);
 
-        gen00 = new Verse(v11n, BibleBook.GEN, 0, 0);
-        gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
-        gen12 = new Verse(v11n, BibleBook.GEN, 1, 2);
-        gen19 = new Verse(v11n, BibleBook.GEN, 1, 31);
-        gen21 = new Verse(v11n, BibleBook.GEN, 2, 1);
-        gen99 = new Verse(v11n, BibleBook.GEN, 50, 26);
-        exo11 = new Verse(v11n, BibleBook.EXOD, 1, 1);
-        rev00 = new Verse(v11n, BibleBook.REV, 0, 0);
-        rev11 = new Verse(v11n, BibleBook.REV, 1, 1);
-        rev12 = new Verse(v11n, BibleBook.REV, 1, 2);
-        rev99 = new Verse(v11n, BibleBook.REV, 22, 21);
-        rev90 = new Verse(v11n, BibleBook.REV, 22, 0);
-        rev91 = new Verse(v11n, BibleBook.REV, 22, 1);
+        genC0V0 = new Verse(v11n, BibleBook.GEN, 0, 0);
+        genC1V1 = new Verse(v11n, BibleBook.GEN, 1, 1);
+        genC1V2 = new Verse(v11n, BibleBook.GEN, 1, 2);
+        genC1V31 = new Verse(v11n, BibleBook.GEN, 1, 31);
+        genC2V1 = new Verse(v11n, BibleBook.GEN, 2, 1);
+        genC50V26 = new Verse(v11n, BibleBook.GEN, 50, 26);
+        exoC1V1 = new Verse(v11n, BibleBook.EXOD, 1, 1);
+        revC0V0 = new Verse(v11n, BibleBook.REV, 0, 0);
+        revC1V1 = new Verse(v11n, BibleBook.REV, 1, 1);
+        revC1V2 = new Verse(v11n, BibleBook.REV, 1, 2);
+        revC22V21 = new Verse(v11n, BibleBook.REV, 22, 21);
+        revC22V0 = new Verse(v11n, BibleBook.REV, 22, 0);
+        revC22V1 = new Verse(v11n, BibleBook.REV, 22, 1);
     }
 
     @After
@@ -128,538 +124,550 @@ public class VerseRangeTest {
 
     @Test
     public void testNewViaString() throws Exception {
-        assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"));
-        assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"));
-        assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:2"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:26"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:$"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:ff"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:26"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:26"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:$"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:ff"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:$"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:ff"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Gen 0:0-Exo 1:1"));
-        assertEquals(gen_exo, VerseRangeFactory.fromString(v11n, "Gen-Exo"));
-        assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:21"));
-        assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:$"));
-        assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:ff"));
-        assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
-        assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:1"));
-        assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:26"));
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:26"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:21"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:ff"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:$"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-$"));
-        assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
-        assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge 0 0-ex 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge -ex 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-ex 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge-ex:1:1"));
+        Assert.assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"));
+        Assert.assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"));
+        Assert.assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:2"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:26"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:$"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:ff"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:26"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:26"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:$"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-$:ff"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:$"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:ff"));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, VerseRangeFactory.fromString(v11n, "Gen 0:0-Exo 1:1"));
+        Assert.assertEquals(rangeGenC0V0toExoEnd, VerseRangeFactory.fromString(v11n, "Gen-Exo"));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:21"));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:$"));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:ff"));
+        Assert.assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
+        Assert.assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:1"));
+        Assert.assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:26"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:26"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:21"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:ff"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-Rev 22:$"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-$"));
+        Assert.assertEquals(rangeRevC22V21, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
+        Assert.assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:1"));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, VerseRangeFactory.fromString(v11n, "ge 0 0-ex 1 1"));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, VerseRangeFactory.fromString(v11n, "ge -ex 1 1"));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-ex 1 1"));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, VerseRangeFactory.fromString(v11n, "ge-ex:1:1"));
         try {
             VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2-Gen 1:3");
-            fail();
-        } catch (NoSuchVerseException ex) {
+            Assert.fail();
+        } catch (NoSuchVerseException expected) {
+            // This is allowed
         }
         try {
             VerseRangeFactory.fromString(v11n, "Gen 1:1-2-3");
-            fail();
-        } catch (NoSuchVerseException ex) {
+            Assert.fail();
+        } catch (NoSuchVerseException expected) {
+            // This is allowed
         }
         try {
             VerseRangeFactory.fromString(v11n, "b 1:1-2");
-            fail();
-        } catch (NoSuchVerseException ex) {
+            Assert.fail();
+        } catch (NoSuchVerseException expected) {
+            // This is allowed
         }
         try {
             VerseRangeFactory.fromString(v11n, "g-f 1 2");
-            fail();
-        } catch (NoSuchVerseException ex) {
+            Assert.fail();
+        } catch (NoSuchVerseException expected) {
+            // This is allowed
         }
         try {
             VerseRangeFactory.fromString(v11n, (String) null);
-            fail();
-        } catch (NoSuchVerseException ex) {
+            Assert.fail();
+        } catch (NoSuchVerseException expected) {
+            // This is allowed
         }
-        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
-        assertEquals(rev99_9, VerseRangeFactory.fromString(v11n, "Rev 22"));
-        assertEquals(rev11_9, VerseRangeFactory.fromString(v11n, "Rev"));
+        Assert.assertEquals(rangeGenC0V0toEnd, VerseRangeFactory.fromString(v11n, "Gen"));
+        Assert.assertEquals(rangeRevC22V0toEnd, VerseRangeFactory.fromString(v11n, "Rev 22"));
+        Assert.assertEquals(rangeRevC0V0toEnd, VerseRangeFactory.fromString(v11n, "Rev"));
     }
 
     @Test
     public void testToString() {
-        assertEquals("Gen 1:1", gen11_1.toString());
-        assertEquals("Gen 1:1-2", gen11_2.toString());
-        assertEquals("Gen 1", gen11_9.toString());
-        assertEquals("Gen 1:1-2:1", gen11_a.toString());
-        assertEquals("Gen 1:2", gen12_1.toString());
-        assertEquals("Gen", gen_all.toString());
-        assertEquals("Gen-Exo 1:1", gen_ex1.toString());
-        assertEquals("Gen-Rev", gen_rev.toString());
-        assertEquals("Rev 22", rev99_9.toString());
-        assertEquals("Rev", rev11_9.toString());
-        assertEquals("Rev 22:21", rev99_1.toString());
+        Assert.assertEquals("Gen 1:1", rangeGenC1V1.toString());
+        Assert.assertEquals("Gen 1:1-2", rangeGenC1V12.toString());
+        Assert.assertEquals("Gen 1", rangeGenC1V1to31.toString());
+        Assert.assertEquals("Gen 1:1-2:1", rangeGenC1V1to33.toString());
+        Assert.assertEquals("Gen 1:2", rangeGenC1V2.toString());
+        Assert.assertEquals("Gen", rangeGenC0V0toEnd.toString());
+        Assert.assertEquals("Gen-Exo 1:1", rangeGenC0V0toExoC1V1.toString());
+        Assert.assertEquals("Gen-Rev", rangeGenC1V1toRevEnd.toString());
+        Assert.assertEquals("Rev 22", rangeRevC22V0toEnd.toString());
+        Assert.assertEquals("Rev", rangeRevC0V0toEnd.toString());
+        Assert.assertEquals("Rev 22:21", rangeRevC22V21.toString());
     }
 
     @Test
     public void testNewViaVerseInt() throws Exception {
-        assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, VerseFactory.fromString(v11n, "Gen 1:1"), 1));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.toRange(v11n, VerseFactory.fromString(v11n, "Gen 1:1"), 1));
     }
 
     @Test
     public void testNewViaVerseIntBoolean() {
-        assertEquals(gen_rev, RestrictionType.NONE.toRange(v11n, gen11, 999999));
-        assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, gen11, 0));
-        assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, gen11, -1));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.toRange(v11n, genC1V1, 999999));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.toRange(v11n, genC1V1, 0));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.toRange(v11n, genC1V1, -1));
     }
 
     @Test
     public void testNewViaVerse() {
-        assertEquals(gen11_1, new VerseRange(v11n, gen11));
-        assertEquals(rev99_1, new VerseRange(v11n, rev99));
+        Assert.assertEquals(rangeGenC1V1, new VerseRange(v11n, genC1V1));
+        Assert.assertEquals(rangeRevC22V21, new VerseRange(v11n, revC22V21));
     }
 
     @Test
     public void testNewViaVerseVerse() throws Exception {
-        assertEquals(gen11_1, new VerseRange(v11n, gen11, gen11));
-        assertEquals(gen11_2, new VerseRange(v11n, gen11, gen12));
-        assertEquals(gen11_2, new VerseRange(v11n, gen12, gen11));
-        assertEquals(gen_rev, new VerseRange(v11n, gen11, rev99));
-        assertEquals(gen_rev, new VerseRange(v11n, rev99, gen11));
-        assertEquals(gen_all, new VerseRange(v11n, gen00, gen99));
-        assertEquals(gen_all, new VerseRange(v11n, gen99, gen00));
-        assertEquals(gen_ex1, new VerseRange(v11n, gen00, exo11));
-        assertEquals(gen_ex1, new VerseRange(v11n, exo11, gen00));
-        assertEquals(gen11_1, new VerseRange(v11n, gen11, new Verse(v11n, BibleBook.GEN, 1, 1)));
+        Assert.assertEquals(rangeGenC1V1, new VerseRange(v11n, genC1V1, genC1V1));
+        Assert.assertEquals(rangeGenC1V12, new VerseRange(v11n, genC1V1, genC1V2));
+        Assert.assertEquals(rangeGenC1V12, new VerseRange(v11n, genC1V2, genC1V1));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(v11n, genC1V1, revC22V21));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(v11n, revC22V21, genC1V1));
+        Assert.assertEquals(rangeGenC0V0toEnd, new VerseRange(v11n, genC0V0, genC50V26));
+        Assert.assertEquals(rangeGenC0V0toEnd, new VerseRange(v11n, genC50V26, genC0V0));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, new VerseRange(v11n, genC0V0, exoC1V1));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, new VerseRange(v11n, exoC1V1, genC0V0));
+        Assert.assertEquals(rangeGenC1V1, new VerseRange(v11n, genC1V1, new Verse(v11n, BibleBook.GEN, 1, 1)));
     }
 
     @Test
     public void testNewViaVerseIntIntBoolean() {
-        assertEquals(gen11_1, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 0));
-        assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11, 0, 0));
-        assertEquals(gen11_2, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1));
-        assertEquals(gen11_2, RestrictionType.NONE.blur(v11n, gen11, 0, 1));
-        assertEquals(gen10_1, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 0));
-        assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11, 0, 0));
-        assertEquals(gen10_1, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 0));
-        assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11, 0, 0));
-        assertEquals(rev99_1, RestrictionType.CHAPTER.blur(v11n, rev99, 0, 1));
-        assertEquals(rev99_1, RestrictionType.NONE.blur(v11n, rev99, 0, 1));
-        assertEquals(rev99_1, RestrictionType.CHAPTER.blur(v11n, rev99, 0, 9));
-        assertEquals(rev99_1, RestrictionType.NONE.blur(v11n, rev99, 0, 9));
-        assertEquals(gen11_9, RestrictionType.NONE.blur(v11n, gen11, 0, 30));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 30));
-        assertEquals(gen10_9, RestrictionType.NONE.blur(v11n, gen11, 1, 30));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 30));
-        assertEquals(gen11_9, RestrictionType.NONE.blur(v11n, gen11, 0, 30));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 30));
-        assertEquals(gen11_a, RestrictionType.NONE.blur(v11n, gen11, 0, 32));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 32));
-        assertEquals(gen10_a, RestrictionType.NONE.blur(v11n, gen11, 1, 32));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 32));
-        assertEquals(gen11_a, RestrictionType.NONE.blur(v11n, gen11, 0, 32));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 32));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1581));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 3, 1581));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 1581));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1533));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 1584));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 2, 1584));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32356));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32356));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32356));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32357));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32357));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32357));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 99999));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 99999));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 99999));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 99999));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 99999));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 99999));
-        assertEquals(gen11_2, RestrictionType.CHAPTER.blur(v11n, gen12, 1, 0));
-        assertEquals(gen11_2, RestrictionType.NONE.blur(v11n, gen12, 1, 0));
-        assertEquals(gen10_2, RestrictionType.CHAPTER.blur(v11n, gen12, 9, 0));
-        assertEquals(gen11_2, RestrictionType.NONE.blur(v11n, gen12, 1, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 21, 0));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99, 21, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 21, 1));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99, 21, 1));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 21, 9));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99, 21, 9));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 425, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 1));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 9));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 0));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 1));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 9));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 0));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.blur(v11n, genC1V1, 0, 0));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 1));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.NONE.blur(v11n, genC1V1, 0, 1));
+        Assert.assertEquals(rangeGenC1V01, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 0));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.blur(v11n, genC1V1, 0, 0));
+        Assert.assertEquals(rangeGenC1V01, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 0));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.blur(v11n, genC1V1, 0, 0));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.CHAPTER.blur(v11n, revC22V21, 0, 1));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.NONE.blur(v11n, revC22V21, 0, 1));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.CHAPTER.blur(v11n, revC22V21, 0, 9));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.NONE.blur(v11n, revC22V21, 0, 9));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.NONE.blur(v11n, genC1V1, 0, 30));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.NONE.blur(v11n, genC1V1, 1, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 30));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.NONE.blur(v11n, genC1V1, 0, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 30));
+        Assert.assertEquals(rangeGenC1V1to33, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 32));
+        Assert.assertEquals(rangeGenC1V0to34, RestrictionType.NONE.blur(v11n, genC1V1, 1, 32));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 32));
+        Assert.assertEquals(rangeGenC1V1to33, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 32));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 1581));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 3, 1581));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 1581));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 1533));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 1584));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 2, 1584));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 1, 99999));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, genC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, genC1V1, 9, 99999));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.CHAPTER.blur(v11n, genC1V2, 1, 0));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.NONE.blur(v11n, genC1V2, 1, 0));
+        Assert.assertEquals(rangeGenC1V02, RestrictionType.CHAPTER.blur(v11n, genC1V2, 9, 0));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.NONE.blur(v11n, genC1V2, 1, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 21, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 21, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 21, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 21, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 21, 9));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 21, 9));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 425, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 427, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, revC22V21, 427, 9));
+        Assert.assertEquals(rangeGenC0V0toEnd, RestrictionType.NONE.blur(v11n, genC1V1, 2, 1581));
+        Assert.assertEquals(rangeGenC0V0toEnd, RestrictionType.NONE.blur(v11n, genC1V1, 2, 1581));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, RestrictionType.NONE.blur(v11n, genC1V1, 2, 1584));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, RestrictionType.NONE.blur(v11n, genC1V1, 2, 1584));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 426, 0));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 426, 1));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, revC22V21, 426, 9));
     }
 
     @Test
     public void testNewViaVerseRangeIntIntBoolean() {
-        assertEquals(gen11_1, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 0));
-        assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11_1, 0, 0));
-        assertEquals(gen11_2, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 1));
-        assertEquals(gen11_2, RestrictionType.NONE.blur(v11n, gen11_1, 0, 1));
-        assertEquals(gen10_1, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 0));
-        assertEquals(gen10_1, RestrictionType.NONE.blur(v11n, gen11_1, 1, 0));
-        assertEquals(gen10_1, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 0));
-        assertEquals(rev99_1, RestrictionType.CHAPTER.blur(v11n, rev99_1, 0, 1));
-        assertEquals(rev99_1, RestrictionType.NONE.blur(v11n, rev99_1, 0, 1));
-        assertEquals(rev99_1, RestrictionType.CHAPTER.blur(v11n, rev99_1, 0, 9));
-        assertEquals(rev99_1, RestrictionType.NONE.blur(v11n, rev99_1, 0, 9));
-        assertEquals(gen11_9, RestrictionType.NONE.blur(v11n, gen11_1, 0, 30));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 30));
-        assertEquals(gen10_9, RestrictionType.NONE.blur(v11n, gen11_1, 1, 30));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 30));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 30));
-        assertEquals(gen11_a, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 33));
-        assertEquals(gen10_a, RestrictionType.NONE.blur(v11n, gen11_1, 1, 32));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 31));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 31));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11_1, 2, 1581));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 1581));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11_1, 2, 1581));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 1581));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 1581));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11_1, 2, 1584));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 1584));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11_1, 2, 1584));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 1584));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 1584));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32356));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32356));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32356));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 32356));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32357));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32357));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 32357));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 32357));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 99999));
-        assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 99999));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 99999));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 1, 99999));
-        assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11_1, 0, 99999));
-        assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11_1, 9, 99999));
-        assertEquals(gen11_2, RestrictionType.CHAPTER.blur(v11n, gen12_1, 1, 0));
-        assertEquals(gen11_2, RestrictionType.NONE.blur(v11n, gen12_1, 1, 0));
-        assertEquals(gen10_2, RestrictionType.CHAPTER.blur(v11n, gen12_1, 9, 0));
-        assertEquals(gen10_2, RestrictionType.NONE.blur(v11n, gen12_1, 2, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 21, 0));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99_1, 21, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 21, 1));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99_1, 21, 1));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 21, 9));
-        assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99_1, 21, 9));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 426, 0));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99_1, 426, 0));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 426, 1));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99_1, 426, 1));
-        assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99_1, 426, 9));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99_1, 426, 9));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 0));
+        Assert.assertEquals(rangeGenC1V1, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 0));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 1));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 1));
+        Assert.assertEquals(rangeGenC1V01, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 0));
+        Assert.assertEquals(rangeGenC1V01, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 1, 0));
+        Assert.assertEquals(rangeGenC1V01, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 0));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 0, 1));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 0, 1));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 0, 9));
+        Assert.assertEquals(rangeRevC22V21, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 0, 9));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 30));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 1, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 30));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 30));
+        Assert.assertEquals(rangeGenC1V1to33, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 33));
+        Assert.assertEquals(rangeGenC1V0to34, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 1, 32));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 31));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 31));
+        Assert.assertEquals(rangeGenC0V0toEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 2, 1581));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 1581));
+        Assert.assertEquals(rangeGenC0V0toEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 2, 1581));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 1581));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 1581));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 2, 1584));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 1584));
+        Assert.assertEquals(rangeGenC0V0toExoC1V1, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 2, 1584));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 1584));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 1584));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32356));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 32356));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 32357));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 32357));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V1to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 1, 99999));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, RestrictionType.NONE.blur(v11n, rangeGenC1V1, 0, 99999));
+        Assert.assertEquals(rangeGenC1V0to31, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V1, 9, 99999));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V2, 1, 0));
+        Assert.assertEquals(rangeGenC1V12, RestrictionType.NONE.blur(v11n, rangeGenC1V2, 1, 0));
+        Assert.assertEquals(rangeGenC1V02, RestrictionType.CHAPTER.blur(v11n, rangeGenC1V2, 9, 0));
+        Assert.assertEquals(rangeGenC1V02, RestrictionType.NONE.blur(v11n, rangeGenC1V2, 2, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 21, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 21, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 21, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 21, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 21, 9));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 21, 9));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 426, 0));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 426, 0));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 426, 1));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 426, 1));
+        Assert.assertEquals(rangeRevC22V0toEnd, RestrictionType.CHAPTER.blur(v11n, rangeRevC22V21, 426, 9));
+        Assert.assertEquals(rangeRevC0V0toEnd, RestrictionType.NONE.blur(v11n, rangeRevC22V21, 426, 9));
     }
 
     @Test
     public void testNewViaVerseRangeVerseRange() {
-        assertEquals(gen_rev, new VerseRange(gen11_1, rev99_9));
-        assertEquals(gen_rev, new VerseRange(gen_rev, rev99_9));
-        assertEquals(gen_rev, new VerseRange(rev11_9, gen_rev));
-        assertEquals(gen_rev, new VerseRange(gen_rev, gen_rev));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(rangeGenC1V1, rangeRevC22V0toEnd));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(rangeGenC1V1toRevEnd, rangeRevC22V0toEnd));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(rangeRevC0V0toEnd, rangeGenC1V1toRevEnd));
+        Assert.assertEquals(rangeGenC1V1toRevEnd, new VerseRange(rangeGenC1V1toRevEnd, rangeGenC1V1toRevEnd));
         try {
-            new VerseRange(gen_rev, null);
-            fail();
-        } catch (NullPointerException ex) {
+            new VerseRange(rangeGenC1V1toRevEnd, null);
+            Assert.fail();
+        } catch (NullPointerException expected) {
+            // This is allowed
         }
         try {
-            new VerseRange((VerseRange) null, gen_rev);
-            fail();
-        } catch (NullPointerException ex) {
+            new VerseRange((VerseRange) null, rangeGenC1V1toRevEnd);
+            Assert.fail();
+        } catch (NullPointerException expected) {
+            // This is allowed
         }
         try {
             new VerseRange((VerseRange) null, (VerseRange) null);
-            fail();
-        } catch (NullPointerException ex) {
+            Assert.fail();
+        } catch (NullPointerException expected) {
+            // This is allowed
         }
     }
 
     @Test
     public void testGetName() {
-        assertEquals("Gen 1:1", gen11_1.getName());
-        assertEquals("Gen 1:1-2", gen11_2.getName());
-        assertEquals("Gen 1", gen11_9.getName());
-        assertEquals("Gen 1:1-2:1", gen11_a.getName());
-        assertEquals("Gen 1:2", gen12_1.getName());
-        assertEquals("Gen", gen_all.getName());
-        assertEquals("Gen-Exo 1:1", gen_ex1.getName());
-        assertEquals("Gen-Rev", gen_rev.getName());
-        assertEquals("Rev 22", rev99_9.getName());
-        assertEquals("Rev", rev11_9.getName());
-        assertEquals("Rev 22:21", rev99_1.getName());
+        Assert.assertEquals("Gen 1:1", rangeGenC1V1.getName());
+        Assert.assertEquals("Gen 1:1-2", rangeGenC1V12.getName());
+        Assert.assertEquals("Gen 1", rangeGenC1V1to31.getName());
+        Assert.assertEquals("Gen 1:1-2:1", rangeGenC1V1to33.getName());
+        Assert.assertEquals("Gen 1:2", rangeGenC1V2.getName());
+        Assert.assertEquals("Gen", rangeGenC0V0toEnd.getName());
+        Assert.assertEquals("Gen-Exo 1:1", rangeGenC0V0toExoC1V1.getName());
+        Assert.assertEquals("Gen-Rev", rangeGenC1V1toRevEnd.getName());
+        Assert.assertEquals("Rev 22", rangeRevC22V0toEnd.getName());
+        Assert.assertEquals("Rev", rangeRevC0V0toEnd.getName());
+        Assert.assertEquals("Rev 22:21", rangeRevC22V21.getName());
     }
 
     @Test
     public void testGetNameVerse() {
-        assertEquals("1-2", gen11_2.getName(gen11));
-        assertEquals("2", gen12_1.getName(gen11));
-        assertEquals("Rev 22", rev99_9.getName(gen11));
-        assertEquals("Rev 22",rev99_9.getName(null));
+        Assert.assertEquals("1-2", rangeGenC1V12.getName(genC1V1));
+        Assert.assertEquals("2", rangeGenC1V2.getName(genC1V1));
+        Assert.assertEquals("Rev 22", rangeRevC22V0toEnd.getName(genC1V1));
+        Assert.assertEquals("Rev 22", rangeRevC22V0toEnd.getName(null));
     }
 
     @Test
     public void testGetStart() {
-        assertEquals(gen11, gen11_1.getStart());
-        assertEquals(gen11, gen11_2.getStart());
-        assertEquals(gen11, gen11_9.getStart());
-        assertEquals(gen11, gen11_a.getStart());
-        assertEquals(gen12, gen12_1.getStart());
-        assertEquals(gen00, gen_all.getStart());
-        assertEquals(gen00, gen_ex1.getStart());
-        assertEquals(gen11, gen_rev.getStart());
-        assertEquals(rev90, rev99_9.getStart());
-        assertEquals(rev00, rev11_9.getStart());
-        assertEquals(rev99, rev99_1.getStart());
+        Assert.assertEquals(genC1V1, rangeGenC1V1.getStart());
+        Assert.assertEquals(genC1V1, rangeGenC1V12.getStart());
+        Assert.assertEquals(genC1V1, rangeGenC1V1to31.getStart());
+        Assert.assertEquals(genC1V1, rangeGenC1V1to33.getStart());
+        Assert.assertEquals(genC1V2, rangeGenC1V2.getStart());
+        Assert.assertEquals(genC0V0, rangeGenC0V0toEnd.getStart());
+        Assert.assertEquals(genC0V0, rangeGenC0V0toExoC1V1.getStart());
+        Assert.assertEquals(genC1V1, rangeGenC1V1toRevEnd.getStart());
+        Assert.assertEquals(revC22V0, rangeRevC22V0toEnd.getStart());
+        Assert.assertEquals(revC0V0, rangeRevC0V0toEnd.getStart());
+        Assert.assertEquals(revC22V21, rangeRevC22V21.getStart());
     }
 
     @Test
     public void testGetEnd() {
-        assertEquals(gen11, gen11_1.getEnd());
-        assertEquals(gen12, gen11_2.getEnd());
-        assertEquals(gen19, gen11_9.getEnd());
-        assertEquals(gen21, gen11_a.getEnd());
-        assertEquals(gen12, gen12_1.getEnd());
-        assertEquals(gen99, gen_all.getEnd());
-        assertEquals(exo11, gen_ex1.getEnd());
-        assertEquals(rev99, gen_rev.getEnd());
-        assertEquals(rev99, rev99_9.getEnd());
-        assertEquals(rev99, rev11_9.getEnd());
-        assertEquals(rev99, rev99_1.getEnd());
+        Assert.assertEquals(genC1V1, rangeGenC1V1.getEnd());
+        Assert.assertEquals(genC1V2, rangeGenC1V12.getEnd());
+        Assert.assertEquals(genC1V31, rangeGenC1V1to31.getEnd());
+        Assert.assertEquals(genC2V1, rangeGenC1V1to33.getEnd());
+        Assert.assertEquals(genC1V2, rangeGenC1V2.getEnd());
+        Assert.assertEquals(genC50V26, rangeGenC0V0toEnd.getEnd());
+        Assert.assertEquals(exoC1V1, rangeGenC0V0toExoC1V1.getEnd());
+        Assert.assertEquals(revC22V21, rangeGenC1V1toRevEnd.getEnd());
+        Assert.assertEquals(revC22V21, rangeRevC22V0toEnd.getEnd());
+        Assert.assertEquals(revC22V21, rangeRevC0V0toEnd.getEnd());
+        Assert.assertEquals(revC22V21, rangeRevC22V21.getEnd());
     }
 
     @Test
     public void testGetVerseCount() {
-        assertEquals(1, gen11_1.getCardinality());
-        assertEquals(2, gen11_2.getCardinality());
-        assertEquals(31, gen11_9.getCardinality());
-        assertEquals(33, gen11_a.getCardinality());
-        assertEquals(1, gen12_1.getCardinality());
-        assertEquals(1584, gen_all.getCardinality());
-        assertEquals(1587, gen_ex1.getCardinality());
-        assertEquals(32356, gen_rev.getCardinality());
-        assertEquals(22, rev99_9.getCardinality());
-        assertEquals(427, rev11_9.getCardinality());
-        assertEquals(1, rev99_1.getCardinality());
+        Assert.assertEquals(1, rangeGenC1V1.getCardinality());
+        Assert.assertEquals(2, rangeGenC1V12.getCardinality());
+        Assert.assertEquals(31, rangeGenC1V1to31.getCardinality());
+        Assert.assertEquals(33, rangeGenC1V1to33.getCardinality());
+        Assert.assertEquals(1, rangeGenC1V2.getCardinality());
+        Assert.assertEquals(1584, rangeGenC0V0toEnd.getCardinality());
+        Assert.assertEquals(1587, rangeGenC0V0toExoC1V1.getCardinality());
+        Assert.assertEquals(32356, rangeGenC1V1toRevEnd.getCardinality());
+        Assert.assertEquals(22, rangeRevC22V0toEnd.getCardinality());
+        Assert.assertEquals(427, rangeRevC0V0toEnd.getCardinality());
+        Assert.assertEquals(1, rangeRevC22V21.getCardinality());
     }
 
     @Test
     public void testClone() {
-        assertTrue(gen11_1 != gen11_1.clone());
-        assertTrue(gen11_1.equals(gen11_1.clone()));
-        assertTrue(rev99_1 != rev99_1.clone());
-        assertTrue(rev99_1.equals(rev99_1.clone()));
+        Assert.assertTrue(rangeGenC1V1 != rangeGenC1V1.clone());
+        Assert.assertTrue(rangeGenC1V1.equals(rangeGenC1V1.clone()));
+        Assert.assertTrue(rangeRevC22V21 != rangeRevC22V21.clone());
+        Assert.assertTrue(rangeRevC22V21.equals(rangeRevC22V21.clone()));
     }
 
     @Test
     public void testCompareTo() {
-        assertTrue(rev99_1.compareTo(gen11_1) > 0);
-        assertTrue(gen11_1.compareTo(rev99_1) < 0);
-        assertTrue(gen11_1.compareTo(gen11_1) == 0);
-        assertTrue(gen11_1.compareTo(gen11_2) < 0);
-        assertTrue(gen11_1.compareTo(gen11_9) < 0);
-        assertTrue(gen11_1.compareTo(gen11_a) < 0);
-        assertTrue(gen11_1.compareTo(gen_all) > 0);
-        assertTrue(gen12_1.compareTo(gen11_1) > 0);
-        assertTrue(gen12_1.compareTo(gen11_2) > 0);
-        assertTrue(gen12_1.compareTo(gen_rev) > 0);
-        assertTrue(gen12_1.compareTo(gen12_1) == 0);
-        assertTrue(gen12_1.compareTo(rev99_1) < 0);
-        assertTrue(gen12_1.compareTo(rev99_9) < 0);
+        Assert.assertTrue(rangeRevC22V21.compareTo(rangeGenC1V1) > 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeRevC22V21) < 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeGenC1V1) == 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeGenC1V12) < 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeGenC1V1to31) < 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeGenC1V1to33) < 0);
+        Assert.assertTrue(rangeGenC1V1.compareTo(rangeGenC0V0toEnd) > 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeGenC1V1) > 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeGenC1V12) > 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeGenC1V1toRevEnd) > 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeGenC1V2) == 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeRevC22V21) < 0);
+        Assert.assertTrue(rangeGenC1V2.compareTo(rangeRevC22V0toEnd) < 0);
         try {
-            gen12_1.compareTo(null);
-            fail();
+            rangeGenC1V2.compareTo(null);
+            Assert.fail();
         } catch (NullPointerException ex) {
+            // This is allowed
         }
     }
 
     @Test
     public void testAdjacentTo() throws Exception {
-        assertTrue(!gen11_1.adjacentTo(rev99_9));
-        assertTrue(!gen11_1.adjacentTo(rev11_9));
-        assertTrue(!gen12_1.adjacentTo(rev99_9));
-        assertTrue(!rev99_1.adjacentTo(gen11_1));
-        assertTrue(gen11_1.adjacentTo(gen12_1));
-        assertTrue(gen_all.adjacentTo(gen_ex1));
-        assertTrue(gen_all.adjacentTo(gen_rev));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-11").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:12-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-12").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:11-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-12")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:12-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:10-11").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:13-14")));
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:13-14").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
+        Assert.assertTrue(!rangeGenC1V1.adjacentTo(rangeRevC22V0toEnd));
+        Assert.assertTrue(!rangeGenC1V1.adjacentTo(rangeRevC0V0toEnd));
+        Assert.assertTrue(!rangeGenC1V2.adjacentTo(rangeRevC22V0toEnd));
+        Assert.assertTrue(!rangeRevC22V21.adjacentTo(rangeGenC1V1));
+        Assert.assertTrue(rangeGenC1V1.adjacentTo(rangeGenC1V2));
+        Assert.assertTrue(rangeGenC0V0toEnd.adjacentTo(rangeGenC0V0toExoC1V1));
+        Assert.assertTrue(rangeGenC0V0toEnd.adjacentTo(rangeGenC1V1toRevEnd));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-11").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:12-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-12").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:11-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-12")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:12-13").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:10-11").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:13-14")));
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:13-14").adjacentTo(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
         try {
-            gen_all.adjacentTo(null);
-            fail();
+            rangeGenC0V0toEnd.adjacentTo(null);
+            Assert.fail();
         } catch (NullPointerException ex) {
+            // This is allowed
         }
     }
 
     @Test
     public void testOverlaps() throws Exception {
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-11").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-12")));
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:10-11").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:12-13")));
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:12-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-11").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-13")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-12")));
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:11-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:10-11").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:12-13")));
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Gen 1:12-13").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:10-11")));
         try {
-            gen_all.overlaps(null);
-            fail();
+            rangeGenC0V0toEnd.overlaps(null);
+            Assert.fail();
         } catch (NullPointerException ex) {
+            // This is allowed
         }
     }
 
     @Test
     public void testContainsVerse() {
-        assertTrue(gen_all.contains(gen11));
-        assertTrue(gen_all.contains(gen12));
-        assertTrue(gen_all.contains(gen99));
-        assertTrue(gen11_1.contains(gen11));
-        assertTrue(gen11_2.contains(gen11));
-        assertTrue(gen11_2.contains(gen12));
-        assertTrue(gen12_1.contains(gen12));
-        assertTrue(rev99_9.contains(rev91));
-        assertTrue(rev99_9.contains(rev99));
-        assertTrue(!rev99_9.contains(gen11));
-        assertTrue(!gen11_1.contains(gen12));
-        assertTrue(!gen_all.contains(exo11));
-        assertTrue(!rev99_9.contains(rev11));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(genC1V1));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(genC1V2));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(genC50V26));
+        Assert.assertTrue(rangeGenC1V1.contains(genC1V1));
+        Assert.assertTrue(rangeGenC1V12.contains(genC1V1));
+        Assert.assertTrue(rangeGenC1V12.contains(genC1V2));
+        Assert.assertTrue(rangeGenC1V2.contains(genC1V2));
+        Assert.assertTrue(rangeRevC22V0toEnd.contains(revC22V1));
+        Assert.assertTrue(rangeRevC22V0toEnd.contains(revC22V21));
+        Assert.assertTrue(!rangeRevC22V0toEnd.contains(genC1V1));
+        Assert.assertTrue(!rangeGenC1V1.contains(genC1V2));
+        Assert.assertTrue(!rangeGenC0V0toEnd.contains(exoC1V1));
+        Assert.assertTrue(!rangeRevC22V0toEnd.contains(revC1V1));
         try {
-            gen_all.contains((Verse) null);
-            fail();
+            rangeGenC0V0toEnd.contains((Verse) null);
+            Assert.fail();
         } catch (NullPointerException ex) {
+            // This is allowed
         }
     }
 
     @Test
     public void testContainsVerseRange() {
-        assertTrue(gen_all.contains(gen11_1));
-        assertTrue(gen_all.contains(gen11_2));
-        assertTrue(gen_all.contains(gen12_1));
-        assertTrue(gen11_1.contains(gen11_1));
-        assertTrue(gen11_2.contains(gen11_1));
-        assertTrue(!gen11_2.contains(gen_all));
-        assertTrue(!gen12_1.contains(gen11_2));
-        assertTrue(rev99_9.contains(rev99_9));
-        assertTrue(!rev99_9.contains(gen_all));
-        assertTrue(rev99_9.contains(rev99_1));
-        assertTrue(!gen11_1.contains(rev99_9));
-        assertTrue(gen_all.contains(gen12_1));
-        assertTrue(!rev99_9.contains(rev11_9));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(rangeGenC1V1));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(rangeGenC1V12));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(rangeGenC1V2));
+        Assert.assertTrue(rangeGenC1V1.contains(rangeGenC1V1));
+        Assert.assertTrue(rangeGenC1V12.contains(rangeGenC1V1));
+        Assert.assertTrue(!rangeGenC1V12.contains(rangeGenC0V0toEnd));
+        Assert.assertTrue(!rangeGenC1V2.contains(rangeGenC1V12));
+        Assert.assertTrue(rangeRevC22V0toEnd.contains(rangeRevC22V0toEnd));
+        Assert.assertTrue(!rangeRevC22V0toEnd.contains(rangeGenC0V0toEnd));
+        Assert.assertTrue(rangeRevC22V0toEnd.contains(rangeRevC22V21));
+        Assert.assertTrue(!rangeGenC1V1.contains(rangeRevC22V0toEnd));
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(rangeGenC1V2));
+        Assert.assertTrue(!rangeRevC22V0toEnd.contains(rangeRevC0V0toEnd));
         try {
-            gen_all.contains((VerseRange) null);
-            fail();
+            rangeGenC0V0toEnd.contains((VerseRange) null);
+            Assert.fail();
         } catch (NullPointerException ex) {
+            // This is allowed
         }
     }
 
     @Test
     public void testIsChapter() throws Exception {
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1").isWholeChapter());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:0-ff").isWholeChapter());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:0-$").isWholeChapter());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2").isWholeChapter());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2:0-ff").isWholeChapter());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2:0-$").isWholeChapter());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 3:1").isWholeChapter());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 4:1-5:1").isWholeChapter());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 5:1-6:ff").isWholeChapter());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Lev").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:0-ff").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:0-$").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2:0-ff").isWholeChapter());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Exo 2:0-$").isWholeChapter());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 3:1").isWholeChapter());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 4:1-5:1").isWholeChapter());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 5:1-6:ff").isWholeChapter());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Lev").isWholeChapter());
     }
 
     @Test
     public void testIsBook() throws Exception {
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen").isWholeBook());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:ff").isWholeBook());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:$").isWholeBook());
-        assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0-50:ff").isWholeBook());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 1:2-Num $:$").isWholeBook());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 4:1-5:1").isWholeBook());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Num 5:1-6:ff").isWholeBook());
-        assertTrue(!VerseRangeFactory.fromString(v11n, "Lev-Deu 1:1").isWholeBook());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen").isWholeBook());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:ff").isWholeBook());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:$").isWholeBook());
+        Assert.assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0-50:ff").isWholeBook());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 1:2-Num $:$").isWholeBook());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 4:1-5:1").isWholeBook());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Num 5:1-6:ff").isWholeBook());
+        Assert.assertTrue(!VerseRangeFactory.fromString(v11n, "Lev-Deu 1:1").isWholeBook());
     }
 
     @Test
     public void testToVerseArray() {
-        assertEquals(1, gen11_1.toVerseArray().length);
-        assertEquals(2, gen11_2.toVerseArray().length);
-        assertEquals(31, gen11_9.toVerseArray().length);
-        assertEquals(33, gen11_a.toVerseArray().length);
-        assertEquals(1, gen12_1.toVerseArray().length);
-        assertEquals(1584, gen_all.toVerseArray().length);
-        assertEquals(1587, gen_ex1.toVerseArray().length);
-        assertEquals(427, rev11_9.toVerseArray().length);
-        assertEquals(gen11, gen11_1.toVerseArray()[0]);
-        assertEquals(gen11, gen11_2.toVerseArray()[0]);
-        assertEquals(gen12, gen11_2.toVerseArray()[1]);
-        assertEquals(gen11, gen11_9.toVerseArray()[0]);
-        assertEquals(gen19, gen11_9.toVerseArray()[30]);
-        assertEquals(gen12, gen12_1.toVerseArray()[0]);
-        assertEquals(gen11, gen_all.toVerseArray()[2]);
-        assertEquals(gen11, gen_ex1.toVerseArray()[2]);
-        assertEquals(exo11, gen_ex1.toVerseArray()[1586]);
-        assertEquals(rev11, rev11_9.toVerseArray()[2]);
-        assertEquals(rev12, rev11_9.toVerseArray()[3]);
-        assertEquals(rev99, rev11_9.toVerseArray()[426]);
+        Assert.assertEquals(1, rangeGenC1V1.toVerseArray().length);
+        Assert.assertEquals(2, rangeGenC1V12.toVerseArray().length);
+        Assert.assertEquals(31, rangeGenC1V1to31.toVerseArray().length);
+        Assert.assertEquals(33, rangeGenC1V1to33.toVerseArray().length);
+        Assert.assertEquals(1, rangeGenC1V2.toVerseArray().length);
+        Assert.assertEquals(1584, rangeGenC0V0toEnd.toVerseArray().length);
+        Assert.assertEquals(1587, rangeGenC0V0toExoC1V1.toVerseArray().length);
+        Assert.assertEquals(427, rangeRevC0V0toEnd.toVerseArray().length);
+        Assert.assertEquals(genC1V1, rangeGenC1V1.toVerseArray()[0]);
+        Assert.assertEquals(genC1V1, rangeGenC1V12.toVerseArray()[0]);
+        Assert.assertEquals(genC1V2, rangeGenC1V12.toVerseArray()[1]);
+        Assert.assertEquals(genC1V1, rangeGenC1V1to31.toVerseArray()[0]);
+        Assert.assertEquals(genC1V31, rangeGenC1V1to31.toVerseArray()[30]);
+        Assert.assertEquals(genC1V2, rangeGenC1V2.toVerseArray()[0]);
+        Assert.assertEquals(genC1V1, rangeGenC0V0toEnd.toVerseArray()[2]);
+        Assert.assertEquals(genC1V1, rangeGenC0V0toExoC1V1.toVerseArray()[2]);
+        Assert.assertEquals(exoC1V1, rangeGenC0V0toExoC1V1.toVerseArray()[1586]);
+        Assert.assertEquals(revC1V1, rangeRevC0V0toEnd.toVerseArray()[2]);
+        Assert.assertEquals(revC1V2, rangeRevC0V0toEnd.toVerseArray()[3]);
+        Assert.assertEquals(revC22V21, rangeRevC0V0toEnd.toVerseArray()[426]);
     }
 
     @Test
     public void testVerseElements() {
-        Iterator<Key> it = gen11_1.iterator();
+        Iterator<Key> it = rangeGenC1V1.iterator();
         while (it.hasNext()) {
-            assertTrue(it.hasNext());
+            Assert.assertTrue(it.hasNext());
             Verse v = (Verse) it.next();
-            assertEquals(gen11, v);
-            assertTrue(!it.hasNext());
+            Assert.assertEquals(genC1V1, v);
+            Assert.assertTrue(!it.hasNext());
         }
-        it = gen11_2.iterator();
+        it = rangeGenC1V12.iterator();
         while (it.hasNext()) {
-            assertTrue(it.hasNext());
+            Assert.assertTrue(it.hasNext());
             Verse v = (Verse) it.next();
-            assertEquals(gen11, v);
-            assertTrue(it.hasNext());
+            Assert.assertEquals(genC1V1, v);
+            Assert.assertTrue(it.hasNext());
             v = (Verse) it.next();
-            assertEquals(gen12, v);
-            assertTrue(!it.hasNext());
+            Assert.assertEquals(genC1V2, v);
+            Assert.assertTrue(!it.hasNext());
         }
     }
-    
 
     /**
      * Test fix related to JS-274 to ensure key.contains(verse) works correctly
@@ -667,15 +675,15 @@ public class VerseRangeTest {
     @Test
     public void testKeyContainsVerse() {
         // this passes
-        assertTrue(gen_all.contains(gen11));
-        
+        Assert.assertTrue(rangeGenC0V0toEnd.contains(genC1V1));
+
         // this fails
-        Key gen_allKey = gen_all;
-        assertTrue(gen_allKey.contains(gen11));
+        Key genAllKey = rangeGenC0V0toEnd;
+        Assert.assertTrue(genAllKey.contains(genC1V1));
     }
 
     @Test
     public void testIntersection() {
-        assertTrue(VerseRange.intersection(gen_all, gen_exo).contains(gen_all));
+        Assert.assertTrue(VerseRange.intersection(rangeGenC0V0toEnd, rangeGenC0V0toExoEnd).contains(rangeGenC0V0toEnd));
     }
 }

@@ -1,6 +1,23 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *      http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * © CrossWire Bible Society, 2005 - 2016
+ *
+ */
 package org.crosswire.jsword.index.lucene;
-
-import static org.junit.Assert.assertTrue;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
@@ -9,6 +26,7 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.index.IndexManagerFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,8 +34,8 @@ import org.junit.Test;
 /**
  * Test indexManager responsibilities
  *
- * @author Sijo Cherian
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author Sijo Cherian
  */
 public class LuceneIndexManagerTest {
 
@@ -54,11 +72,11 @@ public class LuceneIndexManagerTest {
         for (Book insBook : myBooks.getBooks(filter)) {
             createOrUpgradeIndex(insBook);
 
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
 
-            assertTrue(indexManager.isIndexed(insBook));
-            assertTrue(indexManager.needsReindexing(insBook) == false);
+            Assert.assertTrue(indexManager.isIndexed(insBook));
+            Assert.assertFalse(indexManager.needsReindexing(insBook));
 
 
         } //for
@@ -93,9 +111,9 @@ public class LuceneIndexManagerTest {
         } //for
 
         if (performedReindexing) {
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
 
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
             //Can run queries
             // String myquery = VerseField + ":(john)";
             // Key key = reindexedBook.find(myquery);
@@ -119,7 +137,8 @@ public class LuceneIndexManagerTest {
 
 
             if (indexManager.isIndexed(insBook)
-                    && indexManager.needsReindexing(insBook)) {
+                    && indexManager.needsReindexing(insBook))
+            {
                 System.out.println("Reindexing: " + insBook.getName());
                 performedReindexing = true;
                 reindexedBook = insBook;
@@ -133,10 +152,10 @@ public class LuceneIndexManagerTest {
         } //for
 
         if (performedReindexing) {
-            assertTrue(indexManager.needsReindexing(reindexedBook) == false );
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
+            Assert.assertFalse(indexManager.needsReindexing(reindexedBook));
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) >= IndexMetadata.instance().getLatestIndexVersion());
 
-            assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
+            Assert.assertTrue(IndexMetadata.instance().getLatestIndexVersion(reindexedBook) == InstalledIndex.instance().getInstalledIndexVersion(reindexedBook));
             //A random query test
             //String myquery = VerseField + ":(john)";
             // Key key = reindexedBook.find(myquery);
@@ -146,7 +165,7 @@ public class LuceneIndexManagerTest {
     }
 
 
-    protected static final String VerseField = "content";
+    protected static final String FIELD = "content";
 
 }
 

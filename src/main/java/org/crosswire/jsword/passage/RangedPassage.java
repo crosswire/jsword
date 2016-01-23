@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -163,12 +162,12 @@ public class RangedPassage extends AbstractPassage {
         // 'return store.contains(that);' will not work because
         // VerseRanges can contain others but not be equal to them.
 
-        VerseRange that_range = toVerseRange(getVersification(), obj);
+        VerseRange thatRange = toVerseRange(getVersification(), obj);
 
         Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
-            VerseRange this_range = it.next();
-            if (this_range.contains(that_range)) {
+            VerseRange thisRange = it.next();
+            if (thisRange.contains(thatRange)) {
                 return true;
             }
         }
@@ -184,15 +183,15 @@ public class RangedPassage extends AbstractPassage {
     public void add(Key obj) {
         optimizeWrites();
 
-        VerseRange that_range = toVerseRange(getVersification(), obj);
-        store.add(that_range);
+        VerseRange thatRange = toVerseRange(getVersification(), obj);
+        store.add(thatRange);
 
         normalize();
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppressEvents == 0) {
-            fireIntervalAdded(this, that_range.getStart(), that_range.getEnd());
+            fireIntervalAdded(this, thatRange.getStart(), thatRange.getEnd());
         }
     }
 
@@ -210,21 +209,21 @@ public class RangedPassage extends AbstractPassage {
     public void remove(Key obj) {
         optimizeWrites();
 
-        VerseRange that_range = toVerseRange(getVersification(), obj);
+        VerseRange thatRange = toVerseRange(getVersification(), obj);
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        Set<Key> new_store = new TreeSet<Key>();
-        new_store.addAll(store);
+        Set<Key> newStore = new TreeSet<Key>();
+        newStore.addAll(store);
 
         // go through all the VerseRanges
-        for (Key aKey : new_store) {
+        for (Key aKey : newStore) {
             // if this range touches the range to be removed ...
-            VerseRange this_range = (VerseRange) aKey;
-            if (this_range.overlaps(that_range)) {
+            VerseRange thisRange = (VerseRange) aKey;
+            if (thisRange.overlaps(thatRange)) {
                 // ... remove it and add the remainder
-                store.remove(this_range);
-                VerseRange[] vra = VerseRange.remainder(this_range, that_range);
+                store.remove(thisRange);
+                VerseRange[] vra = VerseRange.remainder(thisRange, thatRange);
 
                 for (int i = 0; i < vra.length; i++) {
                     store.add(vra[i]);
@@ -241,7 +240,7 @@ public class RangedPassage extends AbstractPassage {
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
         if (suppressEvents == 0) {
-            fireIntervalRemoved(this, that_range.getStart(), that_range.getEnd());
+            fireIntervalRemoved(this, thatRange.getStart(), thatRange.getEnd());
         }
     }
 
@@ -249,42 +248,42 @@ public class RangedPassage extends AbstractPassage {
     public void retainAll(Key key) {
         optimizeWrites();
 
-        Set<VerseRange> new_store = new TreeSet<VerseRange>();
+        Set<VerseRange> newStore = new TreeSet<VerseRange>();
 
         if (key instanceof RangedPassage) {
-            Iterator<VerseRange> that_it = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
-            while (that_it.hasNext()) {
-                VerseRange that_range = that_it.next();
+            Iterator<VerseRange> thatIter = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
+            while (thatIter.hasNext()) {
+                VerseRange thatRange = thatIter.next();
 
                 // go through all the VerseRanges
-                Iterator<VerseRange> this_it = rangeIterator(RestrictionType.NONE);
-                while (this_it.hasNext()) {
+                Iterator<VerseRange> thisIter = rangeIterator(RestrictionType.NONE);
+                while (thisIter.hasNext()) {
                     // if this range touches the range to be removed ...
-                    VerseRange this_range = this_it.next();
-                    if (this_range.overlaps(that_range)) {
+                    VerseRange thisRange = thisIter.next();
+                    if (thisRange.overlaps(thatRange)) {
                         // ... remove it and add the remainder
-                        VerseRange interstect = VerseRange.intersection(this_range, that_range);
+                        VerseRange interstect = VerseRange.intersection(thisRange, thatRange);
                         if (interstect != null) {
-                            new_store.add(interstect);
+                            newStore.add(interstect);
                         }
                     }
                 }
             }
         } else {
-            Iterator<Key> that_it = key.iterator();
-            while (that_it.hasNext()) {
-                VerseRange that_range = toVerseRange(getVersification(), that_it.next());
+            Iterator<Key> thatIter = key.iterator();
+            while (thatIter.hasNext()) {
+                VerseRange thatRange = toVerseRange(getVersification(), thatIter.next());
 
                 // go through all the VerseRanges
-                Iterator<VerseRange> this_it = rangeIterator(RestrictionType.NONE);
-                while (this_it.hasNext()) {
+                Iterator<VerseRange> thisIter = rangeIterator(RestrictionType.NONE);
+                while (thisIter.hasNext()) {
                     // if this range touches the range to be removed ...
-                    VerseRange this_range = this_it.next();
-                    if (this_range.overlaps(that_range)) {
+                    VerseRange thisRange = thisIter.next();
+                    if (thisRange.overlaps(thatRange)) {
                         // ... remove it and add the remainder
-                        VerseRange interstect = VerseRange.intersection(this_range, that_range);
+                        VerseRange interstect = VerseRange.intersection(thisRange, thatRange);
                         if (interstect != null) {
-                            new_store.add(interstect);
+                            newStore.add(interstect);
                         }
                     }
                 }
@@ -292,7 +291,7 @@ public class RangedPassage extends AbstractPassage {
         }
 
 
-        store = new_store;
+        store = newStore;
         normalize();
 
         fireIntervalRemoved(this, null, null);
@@ -314,7 +313,7 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange last = null;
         VerseRange next = null;
-        Set<VerseRange> new_store = new TreeSet<VerseRange>();
+        Set<VerseRange> newStore = new TreeSet<VerseRange>();
 
         Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
@@ -323,17 +322,17 @@ public class RangedPassage extends AbstractPassage {
             if (last != null && next.adjacentTo(last)) {
                 VerseRange merge = new VerseRange(last, next);
 
-                new_store.remove(last);
-                new_store.add(merge);
+                newStore.remove(last);
+                newStore.add(merge);
 
                 last = merge;
             } else {
-                new_store.add(next);
+                newStore.add(next);
                 last = next;
             }
         }
 
-        store = new_store;
+        store = newStore;
     }
 
     /**
@@ -353,7 +352,7 @@ public class RangedPassage extends AbstractPassage {
          *            the versification to which this reference pertains
          * @param it 
          */
-        public VerseIterator(Versification v11n, Iterator<VerseRange> it) {
+        protected VerseIterator(Versification v11n, Iterator<VerseRange> it) {
             Set<Key> temp = new TreeSet<Key>();
 
             while (it.hasNext()) {
@@ -405,7 +404,7 @@ public class RangedPassage extends AbstractPassage {
          * @param it 
          * @param restrict 
          */
-        public VerseRangeIterator(Iterator<VerseRange> it, RestrictionType restrict) {
+        protected VerseRangeIterator(Iterator<VerseRange> it, RestrictionType restrict) {
             this.restrict = restrict;
             this.real = it;
         }

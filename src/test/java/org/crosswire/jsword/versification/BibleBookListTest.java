@@ -8,37 +8,33 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2012 - 2016
  *
  */
 package org.crosswire.jsword.versification;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
+ * JUnit test.
  *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
 public class BibleBookListTest {
 
-    public static BibleBook[] booksNT =
+    private static BibleBook[] booksNT =
     {
         BibleBook.MATT,
         BibleBook.MARK,
@@ -69,7 +65,7 @@ public class BibleBookListTest {
         BibleBook.REV,
     };
 
-    BibleBookList list;
+    private BibleBookList list;
 
     @Before
     public void setUp() throws Exception {
@@ -78,14 +74,14 @@ public class BibleBookListTest {
 
     @Test
     public void testCount() {
-        assertEquals(booksNT.length, list.getBookCount());
+        Assert.assertEquals(booksNT.length, list.getBookCount());
     }
 
     @Test
     public void testContains() {
         // Are all the books from booksNT present
         for (BibleBook b : booksNT) {
-            assertTrue(b.getOSIS(), list.contains(b));
+            Assert.assertTrue(b.getOSIS(), list.contains(b));
         }
     }
 
@@ -93,7 +89,7 @@ public class BibleBookListTest {
     public void testOrdinal() {
         for (int i = 0; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
-            assertEquals(b.getOSIS(), i, list.getOrdinal(b));
+            Assert.assertEquals(b.getOSIS(), i, list.getOrdinal(b));
         }
     }
 
@@ -101,10 +97,10 @@ public class BibleBookListTest {
     public void testGet() {
         for (int i = 0; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
-            assertEquals(b.getOSIS(), b, list.getBook(i));
+            Assert.assertEquals(b.getOSIS(), b, list.getBook(i));
         }
-        assertEquals(booksNT[0].getOSIS(), booksNT[0], list.getBook(-1));
-        assertEquals(booksNT[booksNT.length - 1].getOSIS(), booksNT[booksNT.length - 1], list.getBook(booksNT.length));
+        Assert.assertEquals(booksNT[0].getOSIS(), booksNT[0], list.getBook(-1));
+        Assert.assertEquals(booksNT[booksNT.length - 1].getOSIS(), booksNT[booksNT.length - 1], list.getBook(booksNT.length));
     }
 
     @Test
@@ -112,12 +108,12 @@ public class BibleBookListTest {
         for (int i = 0; i < booksNT.length - 1; i++) {
             BibleBook b = booksNT[i];
             BibleBook n = booksNT[i + 1];
-            assertEquals(b.getOSIS(), n, list.getNextBook(b));
+            Assert.assertEquals(b.getOSIS(), n, list.getNextBook(b));
         }
         // Test the last book in the list
-        assertEquals("Next after last book", null, list.getNextBook(booksNT[booksNT.length - 1]));
+        Assert.assertEquals("Next after last book", null, list.getNextBook(booksNT[booksNT.length - 1]));
         // Test a book not in the list
-        assertEquals(BibleBook.GEN.getOSIS(), null, list.getNextBook(BibleBook.GEN));
+        Assert.assertEquals(BibleBook.GEN.getOSIS(), null, list.getNextBook(BibleBook.GEN));
     }
 
     @Test
@@ -125,12 +121,12 @@ public class BibleBookListTest {
         for (int i = 1; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
             BibleBook p = booksNT[i - 1];
-            assertEquals(b.getOSIS(), p, list.getPreviousBook(b));
+            Assert.assertEquals(b.getOSIS(), p, list.getPreviousBook(b));
         }
         // Test the first book in the list
-        assertEquals("Prior before first book", null, list.getPreviousBook(booksNT[0]));
+        Assert.assertEquals("Prior before first book", null, list.getPreviousBook(booksNT[0]));
         // Test a book not in the list
-        assertEquals(BibleBook.GEN.getOSIS(), null, list.getPreviousBook(BibleBook.GEN));
+        Assert.assertEquals(BibleBook.GEN.getOSIS(), null, list.getPreviousBook(BibleBook.GEN));
     }
 
     @Test
@@ -138,7 +134,7 @@ public class BibleBookListTest {
         int i = 0;
         for (BibleBook book: list) {
             BibleBook b = booksNT[i++];
-            assertEquals(b.getOSIS(), b, book);
+            Assert.assertEquals(b.getOSIS(), b, book);
         }
         // Same loop written differently.
         i = 0;
@@ -146,20 +142,19 @@ public class BibleBookListTest {
         while (iter.hasNext()) {
             BibleBook book = iter.next();
             BibleBook b = booksNT[i++];
-            assertEquals(b.getOSIS(), b, book);
+            Assert.assertEquals(b.getOSIS(), b, book);
             try {
                 iter.remove();
-                fail("Remove is not a supported operation on a BibleBookList");
+                Assert.fail("Remove is not a supported operation on a BibleBookList");
             } catch (UnsupportedOperationException e) {
-                ;
+                // This is allowed
             }
         }
         try {
             iter.next();
-            fail("Cannot call next after exhausting a BibleBookList iterator");
+            Assert.fail("Cannot call next after exhausting a BibleBookList iterator");
         } catch (NoSuchElementException e) {
-            ;
+            // This is allowed
         }
-        
     }
 }

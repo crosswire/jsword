@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2014 - 2016
  *
  */
 package org.crosswire.jsword.versification;
@@ -37,7 +36,7 @@ import org.junit.runners.Parameterized;
 /**
  * JUnit Test
  *
- * @author chrisburrell
+ * @author Chris Burrell
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
  * The copyright to this program is held by its authors.
  */
@@ -72,7 +71,8 @@ public class FileVersificationMappingTest {
             VersificationToKJVMapper mapper = new VersificationToKJVMapper(versification, m);
             Assert.assertFalse("Failed to parse " + this.v11nName, mapper.hasErrors());
         } catch (final MissingResourceException mre) {
-            //ignore, as this basically means we don't have mappings...
+            // This is allowed
+            // ignore, as this basically means we don't have mappings...
         }
     }
 }

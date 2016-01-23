@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2015
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2015 - 2016
  */
 package org.crosswire.common.util;
 
@@ -86,6 +85,12 @@ public class ListSet<E> extends AbstractCollection<E> implements Set<E> {
         return removed;
     }
 
+    public E remove(int index) {
+        E t = list.get(index);
+        remove(t);
+        return t;
+    }
+
     @Override
     public boolean containsAll(Collection<?> c) {
         return set.containsAll(c);
@@ -128,12 +133,6 @@ public class ListSet<E> extends AbstractCollection<E> implements Set<E> {
     public E get(int index, E defaultValue) {
         E value = list.get(index);
         return value != null ? value : defaultValue;
-    }
-
-    public E remove(int index) {
-        E t = list.get(index);
-        remove(t);
-        return t;
     }
 
     @Override

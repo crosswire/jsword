@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -352,18 +351,18 @@ public abstract class AbstractPassage implements Passage {
      */
     public int booksInPassage() {
         // FIXME(DMS): a passage does not have to be ordered, for example PassageTally.
-        BibleBook current_book = null;
-        int book_count = 0;
+        BibleBook currentBook = null;
+        int bookCount = 0;
 
         for (Key aKey : this) {
             Verse verse = (Verse) aKey;
-            if (current_book != verse.getBook()) {
-                current_book = verse.getBook();
-                book_count++;
+            if (currentBook != verse.getBook()) {
+                currentBook = verse.getBook();
+                bookCount++;
             }
         }
 
-        return book_count;
+        return bookCount;
     }
 
     /* (non-Javadoc)
@@ -414,18 +413,18 @@ public abstract class AbstractPassage implements Passage {
      */
     public boolean containsAll(Passage that) {
         if (that instanceof RangedPassage) {
-            Iterator<VerseRange> that_it = null;
+            Iterator<VerseRange> iter = null;
 
-            that_it = ((RangedPassage) that).rangeIterator(RestrictionType.NONE);
-            while (that_it.hasNext()) {
-                if (!contains(that_it.next())) {
+            iter = ((RangedPassage) that).rangeIterator(RestrictionType.NONE);
+            while (iter.hasNext()) {
+                if (!contains(iter.next())) {
                     return false;
                 }
             }
         } else {
-            Iterator<Key> that_it = that.iterator();
-            while (that_it.hasNext()) {
-                if (!contains(that_it.next())) {
+            Iterator<Key> iter = that.iterator();
+            while (iter.hasNext()) {
+                if (!contains(iter.next())) {
                     return false;
                 }
             }
@@ -517,10 +516,10 @@ public abstract class AbstractPassage implements Passage {
 
 
         if (key instanceof RangedPassage) {
-            Iterator<VerseRange> that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
-            while (that_it.hasNext()) {
+            Iterator<VerseRange> it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
+            while (it.hasNext()) {
                 // Avoid touching store to make thread safety easier.
-                add(that_it.next());
+                add(it.next());
             }
         } else {
             for (Key subkey : key) {
@@ -552,16 +551,16 @@ public abstract class AbstractPassage implements Passage {
         raiseNormalizeProtection();
 
         if (key instanceof RangedPassage) {
-            Iterator<VerseRange> that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
-            while (that_it.hasNext()) {
+            Iterator<VerseRange> it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
+            while (it.hasNext()) {
                 // Avoid touching store to make thread safety easier.
-                remove(that_it.next());
+                remove(it.next());
             }
         } else {
-            Iterator<Key> that_it = key.iterator();
-            while (that_it.hasNext()) {
+            Iterator<Key> it = key.iterator();
+            while (it.hasNext()) {
                 // Avoid touching store to make thread safety easier.
-                remove(that_it.next());
+                remove(it.next());
             }
         }
 
@@ -1053,7 +1052,7 @@ public abstract class AbstractPassage implements Passage {
             this.restrict = restrict;
 
             if (it.hasNext()) {
-                next_verse = (Verse) it.next();
+                nextVerse = (Verse) it.next();
             }
 
             calculateNext();
@@ -1063,14 +1062,14 @@ public abstract class AbstractPassage implements Passage {
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
-            return next_range != null;
+            return nextRange != null;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public VerseRange next() throws NoSuchElementException {
-            VerseRange retcode = next_range;
+            VerseRange retcode = nextRange;
 
             if (retcode == null) {
                 throw new NoSuchElementException();
@@ -1091,37 +1090,37 @@ public abstract class AbstractPassage implements Passage {
          * Find the next VerseRange
          */
         private void calculateNext() {
-            if (next_verse == null) {
-                next_range = null;
+            if (nextVerse == null) {
+                nextRange = null;
                 return;
             }
 
-            Verse start = next_verse;
-            Verse end = next_verse;
+            Verse start = nextVerse;
+            Verse end = nextVerse;
 
             findnext: while (true) {
                 if (!it.hasNext()) {
-                    next_verse = null;
+                    nextVerse = null;
                     break;
                 }
 
-                next_verse = (Verse) it.next();
+                nextVerse = (Verse) it.next();
 
                 // If the next verse adjacent
-                if (!v11n.isAdjacentVerse(end, next_verse)) {
+                if (!v11n.isAdjacentVerse(end, nextVerse)) {
                     break;
                 }
 
                 // Even if the next verse is adjacent we might want to break
                 // if we have moved into a new chapter/book
-                if (!restrict.isSameScope(v11n, end, next_verse)) {
+                if (!restrict.isSameScope(v11n, end, nextVerse)) {
                     break findnext;
                 }
 
-                end = next_verse;
+                end = nextVerse;
             }
 
-            next_range = new VerseRange(v11n, start, end);
+            nextRange = new VerseRange(v11n, start, end);
         }
 
         /**
@@ -1137,12 +1136,12 @@ public abstract class AbstractPassage implements Passage {
         /**
          * What is the next VerseRange to be considered
          */
-        private VerseRange next_range;
+        private VerseRange nextRange;
 
         /**
          * What is the next Verse to be considered
          */
-        private Verse next_verse;
+        private Verse nextVerse;
 
         /**
          * Do we restrict ranges to not crossing chapter boundaries
@@ -1177,15 +1176,15 @@ public abstract class AbstractPassage implements Passage {
         out.writeUTF(v11n.getName());
 
         // the size in bits of teach storage method
-        int bitwise_size = v11n.maximumOrdinal();
-        int ranged_size = 8 * countRanges(RestrictionType.NONE);
-        int distinct_size = 4 * countVerses();
+        int bitwiseSize = v11n.maximumOrdinal();
+        int rangedSize = 8 * countRanges(RestrictionType.NONE);
+        int distinctSize = 4 * countVerses();
 
         // if bitwise is equal smallest
-        if (bitwise_size <= ranged_size && bitwise_size <= distinct_size) {
+        if (bitwiseSize <= rangedSize && bitwiseSize <= distinctSize) {
             out.writeInt(BITWISE);
 
-            BitSet store = new BitSet(bitwise_size);
+            BitSet store = new BitSet(bitwiseSize);
             Iterator<Key> iter = iterator();
             while (iter.hasNext()) {
                 Verse verse = (Verse) iter.next();
@@ -1193,7 +1192,7 @@ public abstract class AbstractPassage implements Passage {
             }
 
             out.writeObject(store);
-        } else if (distinct_size <= ranged_size) {
+        } else if (distinctSize <= rangedSize) {
             // if distinct is not bigger than ranged
             // write the Passage type and the number of verses
             out.writeInt(DISTINCT);

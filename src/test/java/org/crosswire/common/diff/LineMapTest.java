@@ -8,31 +8,22 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.diff;
-
-/* Test harness for diff_match_patch.java
- *
- * Version 2.2, May 2007
- * If debugging errors, start with the first reported error, 
- * subsequent tests often rely on earlier ones.
- */
-
-import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -54,9 +45,9 @@ public class LineMapTest {
         list.add("alpha\n");
         list.add("beta\n");
         LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");
-        assertEquals("new LineMap:", "\u0001\u0002\u0001", map.getSourceMap());
-        assertEquals("new LineMap:", "\u0002\u0001\u0002", map.getTargetMap());
-        assertEquals("new LineMap:", list, map.getLines());
+        Assert.assertEquals("new LineMap:", "\u0001\u0002\u0001", map.getSourceMap());
+        Assert.assertEquals("new LineMap:", "\u0002\u0001\u0002", map.getTargetMap());
+        Assert.assertEquals("new LineMap:", list, map.getLines());
 
         list.clear();
         list.add("");
@@ -64,9 +55,9 @@ public class LineMapTest {
         list.add("beta\r\n");
         list.add("\r\n");
         map = new LineMap("", "alpha\r\nbeta\r\n\r\n\r\n");
-        assertEquals("new LineMap:", "", map.getSourceMap());
-        assertEquals("new LineMap:", "\u0001\u0002\u0003\u0003", map.getTargetMap());
-        assertEquals("new LineMap:", list, map.getLines());
+        Assert.assertEquals("new LineMap:", "", map.getSourceMap());
+        Assert.assertEquals("new LineMap:", "\u0001\u0002\u0003\u0003", map.getTargetMap());
+        Assert.assertEquals("new LineMap:", list, map.getLines());
     }
 
     @Test
@@ -80,11 +71,11 @@ public class LineMapTest {
         list.add("beta\n");
         LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");
         map.restore(diffs);
-        assertEquals(
+        Assert.assertEquals(
                 "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")).get(0), diffs.get(0));
-        assertEquals(
+        Assert.assertEquals(
                 "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")).get(diffs.size() - 1), diffs.get(diffs.size() - 1));
-        assertEquals(
+        Assert.assertEquals(
                 "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")), diffs);
     }
 

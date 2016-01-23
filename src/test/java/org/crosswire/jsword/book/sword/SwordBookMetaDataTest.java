@@ -8,20 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2009 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +31,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.MetaDataLocator;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,22 +44,22 @@ import org.junit.Test;
  * @author DM Smith
  */
 public class SwordBookMetaDataTest {
-    File configFile = new File("testconfig.conf");
-    SwordBookMetaData swordBookMetaData = null;
+    private File configFile = new File("testconfig.conf");
+    private SwordBookMetaData swordBookMetaData;
 
     @BeforeClass
     public static void classSetup() throws Exception {
-    	// CWProject is a static that has probably already been initialised without a FrontEnd so forcefully reset it
+        // CWProject is a static that has probably already been initialised without a FrontEnd so forcefully reset it
         Method resetMethod = CWProject.class.getDeclaredMethod("reset");
         resetMethod.setAccessible(true);
         resetMethod.invoke(CWProject.class);
     }
-    
+
     @Before
     public void setUp() throws Exception {
         // required for setting ui properties
         CWProject.instance().setFrontendName("jsword-app");
-        
+
         swordBookMetaData = createTestSwordBookMetaData();
     }
 
@@ -74,31 +71,31 @@ public class SwordBookMetaDataTest {
     @Test
     public void testFrontEndSwordBookMetadataSetup() {
         // From the code: "The write location supersedes the read location" so don't worry about getReadableFrontendProjectDir (which is null) 
-        assertNotNull(CWProject.instance().getWritableFrontendProjectDir());
+        Assert.assertNotNull(CWProject.instance().getWritableFrontendProjectDir());
     }
 
     @Test
     public void testPropertiesAccessors() {
-        assertNotNull(swordBookMetaData);
-        assertEquals("MyNewBook", swordBookMetaData.getName());
-        assertEquals("TestBook", swordBookMetaData.getInitials());
-        assertNotNull(swordBookMetaData.getLanguage());
-        assertEquals("de", swordBookMetaData.getLanguage().getCode());
+        Assert.assertNotNull(swordBookMetaData);
+        Assert.assertEquals("MyNewBook", swordBookMetaData.getName());
+        Assert.assertEquals("TestBook", swordBookMetaData.getInitials());
+        Assert.assertNotNull(swordBookMetaData.getLanguage());
+        Assert.assertEquals("de", swordBookMetaData.getLanguage().getCode());
     }
 
     @Test
     public void testPutThenGetProperty() {
         // simple jsword property
         swordBookMetaData.putProperty("jswordkey", "jswordvalue");
-        assertEquals("jswordvalue", swordBookMetaData.getProperty("jswordkey"));
+        Assert.assertEquals("jswordvalue", swordBookMetaData.getProperty("jswordkey"));
 
         // UI property
         swordBookMetaData.putProperty("uikey", "uivalue", true);
-        assertEquals("uivalue", swordBookMetaData.getProperty("uikey"));
+        Assert.assertEquals("uivalue", swordBookMetaData.getProperty("uikey"));
 
         // Transient property
         swordBookMetaData.putProperty("transientkey", "transientvalue", MetaDataLocator.TRANSIENT);
-        assertEquals("transientvalue", swordBookMetaData.getProperty("transientkey"));
+        Assert.assertEquals("transientvalue", swordBookMetaData.getProperty("transientkey"));
     }
 
     @Test
@@ -106,13 +103,13 @@ public class SwordBookMetaDataTest {
         swordBookMetaData.putProperty("jswordkey", "jswordvalue");
         swordBookMetaData.putProperty("uikey", "uivalue", true);
         swordBookMetaData.putProperty("transientkey", "transientvalue", MetaDataLocator.TRANSIENT);
-        
+
         // jsword and ui properties should be persisted, and therefore restored into another SwordBookMetaData but not transient properties
         SwordBookMetaData anotherSwordBookMetaData = createTestSwordBookMetaData();
-        
-        assertEquals("jswordvalue", anotherSwordBookMetaData.getProperty("jswordkey"));
-        assertEquals("uivalue", anotherSwordBookMetaData.getProperty("uikey"));
-        assertEquals(null, anotherSwordBookMetaData.getProperty("transientkey"));
+
+        Assert.assertEquals("jswordvalue", anotherSwordBookMetaData.getProperty("jswordkey"));
+        Assert.assertEquals("uivalue", anotherSwordBookMetaData.getProperty("uikey"));
+        Assert.assertEquals(null, anotherSwordBookMetaData.getProperty("transientkey"));
     }
 
     private SwordBookMetaData createTestSwordBookMetaData() throws IOException, BookException, URISyntaxException {
@@ -130,7 +127,7 @@ public class SwordBookMetaDataTest {
         }
 
         swordBookMetaData = new SwordBookMetaData(configFile, new URI("file:///tmp"));
-        
+
         return swordBookMetaData;
     }
 }

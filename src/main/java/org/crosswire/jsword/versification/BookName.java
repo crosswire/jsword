@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.jsword.versification;
@@ -241,16 +240,6 @@ public final class BookName {
     }
 
     /**
-     * This is only used by config
-     * 
-     * @return The current case setting
-     * @see #setCase(CaseType)
-     */
-    public static int getCase() {
-        return BookName.bookCase.toInteger();
-    }
-
-    /**
      * How do we report the names of the books?. These are static. This is on
      * the assumption that we will not want to have different sections of the
      * app using a different format. I expect this to be a good assumption, and
@@ -265,6 +254,16 @@ public final class BookName {
      */
     public static void setCase(CaseType newBookCase) {
         BookName.bookCase = newBookCase;
+    }
+
+    /**
+     * This is only used by config
+     * 
+     * @return The current case setting
+     * @see #setCase(CaseType)
+     */
+    public static int getCase() {
+        return BookName.bookCase.toInteger();
     }
 
     /**

@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.crypt;
@@ -641,7 +640,7 @@ public class Sapphire {
             return 0; // Avoid divide by zero error.
         }
 
-        int retry_limiter = 0; // No infinite loops allowed.
+        int retryLimiter = 0; // No infinite loops allowed.
 
         // Fill mask with enough bits to cover the desired range.
         int mask = 1;
@@ -665,7 +664,7 @@ public class Sapphire {
 
             u = mask & rsum;
 
-            if (++retry_limiter > 11) {
+            if (++retryLimiter > 11) {
                 u %= limit; // Prevent very rare long loops.
             }
         } while (u > limit);

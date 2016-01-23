@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.examples;
@@ -406,15 +405,15 @@ public class APIExamples {
                     // This should be a call on installer.
                     book.getDriver().delete(book);
                 }
-            } catch (BookException e1) {
-                e1.printStackTrace();
+            } catch (BookException ex) {
+                ex.printStackTrace();
             }
 
             try {
                 // Now install it. Note this is a background task.
                 installer.install(book);
-            } catch (InstallException e) {
-                e.printStackTrace();
+            } catch (InstallException ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -423,7 +422,7 @@ public class APIExamples {
      * A simple BookFilter that looks for a Bible by name.
      */
     static class MyBookFilter implements BookFilter {
-        public MyBookFilter(String bookName) {
+        MyBookFilter(String bookName) {
             name = bookName;
         }
 

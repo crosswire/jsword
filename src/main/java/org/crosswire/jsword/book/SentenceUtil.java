@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book;
@@ -163,6 +162,25 @@ public final class SentenceUtil {
     }
 
     /**
+     * Remove the punctuation from the ends of the word. The special case is
+     * that if the first word ends "--" and the last word has no punctuation at
+     * the beginning, then the answer is "--" and not "-- ". We miss out the
+     * space because "--" is a special separator.
+     * 
+     * @param first
+     *            The word to grab the punctuation from the end of
+     * @param last
+     *            The word to grab the punctuation from the start of
+     * @return The end of the first, a space, and the end of the first
+     */
+    public static String stripWords(String first, String last) {
+        String init1 = first.substring(lastLetter(first) + 1);
+        String init2 = last.substring(0, firstLetter(last));
+
+        return init1 + init2;
+    }
+
+    /**
      * From a sentence get a list of words (in original order) without any
      * punctuation, and all in lower case.
      * 
@@ -213,25 +231,6 @@ public final class SentenceUtil {
         }
 
         return word.substring(first, last);
-    }
-
-    /**
-     * Remove the punctuation from the ends of the word. The special case is
-     * that if the first word ends "--" and the last word has no punctuation at
-     * the beginning, then the answer is "--" and not "-- ". We miss out the
-     * space because "--" is a special separator.
-     * 
-     * @param first
-     *            The word to grab the punctuation from the end of
-     * @param last
-     *            The word to grab the punctuation from the start of
-     * @return The end of the first, a space, and the end of the first
-     */
-    public static String stripWords(String first, String last) {
-        String init1 = first.substring(lastLetter(first) + 1);
-        String init2 = last.substring(0, firstLetter(last));
-
-        return init1 + init2;
     }
 
     /**

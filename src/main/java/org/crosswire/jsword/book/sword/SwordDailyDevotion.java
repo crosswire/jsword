@@ -1,5 +1,5 @@
 /**
- * Distribution Licence:
+ * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License, version 2.1 or later
  * as published by the Free Software Foundation. This program is distributed
@@ -14,7 +14,8 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
+ *
  */
 package org.crosswire.jsword.book.sword;
 

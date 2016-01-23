@@ -8,22 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2009 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +33,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom2.Element;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -53,22 +48,22 @@ public class ConfigEntryTableTest {
     @Test
     public void testCreateConfigEntryTableInstance() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook", true);
-        assertNotNull(table);
+        Assert.assertNotNull(table);
     }
 
-    // TODO: make this test use mocks or setup its own environment
+    // TODO(DMS): make this test use mocks or setup its own environment
     @Test
     public void failingAddConfigEntry() {
         String modName = "TestBook";
         IniSection table = new IniSection(modName);
-        assertNotNull(table);
+        Assert.assertNotNull(table);
 
         table.add(BookMetaData.KEY_LANG, "de");
-        assertEquals("de", table.get(BookMetaData.KEY_LANG));
+        Assert.assertEquals("de", table.get(BookMetaData.KEY_LANG));
         FeatureType feature = FeatureType.STRONGS_NUMBERS;
         table.add(SwordBookMetaData.KEY_FEATURE, FeatureType.STRONGS_NUMBERS.toString());
         if (table.containsValue(SwordBookMetaData.KEY_FEATURE, feature.toString())) {
-            assertTrue("Should have Strongs", true);
+            Assert.assertTrue("Should have Strongs", true);
         } else {
             // Many "features" are GlobalOptionFilters, which in the Sword C++ API
             // indicate a class to use for filtering.
@@ -76,14 +71,14 @@ public class ConfigEntryTableTest {
             StringBuilder buffer = new StringBuilder(table.get(SwordBookMetaData.KEY_SOURCE_TYPE));
             buffer.append(feature);
             if (table.containsValue(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER, buffer.toString())) {
-                assertTrue("Should have Strongs", true);
+                Assert.assertTrue("Should have Strongs", true);
             } else {
                 // But some do not
-                assertTrue("Should have Strongs",  table.containsValue(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER, feature.toString()));
+                Assert.assertTrue("Should have Strongs",  table.containsValue(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER, feature.toString()));
             }
         }
         Book book = Books.installed().getBook("KJV");
-        assertTrue("Should have Strongs", book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS));
+        Assert.assertTrue("Should have Strongs", book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS));
 
         try {
             Key key = book.getKey("Gen 1:1");
@@ -91,12 +86,12 @@ public class ConfigEntryTableTest {
             try {
                 Element osis = data.getOsisFragment();
                 String strongsNumbers = OSISUtil.getStrongsNumbers(osis);
-                assertTrue("No Strongs in KJV", strongsNumbers.length()>0);
-            } catch (BookException e) {
-                fail("Should have Gen 1:1 data");
+                Assert.assertTrue("No Strongs in KJV", strongsNumbers.length() > 0);
+            } catch (BookException ex) {
+                Assert.fail("Should have Gen 1:1 data");
             }
-        } catch (NoSuchKeyException e1) {
-            fail("Should have Gen 1:1 key");
+        } catch (NoSuchKeyException ex) {
+            Assert.fail("Should have Gen 1:1 key");
         }
     }
 
@@ -104,18 +99,18 @@ public class ConfigEntryTableTest {
     public void testSaveConfigEntryTable() {
         String modName = "TestBook";
         IniSection table = new IniSection(modName);
-        assertNotNull(table);
+        Assert.assertNotNull(table);
 
         table.add(BookMetaData.KEY_LANG, "de");
         String lang = table.get(BookMetaData.KEY_LANG);
-        assertNotNull(lang);
-        assertEquals(lang, "de");
+        Assert.assertNotNull(lang);
+        Assert.assertEquals(lang, "de");
 
         File configFile = new File("testconfig.conf");
         try {
             table.save(configFile, "UTF-8");
         } catch (IOException e) {
-            assertTrue(false);
+            Assert.assertTrue(false);
         } finally {
             configFile.delete();
         }

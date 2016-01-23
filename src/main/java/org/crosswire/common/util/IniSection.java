@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2015
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2015 - 2016
  */
 package org.crosswire.common.util;
 
@@ -80,7 +79,6 @@ import java.util.Map;
 
  * @author DM Smith
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
- *     The copyright to this program is held by its authors.
  */
 public final class IniSection implements Iterable {
 
@@ -149,6 +147,17 @@ public final class IniSection implements Iterable {
      */
     public int size() {
         return section.size();
+    }
+
+    /**
+     * Get the number of values for a key.
+     * 
+     * @param key the key
+     * @return the number of values for a key or 0 if the key does not exist.
+     */
+    public int size(String key) {
+        Collection<String> values = section.get(key);
+        return values == null ? 0 : values.size();
     }
 
     /**
@@ -243,17 +252,6 @@ public final class IniSection implements Iterable {
             return Collections.unmodifiableCollection(section.get(key));
         }
         return null;
-    }
-
-    /**
-     * Get the number of values for a key.
-     * 
-     * @param key the key
-     * @return the number of values for a key or 0 if the key does not exist.
-     */
-    public int size(String key) {
-        Collection<String> values = section.get(key);
-        return values == null ? 0 : values.size();
     }
 
     /**
@@ -364,7 +362,7 @@ public final class IniSection implements Iterable {
         Reader in = null;
         try {
             in = new InputStreamReader(is, encoding);
-            load(in, filter);
+            doLoad(in, filter);
         } finally {
             if (in != null) {
                 in.close();
@@ -549,7 +547,7 @@ public final class IniSection implements Iterable {
         return values;
     }
 
-    private void load(Reader in, Filter<String> filter) throws IOException {
+    private void doLoad(Reader in, Filter<String> filter) throws IOException {
         BufferedReader bin = null;
         try {
             if (in instanceof BufferedReader) {
@@ -681,7 +679,7 @@ public final class IniSection implements Iterable {
                 // and also be a key line.
                 int splitPos = getSplitPos(line);
                 if (splitPos >= 0) {
-                    warnings.append("Possible trailing continuation on previous line. Found: ").append(line).append('\n');                    
+                    warnings.append("Possible trailing continuation on previous line. Found: ").append(line).append('\n');
                 }
             }
         } while (moreCowBell && line != null);

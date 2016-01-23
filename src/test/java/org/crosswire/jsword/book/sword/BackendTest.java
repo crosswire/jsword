@@ -8,20 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2012 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
@@ -33,6 +29,7 @@ import org.crosswire.jsword.versification.BookName;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,8 +119,8 @@ public class BackendTest {
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\">", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\">",
                 "<verse osisID=\"Rom.2.2\">");
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.31\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.2.3\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.31\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.3\">"));
 
     }
 
@@ -140,8 +137,8 @@ public class BackendTest {
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.2\">", "<verse osisID=\"Rom.1.31\">");
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.32\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.32\">"));
 
     }
 
@@ -158,14 +155,12 @@ public class BackendTest {
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">", "<verse osisID=\"Rom.1.31\">", "<verse osisID=\"Rom.1.32\">");
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.2.0\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.2.1\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.0\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.1\">"));
     }
-    
-    
-    
+
     /**
      * Z Text - cos it's important
      * 
@@ -177,16 +172,16 @@ public class BackendTest {
         String version = "ESV";
         String reference = "Rom 1:5-3:14";
 
-        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">", 
-                "<verse osisID=\"Rom.2.1\">","<verse osisID=\"Rom.2.10\">",  
-                "<verse osisID=\"Rom.3.1\">","<verse osisID=\"Rom.3.10\">",
+        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">",
+                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
+                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
                 "<verse osisID=\"Rom.3.14\">"
                 );
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
     }
-    
+
     /**
      * Z Text - cos it's important
      * 
@@ -198,18 +193,18 @@ public class BackendTest {
         String version = "ESV";
         String reference = "Rom 1:1-3:14";
 
-        String xml = backendTest(version, reference, 
-                "<verse osisID=\"Rom.1.1\">","<verse osisID=\"Rom.1.2\">",
-                "<verse osisID=\"Rom.1.5\">", 
-                "<verse osisID=\"Rom.2.1\">","<verse osisID=\"Rom.2.10\">",  
-                "<verse osisID=\"Rom.3.1\">","<verse osisID=\"Rom.3.10\">",
+        String xml = backendTest(version, reference,
+                "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.2\">",
+                "<verse osisID=\"Rom.1.5\">",
+                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
+                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
                 "<verse osisID=\"Rom.3.14\">"
                 );
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.1.0\">"));
-        assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.0\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
     }
-    
+
     /**
      * Z Text - cos it's important
      * 
@@ -221,15 +216,15 @@ public class BackendTest {
         String version = "ESV";
         String reference = "Rom 1:0-3:14";
 
-        String xml = backendTest(version, reference, 
-                "<verse osisID=\"Rom.1.2\">","<verse osisID=\"Rom.1.2\">",
-                "<verse osisID=\"Rom.1.5\">", 
-                "<verse osisID=\"Rom.2.1\">","<verse osisID=\"Rom.2.10\">",  
-                "<verse osisID=\"Rom.3.1\">","<verse osisID=\"Rom.3.10\">",
+        String xml = backendTest(version, reference,
+                "<verse osisID=\"Rom.1.2\">", "<verse osisID=\"Rom.1.2\">",
+                "<verse osisID=\"Rom.1.5\">",
+                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
+                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
                 "<verse osisID=\"Rom.3.14\">"
                 );
 
-        assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
     }
 
     /**
@@ -343,7 +338,7 @@ public class BackendTest {
     private String backendTest(Book currentBook, Key key, String... assertions) throws BookException {
         //order in test can be inconsistent and it seems on a linux build server the full book name is sometimes not used...
         BookName.setFullBookName(true);
-        
+
         final BookData bookData = new BookData(currentBook, key);
         final Element osisFragment = bookData.getOsisFragment();
 
@@ -352,7 +347,7 @@ public class BackendTest {
         log.debug("For book {} with key {}, Got {}", currentBook.getInitials(), key.getName(), xml);
 
         for (String s : assertions) {
-            assertTrue(s, xml.contains(s));
+            Assert.assertTrue(s, xml.contains(s));
         }
         return xml;
     }

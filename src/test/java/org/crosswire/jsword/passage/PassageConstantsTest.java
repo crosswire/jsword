@@ -8,21 +8,18 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -37,12 +34,12 @@ public class PassageConstantsTest {
     public void testAllowedDelims() {
         // Check that we're not re-using delimiters
         for (int i = 0; i < AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++) {
-            assertEquals(-1, AbstractPassage.REF_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)));
-            assertNotEquals(VerseRange.RANGE_OSIS_DELIM, AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i));
+            Assert.assertEquals(-1, AbstractPassage.REF_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)));
+            Assert.assertNotEquals(VerseRange.RANGE_OSIS_DELIM, AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i));
         }
 
         for (int i = 0; i < AbstractPassage.REF_ALLOWED_DELIMS.length(); i++) {
-            assertNotEquals(VerseRange.RANGE_OSIS_DELIM, AbstractPassage.REF_ALLOWED_DELIMS.charAt(i));
+            Assert.assertNotEquals(VerseRange.RANGE_OSIS_DELIM, AbstractPassage.REF_ALLOWED_DELIMS.charAt(i));
         }
     }
 }

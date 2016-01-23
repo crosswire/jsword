@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.xml;
@@ -68,7 +67,7 @@ public enum XMLFeature {
      * @param control the identifier for an XML feature
      * @param initialState whether that feature defaults to on or off
      */
-    private XMLFeature(String control, boolean initialState) {
+    XMLFeature(String control, boolean initialState) {
         this.control = control;
         this.state = initialState;
     }
@@ -78,7 +77,7 @@ public enum XMLFeature {
      * 
      * @param control the identifier for an XML feature that is initially off
      */
-    private XMLFeature(String control) {
+    XMLFeature(String control) {
         this(control, false);
     }
 

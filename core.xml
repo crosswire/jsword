@@ -198,7 +198,7 @@
 			depends="incremental.dependency, prepare, build, test, tools, install"
 	=========================================================================-->
 	<target	name="incremental"
-			depends="incremental.dependency, prepare, build, install"
+			depends="incremental.dependency, prepare, build, test, tools, install"
 			description="Run a build/test/install cycle">
 	</target>
 
@@ -477,7 +477,7 @@
 	== Use Checkstyle to check the style of JSword files
 	== These are properties related to checkstyle.
 	=========================================================================-->
-	<property name="checkstyle.version"		value="6.3" />
+	<property name="checkstyle.version"		value="6.14" />
 	<property name="checkstyle.home"		location="${tools.home}/checkstyle-${checkstyle.version}" />
 	<property name="checkstyle.report"		location="${report.dir}/checkstyle" />
 	<property name="checkstyle.url"			value="http://sourceforge.net/projects/checkstyle/files/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
@@ -495,13 +495,14 @@
 				failOnViolation="${checkstyle.fail}">
 			<property key="checkstyle.basedir" file="${src.main.java.dir}"/>
 			<property key="checkstyle.cache.file" file="${checkstyle.report}/checkstyle.cache.dat"/>
+			<property key="checkstyle.header.file" file="${etc.shared.dir}/checkstyle/license.checkstyle.txt"/>
 			<fileset dir="${src.main.java.dir}" includes="**/*.java" />
 			<formatter type="plain"/>
 			<formatter type="xml" toFile="${checkstyle.report}/checkstyle_errors.xml"/>
 		</checkstyle>
 		<xslt	in="${checkstyle.report}/checkstyle_errors.xml"
 				out="${checkstyle.report}/index.html"
-				style="${checkstyle.home}/contrib/checkstyle-simple.xsl">
+				style="${etc.shared.dir}/checkstyle/checkstyle-simple.xsl">
 			<xmlcatalog refid="commonDTDs"/>
 		</xslt>
 	</target>
@@ -509,7 +510,7 @@
 	<!-- Make checkstyle visible to Ant -->
 	<target	name="checkstyle.task"
 			depends="checkstyle.download">
-		<taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar.file}" />
+		<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${checkstyle.jar.file}" />
 	</target>
 
 	<!-- Download checkstyle -->

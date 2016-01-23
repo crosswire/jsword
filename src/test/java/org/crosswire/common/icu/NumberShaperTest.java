@@ -8,19 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.common.icu;
-
-import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
@@ -28,6 +25,7 @@ import org.crosswire.jsword.internationalisation.DefaultLocaleProvider;
 import org.crosswire.jsword.internationalisation.LocaleProvider;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -37,8 +35,8 @@ import org.junit.Test;
  * @author DM Smith
  */
 public class NumberShaperTest {
-    private static final String europeanDigits = "0123456789";
-    private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
+    private static final String EUROPEAN_DIGITS = "0123456789";
+    private static final String EASTERN_ARABIC_DIGITS = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
 
     @After
     public void tearDown()  {
@@ -53,15 +51,15 @@ public class NumberShaperTest {
                 return new Locale("fa");
             }
         });
-        
+
         //test the number shaper
         NumberShaper shaper = new NumberShaper();
-        assertEquals(easternArabicDigits, shaper.shape(europeanDigits));
+        Assert.assertEquals(EASTERN_ARABIC_DIGITS, shaper.shape(EUROPEAN_DIGITS));
         // Note: the following depends upon whether icu is on the classpath
         if (shaper.canUnshape()) {
-            assertEquals(europeanDigits, shaper.unshape(easternArabicDigits));
+            Assert.assertEquals(EUROPEAN_DIGITS, shaper.unshape(EASTERN_ARABIC_DIGITS));
         } else {
-            assertEquals(easternArabicDigits, shaper.unshape(easternArabicDigits));
+            Assert.assertEquals(EASTERN_ARABIC_DIGITS, shaper.unshape(EASTERN_ARABIC_DIGITS));
         }
     }
 

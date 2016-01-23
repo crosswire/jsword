@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.util;
@@ -55,14 +54,14 @@ public final class StackTrace {
     /**
      * Create a stack trace of the code at this point
      * 
-     * @param ex
+     * @param exception
      *            The Throwable containing the Stack Trace
      * @param discard
      *            The number of uppermost stack frames to ignore
      */
-    private void init(Throwable ex, int discard) {
+    private void init(Throwable exception, int discard) {
         StringWriter sout = new StringWriter();
-        ex.printStackTrace(new PrintWriter(sout));
+        exception.printStackTrace(new PrintWriter(sout));
         String msg = new String(sout.getBuffer());
         String[] calls = StringUtil.split(msg, "\n\r");
 
@@ -106,9 +105,9 @@ public final class StackTrace {
                     }
                     j++;
                 }
-            } catch (NumberFormatException ex2) {
+            } catch (NumberFormatException ex) {
                 oops = true;
-            } catch (StringIndexOutOfBoundsException ex2) {
+            } catch (StringIndexOutOfBoundsException ex) {
                 // For whatever reason, Java 7 under Web Start is throwing this on
                 // call.substring(spcIndex + 1, lhsIndex) with a -56 being passed.
                 oops = true;

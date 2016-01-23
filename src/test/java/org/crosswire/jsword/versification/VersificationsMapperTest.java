@@ -8,34 +8,39 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2014 - 2016
  *
  */
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.SystemCatholic2;
 import org.crosswire.jsword.versification.system.SystemKJV;
 import org.crosswire.jsword.versification.system.SystemSynodal;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests a simple two step versifications. And the edge cases,
  * of wanting to go to KJV.
  *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- * @author chrisburrell
+ * @author Chris Burrell
  */
 public class VersificationsMapperTest {
     private static final Versification KJV = Versifications.instance().getVersification(SystemKJV.V11N_NAME);
@@ -97,7 +102,7 @@ public class VersificationsMapperTest {
         final VersificationsMapper mapper = VersificationsMapper.instance();
         Key k = mapper.map(KeyUtil.getPassage(PassageKeyFactory.instance().getKey(CATHOLIC, "Gen.1.1-Gen.1.3")), CATHOLIC2);
 
-        assertEquals("Gen.1.2-Gen.1.4", k.getOsisRef());
+        Assert.assertEquals("Gen.1.2-Gen.1.4", k.getOsisRef());
         assertVersification(CATHOLIC2, k);
     }
 
@@ -114,17 +119,17 @@ public class VersificationsMapperTest {
         final VersificationsMapper mapper = VersificationsMapper.instance();
         Key k = mapper.mapVerse(VerseFactory.fromString(source, sourceKey), target);
 
-        assertEquals(targetKey, k.getOsisRef());
+        Assert.assertEquals(targetKey, k.getOsisRef());
         assertVersification(target, k);
     }
 
     private void assertVersification(Versification catholic2, Key k) {
         if (k instanceof Verse) {
-            assertEquals(catholic2, ((Verse) k).getVersification());
+            Assert.assertEquals(catholic2, ((Verse) k).getVersification());
         }
 
         if (k instanceof Passage) {
-            assertEquals(catholic2, ((Passage) k).getVersification());
+            Assert.assertEquals(catholic2, ((Passage) k).getVersification());
         }
     }
 }

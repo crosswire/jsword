@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book;
@@ -334,7 +333,7 @@ public final class BookFilters {
          *            The match spec.
          * @see BookFilters#getCustom(String)
          */
-        public CustomBookFilter(String match) {
+        CustomBookFilter(String match) {
             List<Test> cache = new ArrayList<Test>();
             String[] filters = match.split(";");
             for (int i = 0; i < filters.length; i++) {

@@ -8,28 +8,19 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.diff;
 
-/* Test harness for diff_match_patch.java
- *
- * Version 2.2, May 2007
- * If debugging errors, start with the first reported error, 
- * subsequent tests often rely on earlier ones.
- */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -46,30 +37,30 @@ public class CommonalityTest {
     @Test
     public void testPrefix() {
         // Detect and remove any common prefix.
-        assertEquals("Commonality.prefix: Null case.", 0, Commonality.prefix("abc", "xyz"));
-        assertEquals("Commonality.prefix: Non-null case.", 4, Commonality.prefix("1234abc", "1234xyz"));
+        Assert.assertEquals("Commonality.prefix: Null case.", 0, Commonality.prefix("abc", "xyz"));
+        Assert.assertEquals("Commonality.prefix: Non-null case.", 4, Commonality.prefix("1234abc", "1234xyz"));
     }
 
     @Test
     public void testSuffix() {
         // Detect and remove any common suffix.
-        assertEquals("Commonality.suffix: Null case.", 0, Commonality.suffix("abc", "xyz"));
-        assertEquals("Commonality.suffix: Non-null case.", 4, Commonality.suffix("abc1234", "xyz1234"));
+        Assert.assertEquals("Commonality.suffix: Null case.", 0, Commonality.suffix("abc", "xyz"));
+        Assert.assertEquals("Commonality.suffix: Non-null case.", 4, Commonality.suffix("abc1234", "xyz1234"));
     }
 
     @Test
     public void testHalfmatch() {
         // Detect a halfmatch.
-        assertNull("Commonality.halfMatch: No match.", Commonality.halfMatch("1234567890", "abcdef"));
-        assertEquals(
+        Assert.assertNull("Commonality.halfMatch: No match.", Commonality.halfMatch("1234567890", "abcdef"));
+        Assert.assertEquals(
                 "Commonality.halfMatch: Single Match #1.", new CommonMiddle("12", "90", "a", "z", "345678"), Commonality.halfMatch("1234567890", "a345678z"));
-        assertEquals(
+        Assert.assertEquals(
                 "Commonality.halfMatch: Single Match #2.", new CommonMiddle("a", "z", "12", "90", "345678"), Commonality.halfMatch("a345678z", "1234567890"));
-        assertEquals(
+        Assert.assertEquals(
                 "Commonality.halfMatch: Multiple Matches #1.", new CommonMiddle("12123", "123121", "a", "z", "1234123451234"), Commonality.halfMatch("121231234123451234123121", "a1234123451234z"));
-        assertEquals(
+        Assert.assertEquals(
                 "Commonality.halfMatch: Multiple Matches #2.", new CommonMiddle("", "-=-=-=-=-=", "x", "", "x-=-=-=-=-=-=-="), Commonality.halfMatch("x-=-=-=-=-=-=-=-=-=-=-=-=", "xx-=-=-=-=-=-=-="));
-        assertEquals(
+        Assert.assertEquals(
                 "Commonality.halfMatch: Multiple Matches #3.", new CommonMiddle("-=-=-=-=-=", "", "", "y", "-=-=-=-=-=-=-=y"), Commonality.halfMatch("-=-=-=-=-=-=-=-=-=-=-=-=y", "-=-=-=-=-=-=-=yy"));
     }
 }

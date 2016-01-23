@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -68,14 +67,14 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     public String readRawContent(RawLDBackendState state, Key key) throws IOException {
-        return readRawContent(state, key.getName());
+        return doReadRawContent(state, key.getName());
     }
 
     public RawLDBackendState initState() throws BookException {
         return OpenFileStateManager.instance().getRawLDBackendState(getBookMetaData());
     }
 
-    private String readRawContent(RawLDBackendState state, String key) throws IOException {
+    private String doReadRawContent(RawLDBackendState state, String key) throws IOException {
         if (key == null || key.length() == 0) {
             return "";
         }
@@ -85,7 +84,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             DataEntry entry = getEntry(state, key, index);
             entry = getEntry(state, entry);
             if (entry.isLinkEntry()) {
-                return readRawContent(state, entry.getLinkTarget());
+                return doReadRawContent(state, entry.getLinkTarget());
             }
             return getRawText(entry);
         }
@@ -144,9 +143,11 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
                 return new DefaultLeafKeyList(keytitle);
             }
         } catch (BookException e) {
-            // fall through FIXM(CJB) Log?
+            // This is allowed
+            // Fall through to throw an AIOOBE.
         } catch (IOException e) {
-            // fall through FIXM(CJB) Log?
+            // This is allowed
+            // Fall through to throw an AIOOBE.
         } finally {
             OpenFileStateManager.instance().release(state);
         }
@@ -231,7 +232,11 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     /**
      * Get the text for an indexed entry in the book.
      * 
-     * @param index
+     * @param state
+     *            the state object for the storage
+     * @param reply
+     *            the context for this dataIndex, used for debugging
+     * @param dataIndex
      *            the entry to get
      * @return the text for the entry.
      * @throws IOException
@@ -332,7 +337,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
                dataIndex = getIndex(state, i);
                if (getEntry(state, key, dataIndex).getKey().compareTo(key) == 0) {
                    return i;
-               }       
+               }
            }
         }
 
@@ -449,7 +454,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
                     }
                 }
                 // Get the number after the G or H
-                int strongsNumber = Integer.parseInt(keytitle.substring(1));                
+                int strongsNumber = Integer.parseInt(keytitle.substring(1));
                 // The convention is that a Strong's dictionary with both Greek
                 // and Hebrew have G or H prefix
                 StringBuilder buf = new StringBuilder();

@@ -8,25 +8,31 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2013 - 2016
  *
  */
 package org.crosswire.jsword.versification.system;
 
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
 import org.crosswire.jsword.versification.Versification;
+import org.junit.Assert;
 import org.junit.Test;
 
+import junit.framework.TestCase;
+
+/**
+ * JUnit test.
+ *
+ * @see gnu.lgpl.License The GNU Lesser General Public License for details.
+ * @author DM Smith
+ */
 public class VersificationsTest extends TestCase {
     @Test
     public void testFluff() {
@@ -35,9 +41,9 @@ public class VersificationsTest extends TestCase {
         while (iter.hasNext()) {
             String name = iter.next();
             v11n = Versifications.instance().getVersification(name);
-            assertTrue("Predefined v11n is known", Versifications.instance().isDefined(name));
-            assertEquals("Name matches", name, v11n.getName());
-            assertTrue("v11n is not empty", v11n.maximumOrdinal() > 0);
+            Assert.assertTrue("Predefined v11n is known", Versifications.instance().isDefined(name));
+            Assert.assertEquals("Name matches", name, v11n.getName());
+            Assert.assertTrue("v11n is not empty", v11n.maximumOrdinal() > 0);
         }
     }
 }

@@ -8,20 +8,18 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.common.history;
 
-import static org.junit.Assert.assertEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -34,50 +32,50 @@ public class HistoryTest {
     @Test
     public void testAdd() {
         History history = new History();
-        assertEquals(null, history.getCurrent());
+        Assert.assertEquals(null, history.getCurrent());
         history.add("a");
-        assertEquals("a", history.getCurrent());
+        Assert.assertEquals("a", history.getCurrent());
         history.add("b");
-        assertEquals("[a, b]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b]", history.getPreviousList().toString());
         // re-adding the current element won't change the list
         history.add("b");
-        assertEquals("[a, b]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b]", history.getPreviousList().toString());
         history.add("c");
-        assertEquals("[a, b, c]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b, c]", history.getPreviousList().toString());
     }
 
     @Test
     public void testGo() {
         History history = new History();
-        assertEquals(null, history.getCurrent());
+        Assert.assertEquals(null, history.getCurrent());
         history.add("a");
         history.add("b");
         history.add("c");
         history.add("d");
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b, c, d]", history.getPreviousList().toString());
         history.go(-1);
-        assertEquals("[a, b, c]", history.getPreviousList().toString());
-        assertEquals("[d]", history.getNextList().toString());
+        Assert.assertEquals("[a, b, c]", history.getPreviousList().toString());
+        Assert.assertEquals("[d]", history.getNextList().toString());
 
         history.go(-2);
-        assertEquals("[a]", history.getPreviousList().toString());
-        assertEquals("[b, c, d]", history.getNextList().toString());
+        Assert.assertEquals("[a]", history.getPreviousList().toString());
+        Assert.assertEquals("[b, c, d]", history.getNextList().toString());
 
         history.go(3);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b, c, d]", history.getPreviousList().toString());
 
         history.go(-10);
-        assertEquals("[a]", history.getPreviousList().toString());
-        assertEquals("[b, c, d]", history.getNextList().toString());
+        Assert.assertEquals("[a]", history.getPreviousList().toString());
+        Assert.assertEquals("[b, c, d]", history.getNextList().toString());
 
         history.go(10);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b, c, d]", history.getPreviousList().toString());
     }
 
     @Test
     public void testNav() {
         History history = new History();
-        assertEquals(null, history.getCurrent());
+        Assert.assertEquals(null, history.getCurrent());
         history.add("a");
         history.add("b");
         history.add("c");
@@ -87,35 +85,35 @@ public class HistoryTest {
         history.add("g");
         history.add("h");
         history.add("i");
-        assertEquals("[a, b, c, d, e, f, g, h, i]", history.getPreviousList().toString());
+        Assert.assertEquals("[a, b, c, d, e, f, g, h, i]", history.getPreviousList().toString());
 
         history.go(-5);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
-        assertEquals("[e, f, g, h, i]", history.getNextList().toString());
-        assertEquals("d", history.getCurrent());
+        Assert.assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        Assert.assertEquals("[e, f, g, h, i]", history.getNextList().toString());
+        Assert.assertEquals("d", history.getCurrent());
 
         // Adding the current does not change anything
         history.add("d");
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
-        assertEquals("[e, f, g, h, i]", history.getNextList().toString());
+        Assert.assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        Assert.assertEquals("[e, f, g, h, i]", history.getNextList().toString());
 
         // Adding the next splits the list
         history.add("e");
-        assertEquals("[a, b, c, d, e]", history.getPreviousList().toString());
-        assertEquals("[f, g, h, i]", history.getNextList().toString());
+        Assert.assertEquals("[a, b, c, d, e]", history.getPreviousList().toString());
+        Assert.assertEquals("[f, g, h, i]", history.getNextList().toString());
 
         // Adding the next splits the list
         history.add("h");
-        assertEquals("[a, b, c, d, e, h]", history.getPreviousList().toString());
-        assertEquals("[i]", history.getNextList().toString());
+        Assert.assertEquals("[a, b, c, d, e, h]", history.getPreviousList().toString());
+        Assert.assertEquals("[i]", history.getNextList().toString());
 
         history.go(-5);
-        assertEquals("[a]", history.getPreviousList().toString());
-        assertEquals("[b, c, d, e, h, i]", history.getNextList().toString());
+        Assert.assertEquals("[a]", history.getPreviousList().toString());
+        Assert.assertEquals("[b, c, d, e, h, i]", history.getNextList().toString());
 
         history.add("e");
-        assertEquals("[a, e]", history.getPreviousList().toString());
-        assertEquals("[h, i]", history.getNextList().toString());
+        Assert.assertEquals("[a, e]", history.getPreviousList().toString());
+        Assert.assertEquals("[h, i]", history.getNextList().toString());
 
     }
 }

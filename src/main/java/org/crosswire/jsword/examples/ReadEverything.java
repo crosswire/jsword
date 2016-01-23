@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.examples;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Joe Walker
  */
-public class ReadEverything {
+public final class ReadEverything {
     /**
      * Prevent instantiation
      */
@@ -104,7 +104,7 @@ public class ReadEverything {
         if (count > 0) {
             log.info("Tested: book={} entries={} time={}s errors={} ({}ms per entry)", book.getInitials(), Integer.toString(entries), Float.toString(time), Integer.toString(count), Float.toString(1000 * time / entries));
         } else {
-            log.info("Tested: book={} entries={} time={}s ({}ms per entry)", book.getInitials(), Integer.toString(entries), Float.toString(time), Float.toString(1000 * time / entries));            
+            log.info("Tested: book={} entries={} time={}s ({}ms per entry)", book.getInitials(), Integer.toString(entries), Float.toString(time), Float.toString(1000 * time / entries));
         }
     }
 
@@ -112,6 +112,7 @@ public class ReadEverything {
      * Perform a test read on a single key
      */
     private static void testReadSingle(Book book, Key key, int entry) {
+        Throwable oops = null;
         try {
             log.debug("reading: {}/{}:{}", book.getInitials(), Integer.toString(entry), key.getName());
 
@@ -123,10 +124,13 @@ public class ReadEverything {
             // This might be a useful extra test, except that a failure gives
             // you no help at all.
             // data.validate();
-        } catch (Throwable ex) {
+        } catch (BookException ex) {
+            oops = ex;
+        }
+        if (oops != null) {
             ++count;
             if (count < 5) {
-                log.error("Unexpected error reading: {}, {}, {}, {}", book.getInitials(), Integer.toString(entry), key.getOsisID(), key.getClass().getName(), ex);
+                log.error("Unexpected error reading: {}, {}, {}, {}", book.getInitials(), Integer.toString(entry), key.getOsisID(), key.getClass().getName(), oops);
             }
         }
     }

@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book;
@@ -84,6 +83,26 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return filter(new GroupFilter(key, value));
     }
 
+    /**
+     * Get a set of books that satisfy the condition imposed by the filter.
+     * 
+     * @param filter the condition on which to select books
+     * @return the set of matching books
+     */
+    public BookSet filter(Filter<Book> filter) {
+        // create a copy of the list and
+        // remove everything that fails the test.
+        BookSet listSet = (BookSet) clone();
+        Iterator<Book> iter = listSet.iterator();
+        while (iter.hasNext()) {
+            Book obj = iter.next();
+            if (!filter.test(obj)) {
+                iter.remove();
+            }
+        }
+        return listSet;
+    }
+
     /* (non-Javadoc)
      * @see java.util.ArrayList#add(int, java.lang.Object)
      */
@@ -147,30 +166,10 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
     }
 
     /**
-     * Get a set of books that satisfy the condition imposed by the filter.
-     * 
-     * @param filter the condition on which to select books
-     * @return the set of matching books
-     */
-    public BookSet filter(Filter<Book> filter) {
-        // create a copy of the list and
-        // remove everything that fails the test.
-        BookSet listSet = (BookSet) clone();
-        Iterator<Book> iter = listSet.iterator();
-        while (iter.hasNext()) {
-            Book obj = iter.next();
-            if (!filter.test(obj)) {
-                iter.remove();
-            }
-        }
-        return listSet;
-    }
-
-    /**
      * GroupFilter does the SQL traditional group by.
      */
     private static final class GroupFilter implements Filter<Book> {
-        public GroupFilter(String aKey, Object aValue) {
+        GroupFilter(String aKey, Object aValue) {
             key = aKey;
             value = aValue;
         }

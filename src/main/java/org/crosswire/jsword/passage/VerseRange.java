@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -474,6 +473,19 @@ public final class VerseRange implements VerseKey<VerseRange> {
         return v11n.distance(start, that.getStart()) >= 0 && v11n.distance(that.getEnd(), end) >= 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key) {
+        if (key instanceof VerseRange) {
+            return contains((VerseRange) key);
+        }
+        if (key instanceof Verse) {
+            return contains((Verse) key);
+        }
+        return false;
+    }
+
     /**
      * Does this range represent exactly one chapter, no more or less.
      * 
@@ -619,11 +631,11 @@ public final class VerseRange implements VerseKey<VerseRange> {
      */
     public static VerseRange intersection(VerseRange a, VerseRange b) {
         Versification v11n = a.getVersification();
-        Verse new_start = v11n.max(a.getStart(), b.getStart());
-        Verse new_end = v11n.min(a.getEnd(), b.getEnd());
+        Verse newStart = v11n.max(a.getStart(), b.getStart());
+        Verse newEnd = v11n.min(a.getEnd(), b.getEnd());
 
-        if (v11n.distance(new_start, new_end) >= 0) {
-            return new VerseRange(a.getVersification(), new_start, new_end);
+        if (v11n.distance(newStart, newEnd) >= 0) {
+            return new VerseRange(a.getVersification(), newStart, newEnd);
         }
 
         return null;
@@ -838,19 +850,6 @@ public final class VerseRange implements VerseKey<VerseRange> {
      */
     public boolean isEmpty() {
         return verseCount == 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
-     */
-    public boolean contains(Key key) {
-        if (key instanceof VerseRange) {
-            return contains((VerseRange) key);
-        }
-        if (key instanceof Verse) {
-            return contains((Verse) key);
-        }
-        return false;
     }
 
     /*

@@ -5,12 +5,19 @@
 
 <module name="Checker">
 
-  <property name="basedir" value="${checkstyle.basedir}"/>
+  <!-- property name="basedir" value="${checkstyle.basedir}"/> -->
 
-  <!-- Checks for Javadoc Comments -->
+  <property name="charset" value="UTF-8"/>
+
+  <property name="severity" value="warning"/>
+
+  <property name="fileExtensions" value="java"/>
+
+  <!-- Checks for Javadoc Comments. Buggy, when run on tests.
   <module name="JavadocPackage">
     <property name="allowLegacy" value="true"/>
   </module>
+   -->
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation"/>
   <module name="FileLength">
@@ -21,19 +28,46 @@
   <module name="Header"/>
   <module name="RegexpHeader"/>
   -->
+  <module name="RegexpHeader">
+    <property
+      name="headerFile"
+      value="${checkstyle.header.file}"/>
+  </module>
+  <module name="UniqueProperties"/>
 
   <module name="TreeWalker">
 
-    <property name="cacheFile" value="${checkstyle.cache.file}"/>
+    <!-- property name="cacheFile" value="${checkstyle.cache.file}"/> -->
 
     <!-- Checks for Annotations -->
+    <module name="AnnotationLocation"/> <!-- new -->
     <module name="AnnotationUseStyle"/>
     <module name="MissingDeprecated"/>
     <module name="MissingOverride"/>
-    <module name="PackageAnnotation"/> <!-- new -->
+    <module name="PackageAnnotation"/>
     <module name="SuppressWarnings"/>
+    <module name="SuppressWarningsHolder"/> <!-- new -->
     
     <!-- Checks for Javadoc Comments -->
+    <!-- This would be a big change. Very slow.
+    <module name="AtclauseOrder"/>
+    -->
+    <!--  Should do this
+    <module name="JavadocMethod">
+      <property name="scope" value="public"/>
+    </module>
+     -->
+    <!-- This would be a big change. Very slow.
+    <module name="JavadocParagraph"/>
+    -->
+    <!--  Should do this
+    <module name="JavadocStyle">
+      <property name="scope" value="public"/>
+    </module>
+    -->
+    <!-- This would be a big change. Very, very slow.
+    <module name="JavadocTagContinuationIndentation"/>
+    -->
     <module name="JavadocType">
       <property name="authorFormat" value="\S"/>
     </module>
@@ -43,51 +77,45 @@
     </module>
     -->
     <!--  Should do this
-    <module name="JavadocMethod">
-      <property name="scope" value="public"/>
-    </module>
-     -->
-    <!--  Should do this
 	<module name="JavadocVariable">
 	   <property name="scope" value="public"/>
 	</module>
 	-->
+	<!-- Should do this. Very, very slow.
+    <module name="NonEmptyAtclauseDescription"/>
+	 -->
+    <module name="SingleLineJavadoc"/>
     <!--  Should do this
-    <module name="JavadocStyle">
-      <property name="scope" value="public"/>
-    </module>
+    <module name="SummaryJavadoc"/>
     -->
     <!-- The following would need to be configured to be useful.
     <module name="WriteTag"/>
     -->
 
     <!-- Checks for Naming Conventions -->
+    <!-- Would change API
+    <module name="AbbreviationAsWordInName"/>
+    -->
     <module name="AbstractClassName">
       <property name="format" value="^Abstract.*$"/>
     </module>
+    <module name="CatchParameterName"/>
+    <module name="ClassTypeParameterName"/>
     <!-- Allow "log" and "instance" otherwise only upper case valid variables with _ -->
     <module name="ConstantName">
       <property name="format" value="^(log|instance|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
     </module>
-    <module name="LocalFinalVariableName">
-      <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
-    </module>
-    <module name="LocalVariableName">
-      <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
-    </module>
-    <module name="MemberName">
-      <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
-    </module>
+    <module name="InterfaceTypeParameterName"/>
+    <module name="LocalFinalVariableName"/>
+    <module name="LocalVariableName"/>
+    <module name="MemberName"/>
     <module name="MethodName"/>
+    <module name="MethodTypeParameterName"/>
     <module name="PackageName">
       <property name="format" value="^[a-z]+(\.[a-z]([a-z0-9]{1,13}|[a-z0-9]+tion))*$"/>
     </module>
-    <module name="ParameterName">
-      <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
-    </module>
-    <module name="StaticVariableName">
-      <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
-    </module>
+    <module name="ParameterName"/>
+    <module name="StaticVariableName"/>
     <module name="TypeName"/>
 
     <!-- Checks for imports -->
@@ -97,11 +125,17 @@
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
     <!-- Would need to be configured to be useful
-    <module name="ImportOrder"/>
+    <module name="CustomImportOrder"/>
     <module name="ImportControl"/>
+    <module name="ImportOrder"/>
     -->
 
     <!-- Checks for Size Violations -->
+    <!--
+    <module name="AnonInnerLength">
+      <property name="max" value="60"/>
+    </module>
+    -->
     <!--
     <module name="ExecutableStatementCount">
       <property name="max" value="20"/>
@@ -112,6 +146,15 @@
     <module name="LineLength">
       <property name="max" value="256"/>
     </module>
+    -->
+    <module name="MethodCount">
+      <property name="maxTotal" value="100"/>
+      <property name="maxPrivate" value="20"/>
+      <property name="maxPackage" value="10"/>
+      <property name="maxProtected" value="20"/>
+      <property name="maxPublic" value="50"/>
+    </module>
+    <!--
     <module name="MethodLength">
       <property name="tokens" value="METHOD_DEF"/>
       <property name="max" value="300"/>
@@ -124,33 +167,23 @@
       <property name="countEmpty" value="false"/>
     </module>
     -->
-    <!--
-    <module name="AnonInnerLength">
-      <property name="max" value="60"/>
-    </module>
-    -->
+    <module name="OuterTypeNumber"/>
     <module name="ParameterNumber">
       <property name="max" value="7"/>
       <property name="tokens" value="CTOR_DEF,METHOD_DEF"/>
     </module>
-    <module name="OuterTypeNumber"/>
-    <module name="MethodCount">
-      <property name="maxTotal" value="100"/>
-      <property name="maxPrivate" value="20"/>
-      <property name="maxPackage" value="10"/>
-      <property name="maxProtected" value="20"/>
-      <property name="maxPublic" value="50"/>
-    </module>
 
     <!-- Checks for Whitespace -->
-    <module name="GenericWhitespace"/>
     <module name="EmptyForInitializerPad">
       <property name="option" value="space"/>
     </module>
     <module name="EmptyForIteratorPad">
       <property name="option" value="space"/>
     </module>
-    <module name="MethodParamPad"/>
+    <module name="GenericWhitespace"/>
+    <module name="MethodParamPad">
+      <property name="tokens" value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL"/> <!-- , ENUM_CONSTANT_DEF -->
+    </module>
     <module name="NoWhitespaceAfter">
       <property name="tokens" value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/><!-- ARRAY_INIT, -->
       <property name="allowLineBreaks" value="false"/>
@@ -162,6 +195,14 @@
     <module name="OperatorWrap"/>
     <module name="ParenPad">
       <property name="option" value="nospace"/>
+    </module>
+    <module name="SeparatorWrap">
+      <property name="tokens" value="DOT"/>
+      <property name="option" value="NL"/>
+    </module>
+    <module name="SeparatorWrap">
+       <property name="tokens" value="COMMA"/>
+       <property name="option" value="EOL"/>
     </module>
     <module name="TypecastParenPad">
       <property name="option" value="nospace"/>
@@ -175,8 +216,13 @@
     <module name="RedundantModifier"/>
 
     <!-- Checks for blocks -->
+    <module name="AvoidNestedBlocks"/>
     <module name="EmptyBlock">
       <property name="option" value="text"/>
+    </module>
+    <module name="EmptyCatchBlock"> <!-- new -->
+      <property name="commentFormat" value="This is allowed"/>
+	  <property name="exceptionVariableName" value="expected"/>
     </module>
     <module name="LeftCurly">
       <property name="option" value="nlow"/>
@@ -185,7 +231,6 @@
     <module name="RightCurly">
       <property name="option" value="same"/>
     </module>
-    <module name="AvoidNestedBlocks"/>
 
     <!-- Checks for Coding problems -->
     <!-- JSword does not require trailing comma on arrays
@@ -195,10 +240,16 @@
     <module name="AvoidInlineConditionals"/>
     -->
     <module name="CovariantEquals"/> 
+    <!-- JSword has its own conventions for declaration order 
+    <module name="DeclarationOrder"/>
+    -->
+    <module name="DefaultComesLast"/>
     <!-- module name="DoubleCheckedLocking"/ not in 5.6 -->
     <module name="EmptyStatement"/>
     <module name="EqualsAvoidNull"/>
     <module name="EqualsHashCode"/>
+    <module name="ExplicitInitialization"/>
+    <module name="FallThrough"/>
     <!-- We are not ready for this
     <module name="FinalLocalVariable">
       <property name="tokens" value="VARIABLE_DEF"/>
@@ -208,9 +259,11 @@
     <module name="HiddenField">
       <property name="tokens" value="VARIABLE_DEF"/>
     </module>
+    <module name="IllegalCatch"/>
     <module name="IllegalInstantiation">
       <property name="classes" value="java.lang.Boolean, java.lang.String"/>
     </module>
+    <module name="IllegalThrows"/>
     <!-- Are there any features of Java that are not allowed? Not for JSword.
     <module name="IllegalToken"/>
     -->
@@ -225,18 +278,23 @@
       <property name="format" value="^0[^lx]"/>
       <property name="ignoreCase" value="true"/>
     </module>
+    <!-- We are not ready for this
+    <module name="IllegalType"/>
+    -->
     <module name="InnerAssignment"/>
     <!-- JSword uses tables of numbers
     <module name="MagicNumber"/>
     -->
+    <!-- We are not ready for this
+    <module name="MissingCtor"/>
+    -->
+
     <module name="MissingSwitchDefault"/>
     <module name="ModifiedControlVariable"/>
-    <!-- Buggy
-    <module name="RedundantThrows"/>
-    -->
-    <module name="SimplifyBooleanExpression"/>
-    <module name="SimplifyBooleanReturn"/>
-    <module name="StringLiteralEquality"/>
+    <module name="MultipleStringLiterals">
+      <property name="allowedDuplicates" value="10"/>
+    </module>
+    <module name="MultipleVariableDeclarations"/>
     <module name="NestedForDepth">
       <property name="max" value="3"/>
     </module>
@@ -250,61 +308,53 @@
     <module name="NoClone"/>
     <module name="NoFinalizer"/>
     -->
-    <module name="SuperClone"/>
-    <module name="SuperFinalize"/>
-    <!-- We are not ready for this
-try    -->
-    <module name="IllegalCatch"/>
-    <module name="IllegalThrows"/>
+    <module name="OneStatementPerLine"/>
+    <module name="OverloadMethodsDeclarationOrder"/>
     <module name="PackageDeclaration"/>
-    <!--  <module name="JUnitTestCase"/> Removed in 6.2 -->
+    <module name="ParameterAssignment"/>
+    <!-- JSword does not require "this"
+    <module name="RequireThis"/>  
+    -->
     <!-- We are not ready for this
     <module name="ReturnCount">
       <property name="max" value="3"/>
     </module>
     -->
-    <!-- We are not ready for this
-    <module name="IllegalType"/>
-    -->
-    <!-- JSword has its own conventions for declaration order 
-    <module name="DeclarationOrder"/>
-    -->
-    <module name="ParameterAssignment"/>
-    <module name="ExplicitInitialization"/>
-    <module name="DefaultComesLast"/>
-    <!-- We are not ready for this
-    <module name="MissingCtor"/>
-    -->
-    <module name="FallThrough"/>
-    <module name="MultipleStringLiterals">
-      <property name="allowedDuplicates" value="10"/>
-    </module>
-    <module name="MultipleVariableDeclarations"/>
-    <!-- JSword does not require "this"
-    <module name="RequireThis"/>  
-    -->
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="StringLiteralEquality"/>
+    <module name="SuperClone"/>
+    <module name="SuperFinalize"/>
     <module name="UnnecessaryParentheses"/>
-    <module name="OneStatementPerLine"/>
+    <!-- We are not ready for this
+    <module name="VariableDeclarationUsageDistance"/>
+    -->
+    <!-- Buggy
+    <module name="RedundantThrows"/>
+    -->
+    <!--  <module name="JUnitTestCase"/> Removed in 6.2 -->
 
     <!-- Class Design Checks -->  
-    <module name="VisibilityModifier">
-      <property name="protectedAllowed" value="true"/>
-    </module>
+    <!-- This would be a big change
+    <module name="DesignForExtension"/>
+    -->
     <module name="FinalClass"/>
     <module name="InterfaceIsType"/>
     <module name="HideUtilityClassConstructor"/>
     <!-- This would be a big change
-    <module name="DesignForExtension"/>
-    -->
+    <module name="InnerTypeLast"/>
+tried    -->
+    <module name="InterfaceIsType"/> <!-- new -->
     <module name="MutableException"/>
+    <module name="OneTopLevelClass"/> <!-- new -->
     <!-- We are not ready for this
     <module name="ThrowsCount">
       <property name="max" value="2"/>
     </module>
     -->
-    <!-- This would be a big change
-    <module name="InnerTypeLast"/>
-tried    -->
+    <module name="VisibilityModifier">
+      <property name="protectedAllowed" value="true"/>
+    </module>
     <!-- The ant task cpd does this
     <module name="StrictDuplicateCode"/>
     -->
@@ -328,9 +378,36 @@ tried    -->
     <module name="JavaNCSS">
       <property name="methodMaximum" value="40"/>
     </module>
+    <module name="NPathComplexity">
+      <property name="max" value="1000"/>
+    </module>
     -->
 
     <!-- Miscellaneous Checks -->
+    <module name="ArrayTypeStyle"/>
+    <!--  Too big to tackle now. Slow too.
+    <module name="AvoidEscapedUnicodeCharacters">
+      <property name="allowEscapesForControlCharacters" value="true"/>
+      <property name="allowByTailComment" value="true"/>
+      <property name="allowIfAllCharactersEscaped" value="true"/>
+      <property name="allowNonPrintableEscapes" value="true"/>
+	</module>
+	-->
+	<!-- Should do.
+    <module name="CommentsIndentation"/>
+    -->
+    <module name="DescendantToken"/>
+	<!-- 
+    <module name="FileContentsHolder"/>
+    -->
+    <!-- This would be a big change
+    <module name="FinalParameters"/>
+tried    -->
+    <!-- This would be a big change
+    <module name="Indentation"/>
+tried    -->
+    <module name="OuterTypeFilename"/>
+    <module name="TodoComment"/>
     <module name="RegexpSinglelineJava">
       <property name="format" value="((public)|(protected))\s+void\s+finalize\(\s*\)"/>
     </module>
@@ -341,19 +418,10 @@ tried    -->
       <property name="message" value="Line has trailing spaces."/>
     </module>
 
-    <module name="TodoComment"/>
     <module name="UncommentedMain">
-      <property name="excludedClasses" value="\.(Desktop|APIExamples|XalanProcess|XMLProcess|BibleToOsis|DictToOsis|BibleScope|BookExporter|BookInstaller|BookLookup|StrongsAnalysis)$"/>
+      <property name="excludedClasses" value="\.(Desktop|APIExamples|XalanProcess|XMLProcess|BibleToOsis|DictToOsis|BibleScope|BookExporter|BookInstaller|BookLookup|StrongsAnalysis|FTPExample|ConfParser|GatherAllReferences|ReadEverything)$"/>
     </module>
     <module name="UpperEll"/>
-    <module name="ArrayTypeStyle"/>
-    <!-- This would be a big change
-    <module name="FinalParameters"/>
-tried    -->
-    <module name="DescendantToken"/>
-    <!-- This would be a big change
-    <module name="Indentation"/>
-tried    -->
     <!-- This would be a big change.
     <module name="TrailingComment"/>
 tried    -->
@@ -361,7 +429,6 @@ tried    -->
     <!-- Perhaps we should check for the GPL license @author, @id, ...
     <module name="RequiredRegexp"/>
     -->
-    <module name="OuterTypeFilename"/>
 
     <module name="ModifierOrder"/>
     <module name="RedundantModifier"/>

@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book.install.sword;
@@ -45,6 +44,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.AbstractBookList;
@@ -162,6 +162,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookList#getBooks(org.crosswire.jsword.book.BookFilter)
+     */
+    @Override
+    public List<Book> getBooks(BookFilter filter) {
+        List<Book> books = null;
+        synchronized (this) {
+            books = getBooks();
+        }
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(books, filter));
+        return new BookSet(temp);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getBook(java.lang.String)
      */
     public Book getBook(final String name) {
@@ -201,19 +214,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
         }
         return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBookList#getBooks(org.crosswire.jsword.book.BookFilter)
-     */
-    @Override
-    public List<Book> getBooks(BookFilter filter) {
-        List<Book> books = null;
-        synchronized (this) {
-            books = getBooks();
-        }
-        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(books, filter));
-        return new BookSet(temp);
     }
 
     /* (non-Javadoc)
@@ -302,11 +302,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             URI cache = getCachedIndexFile();
             download(job, catalogDirectory, FILE_LIST_GZ, cache);
             // It cannot be cancelled from this point forward
-            job.setCancelable(false);;
+            job.setCancelable(false);
             if (NetUtil.isFile(confDir)) {
                 String confDirPath = confDir.getPath();
                 String confDirPathOld = confDirPath + ".old";
-                
+
                 File dirConf = new File(confDirPath);
                 File dirConfOld = new File(confDirPathOld);
                 // Get rid of the old. It shouldn't be there, but just in case
@@ -654,11 +654,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
         AbstractSwordInstaller that = (AbstractSwordInstaller) object;
 
-        if (!equals(this.host, that.host)) {
+        if (!StringUtil.equals(this.host, that.host)) {
             return false;
         }
 
-        if (!equals(this.packageDirectory, that.packageDirectory)) {
+        if (!StringUtil.equals(this.packageDirectory, that.packageDirectory)) {
             return false;
         }
 
@@ -683,16 +683,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     @Override
     public int hashCode() {
         return host.hashCode() + packageDirectory.hashCode();
-    }
-
-    /**
-     * Quick utility to check to see if 2 (potentially null) strings are equal
-     */
-    protected boolean equals(String string1, String string2) {
-        if (string1 == null) {
-            return string2 == null;
-        }
-        return string1.equals(string2);
     }
 
     /**

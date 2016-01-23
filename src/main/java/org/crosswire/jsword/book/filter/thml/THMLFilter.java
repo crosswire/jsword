@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book.filter.thml;
@@ -68,20 +67,20 @@ public class THMLFilter implements SourceFilter {
                 int start = Math.max(0, colNumber - 40);
                 int stop = Math.min(finalInput.length(), colNumber + 40);
                 int here = stop - start;
-                log.warn("Could not fix {}({}) by {}: Error here({},{},{}): {}"
-                        , book.getInitials()
-                        , key.getName()
-                        , errorMessage
-                        , Integer.toString(colNumber)
-                        , Integer.toString(finalInput.length())
-                        , Integer.toString(here)
-                        , finalInput.substring(start, stop));
+                log.warn("Could not fix {}({}) by {}: Error here({},{},{}): {}",
+                         book.getInitials(),
+                         key.getName(),
+                         errorMessage,
+                         Integer.toString(colNumber),
+                         Integer.toString(finalInput.length()),
+                         Integer.toString(here),
+                         finalInput.substring(start, stop));
             } else {
-                log.warn("Could not fix {}({}) by {}: {}"
-                        , book.getInitials()
-                        , key.getName()
-                        , errorMessage
-                        , error.getMessage());
+                log.warn("Could not fix {}({}) by {}: {}",
+                         book.getInitials(),
+                         key.getName(),
+                         errorMessage,
+                         error.getMessage());
             }
             ele = OSISUtil.factory().createP();
         }

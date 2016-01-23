@@ -8,21 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -49,8 +45,8 @@ public class BookMetaDataTest {
             BookMetaData bmKJV = new SwordBookMetaData(kjvMetaData.getBytes(), "KJV");
             BookMetaData bmKJV2 = new SwordBookMetaData(kjvMetaData.getBytes(), "KJV");
             BookMetaData bmKJVA = new SwordBookMetaData(kjvaMetaData.getBytes(), "KJVA");
-            assertTrue( "Same metadata should equal", bmKJV.equals(bmKJV2));
-            assertFalse("Different initials should not equal", bmKJV.equals(bmKJVA));
+            Assert.assertTrue("Same metadata should equal", bmKJV.equals(bmKJV2));
+            Assert.assertFalse("Different initials should not equal", bmKJV.equals(bmKJVA));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BookException e) {
@@ -77,12 +73,12 @@ public class BookMetaDataTest {
             mdList.add(bmKJV);
             mdList.add(bmCommon);
             Collections.sort(mdList);
-            
+
             // ensure the book order is as expected
-            assertEquals("AAA should be first in sorted book list", bmaaa, mdList.get(0));
-            assertEquals("Common should be second in sorted book list", bmCommon, mdList.get(1));
-            assertEquals("KJV should be last in sorted book list", bmKJV, mdList.get(2));
-            
+            Assert.assertEquals("AAA should be first in sorted book list", bmaaa, mdList.get(0));
+            Assert.assertEquals("Common should be second in sorted book list", bmCommon, mdList.get(1));
+            Assert.assertEquals("KJV should be last in sorted book list", bmKJV, mdList.get(2));
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BookException e) {

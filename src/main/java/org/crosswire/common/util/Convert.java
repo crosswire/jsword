@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.util;
@@ -129,14 +128,14 @@ public final class Convert {
     public static PropertyMap string2Map(String data) {
         PropertyMap commands = new PropertyMap();
 
-        String[] data_arr = StringUtil.split(data, " ");
+        String[] parts = StringUtil.split(data, " ");
         String entry = "";
-        for (int i = 0; i < data_arr.length; i++) {
+        for (int i = 0; i < parts.length; i++) {
             try {
-                entry = data_arr[i];
-                int equ_pos = entry.indexOf('=');
-                String key = entry.substring(0, equ_pos);
-                String value = entry.substring(equ_pos + 1);
+                entry = parts[i];
+                int pos = entry.indexOf('=');
+                String key = entry.substring(0, pos);
+                String value = entry.substring(pos + 1);
                 Class<?> clazz = ClassUtil.forName(value);
 
                 if (clazz.isAssignableFrom(Object.class)) {

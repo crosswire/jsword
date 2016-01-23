@@ -8,24 +8,22 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
-
-import static org.junit.Assert.assertTrue;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +40,7 @@ public class GreekLuceneAnalyzerTest {
     public void setUp() throws Exception {
         myAnalyzer = new GreekLuceneAnalyzer();
 
-        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
     }
 
     @Test
@@ -53,12 +51,12 @@ public class GreekLuceneAnalyzerTest {
         Query query = parser.parse(testInput);
         // System.out.println(query.toString());
         // Lowercased test
-        assertTrue(query.toString().indexOf(field + ":\u03B4\u03B9\u03BF\u03C4\u03B9 ") > -1);
-        assertTrue(query.toString().indexOf(field + ":\u03B1\u03C5\u03C4\u03BF\u03C5") > -1);  
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":\u03B4\u03B9\u03BF\u03C4\u03B9 ") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":\u03B1\u03C5\u03C4\u03BF\u03C5") > -1);
 
     }
 
-    protected static final String field = "content";
+    protected static final String FIELD = "content";
     private AbstractBookAnalyzer myAnalyzer;
     private QueryParser parser;
 }

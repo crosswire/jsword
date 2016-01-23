@@ -8,13 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
+ * © CrossWire Bible Society, 2005 - 2016
  *     The copyright to this program is held by its authors. 
  *
  */
@@ -210,7 +210,7 @@ public class PassageTally extends AbstractPassage {
      * @return a String containing a description of the verses
      */
     public String getName(int cnt) {
-        int max_count = cnt;
+        int maxCount = cnt;
         if (PassageUtil.isPersistentNaming() && originalName != null) {
             return originalName;
         }
@@ -231,22 +231,22 @@ public class PassageTally extends AbstractPassage {
                 current = range.getStart();
             }
         } else {
-            if (max_count == 0) {
-                max_count = Integer.MAX_VALUE;
+            if (maxCount == 0) {
+                maxCount = Integer.MAX_VALUE;
             }
 
             Iterator<Key> it = new OrderedVerseIterator(getVersification(), board);
             Key current = null;
             int count = 0;
 
-            while (it.hasNext() && count < max_count) {
+            while (it.hasNext() && count < maxCount) {
                 Key verse = it.next();
                 retcode.append(verse.getName(current));
 
                 current = verse;
                 count++;
 
-                if (it.hasNext() && count < max_count) {
+                if (it.hasNext() && count < maxCount) {
                     retcode.append(AbstractPassage.REF_PREF_DELIM);
                 }
             }
@@ -274,16 +274,16 @@ public class PassageTally extends AbstractPassage {
      * @return a String containing a description of the verses
      */
     public String getNameAndTally(int cnt) {
-        int max_count = cnt;
+        int maxCount = cnt;
         StringBuilder retcode = new StringBuilder();
-        if (max_count == 0) {
-            max_count = Integer.MAX_VALUE;
+        if (maxCount == 0) {
+            maxCount = Integer.MAX_VALUE;
         }
 
         OrderedVerseIterator it = new OrderedVerseIterator(getVersification(), board);
         int count = 0;
 
-        while (it.hasNext() && count < max_count) {
+        while (it.hasNext() && count < maxCount) {
             Key verse = it.next();
             retcode.append(verse.getName());
             retcode.append(" (");
@@ -292,7 +292,7 @@ public class PassageTally extends AbstractPassage {
 
             count++;
 
-            if (it.hasNext() && count < max_count) {
+            if (it.hasNext() && count < maxCount) {
                 retcode.append(AbstractPassage.REF_PREF_DELIM);
             }
         }
@@ -429,14 +429,14 @@ public class PassageTally extends AbstractPassage {
         optimizeWrites();
 
         if (that instanceof PassageTally) {
-            PassageTally that_rt = (PassageTally) that;
+            PassageTally tally = (PassageTally) that;
 
             int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
-                increment(i, that_rt.board[i]);
+                increment(i, tally.board[i]);
             }
 
-            incrementMax(that_rt.max);
+            incrementMax(tally.max);
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
@@ -459,11 +459,11 @@ public class PassageTally extends AbstractPassage {
         optimizeWrites();
 
         if (that instanceof PassageTally) {
-            PassageTally that_rt = (PassageTally) that;
+            PassageTally tally = (PassageTally) that;
 
             int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
-                increment(i, -that_rt.board[i]);
+                increment(i, -tally.board[i]);
             }
         } else {
             for (Key aKey : that) {
@@ -484,11 +484,11 @@ public class PassageTally extends AbstractPassage {
         optimizeWrites();
 
         if (key instanceof PassageTally) {
-            PassageTally that_rt = (PassageTally) key;
+            PassageTally tally = (PassageTally) key;
 
             int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
-                if (that_rt.board[i] != 0) {
+                if (tally.board[i] != 0) {
                     kill(i);
                 }
             }
@@ -596,7 +596,7 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            int[] new_board = new int[board.length];
+            int[] newBoard = new int[board.length];
 
             for (int i = 0; i < board.length; i++) {
                 if (board[i] != 0) {
@@ -612,22 +612,22 @@ public class PassageTally extends AbstractPassage {
                     for (int j = -verses; j < 0; j++) {
                         int k = i + j;
                         if (k >= 0) {
-                            new_board[k] += board[i] + verses + j;
+                            newBoard[k] += board[i] + verses + j;
                         }
                     }
 
-                    new_board[i] += board[i] + verses;
+                    newBoard[i] += board[i] + verses;
 
                     for (int j = 1; j <= verses; j++) {
                         int k = i + j;
                         if (k < board.length - 1) {
-                            new_board[k] += board[i] + verses - j;
+                            newBoard[k] += board[i] + verses - j;
                         }
                     }
                 }
             }
 
-            board = new_board;
+            board = newBoard;
         }
 
         resetMax();
@@ -832,7 +832,7 @@ public class PassageTally extends AbstractPassage {
         /**
          * Find the first unused verse
          */
-        public VerseIterator() {
+        protected VerseIterator() {
             calculateNext();
         }
 
@@ -963,7 +963,7 @@ public class PassageTally extends AbstractPassage {
          * @param tally
          *            the rank of the verse
          */
-        public TalliedVerse(int ord, int tally) {
+        protected TalliedVerse(int ord, int tally) {
             this.ord = ord;
             this.tally = tally;
         }
@@ -1022,7 +1022,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @author Joe Walker
      */
-    private static final class OrderedVerseRangeIterator<T> implements Iterator<VerseRange> {
+    private static final class OrderedVerseRangeIterator implements Iterator<VerseRange> {
         /**
          * Find the first unused verse
          * 
@@ -1031,7 +1031,7 @@ public class PassageTally extends AbstractPassage {
          * @param vit 
          * @param board 
          */
-        public OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
+        protected OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
             Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
             Iterator<VerseRange> rit = new VerseRangeIterator(v11n, vit, RestrictionType.NONE);
@@ -1102,7 +1102,7 @@ public class PassageTally extends AbstractPassage {
          * @param tally
          *            The rank of the verse
          */
-        public TalliedVerseRange(VerseRange range, int tally) {
+        protected TalliedVerseRange(VerseRange range, int tally) {
             this.range = range;
             this.tally = tally;
         }

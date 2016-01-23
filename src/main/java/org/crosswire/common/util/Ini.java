@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2015
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2015 - 2016
  */
 package org.crosswire.common.util;
 
@@ -80,14 +79,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author DM Smith
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.<br>
- *     The copyright to this program is held by its authors.
  */
 final class Ini {
 
     /**
      * Create an empty INI Config.
      */
-    public Ini() {
+    Ini() {
         sectionMap = new TreeMap<String, IniSection>(String.CASE_INSENSITIVE_ORDER);
         list = new ArrayList();
     }
@@ -122,8 +120,29 @@ final class Ini {
         return list.get(index);
     }
 
+    /**
+     * Get the name of the first section.
+     * 
+     * @return the name of the first section or null if there are no sections
+     * @throws ArrayIndexOutOfBoundsException if there are no sections
+     */
+    public String getSectionName() {
+        return size() == 0 ? null : list.get(0);
+    }
+
     public int getValueSize(String sectionName, String key) {
-        IniSection section = getSection(sectionName);
+        IniSection section = doGetSection(sectionName);
+        return section == null ? 0 : section.size(key);
+    }
+
+    /**
+     * Get the number of values for a key in the first section
+     * 
+     * @param key the key
+     * @return the number of values for a key in the first section
+     */
+    public int getValueSize(String key) {
+        IniSection section = getSection();
         return section == null ? 0 : section.size(key);
     }
 
@@ -137,7 +156,7 @@ final class Ini {
      * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
      */
     public String getValue(String sectionName, String key, int index) {
-        IniSection section = getSection(sectionName);
+        IniSection section = doGetSection(sectionName);
         return section == null ? null : section.get(key, index);
     }
 
@@ -150,8 +169,33 @@ final class Ini {
      * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
      */
     public String getValue(String sectionName, String key) {
-        IniSection section = getSection(sectionName);
+        IniSection section = doGetSection(sectionName);
         return section == null ? null : section.get(key, 0);
+    }
+
+    /**
+     * Get the value for the key specified by the index for the first section.
+     * 
+     * @param key the key
+     * @param index the index
+     * @return the value at the specified index
+     * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
+     */
+    public String getValue(String key, int index) {
+        IniSection section = getSection();
+        return section == null ? null : section.get(key, index);
+    }
+
+    /**
+     * Get the first value for the key in the first section.
+     * 
+     * @param key the key
+     * @return the value at the specified index
+     * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
+     */
+    public String getValue(String key) {
+        IniSection section = getSection();
+        return section == null ? null : section.get(key);
     }
 
     /**
@@ -233,16 +277,6 @@ final class Ini {
 
     // Routines that work on the first section
     /**
-     * Get the name of the first section.
-     * 
-     * @return the name of the first section or null if there are no sections
-     * @throws ArrayIndexOutOfBoundsException if there are no sections
-     */
-    public String getSectionName() {
-        return size() == 0 ? null : list.get(0);
-    }
-
-    /**
      * Get the first section.
      * 
      * @return the first section or null if there are no sections
@@ -274,42 +308,6 @@ final class Ini {
     public Collection<String> getValues(String key) {
         IniSection section = getSection();
         return section == null ? null : section.getValues(key);
-    }
-
-    /**
-     * Get the number of values for a key in the first section
-     * 
-     * @param key the key
-     * @return the number of values for a key in the first section
-     */
-    public int getValueSize(String key) {
-        IniSection section = getSection();
-        return section == null ? 0 : section.size(key);
-    }
-
-    /**
-     * Get the value for the key specified by the index for the first section.
-     * 
-     * @param key the key
-     * @param index the index
-     * @return the value at the specified index
-     * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
-     */
-    public String getValue(String key, int index) {
-        IniSection section = getSection();
-        return section == null ? null : section.get(key, index);
-    }
-
-    /**
-     * Get the first value for the key in the first section.
-     * 
-     * @param key the key
-     * @return the value at the specified index
-     * @throws ArrayIndexOutOfBoundsException when the index is out of bounds
-     */
-    public String getValue(String key) {
-        IniSection section = getSection();
-        return section == null ? null : section.get(key);
     }
 
     /**
@@ -368,7 +366,7 @@ final class Ini {
         Reader in = null;
         try {
             in = new InputStreamReader(is, encoding);
-            load(in);
+            doLoad(in);
         } finally {
             if (in != null) {
                 in.close();
@@ -452,12 +450,12 @@ final class Ini {
         }
 
         for (String sectionName : list) {
-            IniSection section = getSection(sectionName);
+            IniSection section = doGetSection(sectionName);
             section.save(writer);
         }
     }
 
-    private IniSection getSection(String sectionName) {
+    private IniSection doGetSection(String sectionName) {
         return sectionMap.get(sectionName);
     }
 
@@ -477,7 +475,7 @@ final class Ini {
         return section;
     }
 
-    private void load(Reader in) throws IOException {
+    private void doLoad(Reader in) throws IOException {
         BufferedReader bin = null;
         try {
             if (in instanceof BufferedReader) {

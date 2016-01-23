@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -322,7 +321,7 @@ import org.crosswire.jsword.book.BookMetaData;
     FONT(BookMetaData.KEY_FONT),
 
     /**
-     * When false do not show quotation marks for OSIS text that has <q>
+     * When false do not show quotation marks for OSIS text that has &lt;q&gt;
      * elements.
      */
     OSIS_Q_TO_TICK(SwordBookMetaData.KEY_OSIS_Q_TO_TICK,
@@ -754,7 +753,7 @@ import org.crosswire.jsword.book.BookMetaData;
     },
 
     /**
-     * Contains the URL (a bare URL, not an HTML <a> link) of a web page for unlocking instructions/payment.
+     * Contains the URL (a bare URL, not an HTML &lt;a&gt; link) of a web page for unlocking instructions/payment.
      */
     UNLOCK_URL(SwordBookMetaData.KEY_UNLOCK_URL),
 
@@ -794,7 +793,7 @@ import org.crosswire.jsword.book.BookMetaData;
     /**
      * Simple ctor
      */
-    private ConfigEntryType(String name) {
+    ConfigEntryType(String name) {
         this.name = name;
         this.picks = null;
         String defValue = SwordBookMetaData.DEFAULTS.get(name);
@@ -804,7 +803,7 @@ import org.crosswire.jsword.book.BookMetaData;
     /**
      * Simple ctor
      */
-    private ConfigEntryType(String name, String... picks) {
+    ConfigEntryType(String name, String... picks) {
         this.name = name;
         this.picks = picks;
         String defValue = SwordBookMetaData.DEFAULTS.get(name);

@@ -8,21 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.compress;
-
-import static org.crosswire.common.util.PlatformTestUtils.startsWith;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +26,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.MissingResourceException;
 
+import org.crosswire.common.util.PlatformTestUtils;
 import org.crosswire.common.util.ResourceUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -48,16 +45,16 @@ public class ZipTest {
         try {
             kjvGenesis = ResourceUtil.getResourceAsStream("kjv_genesis.txt");
         } catch (MissingResourceException e) {
-            fail();
+            Assert.fail();
         } catch (IOException e) {
-            fail();
+            Assert.fail();
         }
         Compressor compressor = new Zip(kjvGenesis);
         ByteArrayOutputStream bosCompressed = null;
         try {
             bosCompressed = compressor.compress();
         } catch (IOException e) {
-            fail();
+            Assert.fail();
             return;
         }
         Compressor uncompressor = new Zip(new ByteArrayInputStream(bosCompressed.toByteArray()));
@@ -65,16 +62,16 @@ public class ZipTest {
         try {
             bosUncompressed = uncompressor.uncompress();
         } catch (IOException e) {
-            fail();
+            Assert.fail();
             return;
-        };
+        }
         String result;
         try {
             byte[] back = bosUncompressed.toByteArray();
             result = new String(back, "UTF-8");
-            assertTrue("round trip ZIP uncompression", startsWith(result, "          \r?\nThe First Book of Moses, called Genesis"));
+            Assert.assertTrue("round trip ZIP uncompression", PlatformTestUtils.startsWith(result, "          \r?\nThe First Book of Moses, called Genesis"));
         } catch (UnsupportedEncodingException e) {
-            fail();
+            Assert.fail();
             return;
         }
 

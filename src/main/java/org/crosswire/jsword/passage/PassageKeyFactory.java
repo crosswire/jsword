@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -164,7 +163,7 @@ public final class PassageKeyFactory {
         } catch (NoSuchKeyException e) {
             try {
                 return defaultType.createPassage(v11n, normalize(passageReference), basis);
-            } catch (NoSuchKeyException e1) {
+            } catch (NoSuchKeyException ex) {
                 // TODO(DM): Parser should allow valid osisRefs!
                 return defaultType.createPassage(v11n, mungOsisRef(passageReference), basis);
             }
@@ -277,14 +276,14 @@ public final class PassageKeyFactory {
         int ranges = ref.countRanges(RestrictionType.NONE);
 
         // the size in bytes of teach storage method
-        int bitwise_size = maxOrdinal / 8;
-        int ranged_size = (ranges * 4) + 1;
-        int distinct_size = (verses * 2) + 1;
+        int bitwiseSize = maxOrdinal / 8;
+        int rangedSize = (ranges * 4) + 1;
+        int distinctSize = (verses * 2) + 1;
 
         // if bitwise is equal smallest
-        if (bitwise_size <= ranged_size && bitwise_size <= distinct_size) {
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + (maxOrdinal / 8) + 1;
-            byte[] buffer = new byte[array_size];
+        if (bitwiseSize <= rangedSize && bitwiseSize <= distinctSize) {
+            int arraySize = binarySize(AbstractPassage.METHOD_COUNT) + (maxOrdinal / 8) + 1;
+            byte[] buffer = new byte[arraySize];
             int index = 0;
 
             index += toBinary(buffer, index, AbstractPassage.BITWISE, AbstractPassage.METHOD_COUNT);
@@ -303,11 +302,11 @@ public final class PassageKeyFactory {
             }
 
             return buffer;
-        } else if (distinct_size <= ranged_size) {
+        } else if (distinctSize <= rangedSize) {
             // if distinct is not bigger than ranged
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal)
+            int arraySize = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal)
                     + (verses * binarySize(maxOrdinal));
-            byte[] buffer = new byte[array_size];
+            byte[] buffer = new byte[arraySize];
             int index = 0;
 
             // write the Passage type and the number of verses. There must be
@@ -325,9 +324,9 @@ public final class PassageKeyFactory {
             return buffer;
         } else {
             // otherwise use ranges
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal / 2)
+            int arraySize = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal / 2)
                     + (2 * ranges * binarySize(maxOrdinal));
-            byte[] buffer = new byte[array_size];
+            byte[] buffer = new byte[arraySize];
             int index = 0;
 
             // write the Passage type and the number of ranges

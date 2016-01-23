@@ -8,24 +8,22 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2007 - 2016
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
-
-import static org.junit.Assert.assertTrue;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -40,17 +38,17 @@ public class ChineseLuceneAnalyzerTest {
     @Test
     public void testTokenization() throws ParseException {
         myAnalyzer = new ChineseLuceneAnalyzer();
-        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
 
         String testInput = "\u795E\u7231\u4E16\u4EBA\uFF0C\u751A\u81F3\u628A\u4ED6\u7684\u72EC\u751F\u5B50\u8D50\u7ED9\u4ED6\u4EEC";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":\"\u795E \u7231") > -1);
-        assertTrue(query.toString().indexOf("\u4ED6 \u4EEC\"") > -1);
+        Assert.assertTrue(query.toString().indexOf(FIELD + ":\"\u795E \u7231") > -1);
+        Assert.assertTrue(query.toString().indexOf("\u4ED6 \u4EEC\"") > -1);
         // System.out.println(query.toString());
     }
 
-    protected static final String field = "content";
+    protected static final String FIELD = "content";
     private AbstractBookAnalyzer myAnalyzer;
     private QueryParser parser;
 }

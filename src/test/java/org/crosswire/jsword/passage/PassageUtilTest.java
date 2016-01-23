@@ -8,25 +8,23 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
-
-import static org.junit.Assert.assertEquals;
 
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -99,13 +97,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 0));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 0));
-        assertEquals(1, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 0));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 0));
+        Assert.assertEquals(1, index[0]);
 
         index = new int[] {
             0
@@ -113,13 +111,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 1));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 1));
-        assertEquals(1, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 1));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 1));
+        Assert.assertEquals(1, index[0]);
 
         index = new int[] {
             0
@@ -127,13 +125,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 255));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 255));
-        assertEquals(1, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 0, 255));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 255));
+        Assert.assertEquals(1, index[0]);
 
         index = new int[] {
             0
@@ -141,13 +139,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 0, 256));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 256));
-        assertEquals(2, index[0]);
+        Assert.assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 0, 256));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 256));
+        Assert.assertEquals(2, index[0]);
 
         index = new int[] {
             0
@@ -155,13 +153,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 0, 65535));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 65535));
-        assertEquals(2, index[0]);
+        Assert.assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 0, 65535));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 65535));
+        Assert.assertEquals(2, index[0]);
 
         index = new int[] {
             0
@@ -169,13 +167,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 0, 65536));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 65536));
-        assertEquals(3, index[0]);
+        Assert.assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 0, 65536));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 65536));
+        Assert.assertEquals(3, index[0]);
 
         index = new int[] {
             0
@@ -183,13 +181,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 0, 16777215));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], -1);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 16777215));
-        assertEquals(3, index[0]);
+        Assert.assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 0, 16777215));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 16777215));
+        Assert.assertEquals(3, index[0]);
 
         index = new int[] {
             0
@@ -197,13 +195,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 0, 16777216));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], 0);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 16777216));
-        assertEquals(4, index[0]);
+        Assert.assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 0, 16777216));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 16777216));
+        Assert.assertEquals(4, index[0]);
 
         index = new int[] {
             0
@@ -211,13 +209,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 0, 2147483647));
-        assertEquals(buffer[0], 0);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], 0);
-        assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
-        assertEquals(4, index[0]);
+        Assert.assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 0, 2147483647));
+        Assert.assertEquals(buffer[0], 0);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(0, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
+        Assert.assertEquals(4, index[0]);
 
         index = new int[] {
             0
@@ -225,13 +223,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 1, 1));
-        assertEquals(buffer[0], 1);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], 0);
-        assertEquals(1, PassageKeyFactory.fromBinary(buffer, index, 1));
-        assertEquals(1, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 1, 1));
+        Assert.assertEquals(buffer[0], 1);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(1, PassageKeyFactory.fromBinary(buffer, index, 1));
+        Assert.assertEquals(1, index[0]);
 
         index = new int[] {
             0
@@ -239,13 +237,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 255, 255));
-        assertEquals(buffer[0], -1);
-        assertEquals(buffer[1], 0);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], 0);
-        assertEquals(255, PassageKeyFactory.fromBinary(buffer, index, 255));
-        assertEquals(1, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 0, 255, 255));
+        Assert.assertEquals(buffer[0], -1);
+        Assert.assertEquals(buffer[1], 0);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(255, PassageKeyFactory.fromBinary(buffer, index, 255));
+        Assert.assertEquals(1, index[0]);
 
         index = new int[] {
             0
@@ -253,13 +251,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0,
         };
-        assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 65535, 65535));
-        assertEquals(buffer[0], -1);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], 0);
-        assertEquals(buffer[3], 0);
-        assertEquals(65535, PassageKeyFactory.fromBinary(buffer, index, 65535));
-        assertEquals(2, index[0]);
+        Assert.assertEquals(2, PassageKeyFactory.toBinary(buffer, 0, 65535, 65535));
+        Assert.assertEquals(buffer[0], -1);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], 0);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(65535, PassageKeyFactory.fromBinary(buffer, index, 65535));
+        Assert.assertEquals(2, index[0]);
 
         index = new int[] {
             0
@@ -267,13 +265,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0,
         };
-        assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 16777215, 16777215));
-        assertEquals(buffer[0], -1);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], 0);
-        assertEquals(16777215, PassageKeyFactory.fromBinary(buffer, index, 16777215));
-        assertEquals(3, index[0]);
+        Assert.assertEquals(3, PassageKeyFactory.toBinary(buffer, 0, 16777215, 16777215));
+        Assert.assertEquals(buffer[0], -1);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], 0);
+        Assert.assertEquals(16777215, PassageKeyFactory.fromBinary(buffer, index, 16777215));
+        Assert.assertEquals(3, index[0]);
 
         index = new int[] {
             0
@@ -281,13 +279,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0,
         };
-        assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 2147483647, 2147483647));
-        assertEquals(buffer[0], 127);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], -1);
-        assertEquals(buffer[3], -1);
-        assertEquals(2147483647, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
-        assertEquals(4, index[0]);
+        Assert.assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, 2147483647, 2147483647));
+        Assert.assertEquals(buffer[0], 127);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], -1);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(2147483647, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
+        Assert.assertEquals(4, index[0]);
 
         index = new int[] {
             2
@@ -295,13 +293,13 @@ public class PassageUtilTest {
         buffer = new byte[] {
                 (byte) -1, (byte) -1, (byte) -1, (byte) -1,
         };
-        assertEquals(1, PassageKeyFactory.toBinary(buffer, 2, 10, 11));
-        assertEquals(buffer[0], -1);
-        assertEquals(buffer[1], -1);
-        assertEquals(buffer[2], 10);
-        assertEquals(buffer[3], -1);
-        assertEquals(10, PassageKeyFactory.fromBinary(buffer, index, 11));
-        assertEquals(3, index[0]);
+        Assert.assertEquals(1, PassageKeyFactory.toBinary(buffer, 2, 10, 11));
+        Assert.assertEquals(buffer[0], -1);
+        Assert.assertEquals(buffer[1], -1);
+        Assert.assertEquals(buffer[2], 10);
+        Assert.assertEquals(buffer[3], -1);
+        Assert.assertEquals(10, PassageKeyFactory.fromBinary(buffer, index, 11));
+        Assert.assertEquals(3, index[0]);
 
         for (int i = 0; i < 2147400000; i += 10000) {
             index = new int[] {
@@ -310,17 +308,17 @@ public class PassageUtilTest {
             buffer = new byte[] {
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0,
             };
-            assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, i, 2147483647));
-            assertEquals(i, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
-            assertEquals(4, index[0]);
+            Assert.assertEquals(4, PassageKeyFactory.toBinary(buffer, 0, i, 2147483647));
+            Assert.assertEquals(i, PassageKeyFactory.fromBinary(buffer, index, 2147483647));
+            Assert.assertEquals(4, index[0]);
         }
     }
 
     @Test
     public void testBinaryRepresentation() throws Exception {
-        Passage gen1_135 = keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
-        Passage exo2a_3b = keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11");
-        Passage gen_rev = keyf.getKey(v11n, "Gen 1:1-Rev 22:21");
+        Passage genC1V135 = keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
+        Passage exo2aTo3b = keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11");
+        Passage gentoRev = keyf.getKey(v11n, "Gen 1:1-Rev 22:21");
         Passage hard = (Passage) keyf.createEmptyKeyList(v11n);
         Passage empty = (Passage) keyf.createEmptyKeyList(v11n);
 
@@ -328,20 +326,20 @@ public class PassageUtilTest {
             hard.add(v11n.decodeOrdinal(i));
         }
 
-        byte[] temp = PassageKeyFactory.toBinaryRepresentation(gen1_135);
-        Passage gen1_135_copy = PassageKeyFactory.fromBinaryRepresentation(temp);
-        assertEquals(gen1_135_copy, gen1_135);
-        temp = PassageKeyFactory.toBinaryRepresentation(exo2a_3b);
-        Passage exo2a_3b_copy = PassageKeyFactory.fromBinaryRepresentation(temp);
-        assertEquals(exo2a_3b_copy, exo2a_3b);
-        temp = PassageKeyFactory.toBinaryRepresentation(gen_rev);
-        Passage gen_rev_copy = PassageKeyFactory.fromBinaryRepresentation(temp);
-        assertEquals(gen_rev_copy, gen_rev);
+        byte[] temp = PassageKeyFactory.toBinaryRepresentation(genC1V135);
+        Passage genC1V135Copy = PassageKeyFactory.fromBinaryRepresentation(temp);
+        Assert.assertEquals(genC1V135Copy, genC1V135);
+        temp = PassageKeyFactory.toBinaryRepresentation(exo2aTo3b);
+        Passage exo2aTo3bCopy = PassageKeyFactory.fromBinaryRepresentation(temp);
+        Assert.assertEquals(exo2aTo3bCopy, exo2aTo3b);
+        temp = PassageKeyFactory.toBinaryRepresentation(gentoRev);
+        Passage genToRevCopy = PassageKeyFactory.fromBinaryRepresentation(temp);
+        Assert.assertEquals(genToRevCopy, gentoRev);
         temp = PassageKeyFactory.toBinaryRepresentation(hard);
-        Passage hard_copy = PassageKeyFactory.fromBinaryRepresentation(temp);
-        assertEquals(hard_copy, hard);
+        Passage hardCopy = PassageKeyFactory.fromBinaryRepresentation(temp);
+        Assert.assertEquals(hardCopy, hard);
         temp = PassageKeyFactory.toBinaryRepresentation(empty);
-        Passage empty_copy = PassageKeyFactory.fromBinaryRepresentation(temp);
-        assertEquals(empty_copy, empty);
+        Passage emptyCopy = PassageKeyFactory.fromBinaryRepresentation(temp);
+        Assert.assertEquals(emptyCopy, empty);
     }
 }

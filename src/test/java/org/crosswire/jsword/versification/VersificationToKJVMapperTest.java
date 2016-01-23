@@ -8,19 +8,16 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2014 - 2016
  *
  */
 package org.crosswire.jsword.versification;
-
-import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -30,25 +27,26 @@ import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Some tests based on the principles outlined in the Javadoc of {@link VersificationToKJVMapper }
  *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- * @author chrisburrell
+ * @author Chris Burrell
  */
 public class VersificationToKJVMapperTest {
     private final FileVersificationMapping properties = new FileVersificationMapping();
     private VersificationToKJVMapper mapper;
     private OsisParser osisParser = new OsisParser();
-    
+
     @Test
     public void testSimpleMapping() {
         addProperty("Gen.1.1", "Gen.1.2");
         init();
-        assertEquals("Gen.1.2", map("Gen.1.1"));
-        assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        Assert.assertEquals("Gen.1.2", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.2"));
     }
 
     @Test
@@ -58,18 +56,18 @@ public class VersificationToKJVMapperTest {
         init();
 
         //map always go to 1.1
-        assertEquals("Gen.1.1", map("Gen.1.1"));
-        assertEquals("Gen.1.1", map("Gen.1.2"));
-        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", map("Gen.1.2"));
+        Assert.assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
     }
 
     @Test
     public void testLeftRangeMappings() {
         addProperty("Gen.1.1-Gen.1.2", "Gen.1.1");
         init();
-        assertEquals("Gen.1.1", map("Gen.1.1"));
-        assertEquals("Gen.1.1", map("Gen.1.2"));
-        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", map("Gen.1.2"));
+        Assert.assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
     }
 
     @Test
@@ -77,7 +75,7 @@ public class VersificationToKJVMapperTest {
         addProperty("Gen.1.1", "Gen.1.1");
         addProperty("Gen.1.1", "Gen.1.2");
         init();
-        assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
     }
 
     @Test
@@ -85,9 +83,9 @@ public class VersificationToKJVMapperTest {
         addProperty("Gen.1.1", "Gen.1.1-Gen.1.2");
         init();
 
-        assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
-        assertEquals("Gen.1.1", unmap("Gen.1.1"));
-        assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        Assert.assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.2"));
     }
 
 
@@ -95,8 +93,8 @@ public class VersificationToKJVMapperTest {
     public void testMissingMapping() {
         init();
 
-        assertEquals("Gen.1.1", map("Gen.1.1"));
-        assertEquals("Gen.1.1", unmap("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.1"));
     }
 
     @Test
@@ -104,12 +102,12 @@ public class VersificationToKJVMapperTest {
         addProperty("Gen.1.1-Gen.1.3", "Gen.1.2-Gen.1.4");
         init();
 
-        assertEquals("Gen.1.2", map("Gen.1.1"));
-        assertEquals("Gen.1.3", map("Gen.1.2"));
-        assertEquals("Gen.1.4", map("Gen.1.3"));
-        assertEquals("Gen.1.1", unmap("Gen.1.2"));
-        assertEquals("Gen.1.2", unmap("Gen.1.3"));
-        assertEquals("Gen.1.3", unmap("Gen.1.4"));
+        Assert.assertEquals("Gen.1.2", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.3", map("Gen.1.2"));
+        Assert.assertEquals("Gen.1.4", map("Gen.1.3"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        Assert.assertEquals("Gen.1.2", unmap("Gen.1.3"));
+        Assert.assertEquals("Gen.1.3", unmap("Gen.1.4"));
     }
 
     @Test
@@ -117,11 +115,11 @@ public class VersificationToKJVMapperTest {
         addProperty("Gen.1.1-Gen.1.2", "+1");
         init();
 
-        assertEquals("Gen.1.2", map("Gen.1.1"));
-        assertEquals("Gen.1.3", map("Gen.1.2"));
+        Assert.assertEquals("Gen.1.2", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.3", map("Gen.1.2"));
 
-        assertEquals("Gen.1.1", unmap("Gen.1.2"));
-        assertEquals("Gen.1.2", unmap("Gen.1.3"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        Assert.assertEquals("Gen.1.2", unmap("Gen.1.3"));
     }
 
     @Test
@@ -131,13 +129,13 @@ public class VersificationToKJVMapperTest {
         init();
 
 
-        assertEquals("Gen.1.3!a", mapToQualifiedKey("Gen.1.1"));
-        assertEquals("Gen.1.3!b", mapToQualifiedKey("Gen.1.2"));
-        assertEquals("Gen.1.3", map("Gen.1.1"));
-        assertEquals("Gen.1.3", map("Gen.1.2"));
-        assertEquals("Gen.1.1", unmap("Gen.1.3!a"));
-        assertEquals("Gen.1.2", unmap("Gen.1.3!b"));
-        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.3"));
+        Assert.assertEquals("Gen.1.3!a", mapToQualifiedKey("Gen.1.1"));
+        Assert.assertEquals("Gen.1.3!b", mapToQualifiedKey("Gen.1.2"));
+        Assert.assertEquals("Gen.1.3", map("Gen.1.1"));
+        Assert.assertEquals("Gen.1.3", map("Gen.1.2"));
+        Assert.assertEquals("Gen.1.1", unmap("Gen.1.3!a"));
+        Assert.assertEquals("Gen.1.2", unmap("Gen.1.3!b"));
+        Assert.assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.3"));
     }
 
     @Test
@@ -145,8 +143,8 @@ public class VersificationToKJVMapperTest {
         addProperty("Dan.3.32", "?StoryOfThreeYoungMen.1.1");
         init();
 
-        assertEquals("?StoryOfThreeYoungMen.1.1", mapToQualifiedKey("Dan.3.32"));
-        assertEquals("Dan.3.32", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen.1.1")).getOsisRef());
+        Assert.assertEquals("?StoryOfThreeYoungMen.1.1", mapToQualifiedKey("Dan.3.32"));
+        Assert.assertEquals("Dan.3.32", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen.1.1")).getOsisRef());
     }
 
     @Test
@@ -154,27 +152,27 @@ public class VersificationToKJVMapperTest {
         addProperty("Dan.3.31-Dan.3.68", "?StoryOfThreeYoungMen");
         init();
 
-        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.31"));
-        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.32"));
-        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.45"));
-        assertEquals("Dan.3.31-Dan.3.68", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen")).getOsisRef());
+        Assert.assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.31"));
+        Assert.assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.32"));
+        Assert.assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.45"));
+        Assert.assertEquals("Dan.3.31-Dan.3.68", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen")).getOsisRef());
     }
 
     @Test
     public void testAbsentVerses() {
         addProperty("?", "Gen.1.1");
         init();
-        assertEquals("", unmap("Gen.1.1"));
+        Assert.assertEquals("", unmap("Gen.1.1"));
     }
 
     @Test
     public void testAbsentVersesWithRange() {
         addProperty("?", "Gen.1.1-Gen.1.3");
         init();
-        assertEquals("", unmap("Gen.1.1"));
-        assertEquals("", unmap("Gen.1.2"));
-        assertEquals("", unmap("Gen.1.3"));
-        assertEquals("Gen.1.4", unmap("Gen.1.4"));
+        Assert.assertEquals("", unmap("Gen.1.1"));
+        Assert.assertEquals("", unmap("Gen.1.2"));
+        Assert.assertEquals("", unmap("Gen.1.3"));
+        Assert.assertEquals("Gen.1.4", unmap("Gen.1.4"));
     }
 
     /**

@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.passage;
@@ -43,15 +42,6 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
     String getName();
 
     /**
-     * A Human readable version of the Key's top level name. For Biblical
-     * passages this uses short books names. For a dictionary it might return
-     * A-Z.
-     * 
-     * @return a String containing a description of the Key
-     */
-    String getRootName();
-
-    /**
      * Translate the Key into a human readable string, with the assumption that
      * the specified Key has just been output, so if we are in the same region,
      * we do not need to display the region name, and so on.
@@ -61,6 +51,15 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
      * @return The string representation
      */
     String getName(Key base);
+
+    /**
+     * A Human readable version of the Key's top level name. For Biblical
+     * passages this uses short books names. For a dictionary it might return
+     * A-Z.
+     * 
+     * @return a String containing a description of the Key
+     */
+    String getRootName();
 
     /**
      * The OSIS defined reference specification for this Key. When the key is a

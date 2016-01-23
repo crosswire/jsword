@@ -8,14 +8,13 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.jsword.book.sword;
@@ -254,7 +253,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
             adjustConfig();
             report(configAll);
-    
+
             this.configJSword = addConfig(MetaDataLocator.JSWORD);
             this.configFrontend = addConfig(MetaDataLocator.FRONTEND);
         } catch (IOException ex) {
@@ -606,7 +605,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         if (!installed) {
             return;
         }
-        
+
         File writeLocation = metaDataLocator.getWriteLocation();
         // Properties are only saved if there is a place for saving
         if (writeLocation == null) {
@@ -637,13 +636,12 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             config.replace(key, value);
             try {
                 config.save(new File(writeLocation, bookConf), getBookCharset());
-            } catch (IOException e1) {
-                LOGGER.error("Unable to save {}={}: conf file for [{}]; error={}", key, value, configAll.getName(), e1);
+            } catch (IOException ex) {
+                LOGGER.error("Unable to save {}={}: conf file for [{}]; error={}", key, value, configAll.getName(), ex);
             }
         }
     }
 
-    
     /**
      * Allow for partial loading of a minimum set of keys, saving time and space.
      * If partial, call reload(null) to fill it in before showing the conf contents to a user.
@@ -651,7 +649,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @param partial
      */
     public static void setPartialLoading(boolean partial) {
-     
+
         if (partial != partialLoading) {
             if (partial) {
                 keyKeepers = new KeyFilter(REQUIRED);
@@ -661,6 +659,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         }
         partialLoading = partial;
     }
+
     /**
      * Load the conf from a file.
      *
@@ -740,8 +739,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Gets a particular entry value by its type
      *
-     * @param type
-     *            of the entry
+     * @param key of the entry
      * @return the requested value, the default (if there is no entry) or null
      *         (if there is no default)
      */
@@ -1136,7 +1134,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             KEY_BOOKLIST,
             KEY_CIPHER_KEY
     };
-    
+
     /**
      * KeyFilter returns true for keys that should always be present.
      * A partially loaded SwordBookMetaData will satisfy this filter.
@@ -1146,7 +1144,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
          * Create a KeyFilter for the expected keys.
          * @param keepers the list of keys that should be retained
          */
-        public KeyFilter(String[] keepers) {
+        KeyFilter(String[] keepers) {
             this.keepers = new HashSet();
 
             // Load up the keepers set
@@ -1159,10 +1157,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         }
         private Set keepers;
     }
- 
-    private static boolean partialLoading = false;
- 
-    private static Filter keyKeepers = null;
+
+    private static boolean partialLoading;
+
+    private static Filter keyKeepers;
 
     private static final String[] OSIS_INFO = {
             KEY_ABBREVIATION,

@@ -8,20 +8,18 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *       http://www.gnu.org/copyleft/lgpl.html
+ *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
- *     The copyright to this program is held by its authors.
+ * © CrossWire Bible Society, 2005 - 2016
  *
  */
 package org.crosswire.common.diff;
 
-import static org.junit.Assert.assertEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -37,12 +35,12 @@ public class MatchTest {
 
     @Test
     public void testMatchMain() {
-        assertEquals("match_main: Equality.", 0, new Match("abcdef", "abcdef", 1000).locate());
-        assertEquals("match_main: Null text.", -1, new Match("", "abcdef", 1).locate());
-        assertEquals("match_main: Null pattern.", 3, new Match("abcdef", "", 3).locate());
-        assertEquals("match_main: Exact match.", 3, new Match("abcdef", "de", 3).locate());
+        Assert.assertEquals("match_main: Equality.", 0, new Match("abcdef", "abcdef", 1000).locate());
+        Assert.assertEquals("match_main: Null text.", -1, new Match("", "abcdef", 1).locate());
+        Assert.assertEquals("match_main: Null pattern.", 3, new Match("abcdef", "", 3).locate());
+        Assert.assertEquals("match_main: Exact match.", 3, new Match("abcdef", "de", 3).locate());
         Bitap.setThreshold(0.7f);
-        assertEquals("match_main: Complex match.", 4, new Match("I am the very model of a modern major general.", " that berry ", 5).locate());
+        Assert.assertEquals("match_main: Complex match.", 4, new Match("I am the very model of a modern major general.", " that berry ", 5).locate());
         Bitap.setThreshold(0.5f);
     }
 
