@@ -35,7 +35,7 @@ import org.junit.Test;
  * @author DM Smith
  */
 // TODO(DMS): make this test use mocks or setup its own environment
-public class DwrBridgeMissingAssets {
+public class DwrBridgeMissingAssetsTest {
     private DwrBridge dwrBridge = new DwrBridge();
 
     @Before

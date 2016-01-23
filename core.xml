@@ -698,10 +698,9 @@
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.report}">
 				<fileset dir="${dest.test.classes.dir}">
-					<include name="**/*Test*.class"/>
+					<include name="**/*Test.class"/>
 					<exclude name="**/*AllTests*"/>
 					<exclude name="**/*$$*"/>
-					<exclude name="**/*Speed*"/>
 				</fileset>
 			</batchtest>
 		</junit>

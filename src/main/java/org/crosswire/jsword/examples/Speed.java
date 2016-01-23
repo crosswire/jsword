@@ -17,7 +17,7 @@
  * © CrossWire Bible Society, 2005 - 2016
  *
  */
-package org.crosswire.jsword.book.test;
+package org.crosswire.jsword.examples;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;

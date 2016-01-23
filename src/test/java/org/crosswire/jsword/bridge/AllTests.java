@@ -31,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(
-    DwrBridgeMissingAssets.class
+    DwrBridgeMissingAssetsTest.class
 )
 public class AllTests {
 }

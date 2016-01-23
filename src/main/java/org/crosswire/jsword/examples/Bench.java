@@ -23,7 +23,6 @@ import java.util.List;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.test.Speed;
 
 /**
  * Bench is a command line utility that runs the Speed benchmark program.

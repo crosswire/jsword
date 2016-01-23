@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class BookTestPreRequisites {
+public class BookPreRequisitesTest {
     @Before
     public void setUp() throws Exception {
         installedBooks = Books.installed();
@@ -66,5 +66,5 @@ public class BookTestPreRequisites {
     private Books installedBooks;
 
     private static final String[] BOOKS = new String[]{"KJV", "ESV"};
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookTestPreRequisites.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookPreRequisitesTest.class);
 }

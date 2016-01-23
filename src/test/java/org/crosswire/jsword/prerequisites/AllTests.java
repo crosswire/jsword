@@ -31,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(
-    BookTestPreRequisites.class
+    BookPreRequisitesTest.class
 )
 public class AllTests {
 }
