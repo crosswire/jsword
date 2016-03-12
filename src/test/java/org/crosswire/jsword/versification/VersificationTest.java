@@ -31,8 +31,10 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.SystemCalvin;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.SystemCatholic2;
+import org.crosswire.jsword.versification.system.SystemDarbyFR;
 import org.crosswire.jsword.versification.system.SystemGerman;
 import org.crosswire.jsword.versification.system.SystemKJV;
 import org.crosswire.jsword.versification.system.SystemKJVA;
@@ -41,6 +43,7 @@ import org.crosswire.jsword.versification.system.SystemLuther;
 import org.crosswire.jsword.versification.system.SystemMT;
 import org.crosswire.jsword.versification.system.SystemNRSV;
 import org.crosswire.jsword.versification.system.SystemNRSVA;
+import org.crosswire.jsword.versification.system.SystemSegond;
 import org.crosswire.jsword.versification.system.SystemSynodal;
 import org.crosswire.jsword.versification.system.SystemSynodalProt;
 import org.crosswire.jsword.versification.system.SystemVulg;
@@ -70,8 +73,10 @@ public class VersificationTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Object[][] data = new Object[][]{
+                {SystemCalvin.V11N_NAME},
                 {SystemCatholic.V11N_NAME},
                 {SystemCatholic2.V11N_NAME},
+                {SystemDarbyFR.V11N_NAME},
                 {SystemGerman.V11N_NAME},
                 {SystemKJV.V11N_NAME},
                 {SystemKJVA.V11N_NAME},
@@ -80,6 +85,7 @@ public class VersificationTest {
                 {SystemMT.V11N_NAME},
                 {SystemNRSV.V11N_NAME},
                 {SystemNRSVA.V11N_NAME},
+                {SystemSegond.V11N_NAME},
                 {SystemSynodal.V11N_NAME},
                 {SystemSynodalProt.V11N_NAME},
                 {SystemVulg.V11N_NAME}

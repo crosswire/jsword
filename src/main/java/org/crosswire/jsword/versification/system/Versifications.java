@@ -98,17 +98,23 @@ public final class Versifications {
     }
 
     private Versification fluff(String name) {
-        //keep KJV at the top as it is the most common
+        // Keep KJV at the top as it is the most common
         if (name == null || SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
 
         //then in alphabetical order, to ease the developer checking we have them all
+        if (SystemCalvin.V11N_NAME.equals(name)) {
+            return new SystemCalvin();
+        }
         if (SystemCatholic.V11N_NAME.equals(name)) {
             return new SystemCatholic();
         }
         if (SystemCatholic2.V11N_NAME.equals(name)) {
             return new SystemCatholic2();
+        }
+        if (SystemDarbyFR.V11N_NAME.equals(name)) {
+            return new SystemDarbyFR();
         }
         if (SystemGerman.V11N_NAME.equals(name)) {
             return new SystemGerman();
@@ -136,6 +142,9 @@ public final class Versifications {
         }
         if (SystemOrthodox.V11N_NAME.equals(name)) {
             return new SystemOrthodox();
+        }
+        if (SystemSegond.V11N_NAME.equals(name)) {
+            return new SystemSegond();
         }
         if (SystemSynodal.V11N_NAME.equals(name)) {
             return new SystemSynodal();
@@ -181,8 +190,10 @@ public final class Versifications {
      */
     private Versifications() {
         known = new HashSet<String>();
+        known.add(SystemCalvin.V11N_NAME);
         known.add(SystemCatholic.V11N_NAME);
         known.add(SystemCatholic2.V11N_NAME);
+        known.add(SystemDarbyFR.V11N_NAME);
         known.add(SystemGerman.V11N_NAME);
         known.add(SystemKJV.V11N_NAME);
         known.add(SystemKJVA.V11N_NAME);
@@ -193,6 +204,7 @@ public final class Versifications {
         known.add(SystemNRSV.V11N_NAME);
         known.add(SystemNRSVA.V11N_NAME);
         known.add(SystemOrthodox.V11N_NAME);
+        known.add(SystemSegond.V11N_NAME);
         known.add(SystemSynodal.V11N_NAME);
         known.add(SystemSynodalProt.V11N_NAME);
         known.add(SystemVulg.V11N_NAME);
