@@ -263,8 +263,8 @@
 				destdir="${dest.main.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.6"
-			    source="1.6">
+				target="1.5"
+			    source="1.5">
 			<classpath refid="classpath.buildtime" />
 		</javac>
 	</target>
@@ -302,8 +302,8 @@
 				destdir="${dest.test.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.6"
-		        source="1.6">
+				target="1.5"
+		        source="1.5">
 			<classpath refid="classpath.test" />
 		</javac>
 	</target>
@@ -971,7 +971,7 @@
 		<taskdef name="nsis" classpathref="nsis.classpath" classname="com.danielreese.nsisant.Task"/>
 	</target>
 
-	<!-- JDepend visibility instructions -->
+	<!-- NSIS visibility instructions -->
 	<target name="nsis.verify"
 		    depends="nsis.visible"
 	        unless="nsis.available">
@@ -984,7 +984,7 @@
 		<echo>Otherwise, run the nsis.antlibs task to copy jars to ANT_HOME/lib</echo>
 	</target>
 
-	<!-- Check to see if JDepend is visible to Ant. -->
+	<!-- Check to see if NSIS is visible to Ant. -->
 	<target name="nsis.visible">
 	    <available property="nsis.available"
 	               classname="com.danielreese.nsisant.Task"/>
@@ -1019,6 +1019,69 @@
 			description="Copy required nsis jars to ant/lib">
 		<echo message="copy ${nsis.home}/nsisant-${nsis.version}.jar"/>
 		<copy file="${nsis.home}/nsisant-${nsis.version}.jar" todir="${ant.home}/lib"/>
+	</target>
+
+	<!--=======================================================================
+	== Use AppBundler to create a MacOSX app
+	== These are properties related to AppBundler.
+	=========================================================================-->
+	<property name="appbundler.version"		value="1.0ea" />
+	<property name="appbundler.home"		location="${tools.home}/appbundler-${appbundler.version}" />
+	<property name="appbundler.report"		location="${report.dir}/appbundler" />
+	<property name="appbundler.url"			value="http://java.net/downloads/appbundler/appbundler-${appbundler.version}.jar"/>
+
+	<target	name="appbundler.task"
+			depends="appbundler.download, appbundler.verify">
+		<taskdef name="bundleapp" classpath="${appbundler.home}/appbundler-${appbundler.version}.jar" classname="com.oracle.appbundler.AppBundlerTask"/>
+	</target>
+
+	<!-- AppBundler visibility instructions -->
+	<target name="appbundler.verify"
+		    depends="appbundler.visible"
+	        unless="appbundler.available">
+		<echo>$${appbundler.available}=${appbundler.available}</echo>
+		<echo>AppBundler cannot run. appbundler-${appbundler.version}.jar is not visible to Ant.</echo>
+		<echo>To make it visible you need to do one of two things depending</echo>
+		<echo>on whether you are running ant in Eclipse or not.</echo>
+		<echo>In Eclipse, add appbundler-*.jar to Preferences -> Ant -> Runtime -> Global Entries</echo>
+		<echo>Otherwise, run the appbundler.antlibs task to copy jars to ANT_HOME/lib</echo>
+	</target>
+
+	<!-- Check to see if AppBundler is visible to Ant. -->
+	<target name="appbundler.visible">
+	    <available property="appbundler.available"
+	               classname="com.oracle.appbundler.AppBundlerTask"/>
+	</target>
+
+	<!-- Download AppBundler -->
+	<target	name="appbundler.download"
+			depends="appbundler.check"
+			unless="appbundler.present">
+		<mkdir	dir="${tools.home}" />
+		<mkdir	dir="${appbundler.home}" />
+		<get	src="${appbundler.url}"	dest="${appbundler.home}"	usetimestamp="true" />
+	</target>
+
+	<!-- See if AppBundler is installed -->
+	<target	name="appbundler.check">
+		<available file="${appbundler.home}/appbundler-${appbundler.version}.jar"		type="file"  property="appbundler.present" />
+	</target>
+
+	<!-- the only purpose of this is to provide a useful diagnostic. -->
+	<target	name="appbundler">
+	    <echo>AppBundler may fail if appbundler.jar is not visible to Ant.
+	To make the task visible you need to do one of two things depending
+	on whether you are running ant in Eclipse or not.
+	In Eclipse, add appbundler-*.jar to Preferences -> Ant -> Runtime -> Global Entries
+	Otherwise, run the appbundler.antlibs task to copy jars to ANT_HOME/lib</echo>
+	</target>
+
+	<!-- This does not need to be done in Eclipse. Add it to Ant preferences instead -->
+	<target	name="appbundler.antlibs"
+			depends="appbundler.download"
+			description="Copy required appbundler jars to ant/lib">
+		<echo message="copy ${appbundler.home}/appbundler-${appbundler.version}.jar"/>
+		<copy file="${appbundler.home}/appbundler-${appbundler.version}.jar" todir="${ant.home}/lib"/>
 	</target>
 
 	<!--=======================================================================
