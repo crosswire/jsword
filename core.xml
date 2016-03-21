@@ -480,7 +480,7 @@
 	<property name="checkstyle.version"		value="6.14" />
 	<property name="checkstyle.home"		location="${tools.home}/checkstyle-${checkstyle.version}" />
 	<property name="checkstyle.report"		location="${report.dir}/checkstyle" />
-	<property name="checkstyle.url"			value="http://sourceforge.net/projects/checkstyle/files/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
+	<property name="checkstyle.url"			value="http://downloads.sourceforge.net/project/checkstyle/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
 	<property name="checkstyle.zip"			location="${tools.home}/checkstyle-${checkstyle.version}.zip" />
 	<property name="checkstyle.jar.file"	location="${checkstyle.home}/checkstyle-${checkstyle.version}-all.jar" />
 	<property name="checkstyle.fail"		value="false" />
@@ -535,7 +535,7 @@
 	<property name="findbugs.version"		value="3.0.0" />
 	<property name="findbugs.home"			location="${tools.home}/findbugs-${findbugs.version}" />
 	<property name="findbugs.report"		location="${report.dir}/findbugs" />
-	<property name="findbugs.url"			value="http://prdownloads.sourceforge.net/findbugs/findbugs-${findbugs.version}.zip?download" />
+	<property name="findbugs.url"			value="http://downloads.sourceforge.net/project/findbugs/findbugs/${findbugs.version}/findbugs-${findbugs.version}.zip" />
 	<property name="findbugs.zip"			location="${tools.home}/findbugs-${findbugs.version}.zip" />
 
 	<target	name="findbugs"
@@ -588,7 +588,7 @@
 	<property name="pmd.home"				location="${tools.home}/pmd-bin-${pmd.version}" />
 	<property name="pmd.report"				location="${report.dir}/pmd" />
 	<property name="cpd.report"				location="${report.dir}/cpd" />
-	<property name="pmd.url"				value="http://sourceforge.net/projects/pmd/files/pmd/${pmd.version}/pmd-bin-${pmd.version}.zip/download" />
+	<property name="pmd.url"				value="http://downloads.sourceforge.net/project/pmd/pmd/${pmd.version}/pmd-bin-${pmd.version}.zip" />
 	<property name="pmd.zip"				location="${tools.home}/pmd-bin-${pmd.version}.zip" />
 
 	<target	name="pmd"
@@ -668,7 +668,7 @@
 	<property name="cobertura.version"		value="2.0.3" />
 	<property name="cobertura.home"			location="${tools.home}/cobertura-${cobertura.version}" />
 	<property name="cobertura.report"		location="${report.dir}/cobertura" />
-	<property name="cobertura.url"			value="http://sourceforge.net/projects/cobertura/files/cobertura/${cobertura.version}/cobertura-${cobertura.version}-bin.zip/download" />
+	<property name="cobertura.url"			value="http://downloads.sourceforge.net/project/cobertura/cobertura/${cobertura.version}/cobertura-${cobertura.version}-bin.zip" />
 	<property name="cobertura.zip"			location="${tools.home}/cobertura-${cobertura.version}.zip" />
 	<property name="cobertura.instrument.dir"	value="${cobertura.report}/tmp" />
 	<property name="cobertura.datafile"		value="${cobertura.instrument.dir}/cobertura.ser" />
@@ -791,7 +791,7 @@
 	<property name="java2html.version"		value="1.5.1" />
 	<property name="java2html.home"			location="${tools.home}/java2html-${java2html.version}" />
 	<property name="java2html.report"		location="${report.dir}/java2html" />
-	<property name="java2html.url"			value="http://www.java2html.com/Java2HTML.zip"/>
+	<property name="java2html.url"			value="http://www.java2html.com/Java2HTML.zip"/> <!-- http://ccgi.vaegar.force9.co.uk/Java2HTML.zip"/>  -->
 	<property name="java2html.zip"			location="${tools.home}/Java2HTML.zip"/>
 
 	<target	name="java2html"
@@ -833,7 +833,7 @@
 
 	<!-- See if Java2HTML is installed -->
 	<target	name="java2html.check">
-		<available file="${java2html.home}"		type="dir"  property="java2html.present" />
+		<available file="${java2html.home}/j2h.jar"		type="file"  property="java2html.present" />
 	</target>
 
 	<!--=======================================================================
@@ -961,7 +961,7 @@
 	<property name="nsis.version"		value="1.3" />
 	<property name="nsis.home"			location="${tools.home}/nsis-${nsis.version}" />
 	<property name="nsis.report"		location="${report.dir}/nsis" />
-	<property name="nsis.url"			value="http://cloud.github.com/downloads/dreese/nsis-ant/nsisant-${nsis.version}.jar"/>
+	<property name="nsis.url"			value="https://cloud.github.com/downloads/dreese/nsis-ant/nsisant-${nsis.version}.jar"/>
 
 	<target	name="nsis.task"
 			depends="nsis.download, nsis.verify">
