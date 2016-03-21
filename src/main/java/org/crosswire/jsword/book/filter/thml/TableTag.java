@@ -42,6 +42,13 @@ public class TableTag extends AbstractTag {
     @Override
     public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         Element table = OSISUtil.factory().createTable();
+        if (attrs != null) {
+            String attr = attrs.getValue("border");
+            if (attr != null) {
+                table.setAttribute(OSISUtil.ATTRIBUTE_TABLE_BORDER, attr);
+            }
+        }
+
 
         if (ele != null) {
             ele.addContent(table);

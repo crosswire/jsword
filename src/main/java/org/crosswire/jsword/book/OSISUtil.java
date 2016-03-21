@@ -294,8 +294,11 @@ public final class OSISUtil {
     public static final String OSIS_ATTR_EID = "eID";
     public static final String ATTRIBUTE_W_LEMMA = "lemma";
     public static final String ATTRIBUTE_FIGURE_SRC = "src";
+    public static final String ATTRIBUTE_TABLE_BORDER = "border";
     public static final String ATTRIBUTE_TABLE_ROLE = "role";
     public static final String ATTRIBUTE_CELL_ALIGN = "align";
+    public static final String ATTRIBUTE_CELL_ROWS = "rows";
+    public static final String ATTRIBUTE_CELL_COLS = "cols";
     public static final String OSIS_ATTR_TYPE = "type";
     public static final String OSIS_ATTR_CANONICAL = "canonical";
     public static final String OSIS_ATTR_SUBTYPE = "subType";

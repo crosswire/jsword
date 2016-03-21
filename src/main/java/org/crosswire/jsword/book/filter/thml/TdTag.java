@@ -43,6 +43,17 @@ public class TdTag extends AbstractTag {
     public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         Element cell = OSISUtil.factory().createCell();
 
+        if (attrs != null) {
+            String rows = attrs.getValue("rowspan");
+            if (rows != null) {
+                cell.setAttribute(OSISUtil.ATTRIBUTE_CELL_ROWS, rows);
+            }
+            String cols = attrs.getValue("colspan");
+            if (cols != null) {
+                cell.setAttribute(OSISUtil.ATTRIBUTE_CELL_COLS, cols);
+            }
+        }
+
         if (ele != null) {
             ele.addContent(cell);
         }
