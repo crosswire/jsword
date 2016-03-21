@@ -1028,7 +1028,7 @@
 	<property name="appbundler.version"		value="1.0ea" />
 	<property name="appbundler.home"		location="${tools.home}/appbundler-${appbundler.version}" />
 	<property name="appbundler.report"		location="${report.dir}/appbundler" />
-	<property name="appbundler.url"			value="http://java.net/downloads/appbundler/appbundler-${appbundler.version}.jar"/>
+	<property name="appbundler.url"			value="http://www.crosswire.org/~dmsmith/appbundler/appbundler-${appbundler.version}.jar"/>
 
 	<target	name="appbundler.task"
 			depends="appbundler.download, appbundler.verify">
