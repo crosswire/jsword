@@ -86,7 +86,13 @@ public final class ClassUtil {
                     // If that zip file failed, then ignore it and move on.
                     LOGGER.warn("Missing zip file for {} and {}", className, paths[i]);
                 } finally {
-                    IOUtil.close(zip);
+                    if (null != zip) {
+                        try {
+                            zip.close();
+                        } catch (IOException ex) {
+                            LOGGER.error("close", ex);
+                        }
+                    }
                 }
             } else {
                 StringBuilder path = new StringBuilder(256);
