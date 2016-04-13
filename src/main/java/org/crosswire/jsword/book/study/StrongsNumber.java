@@ -160,7 +160,7 @@ public class StrongsNumber {
                         || (strongsNumber > 1418 && strongsNumber < 2717)
                         || (strongsNumber > 2717 && strongsNumber < 3203)
                         || (strongsNumber > 3302 && strongsNumber < 5624)
-                        || (strongsNumber > 5999 && strongsNumber <= 9999)))
+                        || (strongsNumber > 5999 && strongsNumber < 10000)))
         {
             return true;
         }
