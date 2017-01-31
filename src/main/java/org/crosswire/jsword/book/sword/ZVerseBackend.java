@@ -46,8 +46,8 @@ import org.slf4j.LoggerFactory;
  * the data file is a concatenation of blocks of compressed data.
  * 
  * <p>
- * The blocks can either be "b", book (aka testament); "c", chapter or "v",
- * verse. The choice is a matter of trade offs. The program needs to uncompress
+ * The blocks can either be "b" book (aka testament); "c" chapter or "v" verse
+ * The choice is a matter of trade offs. The program needs to uncompress
  * a block into memory. Having it at the book level is very memory expensive.
  * Having it at the verse level is very disk expensive, but takes the least
  * amount of memory. The most common is chapter.
@@ -90,12 +90,12 @@ import org.slf4j.LoggerFactory;
  * <ul>
  * <li>Block number - 32-bit/4-bytes - the number of the entry in the comp file.</li>
  * <li>Verse start - 32 bit/4-bytes - the start of the verse in the uncompressed block in the dat file.</li>
- * <li>Verse length - 16 bit/4-bytes - the length of the verse in the uncompressed block from the dat file.</li>
+ * <li>Verse length - 16 or 32 bit/2 or 4-bytes - the length of the verse in the uncompressed block from the dat file.</li>
  * </ul>
  * Algorithm:
  * <ul>
- * <li>Given the ordinal value of the verse, seek to the ordinal * 10 and read 10 bytes.
- * <li>Decode the 10 bytes as Block Number, Verse start and length</li>
+ * <li>Given the ordinal value of the verse, seek to the ordinal * entrysize and read entrysize bytes.
+ * <li>Decode the entrysize bytes as Block Number, Verse start and length</li>
  * </ul>
  * </li>
  * <li>The comp file has one entry per block.
@@ -135,9 +135,13 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      * @param sbmd 
      * @param blockType 
      */
-    public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType) {
+    public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType, int datasize) {
         super(sbmd);
         this.blockType = blockType;
+        this.datasize = datasize;
+        this.entrysize = OFFSETSIZE + datasize;
+
+        assert datasize == 2 || datasize == 4;        
     }
 
     /* This method assumes single keys. It is the responsibility of the caller to provide the iteration. 
@@ -175,8 +179,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 return 0;
             }
 
-            // 10 because the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(idxRaf, 1L * index * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+            // entrysize because the index is entrysize bytes long for each verse
+            byte[] temp = SwordUtil.readRAF(idxRaf, 1L * index * entrysize, entrysize);
 
             // If the Bible does not contain the desired verse, return nothing.
             // Some Bibles have different versification, so the requested verse
@@ -186,7 +190,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             }
 
             // The data is little endian - extract the verseSize
-            return SwordUtil.decodeLittleEndian16(temp, 8);
+            if (datasize == 2) {
+                return SwordUtil.decodeLittleEndian16(temp, 8);
+            }
+            // datasize == 4:
+            return SwordUtil.decodeLittleEndian32(temp, 8);
 
         } catch (IOException e) {
             return 0;
@@ -232,17 +240,31 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 int maxIndex = v11n.getCount(currentTestament) - 1;
 
                 // Read in the whole index, a few hundred Kb at most.
-                byte[] temp = SwordUtil.readRAF(idxRaf, 0, IDX_ENTRY_SIZE * maxIndex);
+                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxIndex);
 
-                // For each entry of 10 bytes, the length of the verse in bytes
-                // is in the last 2 bytes. If both bytes are 0, then there is no content.
-                for (int ii = 0; ii < temp.length; ii += IDX_ENTRY_SIZE) {
-                    // This can be simplified to temp[ii + 8] == 0 && temp[ii + 9] == 0.
-                    // int verseSize = SwordUtil.decodeLittleEndian16(temp, ii + 8);
-                    // if (verseSize > 0) {
-                    if (temp[ii + 8] != 0 || temp[ii + 9] != 0) {
-                        int ordinal = ii / IDX_ENTRY_SIZE;
-                        passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
+                // For each entry of entrysize bytes, the length of the verse in bytes
+                // is in the last datasize bytes. If both bytes are 0, then there is no content.
+                // For each entry of entrysize bytes, the length of the verse in bytes
+                // is in the last datasize bytes. If all bytes are 0, then there is no content.
+                if (datasize == 2) {
+                    for (int ii = 0; ii < temp.length; ii += entrysize) {
+                        // This can be simplified to temp[ii + 8] == 0 && temp[ii + 8] == 0.
+                        // int verseSize = SwordUtil.decodeLittleEndian16(temp, ii + 8);
+                        // if (verseSize > 0) {
+                        if (temp[ii + 8] != 0 || temp[ii + 9] != 0) {
+                            int ordinal = ii / entrysize;
+                            passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
+                        }
+                    }
+                } else { // datasize == 4
+                    for (int ii = 0; ii < temp.length; ii += entrysize) {
+                        // This can be simplified to temp[ii + 8] == 0 && temp[ii + 8] == 0 && temp[ii + 10] == 0 && temp[ii + 11] == 0.
+                        // int verseSize = SwordUtil.decodeLittleEndian32(temp, ii + 8);
+                        // if (verseSize > 0) {
+                        if (temp[ii + 8] != 0 || temp[ii + 9] != 0 || temp[ii + 10] != 0 || temp[ii + 11] != 0) {
+                            int ordinal = ii / entrysize;
+                            passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
+                        }
                     }
                 }
             }
@@ -296,8 +318,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
         //dumpIdxRaf(v11n, 0, compRaf);
         //dumpCompRaf(idxRaf);
-        // 10 because the index is 10 bytes long for each verse
-        byte[] temp = SwordUtil.readRAF(idxRaf, 1L * index * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+        // entrysize because the index is entrysize bytes long for each verse
+        byte[] temp = SwordUtil.readRAF(idxRaf, 1L * index * entrysize, entrysize);
 
         // If the Bible does not contain the desired verse, return nothing.
         // Some Bibles have different versification, so the requested verse
@@ -311,7 +333,12 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         // verseSize
         final long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
         final int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
-        final int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+        final int verseSize;
+        if (datasize == 2) {
+            verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+        } else { // datasize == 4:
+            verseSize = SwordUtil.decodeLittleEndian32(temp, 8);
+        }
 
         // Can we get the data from the cache
         byte[] uncompressed = null;
@@ -382,11 +409,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         int i = ordinalStart;
         StringBuilder buf = new StringBuilder();
         System.out.println("osisID\tblock\tstart\tsize");
-        for (long offset = 0; offset < end; offset += IDX_ENTRY_SIZE) {
-            // 10 because the index is 10 bytes long for each verse
+        for (long offset = 0; offset < end; offset += entrysize) {
+            // entrysize because the index is entrysize bytes long for each verse
             byte[] temp = null;
             try {
-                temp = SwordUtil.readRAF(raf, offset, IDX_ENTRY_SIZE);
+                temp = SwordUtil.readRAF(raf, offset, entrysize);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -401,7 +428,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 // The data is little endian - extract the blockNum, verseStart and verseSize
                 blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
                 verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
-                verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+                if (datasize == 2) {
+                    verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+                } else { // datasize == 4:
+                    verseSize = SwordUtil.decodeLittleEndian32(temp, 8);
+                }
             }
             buf.setLength(0);
             buf.append(v11n.decodeOrdinal(i++).getOsisID());
@@ -469,11 +500,21 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      * Whether the book is blocked by Book, Chapter or Verse.
      */
     private final BlockType blockType;
+    /**
+     * How many bytes in the size count in the index
+     */
+    protected final int datasize;
 
     /**
-     * How many bytes in the idx index?
+     * The number of bytes for each entry in the index: either 6 or 8
      */
-    private static final int IDX_ENTRY_SIZE = 10;
+    protected final int entrysize;
+
+    /**
+     * How many bytes in the offset pointers in the index
+     */
+    protected static final int OFFSETSIZE = 8;
+
 
     /**
      * How many bytes in the comp index?

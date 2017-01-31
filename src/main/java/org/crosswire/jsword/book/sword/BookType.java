@@ -61,7 +61,23 @@ public enum BookType {
         @Override
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
-            return new ZVerseBackend(sbmd, blockType);
+            return new ZVerseBackend(sbmd, blockType, 2);
+        }
+    },
+
+    /**
+     * Compressed Bibles
+     */
+    Z_TEXT4 ("zText4", BookCategory.BIBLE, KeyType.VERSE) {
+        @Override
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
+            return new SwordBook(sbmd, backend);
+        }
+
+        @Override
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
+            return new ZVerseBackend(sbmd, blockType, 4);
         }
     },
 
@@ -107,7 +123,24 @@ public enum BookType {
         @Override
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
-            return new ZVerseBackend(sbmd, blockType);
+            return new ZVerseBackend(sbmd, blockType, 2);
+        }
+    },
+
+    /**
+     * Compressed Commentaries
+     */
+    Z_COM4 ("zCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
+
+        @Override
+        protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
+            return new SwordBook(sbmd, backend);
+        }
+
+        @Override
+        protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
+            return new ZVerseBackend(sbmd, blockType, 4);
         }
     },
 
