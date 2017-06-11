@@ -372,6 +372,17 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return configFile;
     }
 
+    /**
+     * Get the book conf which is a name such as kjv.conf.
+     * 
+     * @return the book conf
+     */
+    public String getBookConf() {
+        // When loaded from a zip or tar.gz it is something like .../mods.d.zip!mods.d/kjv.conf
+        // Otherwise it is merely kjv.conf.
+        return bookConf.substring(bookConf.lastIndexOf("/") + 1);
+    }
+
     /* Cannot be overridden by a front-end/jsword
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()

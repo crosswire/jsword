@@ -198,12 +198,44 @@ public class SwordBookDriver extends AbstractBookDriver {
      * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd) throws BookException {
-        BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
-        for (int i = 0; i < drivers.length; i++) {
-            SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
-            Book book = sdriver.createBook(sbmd);
-            Books.installed().addBook(book);
+        // The sbmd was created from loading a conf from zip or tar.gz.
+        // It is not the conf for an installed book.
+        // So we have to get the bmd for the conf of the installed book.
+        SwordBookMetaData bmd = null;
+        // Before this was called the library was set so we can know where the conf and module are.
+        URI bookDirURI = sbmd.getLibrary();
+        // Get a File representing the mods.d folder.
+        File mods = new File(bookDirURI.getPath(), SwordConstants.DIR_CONF);
+        // Get the name of the conf from the sbmd. Don't guess even though by convention it is guessable.
+        String bookConf = sbmd.getBookConf();
+        // Get the config File.
+        File configfile = new File(mods, bookConf);
+        // Verify that it exists
+        if (configfile.exists()) {
+            try {
+                // Now we can create the new bmd
+                bmd = new SwordBookMetaData(configfile, bookDirURI);
+            } catch (IOException e) {
+                LOGGER.warn("Couldn't create SwordBookMetaData", e);
+            }
         }
+
+        if (bmd == null) {
+            LOGGER.error("The book's configuration files is not supported.");
+            return;
+        }
+
+        // skip any book that is not supported.
+        if (!bmd.isSupported()) {
+            LOGGER.error("The book's configuration files is not supported. -> Initials [{}], Driver=[{}], Versification=[{}], Book type=[{}], Book category=[{}]",
+                    bmd.getInitials(), bmd.getDriver(), bmd.getProperty(BookMetaData.KEY_VERSIFICATION), bmd.getBookType(), bmd.getBookCategory());
+            return;
+        }
+
+        SwordBookDriver d = (SwordBookDriver) sbmd.getDriver();
+        bmd.setDriver(d);
+        Book book = d.createBook(bmd);
+        Books.installed().addBook(book);
     }
 
     /**
