@@ -87,7 +87,12 @@ public enum FeatureType {
     /**
      * The book contains Headings
      */
-    HEADINGS ("Headings");
+    HEADINGS ("Headings"),
+
+    /**
+     * The book contains Headings
+     */
+    GLOSSES ("Glosses", "Ruby");
 
     /**
      * @param name
