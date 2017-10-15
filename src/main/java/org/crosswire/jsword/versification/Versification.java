@@ -111,6 +111,7 @@ public class Versification implements ReferenceSystem, Serializable {
             // then all the testament info
             for (int i = 0; i < lastVerseOT.length; i++) {
                 int[] src = lastVerseOT[i];
+                this.otChapterCount += src.length;
                 // Add one as the location for chapter 0.
                 int[] dest = new int[src.length + 1];
                 this.lastVerse[bookIndex++] = dest;
@@ -130,6 +131,7 @@ public class Versification implements ReferenceSystem, Serializable {
             // then all the testament info
             for (int i = 0; i < lastVerseNT.length; i++) {
                 int[] src = lastVerseNT[i];
+                this.ntChapterCount += src.length;
                 // Add one as the location for chapter 0.
                 int[] dest = new int[src.length + 1];
                 this.lastVerse[bookIndex++] = dest;
@@ -401,6 +403,35 @@ public class Versification implements ReferenceSystem, Serializable {
         }
     }
 
+    /**
+     * Get the number of chapters in the Bible not counting Chapter 0.
+     * which is the one per book and one for the INTRO_BIBLE, INTRO_OT and INTRO_NT;
+     * 
+     * @return the number of chapters in this Versification
+     */
+    public int getChapterCount() {
+        return otChapterCount + ntChapterCount;
+    }
+
+    /**
+     * Get the number of chapters in the OT not counting Chapter 0.
+     * which is the one per book and one for the INTRO_OT.
+     * 
+     * @return the number of chapters in the OT of this versification
+     */
+    public int getOTChapterCount() {
+        return otChapterCount;
+    }
+
+    /**
+     * Get the number of chapters in the NT not counting Chapter 0.
+     * which is the one per book and one for the INTRO_NT.
+     * 
+     * @return the number of chapters in the OT of this versification
+     */
+    public int getNTChapterCount() {
+        return ntChapterCount;
+    }
     /**
      * Get a VerseRange encompassing this Versification.
      * 
@@ -794,6 +825,16 @@ public class Versification implements ReferenceSystem, Serializable {
         }
     }
 
+    /**
+     * Get the ordinal position of the BibleBook in this Versification.
+     * Note: OT and NT intros are treated as books.
+     * 
+     * @param book
+     * @return the position of the BibleBook
+     */
+    public int getOrdinal(BibleBook book) {
+        return bookList.getOrdinal(book);
+    }
     /**
      * Determine the ordinal value for this versification given the
      * ordinal value in a testament. If the ordinal is out of bounds it
@@ -1256,6 +1297,15 @@ public class Versification implements ReferenceSystem, Serializable {
      */
     private int[][] chapterStarts;
 
+    /**
+     * The number of chapters in the OT, not counting chapter 0
+     */
+    private int otChapterCount;
+
+    /**
+     * The number of chapters in the NT, not counting chapter 0
+     */
+    private int ntChapterCount;
     /**
      * Serialization ID
      */
