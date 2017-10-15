@@ -168,20 +168,16 @@ public final class PluginUtil {
      *             if the plugin file can not be found
      * @throws IOException
      *             if there is a problem reading the found file
-     * @throws ClassNotFoundException
-     *             if the read contents are not found
-     * @throws ClassCastException
-     *             if the read contents are not valid
-     * @throws InstantiationException
-     *             if the new object can not be instantiated
-     * @throws IllegalAccessException
-     *             if the new object can not be instantiated
+     * @throws ReflectiveOperationException
+     *               if this {@code data} represents an abstract class,
+     *               an interface, an array class, a primitive type, or void;
+     *               or if the class has no reachable nullary constructor;
+     *               or if the instantiation fails for some other reason.
+
      * @see PluginUtil#getImplementors(Class)
      */
-    public static <T> T getImplementation(Class<T> clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException,
-            InstantiationException, IllegalAccessException
-    {
-        return getImplementor(clazz).newInstance();
+    public static <T> T getImplementation(Class<T> clazz) throws MalformedURLException, IOException, ReflectiveOperationException {
+        return ReflectionUtil.construct(getImplementor(clazz));
     }
 
     /**

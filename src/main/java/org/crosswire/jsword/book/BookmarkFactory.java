@@ -65,13 +65,7 @@ public final class BookmarkFactory {
             instance = PluginUtil.getImplementation(Bookmark.class);
         } catch (IOException e) {
             LOGGER.error("createBookmark failed", e);
-        } catch (ClassCastException e) {
-            LOGGER.error("createBookmark failed", e);
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("createBookmark failed", e);
-        } catch (IllegalAccessException e) {
-            LOGGER.error("createBookmark failed", e);
-        } catch (InstantiationException e) {
+        } catch (ReflectiveOperationException e) {
             LOGGER.error("createBookmark failed", e);
         }
     }

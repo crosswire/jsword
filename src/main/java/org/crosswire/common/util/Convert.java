@@ -94,17 +94,14 @@ public final class Convert {
      * 
      * @param data the thing to convert
      * @return the converted data
-     * @throws  InstantiationException
+     * @throws ReflectiveOperationException
      *               if this {@code data} represents an abstract class,
      *               an interface, an array class, a primitive type, or void;
-     *               or if the class has no nullary constructor;
+     *               or if the class has no reachable nullary constructor;
      *               or if the instantiation fails for some other reason.
-     * @throws ClassNotFoundException if the class is not found
-     * @throws IllegalAccessException  if the class or its nullary
-     *               constructor is not accessible.
      */
-    public static Object string2Object(String data) throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        return ClassUtil.forName(data).newInstance();
+    public static Object string2Object(String data) throws ReflectiveOperationException {
+        return ReflectionUtil.construct(data);
     }
 
     /**

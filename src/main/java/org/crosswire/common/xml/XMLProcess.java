@@ -21,10 +21,12 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.crosswire.common.util.ReflectionUtil;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Runs an xml parser on an xml file using an xml handler. The default behavior
@@ -130,9 +132,12 @@ public class XMLProcess {
         }
 
         try {
-            parser = XMLReaderFactory.createXMLReader(parserName);
+            parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+//            parser = XMLReaderFactory.createXMLReader(parserName);
         } catch (SAXException e) {
-            System.err.println("error: Unable to instantiate parser (" + parserName + ")");
+            System.err.println("error: Unable to instantiate parser");
+        } catch (ParserConfigurationException e) {
+            System.err.println("error: Unable to instantiate parser");
         }
 
     }
@@ -143,12 +148,8 @@ public class XMLProcess {
         }
 
         try {
-            adapter = (XMLHandlerAdapter) ClassUtil.forName(adapterName).newInstance();
-        } catch (ClassNotFoundException e) {
-            System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")");
-        } catch (InstantiationException e) {
-            System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")");
-        } catch (IllegalAccessException e) {
+            adapter = (XMLHandlerAdapter) ReflectionUtil.construct(adapterName);
+        } catch (ReflectiveOperationException e) {
             System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")");
         }
 

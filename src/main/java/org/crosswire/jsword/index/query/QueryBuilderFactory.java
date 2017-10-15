@@ -65,13 +65,7 @@ public final class QueryBuilderFactory {
             instance = PluginUtil.getImplementation(QueryBuilder.class);
         } catch (IOException e) {
             log.error("create QueryBuilder failed", e);
-        } catch (ClassCastException e) {
-            log.error("create QueryBuilder failed", e);
-        } catch (ClassNotFoundException e) {
-            log.error("create QueryBuilder failed", e);
-        } catch (InstantiationException e) {
-            log.error("create QueryBuilder failed", e);
-        } catch (IllegalAccessException e) {
+        } catch (ReflectiveOperationException e) {
             log.error("create QueryBuilder failed", e);
         }
     }

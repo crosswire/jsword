@@ -65,13 +65,7 @@ public final class SearcherFactory {
         } catch (BookException e) {
             log.error("createSearcher failed", e);
             throw new InstantiationException();
-        } catch (ClassCastException e) {
-            log.error("createSearcher failed", e);
-            throw new InstantiationException();
-        } catch (ClassNotFoundException e) {
-            log.error("createSearcher failed", e);
-            throw new InstantiationException();
-        } catch (IllegalAccessException e) {
+        } catch (ReflectiveOperationException e) {
             log.error("createSearcher failed", e);
             throw new InstantiationException();
         }

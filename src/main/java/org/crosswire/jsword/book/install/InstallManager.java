@@ -34,6 +34,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.PropertyMap;
+import org.crosswire.common.util.ReflectionUtil;
 import org.crosswire.common.util.Reporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,14 +69,12 @@ public final class InstallManager {
                     if (clazz == null) {
                         log.warn("Unable to get class for {}", type);
                     } else {
-                        InstallerFactory ifactory = clazz.newInstance();
+                        InstallerFactory ifactory = ReflectionUtil.construct(clazz);
                         Installer installer = ifactory.createInstaller(rest);
 
                         internalAdd(name, installer);
                     }
-                } catch (InstantiationException e) {
-                    Reporter.informUser(this, e);
-                } catch (IllegalAccessException e) {
+                } catch (ReflectiveOperationException e) {
                     Reporter.informUser(this, e);
                 }
             }
@@ -133,14 +132,12 @@ public final class InstallManager {
         for (String name : factories.keySet()) {
             Class<InstallerFactory> factclazz = factories.get(name);
             try {
-                InstallerFactory ifactory = factclazz.newInstance();
+                InstallerFactory ifactory = ReflectionUtil.construct(factclazz);
                 Class<? extends Installer> clazz = ifactory.createInstaller().getClass();
                 if (clazz == match) {
                     return name;
                 }
-            } catch (InstantiationException e) {
-                log.warn("Failed to instantiate installer factory: {}={}", name, factclazz.getName(), e);
-            } catch (IllegalAccessException e) {
+            } catch (ReflectiveOperationException e) {
                 log.warn("Failed to instantiate installer factory: {}={}", name, factclazz.getName(), e);
             }
         }
@@ -181,12 +178,9 @@ public final class InstallManager {
      * @return The found InstallerFactory or null if the name was not found
      */
     public InstallerFactory getInstallerFactory(String name) {
-        Class<InstallerFactory> clazz = factories.get(name);
         try {
-            return clazz.newInstance();
-        } catch (InstantiationException e) {
-            assert false : e;
-        } catch (IllegalAccessException e) {
+            return ReflectionUtil.construct(factories.get(name));
+        } catch (ReflectiveOperationException e) {
             assert false : e;
         }
         return null;

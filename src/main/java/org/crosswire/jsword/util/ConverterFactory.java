@@ -22,6 +22,7 @@ package org.crosswire.jsword.util;
 import java.util.Map;
 
 import org.crosswire.common.util.PluginUtil;
+import org.crosswire.common.util.ReflectionUtil;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.jsword.JSOtherMsg;
 
@@ -47,10 +48,8 @@ public final class ConverterFactory {
         try {
             Class<Converter> clazz = PluginUtil.getImplementorsMap(Converter.class).get(name);
             assert clazz != null : JSOtherMsg.lookupText("No converter called: {0}", name);
-            return clazz.newInstance();
-        } catch (InstantiationException e) {
-            assert false : e;
-        } catch (IllegalAccessException e) {
+            return ReflectionUtil.construct(clazz);
+        } catch (ReflectiveOperationException e) {
             assert false : e;
         }
         return null;

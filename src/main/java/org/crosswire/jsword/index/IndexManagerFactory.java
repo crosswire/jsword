@@ -65,13 +65,7 @@ public final class IndexManagerFactory {
             instance = PluginUtil.getImplementation(IndexManager.class);
         } catch (IOException e) {
             log.error("createIndexManager failed", e);
-        } catch (ClassCastException e) {
-            log.error("createIndexManager failed", e);
-        } catch (ClassNotFoundException e) {
-            log.error("createIndexManager failed", e);
-        } catch (IllegalAccessException e) {
-            log.error("createIndexManager failed", e);
-        } catch (InstantiationException e) {
+        } catch (ReflectiveOperationException e) {
             log.error("createIndexManager failed", e);
         }
     }

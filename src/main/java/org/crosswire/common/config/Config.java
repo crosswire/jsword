@@ -150,11 +150,7 @@ public class Config implements Iterable<Choice> {
                 }
             } catch (StartupException e) {
                 ex = e;
-            } catch (ClassNotFoundException e) {
-                ex = e;
-            } catch (IllegalAccessException e) {
-                ex = e;
-            } catch (InstantiationException e) {
+            } catch (ReflectiveOperationException e) {
                 ex = e;
             }
 

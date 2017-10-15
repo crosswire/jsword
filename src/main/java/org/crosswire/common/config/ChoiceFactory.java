@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.PluginUtil;
+import org.crosswire.common.util.ReflectionUtil;
 import org.jdom2.Element;
 
 /**
@@ -47,18 +48,14 @@ public final class ChoiceFactory {
      *            The element to check
      * @param configResources the resource bundle holding the option
      * @return One of the ChoiceTypes.
-     * @throws  InstantiationException
+     * @throws StartupException if startup is not possible
+     * @throws ReflectiveOperationException 
      *               if this {@code data} represents an abstract class,
      *               an interface, an array class, a primitive type, or void;
-     *               or if the class has no nullary constructor;
+     *               or if the class has no reachable nullary constructor;
      *               or if the instantiation fails for some other reason.
-     * @throws ClassNotFoundException if the class is not found
-     * @throws IllegalAccessException  if the class or its nullary
-     *               constructor is not accessible.
-     * @throws StartupException if startup is not possible
      */
-    public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException,
-            InstantiationException, StartupException
+    public static Choice getChoice(Element option, ResourceBundle configResources) throws StartupException, ReflectiveOperationException
     {
         Class<Choice> clazz = null;
 
@@ -70,7 +67,7 @@ public final class ChoiceFactory {
             clazz = map.get(type);
         }
 
-        Choice choice = clazz.newInstance();
+        Choice choice = ReflectionUtil.construct(clazz);
         choice.init(option, configResources);
         return choice;
     }

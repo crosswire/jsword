@@ -21,9 +21,9 @@ package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.PropertyMap;
+import org.crosswire.common.util.ReflectionUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 import org.slf4j.Logger;
@@ -54,14 +54,8 @@ public final class AnalyzerFactory {
 
             if (aClass != null) {
                 try {
-                    Class<AbstractBookAnalyzer> impl = (Class<AbstractBookAnalyzer>) ClassUtil.forName(aClass);
-
-                    newObject = impl.newInstance();
-                } catch (ClassNotFoundException e) {
-                    log.error("Configuration error in AnalyzerFactory properties", e);
-                } catch (IllegalAccessException e) {
-                    log.error("Configuration error in AnalyzerFactory properties", e);
-                } catch (InstantiationException e) {
+                    newObject = ReflectionUtil.construct(aClass);
+                } catch (ReflectiveOperationException e) {
                     log.error("Configuration error in AnalyzerFactory properties", e);
                 }
             }

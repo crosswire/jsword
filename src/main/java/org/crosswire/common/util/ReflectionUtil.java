@@ -47,21 +47,37 @@ public final class ReflectionUtil {
      * @param className
      *            the full class name of the object
      * @return the constructed object
-     * @throws ClassNotFoundException if the class is not found
-     * @throws InstantiationException
-     *               if this {@code data} represents an abstract class,
+     * @throws ReflectiveOperationException
+     *               if this {@code className} represents an abstract class,
      *               an interface, an array class, a primitive type, or void;
-     *               or if the class has no nullary constructor;
+     *               or if the class has no reachable nullary constructor;
      *               or if the instantiation fails for some other reason.
-     * @throws IllegalAccessException  if the class or its nullary
-     *               constructor is not accessible.
      */
-    public static <T> T construct(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class<T> clazz = (Class<T>) ClassUtil.forName(className);
-        return clazz.newInstance();
+    public static <T> T construct(String className) throws ReflectiveOperationException {
+        return construct((Class<T>) ClassUtil.forName(className));
     }
 
     /**
+     * Build an object using its default constructor. Note: a constructor that
+     * takes a boolean needs a type of boolean.class, but a parameter of type
+     * Boolean. Likewise for other primitives. If this is needed, do not call
+     * this method.
+     * 
+     * @param <T> the type of the object to construct
+     * @param clazz
+     *            the class of the object
+     * @return the constructed object
+     * @throws ReflectiveOperationException
+     *               if this {@code clazz} represents an abstract class,
+     *               an interface, an array class, a primitive type, or void;
+     *               or if the class has no reachable nullary constructor;
+     *               or if the instantiation fails for some other reason.
+     */
+    public static <T> T construct(final Class<T> clazz) throws ReflectiveOperationException {
+        return clazz.getDeclaredConstructor().newInstance();
+    }
+
+   /**
      * Build an object using the supplied parameters. Note: a constructor that
      * takes a boolean needs a type of boolean.class, but a parameter of type
      * Boolean. Likewise for other primitives.

@@ -23,8 +23,9 @@
 	<!-- dependency org="commons-configuration"     name="commons-configuration" rev="1.10"     conf="default->master,sources" / -->
 
 
-    <!-- dependency org="xalan"                     name="xalan"            rev="2.7.1"     conf="default->master,sources" / -->
-    <!-- dependency org="xalan"                     name="serializer"       rev="2.7.1"     conf="default->master,sources" / -->
-    <!-- dependency org="xerces"                    name="xercesImpl"       rev="2.11.0"    conf="default->master,sources" / -->
+    <dependency org="xalan"                     name="xalan"            rev="2.7.2"     conf="default->master,sources" />
+    <dependency org="xalan"                     name="serializer"       rev="2.7.2"     conf="default->master,sources" />
+    <dependency org="xerces"                    name="xercesImpl"       rev="2.11.0"    conf="default->master,sources" />
+    <dependency org="xml-apis"                  name="xml-apis"         rev="1.4.01"    conf="default->master,sources" />
   </dependencies>
 </ivy-module>

@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.PluginUtil;
+import org.crosswire.common.util.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,10 +102,8 @@ public final class SourceFilterFactory {
         // the default value
         try {
             Class<SourceFilter> cdeft = map.remove("default");
-            deft = cdeft.newInstance();
-        } catch (InstantiationException e) {
-            log.error("Failed to get default filter, will attempt to use first", e);
-        } catch (IllegalAccessException e) {
+            deft = cdeft.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
             log.error("Failed to get default filter, will attempt to use first", e);
         }
 
@@ -112,13 +111,10 @@ public final class SourceFilterFactory {
         SourceFilter instance = null;
         for (Map.Entry<String, Class<SourceFilter>> entry : map.entrySet()) {
             try {
-                Class<SourceFilter> clazz = entry.getValue();
-                instance = clazz.newInstance();
+                instance = ReflectionUtil.construct(entry.getValue());
                 addFilter(entry.getKey(), instance);
-            } catch (InstantiationException ex) {
-                log.error("Failed to add filter", ex);
-            } catch (IllegalAccessException ex) {
-                log.error("Failed to add filter", ex);
+            } catch (ReflectiveOperationException e) {
+                log.error("Failed to add filter", e);
             }
         }
 

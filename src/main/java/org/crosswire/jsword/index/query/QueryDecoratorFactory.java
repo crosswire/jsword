@@ -65,13 +65,7 @@ public final class QueryDecoratorFactory {
             instance = PluginUtil.getImplementation(QueryDecorator.class);
         } catch (IOException e) {
             log.error("create QueryDecorator failed", e);
-        } catch (ClassCastException e) {
-            log.error("create QueryDecorator failed", e);
-        } catch (ClassNotFoundException e) {
-            log.error("create QueryDecorator failed", e);
-        } catch (InstantiationException e) {
-            log.error("create QueryDecorator failed", e);
-        } catch (IllegalAccessException e) {
+        } catch (ReflectiveOperationException e) {
             log.error("create QueryDecorator failed", e);
         }
     }
