@@ -18,7 +18,7 @@
  *     The copyright to this program is held by its authors.
  */
 /**
- *
+ * JSword specific XML Utilities.
  *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
