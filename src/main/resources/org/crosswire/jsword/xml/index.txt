@@ -15,8 +15,5 @@
 #
 # Copyright CrossWire Bible Society, 2005 - 2016
 #
-# see org.crosswire.jsword.util.ConverterFactory which has a hardcoded
-# default from this list. There might be a better way to do this?
-Configurable=org.crosswire.jsword.xml.ConfigurableConverter
 
-#web=org.crosswire.jsword.view.web.util.SimpleWebConverter
+html5.xsl

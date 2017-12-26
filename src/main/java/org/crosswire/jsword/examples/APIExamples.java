@@ -384,8 +384,9 @@ public class APIExamples {
             System.out.println("Book " + book.getInitials() + " is available");
         }
 
+        String initials = "Afr1953"; // An example book that's been at CrossWire for years.
         // get some available books. In this case, just one book.
-        availableBooks = installer.getBooks(new MyBookFilter("ESV"));
+        availableBooks = installer.getBooks(new MyBookFilter(initials));
 
         book = availableBooks.get(0);
 
@@ -396,7 +397,7 @@ public class APIExamples {
             // At the moment, JSword will not re-install. Later it will, if the
             // remote version is greater.
             try {
-                if (Books.installed().getBook("ESV") != null) {
+                if (Books.installed().getBook(initials) != null) {
                     // Make the book unavailable.
                     // This is normally done via listeners.
                     Books.installed().removeBook(book);
