@@ -28,11 +28,11 @@
   <module name="Header"/>
   <module name="RegexpHeader"/>
   -->
-  <module name="RegexpHeader">
+  <!-- module name="RegexpHeader">
     <property
       name="headerFile"
       value="${checkstyle.header.file}"/>
-  </module>
+  </module -->
   <module name="UniqueProperties"/>
 
   <module name="TreeWalker">
@@ -99,7 +99,7 @@
     <module name="AbstractClassName">
       <property name="format" value="^Abstract.*$"/>
     </module>
-    <module name="CatchParameterName"/>
+    <!-- module name="CatchParameterName"/ -->
     <module name="ClassTypeParameterName"/>
     <!-- Allow "log" and "instance" otherwise only upper case valid variables with _ -->
     <module name="ConstantName">

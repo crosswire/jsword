@@ -12,19 +12,20 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <checkstyle.config.location>${basedir}/JSword.checkstyle.xml</checkstyle.config.location>
         <java.version>1.7</java.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
         <!-- version management -->
-        <slf4j.version>1.7.13</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <commons-codec.version>1.10</commons-codec.version>
-        <commons-net.version>3.4</commons-net.version>
-        <commons-compress.version>1.10</commons-compress.version>
-        <xz.version>1.5</xz.version>
-        <jdom.version>2.0.5</jdom.version>
+        <commons-net.version>3.6</commons-net.version>
+        <commons-compress.version>1.14</commons-compress.version>
+        <xz.version>1.6</xz.version>
+        <jdom.version>2.0.6</jdom.version>
         <lucene.version>3.0.3</lucene.version>
-        <icu4j.version>54.1.1</icu4j.version>
+        <icu4j.version>59.1</icu4j.version>
         <httpcomponents-httpcore.version>4.4</httpcomponents-httpcore.version>
         <httpcomponents-httpclient.version>4.5</httpcomponents-httpclient.version>
 

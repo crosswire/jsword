@@ -66,7 +66,6 @@
   <!-- <rule ref="rulesets/java/controversial.xml/CallSuperInConstructor"/> 231 reports -->
   <rule ref="rulesets/java/controversial.xml/UnnecessaryParentheses"/>
   <!-- <rule ref="rulesets/java/controversial.xml/DefaultPackage"/> 355 reports -->
-  <!-- <rule ref="rulesets/java/controversial.xml/BooleanInversion"/> -->
   <!-- <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis"/> 1.0.8 1112 reports -->
   <!-- <rule ref="rulesets/java/controversial.xml/AvoidFinalLocalVariable"/> 1.0.8 21 reports -->
   <!-- <rule ref="rulesets/java/controversial.xml/AvoidUsingShortType"/> 1.0.8 55 reports -->
@@ -81,7 +80,7 @@
 <!-- <rule ref="rulesets/java/controversial.xml/UseConcurrentHashMap"/> try later  -->
 
    <!-- Better handled by other tools
-  <rule ref="rulesets/java/coupling.xml/CouplingBetweenObjects"/>
+  <rule ref="rulesets/java/coupling.xml/CouplingBetweenObjectConstantsInInterfaces"/>
   <rule ref="rulesets/java/coupling.xml/ExcessiveImports"/>
   <rule ref="rulesets/java/coupling.xml/LooseCoupling"/>
   <rule ref="rulesets/java/coupling.xml/LoosePackageCoupling"/> 5.0
@@ -125,9 +124,9 @@
   <rule ref="rulesets/java/design.xml/PositionLiteralsFirstInCaseInsensitiveComparisons"/>
   <rule ref="rulesets/java/design.xml/UnnecessaryLocalBeforeReturn"/>
   <rule ref="rulesets/java/design.xml/NonThreadSafeSingleton"/>
-  <!-- <rule ref="rulesets/java/design.xml/UncommentedEmptyMethod"/> 74 reports -->
+  <!-- <rule ref="rulesets/java/design.xml/UncommentedEmptyMethodBody"/> 74 reports -->
   <!-- <rule ref="rulesets/java/design.xml/UncommentedEmptyConstructor"/> 14 reports -->
-  <rule ref="rulesets/java/design.xml/AvoidConstantsInterface"/>
+  <rule ref="rulesets/java/design.xml/ConstantsInInterface"/>
   <!-- <rule ref="rulesets/java/design.xml/UnsynchronizedStaticDateFormatter"/> 5 reports -->
   <!-- <rule ref="rulesets/java/design.xml/PreserveStackTrace"/> 7 reports -->
   <rule ref="rulesets/java/design.xml/UseCollectionIsEmpty"/>
@@ -304,6 +303,7 @@
   <rule ref="rulesets/java/unnecessary.xml/UnnecessaryFinalModifier"/>
   <!-- <rule ref="rulesets/java/unnecessary.xml/UselessOverridingMethod"/> buggy -->
   <rule ref="rulesets/java/unnecessary.xml/UselessOperationOnImmutable"/>
+  <rule ref="rulesets/java/unnecessary.xml/UnnecessaryModifier"/>
   <rule ref="rulesets/java/unnecessary.xml/UnusedNullCheckInEquals"/>
   <!-- <rule ref="rulesets/java/unnecessary.xml/UselessParentheses"/> try later  -->
 
@@ -311,6 +311,5 @@
   <rule ref="rulesets/java/unusedcode.xml/UnusedLocalVariable"/>
   <rule ref="rulesets/java/unusedcode.xml/UnusedPrivateMethod"/>
   <rule ref="rulesets/java/unusedcode.xml/UnusedFormalParameter"/>
-  <rule ref="rulesets/java/unusedcode.xml/UnusedModifier"/>
   
 </ruleset>

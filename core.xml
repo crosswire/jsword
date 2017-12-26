@@ -263,8 +263,8 @@
 				destdir="${dest.main.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.5"
-			    source="1.5">
+		        target="1.8"
+			    source="1.8">
 			<classpath refid="classpath.buildtime" />
 		</javac>
 	</target>
@@ -302,8 +302,8 @@
 				destdir="${dest.test.classes.dir}"
 				encoding="utf-8"
 				includeantruntime="false"
-				target="1.5"
-		        source="1.5">
+	            target="1.8"
+		        source="1.8">
 			<classpath refid="classpath.test" />
 		</javac>
 	</target>
@@ -477,13 +477,13 @@
 	== Use Checkstyle to check the style of JSword files
 	== These are properties related to checkstyle.
 	=========================================================================-->
-	<property name="checkstyle.version"		value="6.14" />
-	<property name="checkstyle.home"		location="${tools.home}/checkstyle-${checkstyle.version}" />
+	<property name="checkstyle.version"		value="8.4"/>
+	<property name="checkstyle.home"			location="${tools.home}/checkstyle-${checkstyle.version}" />
 	<property name="checkstyle.report"		location="${report.dir}/checkstyle" />
 	<property name="checkstyle.url"			value="http://downloads.sourceforge.net/project/checkstyle/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
 	<property name="checkstyle.zip"			location="${tools.home}/checkstyle-${checkstyle.version}.zip" />
-	<property name="checkstyle.jar.file"	location="${checkstyle.home}/checkstyle-${checkstyle.version}-all.jar" />
-	<property name="checkstyle.fail"		value="false" />
+	<property name="checkstyle.jar.file"		location="${checkstyle.home}/checkstyle-${checkstyle.version}-all.jar" />
+	<property name="checkstyle.fail"			value="false" />
 	<property name="checkstyle.config"		location="${jsword.home}/JSword.checkstyle.xml" />
 
 	<target	name="checkstyle"
@@ -532,9 +532,9 @@
 	== Use findbugs to find bugs.
 	== These are properties related to findbugs.
 	=========================================================================-->
-	<property name="findbugs.version"		value="3.0.0" />
+	<property name="findbugs.version"		value="3.0.1" />
 	<property name="findbugs.home"			location="${tools.home}/findbugs-${findbugs.version}" />
-	<property name="findbugs.report"		location="${report.dir}/findbugs" />
+	<property name="findbugs.report"		    location="${report.dir}/findbugs" />
 	<property name="findbugs.url"			value="http://downloads.sourceforge.net/project/findbugs/findbugs/${findbugs.version}/findbugs-${findbugs.version}.zip" />
 	<property name="findbugs.zip"			location="${tools.home}/findbugs-${findbugs.version}.zip" />
 
@@ -584,10 +584,10 @@
 	== Use PMD and CPD to find bad code
 	== These are properties related to PMD.
 	=========================================================================-->
-	<property name="pmd.version"			value="5.1.3" />
-	<property name="pmd.home"				location="${tools.home}/pmd-bin-${pmd.version}" />
-	<property name="pmd.report"				location="${report.dir}/pmd" />
-	<property name="cpd.report"				location="${report.dir}/cpd" />
+	<property name="pmd.version"			value="5.8.1" />
+	<property name="pmd.home"			location="${tools.home}/pmd-bin-${pmd.version}" />
+	<property name="pmd.report"			location="${report.dir}/pmd" />
+	<property name="cpd.report"			location="${report.dir}/cpd" />
 	<property name="pmd.url"				value="http://downloads.sourceforge.net/project/pmd/pmd/${pmd.version}/pmd-bin-${pmd.version}.zip" />
 	<property name="pmd.zip"				location="${tools.home}/pmd-bin-${pmd.version}.zip" />
 
@@ -598,16 +598,11 @@
 
 		<pmd	rulesetfiles="${jsword.home}/JSword.pmd.ruleset.xml"
 				shortFilenames="true">
-			<formatter type="xml" toFile="${pmd.report}/report_pmd.xml"/>
+	        <formatter type="html" toFile="pmd_report.html">
+	            <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
+	        </formatter>
 			<fileset dir="${src.main.java.dir}" includes="**/*.java"/>
 		</pmd>
-		<xslt	in="${pmd.report}/report_pmd.xml"
-				style="${pmd.home}/etc/xslt/pmd-report-per-class.xslt"
-				out="${pmd.report}/index.html">
-			<xmlcatalog refid="commonDTDs"/>
-		</xslt>
-		<copy	file="${pmd.home}/etc/xslt/sorttable.js" overwrite="true"
-				tofile="${pmd.report}/sorttable.js"/>
 	</target>
 
 	<!-- Make PMD visible to Ant -->
@@ -625,15 +620,10 @@
 			depends="cpd.task">
 		<mkdir	dir="${cpd.report}" />
 		<cpd	minimumTokenCount="100"
-				format="xml"
-				outputFile="${cpd.report}/report_cpd.xml">
+				format="html"
+				outputFile="${cpd.report}/report_cpd.html">
 			<fileset dir="${src.main.java.dir}" includes="**/*.java"/>
 		</cpd>
-		<xslt	in="${cpd.report}/report_cpd.xml"
-				style="${pmd.home}/etc/xslt/cpdhtml.xslt"
-				out="${cpd.report}/index.html">
-			<xmlcatalog refid="commonDTDs" />
-		</xslt>
 	</target>
 
 	<!-- Make CPD visible to Ant -->
@@ -665,7 +655,7 @@
 	== Cobertura is a fork of JCoverage.
 	== These are properties and tasks related to Cobertura.
 	=========================================================================-->
-	<property name="cobertura.version"		value="2.0.3" />
+	<property name="cobertura.version"		value="2.1.1" />
 	<property name="cobertura.home"			location="${tools.home}/cobertura-${cobertura.version}" />
 	<property name="cobertura.report"		location="${report.dir}/cobertura" />
 	<property name="cobertura.url"			value="http://downloads.sourceforge.net/project/cobertura/cobertura/${cobertura.version}/cobertura-${cobertura.version}-bin.zip" />
@@ -841,8 +831,8 @@
 	== These are properties related to JDepend.
 	=========================================================================-->
 	<property name="jdepend.version"		value="2.9.1" />
-	<property name="jdepend.home"			location="${tools.home}/jdepend-${jdepend.version}" />
-	<property name="jdepend.report"			location="${report.dir}/jdepend" />
+	<property name="jdepend.home"		location="${tools.home}/jdepend-${jdepend.version}" />
+	<property name="jdepend.report"		location="${report.dir}/jdepend" />
 	<property name="jdepend.url"			value="http://www.clarkware.com/software/jdepend-${jdepend.version}.zip"/>
 	<property name="jdepend.zip"			location="${tools.home}/jdepend-${jdepend.version}.zip" />
 
@@ -909,7 +899,7 @@
 	=========================================================================-->
 	<property name="javancss.version"		value="33.54" />
 	<property name="javancss.home"			location="${tools.home}/javancss-${javancss.version}" />
-	<property name="javancss.report"		location="${report.dir}/javancss" />
+	<property name="javancss.report"			location="${report.dir}/javancss" />
 	<property name="javancss.url"			value="http://javancss.mojohaus.org/javancss-${javancss.version}.zip"/>
 	<property name="javancss.zip"			location="${tools.home}/javancss-${javancss.version}.zip" />
 
@@ -958,9 +948,9 @@
 	== Use NSIS to create Windows installers
 	== These are properties related to NSIS.
 	=========================================================================-->
-	<property name="nsis.version"		value="1.3" />
+	<property name="nsis.version"		value="3.02.1" />
 	<property name="nsis.home"			location="${tools.home}/nsis-${nsis.version}" />
-	<property name="nsis.report"		location="${report.dir}/nsis" />
+	<property name="nsis.report"			location="${report.dir}/nsis" />
 	<property name="nsis.url"			value="https://cloud.github.com/downloads/dreese/nsis-ant/nsisant-${nsis.version}.jar"/>
 
 	<target	name="nsis.task"
@@ -1026,7 +1016,7 @@
 	== These are properties related to AppBundler.
 	=========================================================================-->
 	<property name="appbundler.version"		value="1.0ea" />
-	<property name="appbundler.home"		location="${tools.home}/appbundler-${appbundler.version}" />
+	<property name="appbundler.home"			location="${tools.home}/appbundler-${appbundler.version}" />
 	<property name="appbundler.report"		location="${report.dir}/appbundler" />
 	<property name="appbundler.url"			value="http://www.crosswire.org/~dmsmith/appbundler/appbundler-${appbundler.version}.jar"/>
 

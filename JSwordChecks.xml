@@ -71,7 +71,7 @@
 </module>
 <module name="IllegalInstantiation">
 <property name="severity" value="error"/>
-<property name="classes" value="java.lang.Boolean, java.lang.String"/>
+<property name="classes" value="java.lang.Boolean"/>
 </module>
 <module name="IllegalTokenText">
 <property name="severity" value="error"/>
