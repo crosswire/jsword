@@ -295,7 +295,7 @@ public class APIExamples {
         // The key's iterator would have iterated over verses.
 
         // The following shows how to use a stylesheet of your own choosing
-        String path = "xsl/cswing/simple.xsl";
+        String path = "org/crosswire/jsword/xml/html5.xsl";
         URL xslurl = ResourceUtil.getResource(path);
         // Make ranges  break  on  chapter
         Iterator<VerseRange> rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER);
