@@ -20,9 +20,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -36,6 +33,9 @@ import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test simple functionality across multiple backends, to ensure that all types
@@ -73,7 +73,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendESV() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Romans 1:1-3";
         //need to specify individual words to cope with tagged ESV
         backendTest(version, reference, "set", "apart", "for", "the", "gospel", "of", "God");
@@ -87,7 +87,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendESVFullChapter() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Romans 1";
 
         backendTest(version, reference, " <title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
@@ -102,7 +102,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendESV1AndFollowing() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Romans 1:1-ff";
 
         backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
@@ -117,7 +117,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendCrossChapterBoundary() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:32-Rom:2:2";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\">", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\">",
@@ -136,7 +136,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendMiddleChapter() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:2-1:31";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.2\">", "<verse osisID=\"Rom.1.31\">");
@@ -154,7 +154,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendMiddleToEnd() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:5-ff";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">", "<verse osisID=\"Rom.1.31\">", "<verse osisID=\"Rom.1.32\">");
@@ -175,7 +175,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartMiddle() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:5-3:14";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">", 
@@ -196,7 +196,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartVerse1() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:1-3:14";
 
         String xml = backendTest(version, reference, 
@@ -219,7 +219,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartVerse0() throws Exception {
-        String version = "ESV";
+        String version = "ESV2011";
         String reference = "Rom 1:0-3:14";
 
         String xml = backendTest(version, reference, 

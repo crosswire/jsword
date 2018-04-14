@@ -20,14 +20,14 @@
  */
 package org.crosswire.jsword.prerequisites;
 
-import static org.junit.Assert.fail;
-
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.bridge.BookInstaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.fail;
 
 /**
  * JUnit Test.
@@ -63,6 +63,6 @@ public class BookTestPreRequisites {
     private BookInstaller underTest;
     private Books installedBooks;
 
-    private static final String[] books = new String[]{"KJV", "ESV"};
+    private static final String[] books = new String[]{"KJV", "ESV2011"};
     private static final Logger LOGGER = LoggerFactory.getLogger(BookTestPreRequisites.class);
 }

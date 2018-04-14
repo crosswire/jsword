@@ -36,7 +36,7 @@ public class ConcurrencyTest {
 
     @Test
     public void testConcurrencyIssueOnBookData() throws InterruptedException {
-        final String[] names = { "KJV", "ESV" };
+        final String[] names = { "KJV", "ESV2011" };
         final String ref = "Rom.1.1";
 
         final Runnable r1 = new Runnable() {
