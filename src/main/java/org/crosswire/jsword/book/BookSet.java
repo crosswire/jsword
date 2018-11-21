@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Filter;
-import org.slf4j.Logger;
 
 /**
  * BookSet represents a collection of descriptions about Books which may be
