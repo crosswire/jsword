@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Filter;
+import org.slf4j.Logger;
 
 /**
  * BookSet represents a collection of descriptions about Books which may be
@@ -137,6 +138,11 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         // This can be revisited if the list performs badly.
         boolean added = false;
         for (Book book : c) {
+            try {
+                book.toString();
+            } catch (NullPointerException e) {
+                continue;
+            }
             if (add(book)) {
                 added = true;
             }
