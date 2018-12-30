@@ -70,6 +70,18 @@ public final class BibleNames {
     }
 
     /**
+     * Get the preferred name of a book in specified locale. Altered by the case setting (see
+     * setBookCase() and isFullBookName())
+     *
+     * @param locale the desired locale
+     * @param book the desired book
+     * @return The full name of the book or blank if not in this versification
+     */
+    public String getPreferredNameInLocale(BibleBook book, Locale locale) {
+        return getBibleNamesForLocale(locale).getPreferredName(book);
+    }
+
+    /**
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
      *
