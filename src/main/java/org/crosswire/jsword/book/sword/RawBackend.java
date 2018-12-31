@@ -130,10 +130,12 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
                     continue;
                 }
 
-                int maxIndex = v11n.getCount(currentTestament) - 1;
+                // The first index in each testament is ignored.
+                // We need to include it here in order to read in the entire index.
+                int maxCount = v11n.getCount(currentTestament) + 1;
 
                 // Read in the whole index, a few hundred Kb at most.
-                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxIndex);
+                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxCount);
 
                 // For each entry of entrysize bytes, the length of the verse in bytes
                 // is in the last datasize bytes. If all bytes are 0, then there is no content.
@@ -293,7 +295,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         }
 
         if (size < 0) {
-            log.error("In {}: Verse {} has a bad index size of {}", getBookMetaData().getInitials(), name, Integer.toString(size));
+            LOGGER.error("In {}: Verse {} has a bad index size of {}", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 
@@ -322,7 +324,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(RawBackend.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawBackend.class);
 
 
 }
