@@ -133,7 +133,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     /**
      * Simple ctor
      * @param sbmd 
-     * @param blockType 
+     * @param blockType
+     * @param datasize 
      */
     public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType, int datasize) {
         super(sbmd);
@@ -141,7 +142,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
 
-        assert datasize == 2 || datasize == 4;        
+        assert datasize == 2 || datasize == 4;
     }
 
     /* This method assumes single keys. It is the responsibility of the caller to provide the iteration. 
@@ -201,7 +202,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         } catch (BookException e) {
             // FIXME(CJB): fail silently as before, but i don't think this is
             // correct behaviour - would cause API changes
-            log.error("Unable to ascertain key validity", e);
+            LOGGER.error("Unable to ascertain key validity", e);
             return 0;
         } finally {
             OpenFileStateManager.instance().release(rafBook);
@@ -237,10 +238,12 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                     continue;
                 }
 
-                int maxIndex = v11n.getCount(currentTestament) - 1;
+                // The first index in each testament is ignored.
+                // We need to include it here in order to read in the entire index.
+                int maxCount = v11n.getCount(currentTestament)  + 1;
 
                 // Read in the whole index, a few hundred Kb at most.
-                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxIndex);
+                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxCount);
 
                 // For each entry of entrysize bytes, the length of the verse in bytes
                 // is in the last datasize bytes. If both bytes are 0, then there is no content.
@@ -524,5 +527,5 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     /**
      * The log stream
      */
-    private static final Logger log = LoggerFactory.getLogger(ZVerseBackend.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZVerseBackend.class);
 }
