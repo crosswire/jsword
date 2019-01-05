@@ -185,14 +185,15 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             FileUtil.delete(tempPath);
         }
 
-        try {
-            // When misconfigured, this can throw errors.
-            Analyzer analyzer = new LuceneAnalyzer(book);
+        // Lock on metadata to allow creation of multiple indexes, so long as they are on different books.
+        // Otherwise lock on a single object to make this serial
+        Object mutex = policy.isSerial() ? CREATING : book.getBookMetaData();
+        synchronized (mutex) {
 
-            // Lock on metadata to allow creation of multiple indexes, so long as they are on different books.
-            // Otherwise lock on a single object to make this serial
-            Object mutex = policy.isSerial() ? CREATING : book.getBookMetaData();
-            synchronized (mutex) {
+            try {
+                // When misconfigured, this can throw errors.
+                Analyzer analyzer = new LuceneAnalyzer(book);
+
 
                 book.setIndexStatus(IndexStatus.CREATING);
 
@@ -234,17 +235,17 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                     Reporter.informUser(this, JSMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
                 }
                 initDirectoryAndSearcher();
-            }
-        } catch (IOException ex) {
-            job.cancel();
-            // TRANSLATOR: Common error condition: Some error happened while creating a search index.
-            throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
-        } finally {
-            book.setIndexStatus(finalStatus);
-            job.done();
-            // Ensure that the temp path is gone - errors can leave it there and cause further problems.
-            if (tempPath.exists()) {
-                FileUtil.delete(tempPath);
+            } catch (IOException ex) {
+                job.cancel();
+                // TRANSLATOR: Common error condition: Some error happened while creating a search index.
+                throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
+            } finally {
+                book.setIndexStatus(finalStatus);
+                job.done();
+                // Ensure that the temp path is gone - errors can leave it there and cause further problems.
+                if (tempPath.exists()) {
+                    FileUtil.delete(tempPath);
+                }
             }
         }
     }
