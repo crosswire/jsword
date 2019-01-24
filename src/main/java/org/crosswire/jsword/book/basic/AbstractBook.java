@@ -126,6 +126,10 @@ public abstract class AbstractBook implements Book {
         return searcher.search(request);
     }
 
+    public void resetSearcher() {
+        searcher = null;
+    }
+
     /**
      * Get this book.
      * 
