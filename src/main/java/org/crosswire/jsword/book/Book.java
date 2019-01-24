@@ -447,4 +447,6 @@ public interface Book extends Activatable, Comparable<Book> {
      *            the <code>IndexStatusListener</code> to be removed
      */
     void removeIndexStatusListener(IndexStatusListener li);
+
+    void resetSearcher();
 }

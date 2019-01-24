@@ -209,6 +209,8 @@ public class LuceneIndexManager implements IndexManager {
                 throw new BookException(JSMsg.gettext("Failed to delete search index."));
             }
             book.setIndexStatus(IndexStatus.UNDONE);
+            book.resetSearcher();
+            INDEXES.remove(book);
 
             //Delete index Version metadata (InstalledIndex)
             InstalledIndex.instance().removeFromInstalledIndexMetadata(book);
