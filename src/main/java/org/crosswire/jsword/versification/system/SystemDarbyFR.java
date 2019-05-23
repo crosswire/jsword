@@ -36,7 +36,7 @@ public class SystemDarbyFR extends Versification {
         super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static final String V11N_NAME = "DarbyFR";
+    public static final String V11N_NAME = "DarbyFr";
 
     /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OT;
 
