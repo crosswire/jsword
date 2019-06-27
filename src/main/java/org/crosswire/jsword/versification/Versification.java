@@ -22,6 +22,7 @@ package org.crosswire.jsword.versification;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
@@ -320,6 +321,24 @@ public class Versification implements ReferenceSystem, Serializable {
         }
         return null;
       }
+
+    /**
+     * Get the preferred name of a book in specified locale. Altered by the case setting (see
+     * setBookCase() and isFullBookName())
+     *
+     * @param book the desired book
+     * @param locale the desired locale for book name. If left null, returns with default locale
+     * @return The full name of the book or null if not in this versification
+     */
+    public String getPreferredNameInLocale(BibleBook book, Locale locale) {
+        if (containsBook(book)) {
+            if (locale != null) {
+                return BibleNames.instance().getPreferredNameInLocale(book, locale);
+            }
+            return BibleNames.instance().getPreferredName(book);
+        }
+        return null;
+    }
 
     /**
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
