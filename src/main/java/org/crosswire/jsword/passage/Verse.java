@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.ItemIterator;
@@ -185,7 +186,30 @@ public final class Verse implements VerseKey<Verse> {
             return getName();
         }
 
-        String verseName = doGetName((Verse) base);
+        String verseName = doGetName((Verse) base, null);
+        // Only shape it if it can be unshaped.
+        if (shaper.canUnshape()) {
+            return shaper.shape(verseName);
+        }
+
+        return verseName;
+    }
+
+    /**
+     * A Human readable version of the Key in specified locale. For Biblical passages this uses
+     * short books names, and the shortest sensible rendering, for example
+     * "Mat 3:1" and "Mar 1:1, 3, 5" and "3Jo, Jude"
+     *
+     * @param locale the desired locale of name
+     * @return a String containing a description of the Key
+     */
+    public String getNameInLocale(Key base, Locale locale) {
+        if (locale == null) return getName(base);
+        if (base != null && !(base instanceof Verse)) {
+            return getName();
+        }
+
+        String verseName = doGetName((Verse) base, locale);
         // Only shape it if it can be unshaped.
         if (shaper.canUnshape()) {
             return shaper.shape(verseName);
@@ -394,12 +418,12 @@ public final class Verse implements VerseKey<Verse> {
      *            the context or null if there is none
      * @return the verse representation
      */
-    private String doGetName(Verse verseBase) {
+    private String doGetName(Verse verseBase, Locale locale) {
         StringBuilder buf = new StringBuilder();
         // To cope with thing like Jude 2...
         if (book.isShortBook()) {
             if (verseBase == null || verseBase.book != book) {
-                buf.append(BibleNames.instance().getPreferredName(book));
+                buf.append(BibleNames.instance().getPreferredNameInLocale(book, locale));
                 buf.append(Verse.VERSE_PREF_DELIM1);
                 buf.append(verse);
                 return buf.toString();
@@ -409,7 +433,7 @@ public final class Verse implements VerseKey<Verse> {
         }
 
         if (verseBase == null || verseBase.book != book) {
-            buf.append(BibleNames.instance().getPreferredName(book));
+            buf.append(BibleNames.instance().getPreferredNameInLocale(book, locale));
             buf.append(Verse.VERSE_PREF_DELIM1);
             buf.append(chapter);
             buf.append(Verse.VERSE_PREF_DELIM2);

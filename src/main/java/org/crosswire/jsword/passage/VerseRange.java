@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.icu.NumberShaper;
@@ -166,7 +167,30 @@ public final class VerseRange implements VerseKey<VerseRange> {
             return originalName;
         }
 
-        String rangeName = doGetName(base);
+        String rangeName = doGetName(base, null);
+        // Only shape it if it can be unshaped.
+        if (shaper.canUnshape()) {
+            return shaper.shape(rangeName);
+        }
+
+        return rangeName;
+    }
+
+    /**
+     * A Human readable version of the Key in specified locale. For Biblical passages this uses
+     * short books names, and the shortest sensible rendering, for example
+     * "Mat 3:1-4" and "Mar 1:1, 3, 5" and "3Jo, Jude"
+     *
+     * @param locale the desired locale of name
+     * @return a String containing a description of the Key
+     */
+    public String getNameInLocale(Key base, Locale locale) {
+        if (locale == null) return getName(base);
+        if (PassageUtil.isPersistentNaming() && originalName != null) {
+            return originalName;
+        }
+
+        String rangeName = doGetName(base, locale);
         // Only shape it if it can be unshaped.
         if (shaper.canUnshape()) {
             return shaper.shape(rangeName);
@@ -641,7 +665,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
         return null;
     }
 
-    private String doGetName(Key base) {
+    private String doGetName(Key base, Locale locale) {
         // Cache these we're going to be using them a lot.
         BibleBook startBook = start.getBook();
         int startChapter = start.getChapter();
@@ -657,23 +681,23 @@ public final class VerseRange implements VerseKey<VerseRange> {
                 // Just report the name of the book, we don't need to worry
                 // about the base since we start at the start of a book,
                 // and should have been recently normalized()
-                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + v11n.getPreferredName(endBook);
+                return v11n.getPreferredNameInLocale(startBook, locale) + VerseRange.RANGE_PREF_DELIM + v11n.getPreferredNameInLocale(endBook, locale);
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapters()) {
                 // Just report book and chapter names
-                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
-                        + v11n.getPreferredName(endBook) + Verse.VERSE_PREF_DELIM1 + endChapter;
+                return v11n.getPreferredNameInLocale(startBook, locale) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
+                        + v11n.getPreferredNameInLocale(endBook, locale) + Verse.VERSE_PREF_DELIM1 + endChapter;
             }
 
             if (v11n.isChapterIntro(start)) {
-                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getName(base);
+                return v11n.getPreferredNameInLocale(startBook, locale) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getNameInLocale(base, locale);
             }
             if (v11n.isBookIntro(start)) {
-                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+                return v11n.getPreferredNameInLocale(startBook, locale) + VerseRange.RANGE_PREF_DELIM + end.getNameInLocale(base, locale);
             }
-            return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+            return start.getNameInLocale(base, locale) + VerseRange.RANGE_PREF_DELIM + end.getNameInLocale(base, locale);
         }
 
         // This range is exactly a whole book
@@ -682,7 +706,7 @@ public final class VerseRange implements VerseKey<VerseRange> {
             // the
             // base since we start at the start of a book, and should have been
             // recently normalized()
-            return v11n.getPreferredName(startBook);
+            return v11n.getPreferredNameInLocale(startBook, locale);
         }
 
         // If this is 2 separate chapters
@@ -690,25 +714,25 @@ public final class VerseRange implements VerseKey<VerseRange> {
             // If this range is a whole number of chapters
             if (isWholeChapters()) {
                 // Just report the name of the book and the chapters
-                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
+                return v11n.getPreferredNameInLocale(startBook, locale) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
             }
 
-            return start.getName(base) + VerseRange.RANGE_PREF_DELIM + endChapter + Verse.VERSE_PREF_DELIM2 + endVerse;
+            return start.getNameInLocale(base, locale) + VerseRange.RANGE_PREF_DELIM + endChapter + Verse.VERSE_PREF_DELIM2 + endVerse;
         }
 
         // If this range is exactly a whole chapter
         if (isWholeChapter()) {
             // Just report the name of the book and the chapter
-            return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter;
+            return v11n.getPreferredNameInLocale(startBook, locale) + Verse.VERSE_PREF_DELIM1 + startChapter;
         }
 
         // If this is 2 separate verses
         if (startVerse != endVerse) {
-            return start.getName(base) + VerseRange.RANGE_PREF_DELIM + endVerse;
+            return start.getNameInLocale(base, locale) + VerseRange.RANGE_PREF_DELIM + endVerse;
         }
 
         // The range is a single verse
-        return start.getName(base);
+        return start.getNameInLocale(base, locale);
     }
 
     /**
