@@ -91,7 +91,7 @@ public class VerseTest {
    @Test
     public void testNewViaString() throws Exception {
        Assert.assertEquals(gen11s, VerseFactory.fromString(v11n, "Gen.1.1!sub"));
-        Assert.assertEquals(gen11, Verse.DEFAULT);
+        Assert.assertEquals(Verse.DEFAULT, gen11);
         Assert.assertEquals(gen11, VerseFactory.fromString(v11n, "Genesis 1 1"));
         Assert.assertEquals(gen11, VerseFactory.fromString(v11n, "Gen 1 1"));
         Assert.assertEquals(gen11, VerseFactory.fromString(v11n, "Ge 1 1"));
@@ -194,24 +194,24 @@ public class VerseTest {
 
     @Test
     public void testGetName() throws Exception {
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "ge 1 1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "ge").getName(), "Gen 0:0");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Ge:1:1").getName(), "Gen 1:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Jude 1").getName(), "Jude 1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Jude").getName(), "Jude 0");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Jude 1:1").getName(), "Jude 1");
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1 1").getName());
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").getName());
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").getName());
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").getName());
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "ge 1 1").getName());
+        Assert.assertEquals("Gen 0:0", VerseFactory.fromString(v11n, "ge").getName());
+        Assert.assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Ge:1:1").getName());
+        Assert.assertEquals("Jude 1", VerseFactory.fromString(v11n, "Jude 1").getName());
+        Assert.assertEquals("Jude 0", VerseFactory.fromString(v11n, "Jude").getName());
+        Assert.assertEquals("Jude 1", VerseFactory.fromString(v11n, "Jude 1:1").getName());
     }
 
     @Test
     public void testGetNameVerse() throws Exception {
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 1:2").getName(gen11), "2");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 2:1").getName(gen11), "2:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 2:1").getName(jude9), "Gen 2:1");
-        Assert.assertEquals(VerseFactory.fromString(v11n, "Gen 2:1").getName(null), "Gen 2:1");
+        Assert.assertEquals("2", VerseFactory.fromString(v11n, "Gen 1:2").getName(gen11));
+        Assert.assertEquals("2:1", VerseFactory.fromString(v11n, "Gen 2:1").getName(gen11));
+        Assert.assertEquals("Gen 2:1", VerseFactory.fromString(v11n, "Gen 2:1").getName(jude9));
+        Assert.assertEquals("Gen 2:1", VerseFactory.fromString(v11n, "Gen 2:1").getName(null));
     }
 
     @Test
@@ -255,14 +255,14 @@ public class VerseTest {
     public void testCompareTo() {
         Assert.assertTrue(gen11.compareTo(rev99) < 0);
         Assert.assertTrue(rev99.compareTo(gen11) > 0);
-        Assert.assertEquals(gen11.compareTo(gen11), 0);
+        Assert.assertEquals(0, gen11.compareTo(gen11));
     }
 
     @Test
     public void testAddSubtract() {
-        Assert.assertEquals(v11n.distance(gen11, gen12), 1);
-        Assert.assertEquals(v11n.distance(gen11, gen11), 0);
-        Assert.assertEquals(v11n.distance(gen12, gen11), -1);
+        Assert.assertEquals(1, v11n.distance(gen11, gen12));
+        Assert.assertEquals(0, v11n.distance(gen11, gen11));
+        Assert.assertEquals(-1, v11n.distance(gen12, gen11));
         Verse last = gen11.clone();
         for (int i = 0; i < v11n.maximumOrdinal(); i += 99) {
             Verse next = v11n.add(last, i);
@@ -295,41 +295,41 @@ public class VerseTest {
 
     @Test
     public void testGetBook() {
-        Assert.assertEquals(gen11.getBook(), BibleBook.GEN);
-        Assert.assertEquals(gen12.getBook(), BibleBook.GEN);
-        Assert.assertEquals(gen21.getBook(), BibleBook.GEN);
-        Assert.assertEquals(gen22.getBook(), BibleBook.GEN);
-        Assert.assertEquals(rev11.getBook(), BibleBook.REV);
-        Assert.assertEquals(rev12.getBook(), BibleBook.REV);
-        Assert.assertEquals(rev21.getBook(), BibleBook.REV);
-        Assert.assertEquals(rev22.getBook(), BibleBook.REV);
-        Assert.assertEquals(rev99.getBook(), BibleBook.REV);
+        Assert.assertEquals(BibleBook.GEN, gen11.getBook());
+        Assert.assertEquals(BibleBook.GEN, gen12.getBook());
+        Assert.assertEquals(BibleBook.GEN, gen21.getBook());
+        Assert.assertEquals(BibleBook.GEN, gen22.getBook());
+        Assert.assertEquals(BibleBook.REV, rev11.getBook());
+        Assert.assertEquals(BibleBook.REV, rev12.getBook());
+        Assert.assertEquals(BibleBook.REV, rev21.getBook());
+        Assert.assertEquals(BibleBook.REV, rev22.getBook());
+        Assert.assertEquals(BibleBook.REV, rev99.getBook());
     }
 
     @Test
     public void testGetChapter() {
-        Assert.assertEquals(gen11.getChapter(), 1);
-        Assert.assertEquals(gen12.getChapter(), 1);
-        Assert.assertEquals(gen21.getChapter(), 2);
-        Assert.assertEquals(gen22.getChapter(), 2);
-        Assert.assertEquals(rev11.getChapter(), 1);
-        Assert.assertEquals(rev12.getChapter(), 1);
-        Assert.assertEquals(rev21.getChapter(), 2);
-        Assert.assertEquals(rev22.getChapter(), 2);
-        Assert.assertEquals(rev99.getChapter(), 22);
+        Assert.assertEquals(1, gen11.getChapter());
+        Assert.assertEquals(1, gen12.getChapter());
+        Assert.assertEquals(2, gen21.getChapter());
+        Assert.assertEquals(2, gen22.getChapter());
+        Assert.assertEquals(1, rev11.getChapter());
+        Assert.assertEquals(1, rev12.getChapter());
+        Assert.assertEquals(2, rev21.getChapter());
+        Assert.assertEquals(2, rev22.getChapter());
+        Assert.assertEquals(22, rev99.getChapter());
     }
 
     @Test
     public void testGetVerse() {
-        Assert.assertEquals(gen11.getVerse(), 1);
-        Assert.assertEquals(gen12.getVerse(), 2);
-        Assert.assertEquals(gen21.getVerse(), 1);
-        Assert.assertEquals(gen22.getVerse(), 2);
-        Assert.assertEquals(rev11.getVerse(), 1);
-        Assert.assertEquals(rev12.getVerse(), 2);
-        Assert.assertEquals(rev21.getVerse(), 1);
-        Assert.assertEquals(rev22.getVerse(), 2);
-        Assert.assertEquals(rev99.getVerse(), 21);
+        Assert.assertEquals(1, gen11.getVerse());
+        Assert.assertEquals(2, gen12.getVerse());
+        Assert.assertEquals(1, gen21.getVerse());
+        Assert.assertEquals(2, gen22.getVerse());
+        Assert.assertEquals(1, rev11.getVerse());
+        Assert.assertEquals(2, rev12.getVerse());
+        Assert.assertEquals(1, rev21.getVerse());
+        Assert.assertEquals(2, rev22.getVerse());
+        Assert.assertEquals(21, rev99.getVerse());
     }
 
     @Test
@@ -348,13 +348,13 @@ public class VerseTest {
     @Test
     public void testGetAccuracy() throws Exception {
         VerseRange vr = new VerseRange(v11n, gen11, gen11);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "Gen 1", AccuracyType.tokenize("Gen 1"), vr), AccuracyType.BOOK_CHAPTER);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "Jude 1", AccuracyType.tokenize("Jude 1"), vr), AccuracyType.BOOK_VERSE);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "Jude 1:1", AccuracyType.tokenize("Jude 1:1"), vr), AccuracyType.BOOK_VERSE);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "Gen", AccuracyType.tokenize("Gen"), vr), AccuracyType.BOOK_ONLY);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "1:1", AccuracyType.tokenize("1:1"), vr), AccuracyType.CHAPTER_VERSE);
-        Assert.assertEquals(AccuracyType.fromText(v11n, "1", AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY);
+        Assert.assertEquals(AccuracyType.BOOK_VERSE, AccuracyType.fromText(v11n, "Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr));
+        Assert.assertEquals(AccuracyType.BOOK_CHAPTER, AccuracyType.fromText(v11n, "Gen 1", AccuracyType.tokenize("Gen 1"), vr));
+        Assert.assertEquals(AccuracyType.BOOK_VERSE, AccuracyType.fromText(v11n, "Jude 1", AccuracyType.tokenize("Jude 1"), vr));
+        Assert.assertEquals(AccuracyType.BOOK_VERSE, AccuracyType.fromText(v11n, "Jude 1:1", AccuracyType.tokenize("Jude 1:1"), vr));
+        Assert.assertEquals(AccuracyType.BOOK_ONLY, AccuracyType.fromText(v11n, "Gen", AccuracyType.tokenize("Gen"), vr));
+        Assert.assertEquals(AccuracyType.CHAPTER_VERSE, AccuracyType.fromText(v11n, "1:1", AccuracyType.tokenize("1:1"), vr));
+        Assert.assertEquals(AccuracyType.VERSE_ONLY, AccuracyType.fromText(v11n, "1", AccuracyType.tokenize("1"), vr));
         try {
             AccuracyType.fromText(v11n, "Komplete and utter rubbish", AccuracyType.tokenize("Komplete and utter rubbish"), vr);
             Assert.fail();
@@ -438,7 +438,7 @@ public class VerseTest {
 
     @Test
     public void testToVerseArray() {
-        Assert.assertEquals(gen11.toVerseArray().length, 1);
+        Assert.assertEquals(1, gen11.toVerseArray().length);
     }
 
     @Test

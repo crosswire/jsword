@@ -104,7 +104,7 @@ public class ConfigEntryTableTest {
         table.add(BookMetaData.KEY_LANG, "de");
         String lang = table.get(BookMetaData.KEY_LANG);
         Assert.assertNotNull(lang);
-        Assert.assertEquals(lang, "de");
+        Assert.assertEquals("de", lang);
 
         File configFile = new File("testconfig.conf");
         try {

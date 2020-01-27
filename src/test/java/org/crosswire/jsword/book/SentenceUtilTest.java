@@ -55,7 +55,7 @@ public class SentenceUtilTest {
         Assert.assertEquals("three ", sa[2]);
 
         sa = SentenceUtil.tokenize("-one--two three ");
-        Assert.assertEquals(sa.length, 3);
+        Assert.assertEquals(3, sa.length);
         Assert.assertEquals("-one--", sa[0]);
         Assert.assertEquals("two ", sa[1]);
         Assert.assertEquals("three ", sa[2]);
