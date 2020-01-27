@@ -66,7 +66,7 @@ public class RawFileBackendState extends RawBackendState {
         if (existsAndCanReadAndWrite(otTextFile)
                 && existsAndCanReadAndWrite(ntTextFile)
                 && existsAndCanReadAndWrite(otIdxFile)
-                && existsAndCanReadAndWrite(otTextFile)
+                && existsAndCanReadAndWrite(ntIdxFile)
                 && (incFile == null || existsAndCanReadAndWrite(incFile)))
         {
             return true;
