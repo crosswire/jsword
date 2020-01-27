@@ -98,7 +98,7 @@ public final class GatherAllReferences {
             }
             readKey(book, key, stats);
         }
-        log.warn(book.getInitials() + ':' + stats[0] + ':' + stats[1]);
+        log.warn("{}:{}:{}", book.getInitials(), stats[0], stats[1]);
 
     }
 

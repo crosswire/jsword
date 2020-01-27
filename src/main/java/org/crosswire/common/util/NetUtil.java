@@ -498,7 +498,7 @@ public final class NetUtil {
             // JNLP or other systems that can't use file: URIs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            LOGGER.warn("index file for " + uri.toString() + " was not found.");
+            LOGGER.warn("index file for {} was not found.", uri.toString());
             if (uri.getScheme().equals(PROTOCOL_FILE)) {
                 return listByFile(uri, filter);
             }
