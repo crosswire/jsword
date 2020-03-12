@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipException;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
@@ -233,6 +234,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, Thread.currentThread());
 
         URI temp = null;
+        String fileName = null;
         try {
             // Don't bother setting a size, we'll do it later.
             job.beginJob(jobName);
@@ -243,6 +245,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             job.setSectionName(JSMsg.gettext("Initializing"));
 
             temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
+
+            fileName = packageDirectory + "/" + sbmd.getInitials() + ZIP_SUFFIX;
 
             download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
@@ -264,6 +268,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         } catch (IOException e) {
             Reporter.informUser(this, e);
+            log.error("Error in downloading " + fileName);
             job.cancel();
         } catch (InstallException e) {
             Reporter.informUser(this, e);
