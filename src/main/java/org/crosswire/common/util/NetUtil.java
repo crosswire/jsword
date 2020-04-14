@@ -71,6 +71,7 @@ public final class NetUtil {
      * Constant for the http: protocol or scheme
      */
     public static final String PROTOCOL_HTTP = "http";
+    public static final String PROTOCOL_HTTPS = "https";
 
     /**
      * Constant for the ftp: protocol or scheme
