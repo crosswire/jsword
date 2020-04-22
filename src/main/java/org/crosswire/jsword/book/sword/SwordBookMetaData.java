@@ -586,6 +586,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return configAll.get(key, DEFAULTS.get(key));
     }
 
+    public Collection<String> getValues(String key) {
+        return configAll.getValues(key);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setProperty(java.lang.String, java.lang.String)
      */
