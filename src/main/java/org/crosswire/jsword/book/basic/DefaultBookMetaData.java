@@ -19,6 +19,8 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +85,19 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         return props.get(key);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getValues(java.lang.String)
+     */
+    public Collection<String> getValues(String key) {
+        String value = props.get(key);
+        if(value != null) {
+            Collection<String> values = new ArrayList<>();
+            values.add(value);
+            return values;
+        } else {
+            return null;
+        }
+    }
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setProperty(java.lang.String, java.lang.String)
      */

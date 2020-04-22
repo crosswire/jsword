@@ -20,6 +20,7 @@
 package org.crosswire.jsword.book;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Set;
 
 import org.crosswire.common.util.Language;
@@ -263,6 +264,15 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * @return the value of the property
      */
     String getProperty(String key);
+
+    /**
+     * Get the values or null.
+     *
+     * @param key
+     *            the key of the property.
+     * @return the values of the property
+     */
+    Collection<String> getValues(String key);
 
     /**
      * Store a transient property.
