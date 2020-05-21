@@ -4,6 +4,6 @@ host = https://www.transifex.com
 [andbible.biblenames]
 minimum_perc = 20
 file_filter = src/main/resources/BibleNames_<lang>.properties
-lang_map = az@latin: az, zh_TW: zh-rTW, en_GB: en, he:iw, hi:in
+lang_map = az@latin: az, zh-rTW: zh_TW, en_GB: en, he:iw, hi:in, sr_RS: sr, sr@latin: sr_LT
 source_file = src/main/resources/BibleNames.properties
 source_lang = en
