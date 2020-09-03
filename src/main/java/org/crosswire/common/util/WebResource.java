@@ -25,21 +25,23 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.Date;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.utils.DateUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpHead;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.utils.DateUtils;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.util.Timeout;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
+
 
 /**
  * A WebResource is backed by an URL and potentially the proxy through which it
@@ -136,7 +138,7 @@ public class WebResource {
      *            the length of time in milliseconds to allow a connection to
      *            respond before timing out
      */
-    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, int theTimeout) {
+    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, long theTimeout) {
         uri = theURI;
         HttpHost proxy = null;
 
@@ -146,7 +148,13 @@ public class WebResource {
         }
 
         final RequestConfig.Builder builder = RequestConfig.custom();
-        builder.setConnectTimeout(theTimeout).setConnectionRequestTimeout(theTimeout).setSocketTimeout(theTimeout).setProxy(proxy);
+        builder
+                .setConnectTimeout(Timeout.ofMilliseconds(theTimeout))
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(theTimeout))
+                .setConnectTimeout(Timeout.ofMilliseconds(theTimeout))
+                .setResponseTimeout(Timeout.ofMilliseconds(theTimeout))
+                .setProxy(proxy);
+
         client = HttpClientBuilder.create().setDefaultRequestConfig(builder.build()).build();
     }
 
@@ -182,16 +190,15 @@ public class WebResource {
      * @return the size of the file
      */
     public int getSize() {
-        HttpRequestBase method = new HttpHead(uri);
+        HttpUriRequestBase method = new HttpHead(uri);
         HttpResponse response = null;
         try {
             // Execute the method.
             response = client.execute(method);
-            StatusLine statusLine = response.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (response.getCode() == HttpStatus.SC_OK) {
                 return getHeaderAsInt(response, "Content-Length");
             }
-            String reason = response.getStatusLine().getReasonPhrase();
+            String reason = response.getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
             Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
@@ -210,16 +217,15 @@ public class WebResource {
      * @return the last mod date of the file
      */
     public long getLastModified() {
-        HttpRequestBase method = new HttpHead(uri);
+        HttpUriRequestBase method = new HttpHead(uri);
         HttpResponse response = null;
         try {
             // Execute the method.
             response = client.execute(method);
-            StatusLine statusLine = response.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (response.getCode() == HttpStatus.SC_OK) {
                 return getHeaderAsDate(response, "Last-Modified");
             }
-            String reason = response.getStatusLine().getReasonPhrase();
+            String reason = response.getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
             Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
@@ -241,8 +247,8 @@ public class WebResource {
     public void copy(URI dest, Progress meter) throws LucidException  {
         InputStream in = null;
         OutputStream out = null;
-        HttpRequestBase method = new HttpGet(uri);
-        HttpResponse response = null;
+        HttpUriRequestBase method = new HttpGet(uri);
+        CloseableHttpResponse response = null;
         HttpEntity entity = null;
         try {
             // Execute the method.
@@ -275,7 +281,7 @@ public class WebResource {
                     count = in.read(buf);
                 }
             } else {
-                String reason = response.getStatusLine().getReasonPhrase();
+                String reason = response.getReasonPhrase();
                 // TRANSLATOR: Common error condition: {0} is a placeholder for
                 // the URL of what could not be found.
                 Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
