@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpHead;
@@ -32,15 +33,25 @@ import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
+import org.apache.hc.client5.http.ssl.HttpsSupport;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.client5.http.utils.DateUtils;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
 import org.apache.hc.core5.util.Timeout;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 
 /**
@@ -155,7 +166,34 @@ public class WebResource {
                 .setResponseTimeout(Timeout.ofMilliseconds(theTimeout))
                 .setProxy(proxy);
 
-        client = HttpClientBuilder.create().setDefaultRequestConfig(builder.build()).build();
+        HostnameVerifier whitelistVerifier =new HostnameVerifier() {
+            @Override
+            public boolean verify(String s, SSLSession sslSession) {
+                if(hostnameWhitelist != null && hostnameWhitelist.contains(s)) {
+                    return true;
+                } else {
+                    return HttpsSupport.getDefaultHostnameVerifier().verify(s, sslSession);
+                }
+            }
+        };
+
+        HttpClientBuilder clientBuilder = HttpClientBuilder.create()
+                .setDefaultRequestConfig(builder.build());
+
+        if(hostnameWhitelist != null) {
+            clientBuilder.setConnectionManager(
+                    PoolingHttpClientConnectionManagerBuilder.create()
+                            .setSSLSocketFactory(
+                                    SSLConnectionSocketFactoryBuilder.create()
+                                            .setHostnameVerifier(whitelistVerifier)
+                                            .build()
+                            ).build());
+        }
+        client = clientBuilder.build();
+    }
+
+    public static void setHostnameWhitelist(List<String> hostnameWhitelist) {
+        WebResource.hostnameWhitelist = hostnameWhitelist;
     }
 
     /**
@@ -349,4 +387,5 @@ public class WebResource {
 
     private URI uri;
     private CloseableHttpClient client;
+    private static List<String> hostnameWhitelist;
 }
