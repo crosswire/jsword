@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.6</java.version>
+		<java.version>1.8</java.version>
 
 		<!-- version management -->
 		<junit.version>4.11</junit.version>
@@ -26,7 +26,7 @@
 		<lucene.version>3.0.3</lucene.version>
 		<icu4j.version>52.1</icu4j.version>
 		<httpcomponents-httpcore.version>4.3.2</httpcomponents-httpcore.version>
-		<httpcomponents-httpclient.version>4.3.2</httpcomponents-httpclient.version>
+		<httpcomponents-httpclient.version>4.3.6</httpcomponents-httpclient.version>
 
 		<!-- maven plugin versions -->
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -155,6 +155,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M1</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -172,4 +173,3 @@
 		</plugins>
 	</build>
 </project>
-
