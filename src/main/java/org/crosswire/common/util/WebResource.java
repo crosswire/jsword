@@ -26,32 +26,10 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpHead;
-import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.io.HttpClientConnectionManager;
-import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
-import org.apache.hc.client5.http.ssl.HttpsSupport;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
-import org.apache.hc.client5.http.utils.DateUtils;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpHost;
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
-import org.apache.hc.core5.util.Timeout;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
+import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -151,45 +129,6 @@ public class WebResource {
      */
     public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, long theTimeout) {
         uri = theURI;
-        HttpHost proxy = null;
-
-        // Configure proxy info if necessary and defined
-        if (theProxyHost != null && theProxyHost.length() > 0) {
-            proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
-        }
-
-        final RequestConfig.Builder builder = RequestConfig.custom();
-        builder
-                .setConnectTimeout(Timeout.ofMilliseconds(theTimeout))
-                .setConnectionRequestTimeout(Timeout.ofMilliseconds(theTimeout))
-                .setConnectTimeout(Timeout.ofMilliseconds(theTimeout))
-                .setResponseTimeout(Timeout.ofMilliseconds(theTimeout))
-                .setProxy(proxy);
-
-        HostnameVerifier whitelistVerifier =new HostnameVerifier() {
-            @Override
-            public boolean verify(String s, SSLSession sslSession) {
-                if(hostnameWhitelist != null && hostnameWhitelist.contains(s)) {
-                    return true;
-                } else {
-                    return HttpsSupport.getDefaultHostnameVerifier().verify(s, sslSession);
-                }
-            }
-        };
-
-        HttpClientBuilder clientBuilder = HttpClientBuilder.create()
-                .setDefaultRequestConfig(builder.build());
-
-        if(hostnameWhitelist != null) {
-            clientBuilder.setConnectionManager(
-                    PoolingHttpClientConnectionManagerBuilder.create()
-                            .setSSLSocketFactory(
-                                    SSLConnectionSocketFactoryBuilder.create()
-                                            .setHostnameVerifier(whitelistVerifier)
-                                            .build()
-                            ).build());
-        }
-        client = clientBuilder.build();
     }
 
     public static void setHostnameWhitelist(List<String> hostnameWhitelist) {
@@ -200,9 +139,7 @@ public class WebResource {
      * When this WebResource is no longer needed it should be shutdown to return
      * underlying resources back to the OS.
      */
-    public void shutdown() {
-        IOUtil.close(client);
-    }
+    public void shutdown() {}
 
     /**
      * @return the timeout in milliseconds
@@ -228,15 +165,17 @@ public class WebResource {
      * @return the size of the file
      */
     public int getSize() {
-        HttpUriRequestBase method = new HttpHead(uri);
-        HttpResponse response = null;
         try {
             // Execute the method.
-            response = client.execute(method);
-            if (response.getCode() == HttpStatus.SC_OK) {
-                return getHeaderAsInt(response, "Content-Length");
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection)uri.toURL().openConnection();
+            httpsURLConnection.setRequestMethod("HEAD");
+            httpsURLConnection.setConnectTimeout(timeout);
+            httpsURLConnection.setReadTimeout(timeout);
+
+            if (httpsURLConnection.getResponseCode() == 200) {
+                return httpsURLConnection.getContentLength();
             }
-            String reason = response.getReasonPhrase();
+            String reason = httpsURLConnection.getResponseMessage();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
             Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
@@ -255,15 +194,16 @@ public class WebResource {
      * @return the last mod date of the file
      */
     public long getLastModified() {
-        HttpUriRequestBase method = new HttpHead(uri);
-        HttpResponse response = null;
         try {
             // Execute the method.
-            response = client.execute(method);
-            if (response.getCode() == HttpStatus.SC_OK) {
-                return getHeaderAsDate(response, "Last-Modified");
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection)uri.toURL().openConnection();
+            httpsURLConnection.setRequestMethod("HEAD");
+            httpsURLConnection.setConnectTimeout(timeout);
+            httpsURLConnection.setReadTimeout(timeout);
+            if (httpsURLConnection.getResponseCode() == 200) {
+                return httpsURLConnection.getLastModified();
             }
-            String reason = response.getReasonPhrase();
+            String reason = httpsURLConnection.getResponseMessage();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
             Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
@@ -282,19 +222,19 @@ public class WebResource {
      *            the job on which to report progress
      * @throws LucidException when an error is encountered
      */
-    public void copy(URI dest, Progress meter) throws LucidException  {
+    public void copy(URI dest, Progress meter) throws LucidException {
         InputStream in = null;
         OutputStream out = null;
-        HttpUriRequestBase method = new HttpGet(uri);
-        CloseableHttpResponse response = null;
-        HttpEntity entity = null;
+
         try {
             // Execute the method.
-            response = client.execute(method);
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection)uri.toURL().openConnection();
+            httpsURLConnection.setConnectTimeout(timeout);
+            httpsURLConnection.setReadTimeout(timeout);
             // Initialize the meter, if present
             if (meter != null) {
                 // Find out how big it is
-                int size = getHeaderAsInt(response, "Content-Length");
+                int size = httpsURLConnection.getContentLength();
                 // Sometimes the Content-Length is not given and we have to grab it via HEAD method
                 if (size == 0) {
                     size = getSize();
@@ -302,27 +242,19 @@ public class WebResource {
                 meter.setTotalWork(size);
             }
 
-            entity = response.getEntity();
-            if (entity != null) {
-                in = entity.getContent();
+            in = httpsURLConnection.getInputStream();
 
-                // Download the index file
-                out = NetUtil.getOutputStream(dest);
+            // Download the index file
+            out = NetUtil.getOutputStream(dest);
 
-                byte[] buf = new byte[4096];
-                int count = in.read(buf);
-                while (-1 != count) {
-                    if (meter != null) {
-                        meter.incrementWorkDone(count);
-                    }
-                    out.write(buf, 0, count);
-                    count = in.read(buf);
+            byte[] buf = new byte[4096];
+            int count = in.read(buf);
+            while (-1 != count) {
+                if (meter != null) {
+                    meter.incrementWorkDone(count);
                 }
-            } else {
-                String reason = response.getReasonPhrase();
-                // TRANSLATOR: Common error condition: {0} is a placeholder for
-                // the URL of what could not be found.
-                Reporter.informUser(this, JSMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
+                out.write(buf, 0, count);
+                count = in.read(buf);
             }
         } catch (IOException e) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
@@ -346,46 +278,11 @@ public class WebResource {
     }
 
     /**
-     * Get the field as a long.
-     * 
-     * @param response The response from the request
-     * @param field the header field to check
-     * @return the int value for the field
-     */
-    private int getHeaderAsInt(HttpResponse response, String field) {
-        Header header = response.getFirstHeader(field);
-        // If there is no matching header in the message null is returned.
-        if (header == null) {
-            return 0;
-        }
-
-        String value = header.getValue();
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException ex) {
-            return 0;
-        }
-    }
-
-    /**
-     * Get the number of seconds since start of epoch for the field in the response headers as a Date.
-     * 
-     * @param response The response from the request
-     * @param field the header field to check
-     * @return number of seconds since start of epoch
-     */
-    private long getHeaderAsDate(HttpResponse response, String field) {
-        Header header = response.getFirstHeader(field);
-        String value = header.getValue();
-        // This date cannot be readily parsed with DateFormatter
-        return DateUtils.parseDate(value).getTime();
-    }
-    /**
      * Define a 750 ms timeout to get a connection
      */
     private static int timeout = 750;
 
     private URI uri;
-    private CloseableHttpClient client;
+    //private CloseableHttpClient client;
     private static List<String> hostnameWhitelist;
 }
