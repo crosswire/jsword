@@ -6,9 +6,10 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ master ]
+    tags: [ andbible-* ]
+    
   pull_request:
     branches: [ master ]
-  tags: [ andbible-* ]
 
 jobs:
   build:
