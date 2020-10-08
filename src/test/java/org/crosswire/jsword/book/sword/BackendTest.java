@@ -119,7 +119,7 @@ public class BackendTest {
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\">", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\">",
                 "<verse osisID=\"Rom.2.2\">");
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.31\">"));
+        Assert.assertTrue(xml.contains("<verse osisID=\"Rom.1.31\">"));
         Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.3\">"));
 
     }
