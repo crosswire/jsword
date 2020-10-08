@@ -17,5 +17,5 @@
 #     The copyright to this program is held by it's authors.
 #
 #sword-ftp=org.crosswire.jsword.book.install.sword.FtpSwordInstallerFactory
-sword-http=org.crosswire.jsword.book.install.sword.AndBibleHttpSwordInstallerFactory
-sword-https=org.crosswire.jsword.book.install.sword.AndBibleHttpsSwordInstallerFactory
+sword-http=org.crosswire.jsword.book.install.sword.HttpSwordInstallerFactory
+sword-https=org.crosswire.jsword.book.install.sword.HttpsSwordInstallerFactory
