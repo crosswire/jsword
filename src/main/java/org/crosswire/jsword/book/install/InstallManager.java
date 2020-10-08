@@ -50,12 +50,19 @@ public final class InstallManager {
     /**
      * Simple ctor
      */
+
+    static PropertyMap preloadedSitemap;
+
+    public static void installSiteMap(PropertyMap siteMap) {
+        preloadedSitemap = siteMap;
+    }
+
     public InstallManager() {
         listeners = new CopyOnWriteArrayList<InstallerListener>();
         installers = new LinkedHashMap<String, Installer>();
 
         try {
-            PropertyMap sitemap = PluginUtil.getPlugin(getClass());
+            PropertyMap sitemap = preloadedSitemap != null ? preloadedSitemap : PluginUtil.getPlugin(getClass());
             factories = PluginUtil.getImplementorsMap(InstallerFactory.class);
             int i = 0;
             for (String def = sitemap.get(PREFIX + ++i); def != null; def = sitemap.get(PREFIX + ++i)) {
