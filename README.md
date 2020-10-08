@@ -1,3 +1,8 @@
 # JSword - Free Bible Study Software
 
-![](http://www.cloudbees.com/sites/default/files/Button-Powered-by-CB.png)
+[![](https://jitpack.io/v/AndBible/jsword.svg)](https://jitpack.io/#AndBible/jsword)
+
+And Bible fork of JSword. Should be compatible with Crosswire's fork, but has some
+additional functions etc. that are needed in And Bible. Moreover, it 
+has community-provided translations of  BibleNames 
+from [Transifex](https://www.transifex.com/mjdenham/andbible/biblenames/).
