@@ -1,5 +1,6 @@
 # JSword - Free Bible Study Software
 
+[![](https://github.com/AndBible/jsword/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/AndBible/jsword/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![](https://jitpack.io/v/AndBible/jsword.svg)](https://jitpack.io/#AndBible/jsword)
 
 And Bible fork of JSword. Should be compatible with Crosswire's fork, but has some
