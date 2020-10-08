@@ -12,3 +12,5 @@
 .idea
 rebel.xml
 
+/.gradle/
+/build/
