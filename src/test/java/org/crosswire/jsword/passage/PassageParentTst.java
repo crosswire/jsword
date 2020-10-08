@@ -47,7 +47,8 @@ import org.junit.Test;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Joe Walker
  */
-public class PassageParentTst {
+
+@Ignore public class PassageParentTst {
     public PassageParentTst() {
     }
 

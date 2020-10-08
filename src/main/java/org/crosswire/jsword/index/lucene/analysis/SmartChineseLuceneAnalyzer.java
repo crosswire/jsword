@@ -35,7 +35,7 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     public SmartChineseLuceneAnalyzer() {
         myAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_29);
     }

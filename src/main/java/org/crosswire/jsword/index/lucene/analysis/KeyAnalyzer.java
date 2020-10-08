@@ -32,7 +32,7 @@ import org.crosswire.jsword.book.Book;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class KeyAnalyzer extends AbstractBookAnalyzer {
+final public class KeyAnalyzer extends AbstractBookAnalyzer {
     /**
      * Construct a default KeyAnalyzer.
      */

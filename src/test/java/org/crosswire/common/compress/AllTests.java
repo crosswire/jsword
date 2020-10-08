@@ -34,7 +34,6 @@ import org.junit.runners.Suite.SuiteClasses;
     BZip2Test.class,
     GzipTest.class,
     LZSSTest.class,
-    XZTest.class,
     ZipTest.class
 })
 public class AllTests {

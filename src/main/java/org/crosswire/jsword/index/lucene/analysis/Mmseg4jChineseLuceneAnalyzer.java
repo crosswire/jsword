@@ -7,7 +7,7 @@ import org.apache.lucene.analysis.TokenStream;
 
 import com.chenlb.mmseg4j.analysis.ComplexAnalyzer;
 
-public class Mmseg4jChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class Mmseg4jChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     public Mmseg4jChineseLuceneAnalyzer() {
         myAnalyzer = new ComplexAnalyzer();
     }

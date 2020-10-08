@@ -36,7 +36,7 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Sijo Cherian
  */
-public class GreekLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class GreekLuceneAnalyzer extends AbstractBookAnalyzer {
     public GreekLuceneAnalyzer() {
         stopSet = GreekAnalyzer.getDefaultStopSet();
     }

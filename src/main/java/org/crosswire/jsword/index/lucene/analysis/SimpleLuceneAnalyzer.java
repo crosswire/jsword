@@ -40,7 +40,7 @@ import org.apache.lucene.analysis.TokenStream;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Sijo Cherian
  */
-public class SimpleLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class SimpleLuceneAnalyzer extends AbstractBookAnalyzer {
 
     public SimpleLuceneAnalyzer() {
         doStemming = false;

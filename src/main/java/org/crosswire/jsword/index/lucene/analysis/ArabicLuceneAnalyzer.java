@@ -40,7 +40,7 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
     public ArabicLuceneAnalyzer() {
         stopSet = ArabicAnalyzer.getDefaultStopSet();
     }
