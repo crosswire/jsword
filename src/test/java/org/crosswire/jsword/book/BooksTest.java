@@ -128,7 +128,7 @@ public class BooksTest {
     @Test
     public void testBookList() throws Exception {
         //part of the pre-requisites
-        AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV");
+        AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV2011");
         Assert.assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
     }
 

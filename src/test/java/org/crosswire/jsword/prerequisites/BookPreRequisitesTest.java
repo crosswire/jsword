@@ -65,6 +65,6 @@ public class BookPreRequisitesTest {
     private BookInstaller underTest;
     private Books installedBooks;
 
-    private static final String[] BOOKS = new String[]{"KJV", "ESV"};
+    private static final String[] BOOKS = new String[]{"KJV", "ESV2011"};
     private static final Logger LOGGER = LoggerFactory.getLogger(BookPreRequisitesTest.class);
 }
