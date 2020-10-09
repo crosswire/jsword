@@ -51,7 +51,7 @@ jobs:
         unzip -o -d $HOME/.sword ./testmods.zip
 
     - name: Build with Gradle
-      run: ./gradlew --console plain build
+      run: ./gradlew --console plain build -Ptests=true
 
     - name: Before saving cache
       run: |
