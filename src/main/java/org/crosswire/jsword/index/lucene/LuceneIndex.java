@@ -170,7 +170,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
         String jobName = JSMsg.gettext("Creating index. Processing {0}", book.getInitials());
-        Progress job = JobManager.createJob(String.format(Progress.CREATE_INDEX, book.getInitials()), jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(String.format(Progress.CREATE_INDEX, book.getInitials()), jobName, null);
         job.beginJob(jobName);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
