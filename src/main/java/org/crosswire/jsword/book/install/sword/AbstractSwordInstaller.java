@@ -219,7 +219,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */
-    public void install(final Book book) {
+    public void install(final Book book) throws InstallException {
         // // Is the book already installed? Then nothing to do.
         // if (Books.installed().getBook(book.getName()) != null)
         // {
@@ -266,15 +266,15 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
         } catch (IOException e) {
-            Reporter.informUser(this, e);
             log.error("Error in downloading " + fileName);
             job.cancel();
+            throw new InstallException("Error in downloading " + fileName, e);
         } catch (InstallException e) {
-            Reporter.informUser(this, e);
             job.cancel();
+            throw e;
         } catch (BookException e) {
-            Reporter.informUser(this, e);
             job.cancel();
+            throw new InstallException("Something went wrong with the book ", e);
         } finally {
             job.done();
             // tidy up after ourselves
