@@ -297,6 +297,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // TRANSLATOR: Progress label for downloading one or more files.
         String jobName = JSMsg.gettext("Downloading files");
         Progress job = JobManager.createJob(Progress.RELOAD_BOOK_LIST, jobName, null);
+
+        job.setNotifyUser(false);
         job.beginJob(jobName);
 
         List<File> errors = null;
