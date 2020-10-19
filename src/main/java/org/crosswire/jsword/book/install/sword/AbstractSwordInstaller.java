@@ -230,7 +230,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
         String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
-        Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, null);
+        Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, Thread.currentThread());
 
         URI temp = null;
         String fileName = null;
@@ -350,7 +350,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException {
         // TRANSLATOR: Progress label for downloading one or more files.
         String jobName = JSMsg.gettext("Downloading files");
-        Progress job = JobManager.createJob(String.format(Progress.DOWNLOAD_SEARCH_INDEX, book.getInitials()), jobName, null);
+        Progress job = JobManager.createJob(String.format(Progress.DOWNLOAD_SEARCH_INDEX, book.getInitials()), jobName, Thread.currentThread());
         job.beginJob(jobName);
 
         try {
