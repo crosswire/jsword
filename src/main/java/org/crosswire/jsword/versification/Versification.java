@@ -422,6 +422,13 @@ public class Versification implements ReferenceSystem, Serializable {
         }
     }
 
+    public Verse getLastVerse() {
+        BibleBook lastBook = getLastBook();
+        int lastChapter = getLastChapter(lastBook);
+        int lastVerse = getLastVerse(lastBook, lastChapter);
+        return new Verse(this, lastBook, lastChapter, lastVerse);
+    }
+
     /**
      * Get the number of chapters in the Bible not counting Chapter 0.
      * which is the one per book and one for the INTRO_BIBLE, INTRO_OT and INTRO_NT;

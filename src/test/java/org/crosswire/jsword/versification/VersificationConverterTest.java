@@ -1,8 +1,12 @@
 package org.crosswire.jsword.versification;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Iterator;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -35,5 +39,22 @@ public class VersificationConverterTest {
 		assertThat(versificationConverter.isConvertibleTo(SEGOND_JOHN_3_16, TestData.MT), is(false));
 		assertThat(versificationConverter.isConvertibleTo(SEGOND_JOHN_3_16, TestData.LENINGRAD), is(false));
 	}
+
+	@Test
+	public void testConvert() throws Exception {
+	    // Try to convert all verses in all versifications to KJVA
+	    Iterator<String> iterator = Versifications.instance().iterator();
+        int lastKjvOrdinal = TestData.KJVA.getLastVerse().getOrdinal();
+
+        while (iterator.hasNext()) {
+            Versification v11n = Versifications.instance().getVersification(iterator.next());
+            for(int i=0; i<=v11n.getLastVerse().getOrdinal(); i++) {
+                Verse v = new Verse(v11n, i);
+                Verse vKjv = versificationConverter.convert(v, TestData.KJVA);
+                int newOrdinal = vKjv.getOrdinal();
+                assertThat("valid ordinal "+ newOrdinal, newOrdinal >= 0 && newOrdinal <= lastKjvOrdinal);
+            }
+        }
+    }
 
 }

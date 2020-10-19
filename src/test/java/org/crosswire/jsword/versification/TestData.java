@@ -4,6 +4,10 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.SystemCalvin;
+import org.crosswire.jsword.versification.system.SystemCatholic;
+import org.crosswire.jsword.versification.system.SystemCatholic2;
+import org.crosswire.jsword.versification.system.SystemDarbyFR;
 import org.crosswire.jsword.versification.system.SystemGerman;
 import org.crosswire.jsword.versification.system.SystemKJV;
 import org.crosswire.jsword.versification.system.SystemKJVA;
@@ -12,6 +16,8 @@ import org.crosswire.jsword.versification.system.SystemLeningrad;
 import org.crosswire.jsword.versification.system.SystemLuther;
 import org.crosswire.jsword.versification.system.SystemMT;
 import org.crosswire.jsword.versification.system.SystemNRSV;
+import org.crosswire.jsword.versification.system.SystemNRSVA;
+import org.crosswire.jsword.versification.system.SystemOrthodox;
 import org.crosswire.jsword.versification.system.SystemSegond;
 import org.crosswire.jsword.versification.system.SystemSynodal;
 import org.crosswire.jsword.versification.system.SystemSynodalProt;
@@ -19,10 +25,17 @@ import org.crosswire.jsword.versification.system.SystemVulg;
 import org.crosswire.jsword.versification.system.Versifications;
 
 public interface TestData {
+    Versification CALVIN = Versifications.instance().getVersification(SystemCalvin.V11N_NAME);
+    Versification CATH1 = Versifications.instance().getVersification(SystemCatholic.V11N_NAME);
+    Versification CATH2 = Versifications.instance().getVersification(SystemCatholic2.V11N_NAME);
+    Versification DARBY = Versifications.instance().getVersification(SystemDarbyFR.V11N_NAME);
+    Versification ORTHO = Versifications.instance().getVersification(SystemOrthodox.V11N_NAME);
+
 	Versification KJV = Versifications.instance().getVersification(SystemKJV.V11N_NAME);
 	Versification KJVA = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
 	Versification SYNODAL_PROT = Versifications.instance().getVersification(SystemSynodalProt.V11N_NAME);
-	Versification NRSV = Versifications.instance().getVersification(SystemNRSV.V11N_NAME);
+    Versification NRSV = Versifications.instance().getVersification(SystemNRSV.V11N_NAME);
+	Versification NRSVA = Versifications.instance().getVersification(SystemNRSVA.V11N_NAME);
 	Versification LXX = Versifications.instance().getVersification(SystemLXX.V11N_NAME);
 	Versification SEGOND = Versifications.instance().getVersification(SystemSegond.V11N_NAME);
 	Versification MT = Versifications.instance().getVersification(SystemMT.V11N_NAME);
