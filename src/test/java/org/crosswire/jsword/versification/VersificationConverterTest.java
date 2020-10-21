@@ -2,6 +2,7 @@ package org.crosswire.jsword.versification;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.SystemKJVA;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,5 +57,19 @@ public class VersificationConverterTest {
             }
         }
     }
+    @Test
+    public void testKJVAOrdinalRange() throws Exception {
+	    // Make sure that KJVA versification range does not change without notice.
 
+        Versification KJVA = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
+        Verse lastVerse = KJVA.getLastVerse();
+        int lastKjvOrdinal = lastVerse.getOrdinal();
+
+        assertThat(lastKjvOrdinal, is(38272));
+        assertThat(lastVerse.getOsisID(), is("Rev.22.21"));
+        assertThat(KJVA.getAllVerses().toString(), is("Bible Introduction-Revelation of John"));
+        assertThat(KJVA.getAllVerses().getStart().getOrdinal(), is(0));
+        assertThat(KJVA.getAllVerses().getEnd().getOrdinal(), is(38272));
+
+    }
 }
