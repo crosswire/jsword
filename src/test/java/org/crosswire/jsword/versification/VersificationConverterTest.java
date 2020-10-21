@@ -67,7 +67,6 @@ public class VersificationConverterTest {
 
         assertThat(lastKjvOrdinal, is(38272));
         assertThat(lastVerse.getOsisID(), is("Rev.22.21"));
-        assertThat(KJVA.getAllVerses().toString(), is("Bible Introduction-Revelation of John"));
         assertThat(KJVA.getAllVerses().getStart().getOrdinal(), is(0));
         assertThat(KJVA.getAllVerses().getEnd().getOrdinal(), is(38272));
 
