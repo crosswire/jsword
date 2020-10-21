@@ -465,9 +465,7 @@ public class Versification implements ReferenceSystem, Serializable {
      */
     public VerseRange getAllVerses() {
         Verse first = new Verse(this, bookList.getFirstBook(), 0, 0);
-        BibleBook book = bookList.getLastBook();
-        int chapter = getLastChapter(book);
-        Verse last = new Verse(this, book, chapter, getLastVerse(book, chapter));
+        Verse last = getLastVerse();
         return new VerseRange(this, first, last);
     }
 
