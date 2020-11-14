@@ -176,6 +176,7 @@ public class SwordBook extends AbstractPassageBook {
             // after the "preverse" material.
             Element everse = OSISUtil.factory().createVerse();
             everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+            everse.setAttribute("verseOrdinal", String.valueOf(KeyUtil.getVerse(key).getOrdinal()));
             div.addContent(everse);
             super.addOSIS(key, everse, osisContent);
         }
@@ -268,6 +269,7 @@ public class SwordBook extends AbstractPassageBook {
         // In this case we add the verse markup, if the verse is not 0.
         Element everse = OSISUtil.factory().createVerse();
         everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+        everse.setAttribute("verseOrdinal", String.valueOf(KeyUtil.getVerse(key).getOrdinal()));
         if (preverse == null) {
             everse.addContent(osisContent);
         } else {
