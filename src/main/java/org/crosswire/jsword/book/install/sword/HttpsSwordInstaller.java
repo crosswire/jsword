@@ -80,6 +80,8 @@ public class HttpsSwordInstaller extends AbstractSwordInstaller {
 
         try {
             copy(job, uri, dest);
+        } catch (InstallException ex) {
+            throw ex;
         } catch (LucidException ex) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
             throw new InstallException(JSMsg.gettext("Unable to find: {0}", uri.toString()), ex);

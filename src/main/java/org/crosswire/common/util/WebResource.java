@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.book.install.DownloadException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -225,6 +226,7 @@ public class WebResource {
     public void copy(URI dest, Progress meter) throws LucidException {
         InputStream in = null;
         OutputStream out = null;
+        int statusCode = 0;
 
         try {
             // Execute the method.
@@ -241,7 +243,7 @@ public class WebResource {
                 }
                 meter.setTotalWork(size);
             }
-
+            statusCode = httpsURLConnection.getResponseCode();
             in = httpsURLConnection.getInputStream();
 
             // Download the index file
@@ -259,6 +261,9 @@ public class WebResource {
         } catch (IOException e) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
+            if(statusCode != 0) {
+                throw new DownloadException(statusCode);
+            }
             throw new LucidException(JSMsg.gettext("Unable to find: {0}", uri.toString()), e);
         } finally {
             // Close the streams
