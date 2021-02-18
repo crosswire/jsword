@@ -58,7 +58,7 @@ public class DwrBridgeMissingAssetsTest {
         try {
             String verse = dwrBridge.getOSISString("KJV", "Gen 1:1", 0, 100);
             Assert.assertEquals(
-                    "<div><title type=\"x-gen\">Genesis 1:1</title><verse osisID=\"Gen.1.1\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>",
+                "<div><title type=\"x-gen\">Genesis 1:1</title><verse osisID=\"Gen.1.1\" verseOrdinal=\"4\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>",
                     verse);
             String hdef = dwrBridge.getOSISString("StrongsHebrew", "H07225", 0, 100);
             Assert.assertEquals(

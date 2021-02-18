@@ -86,7 +86,7 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Romans 1";
 
-        backendTest(version, reference, " <title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
+        backendTest(version, reference, " <title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal",
                 "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
     }
 
@@ -101,7 +101,7 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Romans 1:1-ff";
 
-        backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
+        backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal",
                 "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
     }
 
@@ -116,11 +116,11 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Rom 1:32-Rom:2:2";
 
-        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\">", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\">",
-                "<verse osisID=\"Rom.2.2\">");
+        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\" verseOrdinal", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\" verseOrdinal",
+                "<verse osisID=\"Rom.2.2\" verseOrdinal");
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.31\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.3\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.31\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.3\" verseOrdinal"));
 
     }
 
@@ -135,10 +135,10 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Rom 1:2-1:31";
 
-        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.2\">", "<verse osisID=\"Rom.1.31\">");
+        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.2\" verseOrdinal", "<verse osisID=\"Rom.1.31\" verseOrdinal");
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.32\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.32\" verseOrdinal"));
 
     }
 
@@ -153,12 +153,12 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Rom 1:5-ff";
 
-        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">", "<verse osisID=\"Rom.1.31\">", "<verse osisID=\"Rom.1.32\">");
+        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\" verseOrdinal", "<verse osisID=\"Rom.1.31\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal");
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.0\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.1\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.1\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.0\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.2.1\" verseOrdinal"));
     }
 
     /**
@@ -172,14 +172,14 @@ public class BackendTest {
         String version = "ESV2011";
         String reference = "Rom 1:5-3:14";
 
-        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\">",
-                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
-                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
-                "<verse osisID=\"Rom.3.14\">"
+        String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\" verseOrdinal",
+                "<verse osisID=\"Rom.2.1\" verseOrdinal", "<verse osisID=\"Rom.2.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.1\" verseOrdinal", "<verse osisID=\"Rom.3.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.14\" verseOrdinal"
                 );
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.4\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\" verseOrdinal"));
     }
 
     /**
@@ -194,15 +194,15 @@ public class BackendTest {
         String reference = "Rom 1:1-3:14";
 
         String xml = backendTest(version, reference,
-                "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.2\">",
-                "<verse osisID=\"Rom.1.5\">",
-                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
-                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
-                "<verse osisID=\"Rom.3.14\">"
+                "<verse osisID=\"Rom.1.1\" verseOrdinal", "<verse osisID=\"Rom.1.2\" verseOrdinal",
+                "<verse osisID=\"Rom.1.5\" verseOrdinal",
+                "<verse osisID=\"Rom.2.1\" verseOrdinal", "<verse osisID=\"Rom.2.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.1\" verseOrdinal", "<verse osisID=\"Rom.3.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.14\" verseOrdinal"
                 );
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.0\">"));
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.1.0\" verseOrdinal"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\" verseOrdinal"));
     }
 
     /**
@@ -217,14 +217,14 @@ public class BackendTest {
         String reference = "Rom 1:0-3:14";
 
         String xml = backendTest(version, reference,
-                "<verse osisID=\"Rom.1.2\">", "<verse osisID=\"Rom.1.2\">",
-                "<verse osisID=\"Rom.1.5\">",
-                "<verse osisID=\"Rom.2.1\">", "<verse osisID=\"Rom.2.10\">",
-                "<verse osisID=\"Rom.3.1\">", "<verse osisID=\"Rom.3.10\">",
-                "<verse osisID=\"Rom.3.14\">"
+                "<verse osisID=\"Rom.1.2\" verseOrdinal", "<verse osisID=\"Rom.1.2\" verseOrdinal",
+                "<verse osisID=\"Rom.1.5\" verseOrdinal",
+                "<verse osisID=\"Rom.2.1\" verseOrdinal", "<verse osisID=\"Rom.2.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.1\" verseOrdinal", "<verse osisID=\"Rom.3.10\" verseOrdinal",
+                "<verse osisID=\"Rom.3.14\" verseOrdinal"
                 );
 
-        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\">"));
+        Assert.assertFalse(xml.contains("<verse osisID=\"Rom.3.15\" verseOrdinal"));
     }
 
     /**
