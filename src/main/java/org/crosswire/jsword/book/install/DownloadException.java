@@ -7,13 +7,13 @@ public class DownloadException extends InstallException {
     public URI uri;
 
     public DownloadException(URI uri, int statusCode) {
-        super("Download failed with status code" + statusCode);
+        super("Downloading " + uri + " failed with status code " + statusCode);
         this.statusCode = statusCode;
         this.uri = uri;
     }
 
     public DownloadException(URI uri, int statusCode, Throwable cause) {
-        super("Download failed with status code" + statusCode, cause);
+        super("Downloading " + uri + " failed with status code " + statusCode, cause);
         this.statusCode = statusCode;
         this.uri = uri;
     }
