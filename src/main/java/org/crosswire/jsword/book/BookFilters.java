@@ -134,6 +134,15 @@ public final class BookFilters {
     }
 
     /**
+     * A filter that accepts everything that implements Other
+     *
+     * @return the desired filter
+     */
+     public static BookFilter getOther() {
+        return new BookCategoryFilter(BookCategory.OTHER);
+    }
+
+    /**
      * A filter that accepts everything that is a Greek Definition Dictionary
      * 
      * @return the desired filter
