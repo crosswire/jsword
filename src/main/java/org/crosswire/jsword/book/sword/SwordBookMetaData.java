@@ -155,6 +155,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_SWORD_VERSION_DATE = "SwordVersionDate";
     public static final String KEY_TEXT_SOURCE = "TextSource";
     public static final String KEY_UNLOCK_URL = "UnlockURL";
+    public static final String KEY_UNLOCK_INFO = "UnlockInfo";
     public static final String KEY_VERSION = "Version";
 
     // Some keys have defaults
