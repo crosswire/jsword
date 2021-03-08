@@ -304,9 +304,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean unlock(String unlockKey) {
-        // Persist the unlock key so that all can see it
-        putProperty(KEY_CIPHER_KEY, unlockKey, false);
+        setProperty(KEY_CIPHER_KEY, unlockKey);
         return true;
+    }
+
+    @Override
+    public void resetLock() {
+       removeProperty(KEY_CIPHER_KEY);
     }
 
     /*
@@ -596,6 +600,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     public void setProperty(String key, String value) {
         configAll.replace(key, value);
+    }
+
+    public void removeProperty(String key) {
+        configAll.remove(key);
     }
 
     /* (non-Javadoc)

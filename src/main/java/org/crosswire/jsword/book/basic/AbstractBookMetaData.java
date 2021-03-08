@@ -111,6 +111,8 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         return false;
     }
 
+    public void resetLock() {}
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
      */

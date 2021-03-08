@@ -302,7 +302,11 @@ public abstract class AbstractBook implements Book {
         boolean state = bmd.unlock(unlockKey);
         if (state) {
             // Double check.
-            return isUnlockKeyValid();
+            if(isUnlockKeyValid()) {
+                return true;
+            } else {
+                bmd.resetLock();
+            }
         }
         return state;
     }
