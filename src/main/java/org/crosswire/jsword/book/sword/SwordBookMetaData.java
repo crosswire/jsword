@@ -310,7 +310,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     @Override
     public void resetLock() {
-       removeProperty(KEY_CIPHER_KEY);
+       setProperty(KEY_CIPHER_KEY, null);
     }
 
     /*
