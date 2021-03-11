@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipException;
 
 import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.JSMsg;
@@ -254,6 +255,8 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 try {
                     String rawText = readRawContent(openFileState, currentVerse);
                     processor.postVerse(verseInRange, content, rawText);
+                } catch (ZipException e) {
+                    throw new BookException("Error in uncompression", e);
                 } catch (IOException e) {
                     //some versifications have more verses than modules contain - so can't throw
                     //an error here...

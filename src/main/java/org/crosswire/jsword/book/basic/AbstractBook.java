@@ -319,18 +319,18 @@ public abstract class AbstractBook implements Book {
      */
     private boolean isUnlockKeyValid() {
         try {
-            Key key = getGlobalKeyList();
-            if (key == null) {
+            Key keys = getGlobalKeyList();
+            Key key = keys;
+            if (keys == null) {
                 // weird key == null, assume it is valid
                 return true;
             }
 
-            if (key.getCardinality() > 0) {
-                key = key.get(0);
+            if (keys.getCardinality() > 0) {
+                key = keys.get(0);
             }
 
-            getOsis(key, new NoOpRawTextProcessor());
-
+            List<Content> content = getOsis(key, new NoOpRawTextProcessor());
             return true;
         } catch (BookException ex) {
             return false;
