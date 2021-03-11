@@ -306,9 +306,10 @@ public abstract class AbstractBook implements Book {
                 return true;
             } else {
                 bmd.resetLock();
+                return false;
             }
         }
-        return state;
+        return false;
     }
 
     /**
