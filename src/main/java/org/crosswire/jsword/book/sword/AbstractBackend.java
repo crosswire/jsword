@@ -256,14 +256,22 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                     String rawText = readRawContent(openFileState, currentVerse);
                     processor.postVerse(verseInRange, content, rawText);
                 } catch (IOException e) {
-                    //some versifications have more verses than modules contain - so can't throw
-                    //an error here...
-                    LOGGER.debug(e.getMessage(), e);
+                    if(!ignoreReadErrors) {
+                        throw new BookException("Error in uncompression", e);
+                    } else {
+                        LOGGER.debug(e.getMessage(), e);
+                    }
                 }
             }
         }
 
         return currentVerse;
+    }
+
+    private boolean ignoreReadErrors = true;
+
+    public void setIgnoreReadErrors(boolean ignoreReadErrors) {
+        this.ignoreReadErrors = ignoreReadErrors;
     }
 
     /**

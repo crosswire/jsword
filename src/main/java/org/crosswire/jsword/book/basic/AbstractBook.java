@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.AbstractBackend;
 import org.crosswire.jsword.book.sword.Backend;
 import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
@@ -330,8 +331,11 @@ public abstract class AbstractBook implements Book {
             if (keys.getCardinality() > 0) {
                 key = keys.get(0);
             }
-
-            List<Content> content = getOsis(key, new NoOpRawTextProcessor());
+            if(backend instanceof AbstractBackend) {
+                ((AbstractBackend<?>) backend).setIgnoreReadErrors(false);
+                getOsis(key, new NoOpRawTextProcessor());
+                ((AbstractBackend<?>) backend).setIgnoreReadErrors(true);
+            }
             return true;
         } catch (BookException ex) {
             return false;
