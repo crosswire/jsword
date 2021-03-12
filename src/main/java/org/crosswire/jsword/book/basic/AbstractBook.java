@@ -333,12 +333,15 @@ public abstract class AbstractBook implements Book {
             }
             if(backend instanceof AbstractBackend) {
                 ((AbstractBackend<?>) backend).setIgnoreReadErrors(false);
-                getOsis(key, new NoOpRawTextProcessor());
-                ((AbstractBackend<?>) backend).setIgnoreReadErrors(true);
             }
+            getOsis(key, new NoOpRawTextProcessor());
             return true;
         } catch (BookException ex) {
             return false;
+        } finally {
+            if(backend instanceof AbstractBackend) {
+                ((AbstractBackend<?>) backend).setIgnoreReadErrors(true);
+            }
         }
     }
 
