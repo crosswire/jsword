@@ -255,8 +255,6 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 try {
                     String rawText = readRawContent(openFileState, currentVerse);
                     processor.postVerse(verseInRange, content, rawText);
-                } catch (ZipException e) {
-                    throw new BookException("Error in uncompression", e);
                 } catch (IOException e) {
                     //some versifications have more verses than modules contain - so can't throw
                     //an error here...
