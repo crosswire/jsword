@@ -37,6 +37,8 @@ public abstract class AbstractOpenFileState implements OpenFileState {
         lastAccess = System.currentTimeMillis();
     }
 
+    private long lastAccess = System.currentTimeMillis();
+
     /**
      * Allows us to decide whether to release the resources or continue using them
      */
@@ -70,9 +72,4 @@ public abstract class AbstractOpenFileState implements OpenFileState {
      * The BookMetaData for this OpenFileState. Used to locate files.
      */
     private BookMetaData bookMetaData;
-
-    /**
-     * The time of last access, used for LRU expiration of state.
-     */
-    private long lastAccess;
 }

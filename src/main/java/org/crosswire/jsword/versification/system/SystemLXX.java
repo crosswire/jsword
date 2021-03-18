@@ -8,7 +8,7 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
- *      http://www.gnu.org/copyleft/lgpl.html
+ *       http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
  *      Free Software Foundation, Inc.
  *      59 Temple Place - Suite 330
@@ -458,6 +458,7 @@ public class SystemLXX extends Versification {
            55,  32,  79,  46,
         },
     };
+
 
     /* protected */ static final int[][] LAST_VERSE_NT =
     {

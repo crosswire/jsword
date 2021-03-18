@@ -92,9 +92,9 @@ public class SystemOrthodox extends Versification {
         BibleBook.JER,
         BibleBook.BAR,
         BibleBook.LAM,
-        BibleBook.EP_JER,
+	BibleBook.EP_JER,
         BibleBook.EZEK,
-        BibleBook.SUS,
+	BibleBook.SUS,
         BibleBook.DAN,
         BibleBook.BEL,
         BibleBook.MACC4,
@@ -405,6 +405,7 @@ public class SystemOrthodox extends Versification {
            27,  20,  27,  20,  32,  25,  24,  24,
         },
     };
+
 
     /* protected */ static final int[][] LAST_VERSE_NT =
     {

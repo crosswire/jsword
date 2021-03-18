@@ -6,7 +6,7 @@
  * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
- *
+ * <p>
  * The License is available on the internet at:
  *      http://www.gnu.org/copyleft/lgpl.html
  * or by writing to:
@@ -29,7 +29,7 @@ import java.net.URI;
  * @author DM Smith
  */
 public enum OSType {
-    MAC  ("Mac") {
+    MAC("Mac") {
         @Override
         public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
@@ -41,9 +41,12 @@ public enum OSType {
         }
     },
 
-    WIN32  ("Win") {
+    WIN32("Win") {
         @Override
         public URI getUserArea() {
+            if ("Windows 10".equalsIgnoreCase(System.getProperty("os.name"))) {
+                return NetUtil.lengthenURI(getUserHome(), WIN32_V10_USER_DATA_AREA);
+            }
             return NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
         }
 
@@ -53,7 +56,7 @@ public enum OSType {
         }
     },
 
-    DEFAULT ("*nix") {
+    DEFAULT("*nix") {
         @Override
         public URI getUserArea() {
             return getUserHome();
@@ -67,7 +70,7 @@ public enum OSType {
 
     /**
      * Simple ctor
-     * 
+     *
      * @param name the name of the OS
      */
     OSType(String name) {
@@ -76,7 +79,7 @@ public enum OSType {
 
     /**
      * Get the user area for this OSType.
-     * 
+     *
      * @return the user area
      */
     public abstract URI getUserArea();
@@ -84,12 +87,12 @@ public enum OSType {
     /**
      * A folder in the user area. This osType will determine which to use in
      * constructing the URI to the folder.
-     * 
+     *
      * @param hiddenFolderName
      *            is typically a "unix" hidden folder name such as .jsword.
      * @param visibleFolderName
      *            is an visible folder name, such as JSword.
-     * 
+     *
      * @return the user area folder
      */
     public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
@@ -103,7 +106,7 @@ public enum OSType {
 
     /**
      * Get the machine's OSType.
-     * 
+     *
      * @return the machine's OSType
      */
     public static OSType getOSType() {
@@ -112,7 +115,7 @@ public enum OSType {
 
     /**
      * Lookup method to convert from a String to an OSType
-     * 
+     *
      * @param name the name of an OSType
      * @return the OSType or DEFAULT
      */
@@ -143,6 +146,7 @@ public enum OSType {
      * The Windows user settings parent directory
      */
     private static final String WIN32_USER_DATA_AREA = "Application Data";
+    private static final String WIN32_V10_USER_DATA_AREA = "AppData/Roaming";
 
     /**
      * The Mac user settings parent directory

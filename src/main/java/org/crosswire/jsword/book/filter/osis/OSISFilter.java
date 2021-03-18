@@ -82,12 +82,11 @@ public class OSISFilter implements SourceFilter {
                 clean = "<div><div><div><div>"+clean;
             }
         } else */
-        if ("MapM".equals(book.getInitials())) {
-            for (String tag : Arrays.asList("cell", "row", "table")) {
-                int startPos = clean.indexOf("<" + tag + ">");
-                int endPos = clean.indexOf("</" + tag + ">");
+        if (book.getInitials().equals("MapM")) {
+            for(String tag : Arrays.asList("cell", "row", "table")) {
+                int startPos = clean.indexOf("<"+tag+">"), endPos = clean.indexOf("</"+tag+">");
                 if (endPos != -1 && (startPos == -1 || startPos > endPos)) {
-                    clean = "<" + tag + ">" + clean;
+                    clean = "<"+tag+">"+clean;
                 }
             }
         }

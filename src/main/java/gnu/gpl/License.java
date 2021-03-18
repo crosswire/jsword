@@ -26,7 +26,7 @@ package gnu.gpl;
  * GNU GENERAL PUBLIC LICENSE
  *                        Version 2, June 1991
  * 
- *  Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+ *  Copyright © 1989, 1991 Free Software Foundation, Inc.
  *      59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *  Everyone is permitted to copy and distribute verbatim copies
  *  of this license document, but changing it is not allowed.
@@ -316,7 +316,7 @@ package gnu.gpl;
  * the &quot;copyright&quot; line and a pointer to where the full notice is found.
  * 
  *     &lt;one line to give the program's name and a brief idea of what it does.&gt;
- *     Copyright (C) &lt;year&gt;  &lt;name of author&gt;
+ *     Copyright © &lt;year&gt;  &lt;name of author&gt;
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -338,7 +338,7 @@ package gnu.gpl;
  * If the program is interactive, make it output a short notice like this
  * when it starts in an interactive mode:
  * 
- *     Gnomovision version 69, Copyright (C) year  name of author
+ *     Gnomovision version 69, Copyright © year  name of author
  *     Gnomovision comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
  *     This is free software, and you are welcome to redistribute it
  *     under certain conditions; type `show c' for details.

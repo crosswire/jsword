@@ -22,6 +22,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -160,7 +161,7 @@ public class SwordBookDriver extends AbstractBookDriver {
             throw new BookException(JSMsg.gettext("Unable to delete: {0}", confFile));
         }
 
-        // Delete the conf
+        // Delete all conf files
         List<File> failures = FileUtil.delete(confFile);
         if (failures.isEmpty()) {
             URI loc = sbmd.getLocation();

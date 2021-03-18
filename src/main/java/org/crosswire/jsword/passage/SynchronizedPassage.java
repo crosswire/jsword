@@ -294,7 +294,14 @@ final class SynchronizedPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized void blur(int by, RestrictionType restrict) {
-        ref.blur(by, restrict);
+        blur(by, restrict, true, true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType, boolean, boolean)
+     */
+    public synchronized void blur(int by, RestrictionType restrict, boolean blurDown, boolean blurUp) {
+        ref.blur(by, restrict, blurDown, blurUp);
     }
 
     /* (non-Javadoc)

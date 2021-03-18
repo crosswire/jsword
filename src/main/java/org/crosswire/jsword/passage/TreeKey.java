@@ -36,7 +36,7 @@ public class TreeKey extends AbstractKeyList {
     /**
      * Setup with the key name and positions of data in the file
      *
-     * @param name the key for this TreeKey 
+     * @param name the key for this TreeKey
      * @param parent the parent node for this TreeKey
      */
     public TreeKey(String name, Key parent) {
@@ -48,7 +48,7 @@ public class TreeKey extends AbstractKeyList {
     /**
      * Setup with the key name. Use solely for searching.
      *
-     * @param text the key for this TreeKey 
+     * @param text the key for this TreeKey
       */
     public TreeKey(String text) {
         this(text, null);
@@ -164,14 +164,15 @@ public class TreeKey extends AbstractKeyList {
             return false;
         }
 
-        TreeKey otherTreeKey = (TreeKey) obj;
+        TreeKey otherTreeKey = (TreeKey)obj;
         if (!getName().equals(otherTreeKey.getName())) {
             return false;
         }
 
         // names match so now work up the tree comparing parents
-        if (getParent() == null) {
-            return otherTreeKey.getParent() == null;
+
+        if (getParent()==null) {
+            return otherTreeKey.getParent()==null;
         }
 
         // KeyTrees nodes can have the same name but different parents
@@ -182,6 +183,13 @@ public class TreeKey extends AbstractKeyList {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
+        blur(by, restrict, true, true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
+     */
+    public void blur(int by, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         log.warn("attempt to blur a non-blur-able list");
     }
 
@@ -207,13 +215,23 @@ public class TreeKey extends AbstractKeyList {
     @Override
     public String getOsisID() {
         StringBuilder b = new StringBuilder(100);
-        b.append(getName());
+        b.append(osisify(getName()));
         for (Key parentKey = this.getParent(); parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
             b.insert(0, "/");
-            b.insert(0, parentKey.getName());
+            b.insert(0, osisify(parentKey.getName()));
         }
         // Remove the leading .
         return b.toString();
+    }
+
+    private String osisify(String str) {
+        // FIXME(DMS): An osisID cannot have lots of stuff that a name can have.
+        // It can only have _, a-z, A-Z, 0-9.
+        // Need to normalize the name by
+        // replacing ' ' with '_'
+        // Stripping punctuation, accents, ...
+        // ...
+        return str.replace(' ', '_');
     }
 
     /**

@@ -259,7 +259,9 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                     if(!ignoreReadErrors) {
                         throw new BookException("Error in uncompression", e);
                     } else {
-                        LOGGER.debug(e.getMessage(), e);
+                        //some versifications have more verses than modules contain - so can't throw
+                        //an error here...
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }

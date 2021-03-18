@@ -26,7 +26,7 @@ package gnu.lgpl;
  * GNU LESSER GENERAL PUBLIC LICENSE
  *                Version 2.1, February 1999
  * 
- *  Copyright (C) 1991, 1999 Free Software Foundation, Inc.
+ *  Copyright © 1991, 1999 Free Software Foundation, Inc.
  *      51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *  Everyone is permitted to copy and distribute verbatim copies
  *  of this license document, but changing it is not allowed.
@@ -496,7 +496,7 @@ package gnu.lgpl;
  * &quot;copyright&quot; line and a pointer to where the full notice is found.
  * 
  *     &lt;one line to give the library's name and a brief idea of what it does.&gt;
- *     Copyright (C) &lt;year&gt;  &lt;name of author&gt;
+ *     Copyright © &lt;year&gt;  &lt;name of author&gt;
  * 
  *     This library is free software; you can redistribute it and/or
  *     modify it under the terms of the GNU Lesser General Public
