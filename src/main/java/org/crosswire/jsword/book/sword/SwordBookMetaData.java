@@ -59,6 +59,13 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A utility class for loading and representing Sword book configs.
  *
@@ -70,13 +77,13 @@ import org.slf4j.LoggerFactory;
  * In addition, the SwordBookMetaData is hierarchical. The Level
  * indicates where the file originates from. The full hierarchy could be laid
  * out as followed:
- * 
+ *
  * <pre>
  *     - sword
  *         - jsword
  *            - front-end
  * </pre>
- * 
+ *
  * Various rules govern where attributes are read from. The general rule is that
  * the highest level (front-end write) will override values from the lowest
  * common denominator (sword). Various parts of the tree may be missing as the
@@ -379,7 +386,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Get the book conf which is a name such as kjv.conf.
-     * 
+     *
      * @return the book conf
      */
     public String getBookConf() {
@@ -616,7 +623,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Allow specification of a specific SwordMetaDataLocator when saving a property.
-     * 
+     *
      * @param key the entry that we are saving
      * @param value the value of the entry
      * @param metaDataLocator Place to save - front end storage, shared storage, or don't save(transient)
@@ -669,7 +676,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Allow for partial loading of a minimum set of keys, saving time and space.
      * If partial, call reload(null) to fill it in before showing the conf contents to a user.
-     * 
+     *
      * @param partial
      */
     public static void setPartialLoading(boolean partial) {

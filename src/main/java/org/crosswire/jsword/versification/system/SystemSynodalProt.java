@@ -23,7 +23,7 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * The SynodalP versification is essentially the KJV v11n, using its chapter counts, 
+ * The SynodalP versification is essentially the KJV v11n, using its chapter counts,
  * but with a modified NT book order similar to those of the Synodal v11n
  * and merged with verse counts similar to those of the Synodal v11n
  *
@@ -204,6 +204,7 @@ public class SystemSynodalProt extends Versification {
             9,   4,   8,   5,   6,   5,   6,   8,   8,   3,
            18,   3,   3,  21,  26,   9,   8,  24,  14,  10,
             7,  12,  15,  21,  10,  11,   9,  14,   9,   6,
+
         },
         // Proverbs
         {

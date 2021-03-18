@@ -47,7 +47,7 @@
     <module name="PackageAnnotation"/>
     <module name="SuppressWarnings"/>
     <module name="SuppressWarningsHolder"/> <!-- new -->
-    
+
     <!-- Checks for Javadoc Comments -->
     <!-- This would be a big change. Very slow.
     <module name="AtclauseOrder"/>
@@ -240,7 +240,7 @@
     <module name="AvoidInlineConditionals"/>
     -->
     <module name="CovariantEquals"/> 
-    <!-- JSword has its own conventions for declaration order 
+    <!-- JSword has its own conventions for declaration order
     <module name="DeclarationOrder"/>
     -->
     <module name="DefaultComesLast"/>
@@ -311,9 +311,9 @@
     <module name="OneStatementPerLine"/>
     <module name="OverloadMethodsDeclarationOrder"/>
     <module name="PackageDeclaration"/>
-    <module name="ParameterAssignment"/>
+    <!--  <module name="ParameterAssignment"/>
     <!-- JSword does not require "this"
-    <module name="RequireThis"/>  
+    <module name="RequireThis"/>
     -->
     <!-- We are not ready for this
     <module name="ReturnCount">
@@ -397,7 +397,7 @@ tried    -->
     <module name="CommentsIndentation"/>
     -->
     <module name="DescendantToken"/>
-	<!-- 
+	<!--
     <module name="FileContentsHolder"/>
     -->
     <!-- This would be a big change

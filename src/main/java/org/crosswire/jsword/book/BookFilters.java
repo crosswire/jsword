@@ -37,7 +37,7 @@ public final class BookFilters {
 
     /**
      * A simple default filter that returns everything
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getAll() {
@@ -47,7 +47,7 @@ public final class BookFilters {
     /**
      * A filter that accepts everything that implements Bible or Commentary,
      * when commentaries are listed with Bibles.
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getBibles() {
@@ -59,7 +59,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements Bible.
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getOnlyBibles() {
@@ -69,7 +69,7 @@ public final class BookFilters {
     /**
      * A filter that accepts everything that's not a Bible or a Commentary, when
      * commentaries are listed with Bibles.
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getNonBibles() {
@@ -81,7 +81,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getDictionaries() {
@@ -90,7 +90,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getGlossaries() {
@@ -99,7 +99,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements DailyDevotionals
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getDailyDevotionals() {
@@ -108,7 +108,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements Commentary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getCommentaries() {
@@ -117,7 +117,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements GeneralBook
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getGeneralBooks() {
@@ -126,7 +126,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that implements Maps
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getMaps() {
@@ -144,7 +144,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that is a Greek Definition Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getGreekDefinitions() {
@@ -154,7 +154,7 @@ public final class BookFilters {
     /**
      * A filter that accepts everything that is a Greek Parse/Morphology
      * Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getGreekParse() {
@@ -163,7 +163,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts everything that is a Hebrew Definition Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getHebrewDefinitions() {
@@ -173,7 +173,7 @@ public final class BookFilters {
     /**
      * A filter that accepts everything that is a Hebrew Parse/Morphology
      * Dictionary
-     * 
+     *
      * @return the desired filter
      */
     public static BookFilter getHebrewParse() {
@@ -225,7 +225,7 @@ public final class BookFilters {
             this.category = category;
         }
 
-       /* (non-Javadoc)
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
          */
         public boolean test(Book book) {
@@ -273,7 +273,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts Books that match two criteria.
-     * 
+     *
      * @param b1 the first filter criteria
      * @param b2 the second filter criteria
      * @return the desired filter
@@ -288,7 +288,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts Books that match either of two criteria.
-     * 
+     *
      * @param b1 the first filter criteria
      * @param b2 the second filter criteria
      * @return the desired filter
@@ -303,7 +303,7 @@ public final class BookFilters {
 
     /**
      * A filter that accepts Books that match by book driver.
-     * 
+     *
      * @param driver the driver to match
      * @return the desired filter
      */
@@ -364,8 +364,18 @@ public final class BookFilters {
                     }
                     continue;
                 }
-                String result = book.getProperty(test.property);
-                if (result == null || !test.result.equals(result)) {
+                Object property = book.getProperty(test.property);
+                if (property == null) {
+                    return false;
+                }
+                String result = property.toString();
+                if (result.indexOf('\n') > -1) {
+                    // There's more than one value.
+                    if ((result.contains(test.result)) != test.expected) {
+                        return false;
+                    }
+                }
+                else if (test.result.equals(result) != test.expected) {
                     return false;
                 }
             }
@@ -382,18 +392,27 @@ public final class BookFilters {
             protected Test(String filter) {
                 String[] parts = filter.split("=");
                 if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0) {
-                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filter);
+                    throw new IllegalArgumentException("Filter format is 'property=value' or property!=value, given: " + filter);
                 }
-                this.property = parts[0];
-                this.result = parts[1];
-
+                property = parts[0];
+                result = parts[1];
+                int len = property.length();
+                this.expected = (property.charAt(len - 1) != '!');
+                if (!expected) {
+                    property = property.substring(0, len - 1);
+                }
             }
-            protected Test(String property, String result) {
+            protected Test(String property, String result, boolean expected) {
                 this.property = property;
                 this.result = result;
+                this.expected = expected;
+            }
+            protected Test(String property, String result) {
+                this(property, result, true);
             }
             protected String property;
             protected String result;
+            protected boolean expected;
         }
     }
 }

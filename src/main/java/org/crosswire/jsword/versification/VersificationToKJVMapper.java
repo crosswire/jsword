@@ -652,6 +652,8 @@ public class VersificationToKJVMapper {
     private Map<VerseKey, List<QualifiedKey>> toKJVMappings;
     private Map<QualifiedKey, Passage> fromKJVMappings;
     private boolean hasErrors;
+    
+    private OsisParser osisParser = new OsisParser();
 
     private OsisParser osisParser = new OsisParser();
 

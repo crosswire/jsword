@@ -82,12 +82,11 @@ public class OSISFilter implements SourceFilter {
                 clean = "<div><div><div><div>"+clean;
             }
         } else */
-        if ("MapM".equals(book.getInitials())) {
-            for (String tag : Arrays.asList("cell", "row", "table")) {
-                int startPos = clean.indexOf("<" + tag + ">");
-                int endPos = clean.indexOf("</" + tag + ">");
+        if (book.getInitials().equals("MapM")) {
+            for(String tag : Arrays.asList("cell", "row", "table")) {
+                int startPos = clean.indexOf("<"+tag+">"), endPos = clean.indexOf("</"+tag+">");
                 if (endPos != -1 && (startPos == -1 || startPos > endPos)) {
-                    clean = "<" + tag + ">" + clean;
+                    clean = "<"+tag+">"+clean;
                 }
             }
         }
@@ -209,6 +208,26 @@ public class OSISFilter implements SourceFilter {
     // space for 32 re-usable sax builders, but doesn't bound the number available to the callers
     private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
 
+    /**
+     * Pattern to find the start of a div. Used to convert to a milestoned version.
+     */
+    private static final Pattern DIV_START = Pattern.compile("<div>", Pattern.LITERAL);
+    /**
+     * Pattern to find the end of a div. Used to convert to a milestoned version.
+     */
+    private static final Pattern DIV_END = Pattern.compile("</div>", Pattern.LITERAL);
+    /**
+     * Pattern to find the end of a chapter. Used to convert to a milestoned version.
+     */
+    private static final Pattern CHAPTER_END = Pattern.compile("</chapter>", Pattern.LITERAL);
+    /**
+     * Pattern to find the start of a speech. Used to convert to a milestoned version.
+     */
+    private static final Pattern SPEECH_START = Pattern.compile("<speech>", Pattern.LITERAL);
+    /**
+     * Pattern to find the end of a speech. Used to convert to a milestoned version.
+     */
+    private static final Pattern SPEECH_END = Pattern.compile("</speech>", Pattern.LITERAL);
     /**
      * Pattern to find the start of a div. Used to convert to a milestoned version.
      */

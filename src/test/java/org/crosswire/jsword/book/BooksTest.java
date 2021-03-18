@@ -19,6 +19,11 @@
  */
 package org.crosswire.jsword.book;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
@@ -123,7 +128,7 @@ public class BooksTest {
     /** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
      * This tests the deduplication code in AbstractPassageBook.
      *
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     public void testBookList() throws Exception {
@@ -137,7 +142,7 @@ public class BooksTest {
      * Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
      * This tests the deduplication code in AbstractPassageBook.
      *
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     public void testLinkedVersesNotDuplicated() throws Exception {
@@ -155,10 +160,10 @@ public class BooksTest {
         }
     }
 
-    /** 
+    /**
      * Books like Josephus have hierarchical chapters.  Only the current chapter should be returned, not child chapters.
-     * 
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Test
     public void testHierarchicalBook() throws Exception {
@@ -171,7 +176,7 @@ public class BooksTest {
             String prefaceText = josephus.getRawText(prefaceKey);
             Assert.assertFalse("Child keys returned in raw text", prefaceText.contains(section1Text));
 
-            // Now attempt to parse a key but get the problem is that all child text is returned too 
+            // Now attempt to parse a key but get the problem is that all child text is returned too
             BookData bookData = new BookData(josephus, prefaceKey);
             final Element osisFragment = bookData.getOsisFragment();
 
@@ -180,6 +185,31 @@ public class BooksTest {
             Assert.assertFalse("Child keys returned in xml", prefaceXml.contains(section1Text));
         }
     }
+
+    /**
+     * Books like Josephus have hierarchical chapters.  Only the current chapter should be returned, not child chapters.
+     */
+    @Test
+    public void testHierarchicalBook() throws Exception {
+        Book josephus = Books.installed().getBook("Josephus");
+        String Section1Text = "THOSE who undertake to write histories";
+        if (josephus != null) {
+            // navigate down to the Preface
+            Key theAntiquitiesOfTheJewsKey = josephus.getGlobalKeyList().get(1);
+            Key prefaceKey = theAntiquitiesOfTheJewsKey.get(0);
+            String prefaceText = josephus.getRawText(prefaceKey);
+            assertFalse("Child keys returned in raw text", prefaceText.contains(Section1Text));
+
+            // Now attempt to parse a key but get the problem is that all child text is returned too
+            BookData bookData = new BookData(josephus, prefaceKey);
+            final Element osisFragment = bookData.getOsisFragment();
+
+            final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+            String prefaceXml = xmlOutputter.outputString(osisFragment);
+            assertFalse("Child keys returned in xml", prefaceXml.contains(Section1Text));
+        }
+    }
+
     /*
      * FIXME: These are only valid if all bibles are English public void
      * testGetFind() throws Exception { // This only checks that find() does

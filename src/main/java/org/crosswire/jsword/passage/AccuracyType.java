@@ -61,7 +61,7 @@ import org.crosswire.jsword.versification.Versification;
  * of a verse that is the end of a range, it is interpreted in the context of
  * the range's start.
  * </p>
- * 
+ *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Joe Walker
  * @author DM Smith
@@ -350,7 +350,7 @@ public enum AccuracyType {
 
     /**
      * Get an integer representation for this AccuracyType
-     * 
+     *
      * @return the ordinal representation
      */
     public int toInteger() {
@@ -412,7 +412,7 @@ public enum AccuracyType {
      * 
      * @param v11n
      *            the versification to which this reference pertains
-     * @param original 
+     * @param original
      * @param parts
      * @param verseAccuracy
      * @param basis
@@ -422,7 +422,7 @@ public enum AccuracyType {
     public static AccuracyType fromText(Versification v11n, String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         int partsLength = parts.length;
         String lastPart = parts[partsLength - 1];
-        if (lastPart.length() > 0 && lastPart.charAt(0) == '!') {
+        if (lastPart.length()>0 && lastPart.charAt(0) == '!') {
             --partsLength;
         }
         switch (partsLength) {

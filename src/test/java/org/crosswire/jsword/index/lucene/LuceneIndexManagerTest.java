@@ -20,6 +20,7 @@
 package org.crosswire.jsword.index.lucene;
 
 import org.crosswire.common.util.NetUtil;
+
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;

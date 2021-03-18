@@ -600,6 +600,13 @@ public final class Verse implements VerseKey<Verse> {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
+        blur(by, restrict, true, true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType, boolean, boolean)
+     */
+    public void blur(int by, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         throw new UnsupportedOperationException();
     }
 

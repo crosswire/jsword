@@ -44,7 +44,7 @@ public final class IndexMetadata {
     public static final float INDEX_VERSION_1_2 = 1.2f;
     /**
      * A prior version.
-     * 
+     *
      * @deprecated do not use
      */
     @Deprecated
@@ -71,7 +71,7 @@ public final class IndexMetadata {
 
     /**
      * default Installed IndexVersion
-     * 
+     *
      * @return the index version
      * @deprecated see InstalledIndex.java
      */
@@ -88,6 +88,10 @@ public final class IndexMetadata {
         String value = props.get(LATEST_INDEX_VERSION, "1.2");
         return Float.parseFloat(value);
     }
+    public String getLatestIndexVersionStr() {
+        String value = props.get(LATEST_INDEX_VERSION, "1.2");
+        return value;
+    }
 
     public float getLatestIndexVersion(Book b) {
         if (b == null) {
@@ -99,26 +103,18 @@ public final class IndexMetadata {
         return Float.parseFloat(value);
     }
 
-    public String getLatestIndexVersionStr() {
-        String value = props.get(LATEST_INDEX_VERSION, "1.2");
-        return value;
-    }
-
     // used in property keys e.g. Installed.Index.Version.Book.ESV[1.0.1]
     public static String getBookIdentifierPropSuffix(BookMetaData meta) {
         String moduleVer = null;
-        if (meta.getProperty("Version") != null) {
-            moduleVer = '[' + meta.getProperty("Version") + ']';
-        }
+        if(meta.getProperty("Version") !=null)
+            moduleVer = '['+ ((org.crosswire.common.util.Version)meta.getProperty("Version")).toString()+']';
 
         return meta.getInitials() + moduleVer;
-
     }
 
     public float getLuceneVersion() {
         return Float.parseFloat(props.get(LUCENE_VERSION));
     }
-
     private IndexMetadata() {
         try {
             props = ResourceUtil.getProperties(getClass());
@@ -126,7 +122,6 @@ public final class IndexMetadata {
             log.error("Property file read error", e);
         }
     }
-
     // a index status summary in English
     public static String generateInstalledBooksIndexVersionReport(BookFilter filter) {
         StringBuilder toReturn = new StringBuilder();

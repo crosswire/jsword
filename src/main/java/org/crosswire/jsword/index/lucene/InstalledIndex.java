@@ -19,17 +19,13 @@
  */
 package org.crosswire.jsword.index.lucene;
 
-import java.io.IOException;
-import java.net.URI;
-
-import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.PropertyMap;
+import org.crosswire.common.util.*;
 import org.crosswire.jsword.book.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URI;
 
 /*
  * TODO(Sijo): do we need method reindexAllInstalledBooks() ? :
@@ -98,7 +94,11 @@ public final class InstalledIndex {
             props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE + IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     String.valueOf(IndexMetadata.instance().getLatestIndexVersion(b)));
 
-            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            try {
+                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            } catch (IOException e) {
+                log.error("Failed to store InstalledIndex metadata ", e);
+            }
         }
     }
 
@@ -107,13 +107,16 @@ public final class InstalledIndex {
     }
 
     protected void storeInstalledIndexMetadata() throws IOException {
-        synchronized (writeLock) {
-            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+        try {
+            synchronized (writeLock) {
+                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            }
+        } catch (IOException e) {
+            log.error("Failed to store InstalledIndex metadata ", e);
         }
     }
 
     private InstalledIndex() {
-        props = new PropertyMap();
         URI propURI = getPropertyFileURI();
         try {
             // props = ResourceUtil.getProperties(getClass());
@@ -122,8 +125,9 @@ public final class InstalledIndex {
                 props = NetUtil.loadProperties(propURI);
             }
 
-            /* Initial values if prop file empty */
-            if (props.size() == 0) {
+            /* Initial values if prop file non--existent */
+            if (props==null || props.size() == 0) {
+                props = new PropertyMap();
                 props.put(INSTALLED_INDEX_DEFAULT_VERSION, String.valueOf(DEFAULT_INSTALLED_INDEX_VERSION));
                 storeInstalledIndexMetadata();
             }
@@ -138,7 +142,7 @@ public final class InstalledIndex {
      * If all the installed books indices have been upgraded/downloaded, client
      * can pass in property InstalledIndex.INSTALLED_INDEX_DEFAULT_VERSION =
      * &lt;VersionToStore&gt;, for e.g for client managed downloadable index
-     * 
+     *
      * @param updateProps
      * @throws IOException
      */
@@ -146,7 +150,11 @@ public final class InstalledIndex {
 
         synchronized (writeLock) {
             props.putAll(updateProps);
-            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            try {
+                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            } catch (IOException e) {
+                log.error("Failed to store InstalledIndex metadata ", e);
+            }
         }
     }
 
@@ -158,8 +166,11 @@ public final class InstalledIndex {
 
             props.put(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE + IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()),
                     installedIndexVersionToStore);
-
-            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            try {
+                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            } catch (IOException e) {
+                log.error("Failed to store InstalledIndex metadata ", e);
+            }
         }
     }
 
@@ -169,7 +180,11 @@ public final class InstalledIndex {
 
             props.remove(PREFIX_INSTALLED_INDEX_VERSION_BOOK_OVERRIDE + IndexMetadata.getBookIdentifierPropSuffix(b.getBookMetaData()));
 
-            NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            try {
+                NetUtil.storeProperties(props, getPropertyFileURI(), metadataFileComment);
+            } catch (IOException e) {
+                log.error("Failed to store removed Index metadata ", e);
+            }
         }
     }
 
