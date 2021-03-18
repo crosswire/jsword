@@ -89,35 +89,4 @@ public class BookMetaDataTest {
             e.printStackTrace();
         }
     }
-
-    @Test
-    public void testSortOrderIsByInitials() {
-        String kjvMetaData = "[KJV]\nDataPath=./modules/texts/ztext/kjv/\nModDrv=zText\nEncoding=UTF-8\nBlockType=BOOK\nCompressType=ZIP\nSourceType=OSIS\nLang=en\nVersion=2.3\nDescription=King James Version (1769) with Strongs Numbers and Morphology\nLCSH=Bible. English.\n";
-        // Desc starts with 'The...' but initials are 'Common' so comes first if sorted by initials
-        String commonMetaData = "[Common]\nDataPath=./modules/texts/ztext/common/\nModDrv=zText\nEncoding=UTF-8\nBlockType=BOOK\nCompressType=ZIP\nSourceType=OSIS\nLang=en\nVersion=2.3\nDescription=The Common Edition: New Testament\nLCSH=Bible. English.\n";
-        // Ensure sort is case insensitive
-        String aaaMetaData = "[aaa]\nDataPath=./modules/texts/ztext/common/\nModDrv=zText\nEncoding=UTF-8\nBlockType=BOOK\nCompressType=ZIP\nSourceType=OSIS\nLang=en\nVersion=2.3\nDescription=aaa aaa aaa\nLCSH=Bible. English.\n";
-        try {
-            // create some book meta data
-            BookMetaData bmKJV = new SwordBookMetaData(kjvMetaData.getBytes(), "KJV");
-            BookMetaData bmCommon = new SwordBookMetaData(commonMetaData.getBytes(), "Common");
-            BookMetaData bmaaa = new SwordBookMetaData(aaaMetaData.getBytes(), "aaa");
-
-            // sort them
-            List<BookMetaData> mdList = new ArrayList<BookMetaData>();
-            mdList.add(bmKJV);
-            mdList.add(bmCommon);
-            mdList.add(bmaaa);
-            Collections.sort(mdList);
-
-            // ensure the book order is as expected
-            assertEquals("aaa should be first in sorted book list", bmaaa, mdList.get(0));
-            assertEquals("Common should be second in sorted book list", bmCommon, mdList.get(1));
-            assertEquals("KJV should be last in sorted book list", bmKJV, mdList.get(2));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

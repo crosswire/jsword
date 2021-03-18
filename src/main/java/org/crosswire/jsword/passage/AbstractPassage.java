@@ -626,7 +626,7 @@ public abstract class AbstractPassage implements Passage {
         Iterator<VerseRange> it = temp.rangeIterator(RestrictionType.NONE);
 
         while (it.hasNext()) {
-            VerseRange range = restrict.blur(getVersification(), (VerseRange) it.next(), blurDown ? verses : 0, blurUp ? verses : 0);
+            VerseRange range = restrict.blur(getVersification(), it.next(), blurDown ? verses : 0, blurUp ? verses : 0);
             add(range);
         }
 

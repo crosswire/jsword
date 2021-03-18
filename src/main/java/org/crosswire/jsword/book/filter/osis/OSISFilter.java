@@ -228,24 +228,4 @@ public class OSISFilter implements SourceFilter {
      * Pattern to find the end of a speech. Used to convert to a milestoned version.
      */
     private static final Pattern SPEECH_END = Pattern.compile("</speech>", Pattern.LITERAL);
-    /**
-     * Pattern to find the start of a div. Used to convert to a milestoned version.
-     */
-    private static final Pattern DIV_START = Pattern.compile("<div>", Pattern.LITERAL);
-    /**
-     * Pattern to find the end of a div. Used to convert to a milestoned version.
-     */
-    private static final Pattern DIV_END = Pattern.compile("</div>", Pattern.LITERAL);
-    /**
-     * Pattern to find the end of a chapter. Used to convert to a milestoned version.
-     */
-    private static final Pattern CHAPTER_END = Pattern.compile("</chapter>", Pattern.LITERAL);
-    /**
-     * Pattern to find the start of a speech. Used to convert to a milestoned version.
-     */
-    private static final Pattern SPEECH_START = Pattern.compile("<speech>", Pattern.LITERAL);
-    /**
-     * Pattern to find the end of a speech. Used to convert to a milestoned version.
-     */
-    private static final Pattern SPEECH_END = Pattern.compile("</speech>", Pattern.LITERAL);
 }

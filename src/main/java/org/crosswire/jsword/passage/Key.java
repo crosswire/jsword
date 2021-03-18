@@ -62,15 +62,6 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
     String getName(Key base);
 
     /**
-     * A Human readable version of the Key's top level name. For Biblical
-     * passages this uses short books names. For a dictionary it might return
-     * A-Z.
-     *
-     * @return a String containing a description of the Key
-     */
-    String getRootName();
-
-    /**
      * The OSIS defined reference specification for this Key. When the key is a
      * single element, it is an OSIS book name with '.' separating the parts.
      * When the key is multiple elements, it uses a range notation. Note, this

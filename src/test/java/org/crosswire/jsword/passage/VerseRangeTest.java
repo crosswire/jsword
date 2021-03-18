@@ -686,9 +686,4 @@ public class VerseRangeTest {
     public void testIntersection() {
         Assert.assertTrue(VerseRange.intersection(rangeGenC0V0toEnd, rangeGenC0V0toExoEnd).contains(rangeGenC0V0toEnd));
     }
-
-    @Test
-    public void testIntersection() {
-        assertTrue(VerseRange.intersection(gen_all, gen_exo).contains(gen_all));
-    }
 }

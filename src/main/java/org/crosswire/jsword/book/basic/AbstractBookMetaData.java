@@ -247,10 +247,10 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         int result = this.getBookCategory().compareTo(obj.getBookCategory());
         if (result == 0) {
             // module names normally (always?) use English characters so ignore case should be fine
-            result = this.getInitials().compareToIgnoreCase(obj.getInitials());
+            result = this.getAbbreviation().compareToIgnoreCase(obj.getAbbreviation());
         }
         if (result == 0) {
-            result = this.getName().compareTo(obj.getName());
+            result = this.getInitials().compareTo(obj.getInitials());
         }
         if (result == 0) {
             result = this.getName().compareTo(obj.getName());

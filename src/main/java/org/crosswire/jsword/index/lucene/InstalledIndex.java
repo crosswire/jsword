@@ -117,6 +117,7 @@ public final class InstalledIndex {
     }
 
     private InstalledIndex() {
+        props = new PropertyMap();
         URI propURI = getPropertyFileURI();
         try {
             // props = ResourceUtil.getProperties(getClass());

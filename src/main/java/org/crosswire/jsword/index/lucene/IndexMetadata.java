@@ -107,7 +107,7 @@ public final class IndexMetadata {
     public static String getBookIdentifierPropSuffix(BookMetaData meta) {
         String moduleVer = null;
         if(meta.getProperty("Version") !=null)
-            moduleVer = '['+ ((org.crosswire.common.util.Version)meta.getProperty("Version")).toString()+']';
+            moduleVer = '['+ meta.getProperty("Version")+']';
 
         return meta.getInitials() + moduleVer;
     }

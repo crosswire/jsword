@@ -655,8 +655,6 @@ public class VersificationToKJVMapper {
     
     private OsisParser osisParser = new OsisParser();
 
-    private OsisParser osisParser = new OsisParser();
-
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationToKJVMapper.class);
 }

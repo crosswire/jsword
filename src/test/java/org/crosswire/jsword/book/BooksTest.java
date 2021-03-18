@@ -186,30 +186,6 @@ public class BooksTest {
         }
     }
 
-    /**
-     * Books like Josephus have hierarchical chapters.  Only the current chapter should be returned, not child chapters.
-     */
-    @Test
-    public void testHierarchicalBook() throws Exception {
-        Book josephus = Books.installed().getBook("Josephus");
-        String Section1Text = "THOSE who undertake to write histories";
-        if (josephus != null) {
-            // navigate down to the Preface
-            Key theAntiquitiesOfTheJewsKey = josephus.getGlobalKeyList().get(1);
-            Key prefaceKey = theAntiquitiesOfTheJewsKey.get(0);
-            String prefaceText = josephus.getRawText(prefaceKey);
-            assertFalse("Child keys returned in raw text", prefaceText.contains(Section1Text));
-
-            // Now attempt to parse a key but get the problem is that all child text is returned too
-            BookData bookData = new BookData(josephus, prefaceKey);
-            final Element osisFragment = bookData.getOsisFragment();
-
-            final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-            String prefaceXml = xmlOutputter.outputString(osisFragment);
-            assertFalse("Child keys returned in xml", prefaceXml.contains(Section1Text));
-        }
-    }
-
     /*
      * FIXME: These are only valid if all bibles are English public void
      * testGetFind() throws Exception { // This only checks that find() does
