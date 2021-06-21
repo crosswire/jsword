@@ -216,10 +216,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         return null;
     }
 
+    public void install(final Book book) throws InstallException {
+        install(book, null);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */
-    public void install(final Book book) throws InstallException {
+    public void install(final Book book, String jobId) throws InstallException {
         // // Is the book already installed? Then nothing to do.
         // if (Books.installed().getBook(book.getName()) != null)
         // {
@@ -230,7 +234,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
         String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
-        Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, Thread.currentThread());
+        if(jobId == null) {
+            jobId = String.format(Progress.INSTALL_BOOK, book.getInitials());
+        }
+        Progress job = JobManager.createJob(jobId, jobName, Thread.currentThread());
 
         URI temp = null;
         String fileName = null;
