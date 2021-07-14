@@ -233,6 +233,7 @@ public class SwordBook extends AbstractPassageBook {
                 String name = ele.getName();
                 if (OSISUtil.OSIS_ELEMENT_VERSE.equals(name)) {
                     wrapped = true;
+                    ele.setAttribute("verseOrdinal", String.valueOf(KeyUtil.getVerse(key).getOrdinal()));
                     continue;
                 }
                 Attribute typeAttr = ele.getAttribute(OSISUtil.OSIS_ATTR_TYPE);
