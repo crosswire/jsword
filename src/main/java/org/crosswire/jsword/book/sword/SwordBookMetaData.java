@@ -1180,7 +1180,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
         }
         public boolean test(String key) {
-            return keepers.contains(key);
+            return keepers.contains(key) || key.startsWith("AndBible");
         }
         private Set keepers;
     }
