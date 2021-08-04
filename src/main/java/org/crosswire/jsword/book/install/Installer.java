@@ -111,6 +111,8 @@ public interface Installer extends BookList {
      */
     void reloadBookList() throws InstallException;
 
+    public Long indexLastUpdated();
+
     /**
      * Download and install a book locally. The name should be one from an index
      * list retrieved from getIndex() or reloadIndex()

@@ -27,6 +27,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.install.InstallException;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -85,6 +86,19 @@ public class HttpsSwordInstaller extends AbstractSwordInstaller {
         } catch (LucidException ex) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
             throw new InstallException(JSMsg.gettext("Unable to find: {0}", uri.toString()), ex);
+        }
+    }
+
+    @Override
+    public Long indexLastUpdated() {
+        try {
+            URI uri = new URI(NetUtil.PROTOCOL_HTTPS, host, catalogDirectory + "/" + FILE_LIST_GZ, null);
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection)uri.toURL().openConnection();
+            Long lastModified = httpsURLConnection.getLastModified();
+            httpsURLConnection.disconnect();
+            return lastModified;
+        } catch (Exception e) {
+            return 0L;
         }
     }
 
