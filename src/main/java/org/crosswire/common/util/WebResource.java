@@ -21,6 +21,7 @@ package org.crosswire.common.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Date;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.book.install.DownloadCancelledException;
 import org.crosswire.jsword.book.install.DownloadException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -258,6 +260,8 @@ public class WebResource {
                 out.write(buf, 0, count);
                 count = in.read(buf);
             }
+        } catch (InterruptedIOException e) {
+            throw new DownloadCancelledException(uri);
         } catch (IOException e) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
