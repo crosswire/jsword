@@ -49,7 +49,7 @@ public class SwordDictionary extends AbstractBook {
      * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
-    protected SwordDictionary(SwordBookMetaData sbmd, Backend backend) {
+    public SwordDictionary(SwordBookMetaData sbmd, Backend backend) {
         super(sbmd, backend);
 
         if (!(backend instanceof AbstractKeyBackend)) {
