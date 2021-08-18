@@ -299,13 +299,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * Get the BookName.
      *
      * @param book the desired book
-     * @return The requested BookName or null if not in this versification
+     * @return The requested BookName
      */
     public BookName getBookName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getBookName(book);
-        }
-        return null;
+        return BibleNames.instance().getBookName(book);
     }
 
     /**
@@ -313,13 +310,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * setBookCase() and isFullBookName())
      *
      * @param book the desired book
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     public String getPreferredName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getPreferredName(book);
-        }
-        return null;
+        return BibleNames.instance().getPreferredName(book);
       }
 
     /**
@@ -328,16 +322,13 @@ public class Versification implements ReferenceSystem, Serializable {
      *
      * @param book the desired book
      * @param locale the desired locale for book name. If left null, returns with default locale
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     public String getPreferredNameInLocale(BibleBook book, Locale locale) {
-        if (containsBook(book)) {
-            if (locale != null) {
-                return BibleNames.instance().getPreferredNameInLocale(book, locale);
-            }
-            return BibleNames.instance().getPreferredName(book);
+        if (locale != null) {
+            return BibleNames.instance().getPreferredNameInLocale(book, locale);
         }
-        return null;
+        return BibleNames.instance().getPreferredName(book);
     }
 
     /**
@@ -345,13 +336,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     public String getLongName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getLongName(book);
-        }
-        return null;
+        return BibleNames.instance().getLongName(book);
       }
 
     /**
@@ -359,13 +347,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The short name of the book or null if not in this versification
+     * @return The short name of the book
      */
     public String getShortName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getShortName(book);
-        }
-        return null;
+        return BibleNames.instance().getShortName(book);
       }
 
     /**
