@@ -62,7 +62,7 @@ public class DwrBridgeMissingAssetsTest {
                     verse);
             String hdef = dwrBridge.getOSISString("StrongsHebrew", "H07225", 0, 100);
             Assert.assertEquals(
-                    "<div><title type=\"x-gen\">07225</title>7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>",
+                    "<div><title type=\"x-gen\">07225</title>07225\\<lb></lb> 7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>",
                     hdef);
         } catch (BookException e) {
             Assert.fail(e.getDetailedMessage());
