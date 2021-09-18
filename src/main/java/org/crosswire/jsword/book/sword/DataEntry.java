@@ -151,7 +151,7 @@ public class DataEntry {
      * @return the raw text
      */
     public String getRawText(byte[] cipherKey) {
-        int textStart = keyEnd + 1;
+        int textStart = 0; //keyEnd + 1;
         cipher(cipherKey, textStart);
         return SwordUtil.decode(name, data, textStart, data.length - textStart, charset).trim();
     }
