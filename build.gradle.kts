@@ -1,6 +1,6 @@
 plugins {
     java
-    maven
+    `maven-publish`
 //    id("org.jetbrains.kotlin.jvm") version '1.4.10'
 }
 
