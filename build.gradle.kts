@@ -1,14 +1,11 @@
 plugins {
-    id 'java'
-    id 'maven'
-//    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    java
+    maven
+//    id("org.jetbrains.kotlin.jvm") version '1.4.10'
 }
 
 
-compileJava {
-    options.encoding = "UTF-8"
-}
-compileTestJava {
+tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
 }
 
