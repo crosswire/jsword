@@ -25,7 +25,7 @@ dependencies {
     implementation("org.jdom:jdom2:2.0.6")
     implementation("org.apache.lucene:lucene-analyzers:3.6.2")
 
-    //implementation "org.slf4j:slf4j-api:1.7.6"
+    //implementation("org.slf4j:slf4j-api:1.7.6")
     if(project.hasProperty("tests")) {
         implementation("org.slf4j:slf4j-api:1.7.6")
     } else {
