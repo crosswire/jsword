@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
@@ -149,10 +150,11 @@ public class SwordDictionary extends AbstractBook {
 
         int pos = keyBackend.indexOf(new DefaultLeafKeyList(text));
         if (pos < 0) {
-            if (keyBackend.getCardinality() > -pos - 1) {
-                return keyBackend.get(-pos - 1);
-            }
-            return keyBackend.get(keyBackend.getCardinality() - 1);
+            throw new NoSuchKeyException(JSMsg.gettext("No entry for '{0}' in {1}.", text, getInitials()));
+            //if (keyBackend.getCardinality() > -pos - 1) {
+            //    return keyBackend.get(-pos - 1);
+            //}
+            //return keyBackend.get(keyBackend.getCardinality() - 1);
         }
         return keyBackend.get(pos);
     }
