@@ -1027,8 +1027,12 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             for (int i = 0; i < count; i++) {
                 String value = config.get(key, i);
 
+                if(!key.startsWith("AndBible")) {
+                    // Disable all checking for AndBible custom keys.
+                    continue;
+                }
                 // If it is still unknown, report and skip
-                if (type == null && !key.startsWith("AndBible")) {
+                if (type == null) {
                     buf.append("Unknown entry: ").append(key).append(" = ").append(value).append('\n');
                     continue;
                 }
