@@ -33,3 +33,12 @@ dependencies {
     }
     testImplementation("junit:junit:4.13")
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            }
+        }
+    }
+
