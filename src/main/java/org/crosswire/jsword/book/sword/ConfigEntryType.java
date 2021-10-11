@@ -505,7 +505,8 @@ import org.crosswire.jsword.book.BookMetaData;
         "Biblical Texts",
         "Commentaries",
         "Lexicons / Dictionaries",
-        "Generic Books"
+        "Generic Books",
+        "And Bible"
     )
     {
         @Override

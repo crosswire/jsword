@@ -311,7 +311,7 @@
     <module name="OneStatementPerLine"/>
     <module name="OverloadMethodsDeclarationOrder"/>
     <module name="PackageDeclaration"/>
-    <!--  <module name="ParameterAssignment"/>
+    <!--  <module name="ParameterAssignment"/> -->
     <!-- JSword does not require "this"
     <module name="RequireThis"/>
     -->
