@@ -24,6 +24,8 @@ dependencies {
 
     implementation("org.jdom:jdom2:2.0.6")
     implementation("org.apache.lucene:lucene-analyzers:3.6.2")
+    // To upgrade Lucene, change to
+    // implementation("org.apache.lucene:lucene-analyzers-common:x")
 
     //implementation("org.slf4j:slf4j-api:1.7.6")
     if(project.hasProperty("tests")) {
