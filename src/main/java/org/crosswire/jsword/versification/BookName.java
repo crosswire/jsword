@@ -24,8 +24,6 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * BookName represents the different ways a book of the bible is named.
@@ -286,7 +284,6 @@ public final class BookName {
      * @see #isFullBookName()
      */
     public static void setFullBookName(boolean fullName) {
-        LOGGER.error(String.format("setFullBookName %b", fullName), new Exception());
         BookName.fullBookName = fullName;
     }
 
@@ -318,5 +315,5 @@ public final class BookName {
 
     /** Whether long or short, full or abbreviated names are used. */
     private static boolean fullBookName = true;
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookName.class);
+
 }
