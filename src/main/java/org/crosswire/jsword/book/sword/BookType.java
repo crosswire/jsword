@@ -25,6 +25,9 @@ import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.KeyType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Data about book types.
  * 
@@ -32,12 +35,11 @@ import org.crosswire.jsword.book.KeyType;
  * @author Joe Walker
  * @author DM Smith
  */
-public enum BookType {
+public abstract class BookType {
     /**
      * Uncompressed Bibles
      */
-    RAW_TEXT ("RawText", BookCategory.BIBLE, KeyType.VERSE) {
-
+    static BookType rawText = new BookType("RawText", BookCategory.BIBLE, KeyType.VERSE) {
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
@@ -47,12 +49,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
-    },
+    };
 
     /**
      * Compressed Bibles
      */
-    Z_TEXT ("zText", BookCategory.BIBLE, KeyType.VERSE) {
+    static BookType zText = new BookType("zText", BookCategory.BIBLE, KeyType.VERSE) {
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
@@ -63,12 +65,12 @@ public enum BookType {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType, 2);
         }
-    },
+    };
 
     /**
      * Compressed Bibles
      */
-    Z_TEXT4 ("zText4", BookCategory.BIBLE, KeyType.VERSE) {
+    static BookType zText4 = new BookType("zText4", BookCategory.BIBLE, KeyType.VERSE) {
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
             return new SwordBook(sbmd, backend);
@@ -79,12 +81,12 @@ public enum BookType {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType, 4);
         }
-    },
+    };
 
     /**
      * Uncompressed Commentaries
      */
-    RAW_COM ("RawCom", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType rawCom = new BookType("RawCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -95,9 +97,9 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
-    },
+    };
 
-    RAW_COM4 ("RawCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType rawCom4 = new BookType("RawCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -108,12 +110,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 4);
         }
-    },
+    };
 
     /**
      * Compressed Commentaries
      */
-    Z_COM ("zCom", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType zCom = new BookType("zCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -125,12 +127,12 @@ public enum BookType {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType, 2);
         }
-    },
+    };
 
     /**
      * Compressed Commentaries
      */
-    Z_COM4 ("zCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType zCom4 = new BookType("zCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -142,12 +144,12 @@ public enum BookType {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType, 4);
         }
-    },
+    };
 
     /**
      * Uncompresses HREF Commentaries
      */
-    HREF_COM ("HREFCom", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType hrefCom = new BookType("HREFCom", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -158,12 +160,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
-    },
+    };
 
     /**
      * Uncompressed Commentaries
      */
-    RAW_FILES ("RawFiles", BookCategory.COMMENTARY, KeyType.VERSE) {
+    static BookType rawFiles = new BookType("RawFiles", BookCategory.COMMENTARY, KeyType.VERSE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -174,12 +176,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawFileBackend(sbmd, 2);
         }
-    },
+    };
 
     /**
      * 2-Byte Index Uncompressed Dictionaries
      */
-    RAW_LD ("RawLD", BookCategory.DICTIONARY, KeyType.LIST) {
+    static BookType rawLd = new BookType("RawLD", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -193,12 +195,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 2);
         }
-    },
+    };
 
     /**
      * 4-Byte Index Uncompressed Dictionaries
      */
-    RAW_LD4 ("RawLD4", BookCategory.DICTIONARY, KeyType.LIST) {
+    static BookType rawLd4 = new BookType("RawLD4", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -212,12 +214,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 4);
         }
-    },
+    };
 
     /**
      * Compressed Dictionaries
      */
-    Z_LD ("zLD", BookCategory.DICTIONARY, KeyType.LIST) {
+    static BookType zLd = new BookType("zLD", BookCategory.DICTIONARY, KeyType.LIST) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -231,12 +233,12 @@ public enum BookType {
         protected Backend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new ZLDBackend(sbmd);
         }
-    },
+    };
 
     /**
      * Generic Books
      */
-    RAW_GEN_BOOK ("RawGenBook", BookCategory.GENERAL_BOOK, KeyType.TREE) {
+    static BookType rawGenBook = new BookType("RawGenBook", BookCategory.GENERAL_BOOK, KeyType.TREE) {
 
         @Override
         protected Book getBook(SwordBookMetaData sbmd, Backend backend) {
@@ -248,6 +250,15 @@ public enum BookType {
             return new GenBookBackend(sbmd);
         }
     };
+
+    private static final ArrayList<BookType> supportedBookTypes = new ArrayList<>(Arrays.asList(
+        rawText, zText, zText4, rawCom, rawCom4, zCom, zCom4, hrefCom, rawFiles, rawLd,
+        rawLd4, zLd, rawGenBook)
+    );
+
+    static void addSupportedBookType(BookType b) {
+        supportedBookTypes.add(b);
+    }
 
     /**
      * Simple ctor
@@ -266,8 +277,8 @@ public enum BookType {
      * @return The found BookType or null if the name is not found
      */
     public static BookType getBookType(String name) {
-        for (BookType v : values()) {
-            if (v.name().equalsIgnoreCase(name)) {
+        for (BookType v : supportedBookTypes) {
+            if (v.name.equalsIgnoreCase(name)) {
                 return v;
             }
         }
@@ -348,7 +359,7 @@ public enum BookType {
      * @return the matching book type
      */
     public static BookType fromString(String name) {
-        for (BookType v : values()) {
+        for (BookType v : supportedBookTypes) {
             if (v.name.equalsIgnoreCase(name)) {
                 return v;
             }
