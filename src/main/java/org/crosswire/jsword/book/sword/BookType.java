@@ -256,7 +256,7 @@ public abstract class BookType {
         rawLd4, zLd, rawGenBook)
     );
 
-    static void addSupportedBookType(BookType b) {
+    public static void addSupportedBookType(BookType b) {
         supportedBookTypes.add(b);
     }
 
