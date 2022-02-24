@@ -263,7 +263,7 @@ public abstract class BookType {
     /**
      * Simple ctor
      */
-    BookType(String name, BookCategory category, KeyType type) {
+    public BookType(String name, BookCategory category, KeyType type) {
         this.name = name;
         this.category = category;
         this.keyType = type;
