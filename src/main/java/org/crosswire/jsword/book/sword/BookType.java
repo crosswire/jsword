@@ -364,8 +364,7 @@ public abstract class BookType {
                 return v;
             }
         }
-
-        throw new ClassCastException(JSOtherMsg.lookupText("DataType {0} is not defined!", name));
+        return null;
     }
 
     /* (non-Javadoc)
