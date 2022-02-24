@@ -905,7 +905,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         bookType = BookType.fromString(modTypeName);
         if (bookType == null) {
-            LOGGER.error("Book not supported: malformed conf file for [{}] no book type found", configAll.getName());
+            LOGGER.error("Book not supported: malformed conf file for [{}] no book type {} found", configAll.getName(), modTypeName);
             supported = false;
             return;
         }
