@@ -270,23 +270,6 @@ public abstract class BookType {
     }
 
     /**
-     * Find a BookType from a name.
-     * 
-     * @param name
-     *            The name of the BookType to look up
-     * @return The found BookType or null if the name is not found
-     */
-    public static BookType getBookType(String name) {
-        for (BookType v : supportedBookTypes) {
-            if (v.name.equalsIgnoreCase(name)) {
-                return v;
-            }
-        }
-
-        throw new IllegalArgumentException(JSOtherMsg.lookupText("BookType {0} is not defined!", name));
-    }
-
-    /**
      * The category of this book
      * 
      * @return the category of this book
