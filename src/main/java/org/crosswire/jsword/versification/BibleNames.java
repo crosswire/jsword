@@ -113,7 +113,6 @@ public final class BibleNames {
      */
     public BibleBook getBook(String find) {
         BibleBook book = null;
-        Locale en = new Locale("en");
         if (containsLetter(find)) {
             book = BibleBook.fromOSIS(find);
 
@@ -126,19 +125,11 @@ public final class BibleNames {
             }
 
             if (book == null) {
-                book = getBibleNamesForLocale(en).getBook(find, false);
-            }
-
-            if (book == null) {
                 book = getLocalizedBibleNames().getBook(find, true);
             }
 
             if (book == null) {
                 book = englishBibleNames.getBook(find, true);
-            }
-
-            if (book == null) {
-                book = getBibleNamesForLocale(en).getBook(find, true);
             }
         }
 
