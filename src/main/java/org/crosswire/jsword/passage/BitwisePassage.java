@@ -462,5 +462,5 @@ public class BitwisePassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    protected transient BitSet store;
+    public transient BitSet store;
 }
