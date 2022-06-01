@@ -228,7 +228,16 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                     continue;
                 }
 
-                int maxIndex = v11n.getCount(currentTestament) - 1;
+                int maxIndex = v11n.getCount(currentTestament);
+                // For unknown reason the following three books need to add 1 to the maxIndex.  If not the last verse (Rev 22:20 or Rev 22:21) will not be included.
+                if (currentTestament.equals(Testament.NEW)) //&&
+//                     ((this.getBookMetaData().getInitials().equals("KJVA")) ||
+//                      (this.getBookMetaData().getInitials().equals("KJV")) ||
+//                      (this.getBookMetaData().getInitials().equals("ESV_th")) ||
+//                      (this.getBookMetaData().getInitials().equals("NASB2020")) ||
+//                      (this.getBookMetaData().getInitials().equals("THGNT")) ||
+//                      (this.getBookMetaData().getInitials().equals("SBLG_th"))) )
+                    maxIndex ++;
 
                 // Read in the whole index, a few hundred Kb at most.
                 byte[] temp = SwordUtil.readRAF(idxRaf, 0, IDX_ENTRY_SIZE * maxIndex);
