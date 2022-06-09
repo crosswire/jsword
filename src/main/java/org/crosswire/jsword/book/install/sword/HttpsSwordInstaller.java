@@ -94,6 +94,8 @@ public class HttpsSwordInstaller extends AbstractSwordInstaller {
         try {
             URI uri = new URI(NetUtil.PROTOCOL_HTTPS, host, catalogDirectory + "/" + FILE_LIST_GZ, null);
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection)uri.toURL().openConnection();
+            httpsURLConnection.setConnectTimeout(WebResource.getTimeout());
+            httpsURLConnection.setReadTimeout(WebResource.getTimeout());
             Long lastModified = httpsURLConnection.getLastModified();
             httpsURLConnection.disconnect();
             return lastModified;
