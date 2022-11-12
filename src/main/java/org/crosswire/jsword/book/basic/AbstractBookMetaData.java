@@ -311,7 +311,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      */
     public void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
         throw new NotImplementedException();
-        return;
+        //return;
     }
 
     /**

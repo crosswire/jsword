@@ -206,7 +206,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     public VerseKey getScope() {
         // The following method is only available for Sword books
         throw new NotImplementedException();
-        return null;
+        //return null;
     }
 
 
