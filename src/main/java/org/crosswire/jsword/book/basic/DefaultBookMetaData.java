@@ -36,7 +36,7 @@ import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.passage.VerseKey;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//SM import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
@@ -205,8 +205,8 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
      */
     public VerseKey getScope() {
         // The following method is only available for Sword books
-        throw new NotImplementedException();
-        //return null;
+        //SM  throw new NotImplementedException();
+        return null;
     }
 
 
