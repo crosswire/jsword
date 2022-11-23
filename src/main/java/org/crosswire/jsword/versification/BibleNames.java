@@ -510,7 +510,7 @@ public final class BibleNames {
 
     /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */
     private transient Map<Locale, NameList> localizedBibleNames;
-    private Boolean enableFuzzy = false;
+    private Boolean enableFuzzy = true;
 
     /** English BibleNames, or null when using the program's default locale */
     private static NameList englishBibleNames;
