@@ -124,11 +124,11 @@ public final class BibleNames {
                 book = englishBibleNames.getBook(find, false);
             }
 
-            if (book == null) {
+            if (book == null && enableFuzzy) {
                 book = getLocalizedBibleNames().getBook(find, true);
             }
 
-            if (book == null) {
+            if (book == null && enableFuzzy) {
                 book = englishBibleNames.getBook(find, true);
             }
         }
@@ -211,6 +211,14 @@ public final class BibleNames {
         }
 
         return false;
+    }
+
+    public Boolean getEnableFuzzy() {
+        return enableFuzzy;
+    }
+
+    public void setEnableFuzzy(Boolean enableFuzzy) {
+        this.enableFuzzy = enableFuzzy;
     }
 
     /**
@@ -502,6 +510,7 @@ public final class BibleNames {
 
     /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */
     private transient Map<Locale, NameList> localizedBibleNames;
+    private Boolean enableFuzzy = false;
 
     /** English BibleNames, or null when using the program's default locale */
     private static NameList englishBibleNames;
