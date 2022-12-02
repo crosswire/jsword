@@ -31,7 +31,7 @@ import org.crosswire.jsword.book.sword.MetaFile;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom2.Document;
-//SM import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -310,8 +310,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * @throws IOException
      */
     public void save(ConfigEntryType entry, String value, MetaFile.Level level) throws IOException {
-        //SM throw new NotImplementedException();
-        return;
+        throw new NotImplementedException();
     }
 
     /**
