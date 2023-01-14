@@ -23,11 +23,14 @@ package org.crosswire.jsword.index.lucene;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -272,6 +275,38 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         }
     }
 
+    /**
+     * In Lucene 3.0.3, QueryParser doesn’t parse queries properly<b></b>
+     * It doesn't apply the analyzers if they were FuzzyQuery, WildcardQuery, PrefixQuery, RegexpQuery.<b></b>
+     * This method may be called to apply the analyser to the search string before calling QueryParser.parse()
+     *
+     * @param fieldName the search field
+     * @param search the search string
+     * @param analyzer the analyzer configured on QueryParser
+     * @return search string after applying the analyzer
+     * @throws IOException
+     */
+    private String analyze(final String fieldName, final String search, final Analyzer analyzer) throws IOException{
+        String result = "";
+
+        // make sure a terminating '*' is not stripped off
+        boolean wildcard = (search.charAt(search.length() - 1) == '*');
+        // Create a new token stream to process the search string
+        TokenStream tokenStream = analyzer.tokenStream(fieldName, new StringReader(search));
+        TermAttribute attr = tokenStream.addAttribute(TermAttribute.class);
+        tokenStream.reset();
+        // iterate through the stream tokens and concatenate separated by spaces
+        // NOTE: this assumes that terms are separated by spaces, if there is more than one term in the search string.
+        while(tokenStream.incrementToken()) {
+            result += (result.isEmpty())? attr.term() : (" " + attr.term());
+        }
+        // restore wildcard if needed
+        if(wildcard && (result.charAt(result.length() - 1) != '*'))
+            result += "*";
+
+        return result;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.Index#find(java.lang.String)
      */
@@ -289,7 +324,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
                 QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
-                Query query = parser.parse(search);
+                String analyzedSearch = analyze(LuceneIndex.FIELD_BODY, search, analyzer);
+                Query query = parser.parse(analyzedSearch);
                 //log.info("ParsedQuery- {}", query.toString());
 
                 // For ranking we use a PassageTally
