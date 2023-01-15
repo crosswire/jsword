@@ -286,23 +286,36 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @return search string after applying the analyzer
      * @throws IOException
      */
-    private String analyze(final String fieldName, final String search, final Analyzer analyzer) throws IOException{
+    private String analyze(final String fieldName, final String searchTerm, final Analyzer analyzer) throws IOException{
         String result = "";
 
-        // make sure a terminating '*' is not stripped off
-        boolean wildcard = (search.charAt(search.length() - 1) == '*');
-        // Create a new token stream to process the search string
-        TokenStream tokenStream = analyzer.tokenStream(fieldName, new StringReader(search));
-        TermAttribute attr = tokenStream.addAttribute(TermAttribute.class);
-        tokenStream.reset();
-        // iterate through the stream tokens and concatenate separated by spaces
-        // NOTE: this assumes that terms are separated by spaces, if there is more than one term in the search string.
-        while(tokenStream.incrementToken()) {
-            result += (result.isEmpty())? attr.term() : (" " + attr.term());
+        if(searchTerm.isEmpty()) return result;
+
+        String[] parts = searchTerm.split(" ");
+        // treat each word separately (in Hebrew a word is tokenized using points as separators)
+        String temp = "";
+        for(int i = 0; i < parts.length; i++) {
+            String search = parts[i];
+            if (search.isEmpty())
+                continue;
+            // make sure a terminating '*' is not stripped off
+            boolean wildcard = (search.charAt(search.length() - 1) == '*');
+            // Create a new token stream to process the search string
+            TokenStream tokenStream = analyzer.tokenStream(fieldName, new StringReader(search));
+            TermAttribute attr = tokenStream.addAttribute(TermAttribute.class);
+            tokenStream.reset();
+            // iterate through the stream tokens and concatenate separated by spaces
+            // NOTE: this assumes that terms are separated by spaces, if there is more than one term in the search string.
+            while (tokenStream.incrementToken()) {
+                temp += attr.term();
+            }
+
+            // restore wildcard if needed
+            if (wildcard && (temp.charAt(temp.length() - 1) != '*'))
+                temp += "*";
+
+            result += (result.isEmpty()) ? temp : (" " + temp);
         }
-        // restore wildcard if needed
-        if(wildcard && (result.charAt(result.length() - 1) != '*'))
-            result += "*";
 
         return result;
     }
@@ -324,7 +337,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
                 QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
-                String analyzedSearch = analyze(LuceneIndex.FIELD_BODY, search, analyzer);
+                String analyzedSearch = search;
+                if((search.trim().charAt(0)) > 256)
+                    analyzedSearch = analyze(LuceneIndex.FIELD_BODY, search, analyzer);
                 Query query = parser.parse(analyzedSearch);
                 //log.info("ParsedQuery- {}", query.toString());
 
