@@ -338,8 +338,11 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                 QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
                 String analyzedSearch = search;
-                if((search.trim().charAt(0)) > 256)
+
+                // if this is a wild card search, the Analyzer was not applied
+                if(((search.trim().charAt(0)) > 256) && ((search.trim().charAt(search.length() -1 )) == '*' ))
                     analyzedSearch = analyze(LuceneIndex.FIELD_BODY, search, analyzer);
+
                 Query query = parser.parse(analyzedSearch);
                 //log.info("ParsedQuery- {}", query.toString());
 
