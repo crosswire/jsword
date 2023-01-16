@@ -44,7 +44,7 @@ public class HebrewLuceneAnalyzer extends AbstractBookAnalyzer {
 
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream result = new StandardTokenizer(matchVersion, reader);
+        TokenStream result = new HebrewCharTokenizer(reader);
         result = new HebrewPointingFilter(result);
 
         return result;
@@ -55,7 +55,7 @@ public class HebrewLuceneAnalyzer extends AbstractBookAnalyzer {
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
-            streams = new SavedStreams(new StandardTokenizer(matchVersion, reader));
+            streams = new SavedStreams(new HebrewCharTokenizer(reader));
             streams.setResult(new HebrewPointingFilter(streams.getResult()));
 
             setPreviousTokenStream(streams);

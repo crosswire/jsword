@@ -22,7 +22,7 @@ public class HebrewPointingFilter extends AbstractBookTokenFilter {
     @Override
     public boolean incrementToken() throws IOException {
         if (this.input.incrementToken()) {
-            final String unaccentedForm = unPoint(this.termAtt.term(), false);
+            final String unaccentedForm = unPoint(this.termAtt.term(), true);
             this.termAtt.setTermBuffer(unaccentedForm);
             return true;
         } else {
