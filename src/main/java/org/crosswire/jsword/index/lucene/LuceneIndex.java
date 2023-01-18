@@ -311,12 +311,12 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             }
 
             // restore wildcard if needed
-            if (wildcard && (temp.charAt(temp.length() - 1) != '*'))
+            if (wildcard && !temp.isEmpty() && (temp.charAt(temp.length() - 1) != '*'))
                 temp += "*";
 
             result += (result.isEmpty()) ? temp : (" " + temp);
         }
-
+        if (result.isEmpty()) result = searchTerm;
         return result;
     }
 
