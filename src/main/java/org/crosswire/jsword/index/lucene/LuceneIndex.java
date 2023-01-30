@@ -340,7 +340,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                 String analyzedSearch = search;
 
                 // if this is a wild card search, the Analyzer was not applied
-                if(((search.trim().charAt(search.length() -1 )) == '*' ))
+                String trimmed = search.trim();
+                // If the length is 0, 1 or 2, it is not a meaningful wildcard search
+                if ((trimmed.length() > 2) && ((trimmed.charAt(trimmed.length() - 1)) == '*' ))
                     analyzedSearch = analyze(LuceneIndex.FIELD_BODY, search, analyzer);
 
                 Query query = parser.parse(analyzedSearch);
