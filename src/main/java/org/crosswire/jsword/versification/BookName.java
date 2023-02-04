@@ -59,12 +59,16 @@ public final class BookName {
         }
     }
 
-    public static boolean isSuperShortBookName() {
-        return superShortBookName;
+    public static Boolean isTruncateShortName() {
+        return truncateShortName > 0;
     }
 
-    public static void setSuperShortBookName(boolean superShortBookName) {
-        BookName.superShortBookName = superShortBookName;
+    public static Integer getTruncateShortName() {
+        return truncateShortName;
+    }
+
+    public static void setTruncateShortName(Integer truncateShortName) {
+        BookName.truncateShortName = truncateShortName;
     }
 
     /**
@@ -83,8 +87,8 @@ public final class BookName {
      * @return The preferred name of the book
      */
     public String getPreferredName() {
-        if(BookName.isSuperShortBookName()) {
-            return getSuperShortName();
+        if(BookName.isTruncateShortName()) {
+            return getTruncatedShortName();
         } else if (BookName.isFullBookName()) {
             return getLongName();
         }
@@ -131,8 +135,8 @@ public final class BookName {
         return shortName;
     }
 
-    public String getSuperShortName() {
-        return getShortName().substring(0, 2);
+    public String getTruncatedShortName() {
+        return getShortName().substring(0, truncateShortName);
     }
 
     /**
@@ -330,7 +334,6 @@ public final class BookName {
     /** Whether long or short, full or abbreviated names are used. */
     private static boolean fullBookName = true;
 
-    // Even shorter version than abbreviated (max 2 letters)
-    private static boolean superShortBookName = false;
-
+    // Even shorter version than abbreviated (max N letters). 0 to disable.
+    private static Integer truncateShortName = 0;
 }
