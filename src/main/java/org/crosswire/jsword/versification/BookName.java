@@ -59,6 +59,14 @@ public final class BookName {
         }
     }
 
+    public static boolean isSuperShortBookName() {
+        return superShortBookName;
+    }
+
+    public static void setSuperShortBookName(boolean superShortBookName) {
+        BookName.superShortBookName = superShortBookName;
+    }
+
     /**
      * Get the BibleBook to which this set of names is tied.
      * 
@@ -75,7 +83,9 @@ public final class BookName {
      * @return The preferred name of the book
      */
     public String getPreferredName() {
-        if (BookName.isFullBookName()) {
+        if(BookName.isSuperShortBookName()) {
+            return getSuperShortName();
+        } else if (BookName.isFullBookName()) {
             return getLongName();
         }
         return getShortName();
@@ -119,6 +129,10 @@ public final class BookName {
         }
 
         return shortName;
+    }
+
+    public String getSuperShortName() {
+        return getShortName().substring(0, 2);
     }
 
     /**
@@ -315,5 +329,8 @@ public final class BookName {
 
     /** Whether long or short, full or abbreviated names are used. */
     private static boolean fullBookName = true;
+
+    // Even shorter version than abbreviated (max 2 letters)
+    private static boolean superShortBookName = false;
 
 }
