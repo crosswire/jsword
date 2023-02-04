@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
 
+import static java.lang.Math.max;
+
 /**
  * BookName represents the different ways a book of the bible is named.
  * 
@@ -136,7 +138,7 @@ public final class BookName {
     }
 
     public String getTruncatedShortName() {
-        return getShortName().substring(0, truncateShortName);
+        return getShortName().substring(0, max(truncateShortName, getShortName().length()));
     }
 
     /**
