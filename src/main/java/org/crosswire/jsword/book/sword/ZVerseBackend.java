@@ -352,8 +352,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         // and cut out the required section.
         final byte[] chopped = new byte[verseSize];
         System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
-
-        return SwordUtil.decode(key.getName(), chopped, charset);
+        String result = SwordUtil.decode(key.getName(), chopped, charset);
+        System.out.println("ordinal: " + index + " "  + result);
+        return result;
 
     }
 
