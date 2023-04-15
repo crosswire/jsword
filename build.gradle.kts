@@ -22,7 +22,7 @@ dependencies {
     implementation("com.chenlb.mmseg4j:mmseg4j-analysis:1.8.6")
     implementation("com.chenlb.mmseg4j:mmseg4j-dic:1.8.6")
 
-    implementation("org.jdom:jdom2:2.0.6")
+    implementation("org.jdom:jdom2:2.0.6.1")
     implementation("org.apache.lucene:lucene-analyzers:3.6.2")
     // To upgrade Lucene, change to
     // implementation("org.apache.lucene:lucene-analyzers-common:x")
