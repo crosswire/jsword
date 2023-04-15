@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
 //    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.apache.commons:commons-compress:1.12")
+    implementation("org.apache.commons:commons-compress:1.22")
     implementation("com.chenlb.mmseg4j:mmseg4j-analysis:1.8.6")
     implementation("com.chenlb.mmseg4j:mmseg4j-dic:1.8.6")
 
