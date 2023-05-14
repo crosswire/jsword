@@ -155,7 +155,7 @@ public class LuceneIndexManager implements IndexManager {
         book.setIndexStatus(IndexStatus.SCHEDULED);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
-
+        System.out.println("Indexing: " + book.getName());
         try {
             URI storage = getStorageArea(book);
             Index index = new LuceneIndex(book, storage, this.policy);

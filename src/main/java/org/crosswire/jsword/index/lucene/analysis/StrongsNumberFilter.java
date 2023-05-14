@@ -82,7 +82,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
                 }
 
                 String s = number.getStrongsNumber();
-                termAtt.setTermBuffer(s);
+                termAtt.setTermBuffer(tokenText);
 
                 // If the number had a part keep it around for the next call
                 // TODO(DMS): if there is a part, then treat as a synonym,
