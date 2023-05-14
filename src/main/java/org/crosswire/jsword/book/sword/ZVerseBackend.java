@@ -22,22 +22,24 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
-import org.crosswire.jsword.passage.BitwisePassage;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.RocketPassage;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * A backend to read compressed data verse based files. While the text file
@@ -289,6 +291,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         int index = verse.getOrdinal();
         final Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
+
         final RandomAccessFile idxRaf;
         final RandomAccessFile compRaf;
         final RandomAccessFile textRaf;
@@ -743,3 +746,4 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     }
 
 }
+
