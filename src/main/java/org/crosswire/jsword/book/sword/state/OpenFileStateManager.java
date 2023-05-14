@@ -20,6 +20,7 @@
  */
 package org.crosswire.jsword.book.sword.state;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -63,6 +64,21 @@ import org.slf4j.LoggerFactory;
  * @author Chris Burrell
  */
 public final class OpenFileStateManager {
+
+    // ordinal for OT is from 0 to 24114 (ESV) or 0 to 24182 (OHB).  When the 15th bit is on, the 14th bit is not on.
+    // ordinal for NT is subtracted by 24116 (first ordinal for the book of Matthew).
+    // ordinal for Revelation 22:21 is 32361
+    // Therefore the NT range is from 0 to about 8245.  In that number range, 15th bit will never be on for an NT ordinal.
+
+    public static class OrdinalStrongArray implements Serializable {
+        public int[] OHBOrdinal; // 24182
+        public int[] OTRSVOrdinal; // 24114
+        public int[] NTRSVOrdinal; // 8245
+        public byte[] augStrong;
+        public short[] strongsWithAugments;
+        public byte[] defaultAugment;
+        public int numOfGreekStrongWithAugments;
+    }
     /**
      * prevent instantiation
      */
@@ -110,6 +126,55 @@ public final class OpenFileStateManager {
             LOGGER.warn("The OpenFileStateManager has already been initialised, potentially with its default settings. The following values were ignored: cleanUpInterval [{}], maxExpiry=[{}]", cleanupIntervalSeconds, maxExpiry);
         }
 
+    }
+
+    public static synchronized void addOrdinalStrong(OrdinalStrongArray osArray) {
+        OpenFileStateManager.osArray = osArray;
+//        for (int i = 0; i < OpenFileStateManager.osArray.OHBOrdinal.length; i++) {
+//            int beginPos = OpenFileStateManager.osArray.OHBOrdinal[i];
+//            if (beginPos == 0) continue;
+//            int endPos = 0;
+//            for (int j = i + 1; ((j < OpenFileStateManager.osArray.OHBOrdinal.length) && (endPos == 0)); j++) {
+//                endPos = OpenFileStateManager.osArray.OHBOrdinal[j];
+//            }
+//            if (endPos == 0) {
+//                for (int k = 0; ((k < OpenFileStateManager.osArray.NTRSVOrdinal.length) && (endPos == 0)); k++) {
+//                    endPos = OpenFileStateManager.osArray.NTRSVOrdinal[k];
+//                }
+//            }
+//            byte[] b = new byte[endPos - beginPos];
+//            int count = 0;
+//            for (int j = beginPos; j < endPos; j++) {
+//                b[count] = OpenFileStateManager.osArray.augStrong[j];
+//                count++;
+//            }
+//            System.out.println("OT: " + i + " " + new String(b));
+//        }
+//        for (int i = 0; i < OpenFileStateManager.osArray.NTRSVOrdinal.length; i++) {
+//            int beginPos = OpenFileStateManager.osArray.NTRSVOrdinal[i];
+//            if (beginPos == 0) continue;
+//            int endPos = 0;
+//            for (int j = i + 1; ((j < OpenFileStateManager.osArray.NTRSVOrdinal.length) && (endPos == 0)); j++) {
+//                endPos = OpenFileStateManager.osArray.NTRSVOrdinal[j];
+//            }
+//            if (endPos == 0) {
+//                endPos = OpenFileStateManager.osArray.augStrong.length;
+//            }
+//            byte[] b = new byte[endPos - beginPos];
+//            int count = 0;
+//            for (int j = beginPos; j < endPos; j++) {
+//                b[count] = OpenFileStateManager.osArray.augStrong[j];
+//                count++;
+//            }
+//            System.out.println("NT: " + i + " " + new String(b));
+//        }
+//        for (int i = 0; i < OpenFileStateManager.osArray.OTRSVOrdinal.length; i++) {
+//            System.out.println("OT RSV: " + i + " " + OpenFileStateManager.osArray.OTRSVOrdinal[i]);
+//        }
+//        System.out.println("numOfGreek " + OpenFileStateManager.osArray.numOfGreekStrongWithAugments);
+//        for (int i = 0; i < OpenFileStateManager.osArray.strongsWithAugments.length; i++) {
+//            System.out.println("Strong: " + OpenFileStateManager.osArray.strongsWithAugments[i] + " " + OpenFileStateManager.osArray.defaultAugment[i]);
+//        }
     }
 
     /**
@@ -280,4 +345,5 @@ public final class OpenFileStateManager {
 
     private static volatile OpenFileStateManager manager;
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenFileStateManager.class);
+    public static OrdinalStrongArray osArray;
 }
