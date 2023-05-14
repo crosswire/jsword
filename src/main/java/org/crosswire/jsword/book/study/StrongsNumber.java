@@ -150,17 +150,18 @@ public class StrongsNumber {
         // The valid flag when set by parse indicates whether it had problems.
         if (language == 'H'
                 && strongsNumber >= 1
-                && strongsNumber <= 8674)
+                && strongsNumber <= 9449) // more detailed (granular) words in THOT
         {
             return true;
         }
 
         if (language == 'G'
                 && ((strongsNumber >= 1 && strongsNumber < 1418)
-                        || (strongsNumber > 1418 && strongsNumber < 2717)
+                        || (strongsNumber > 1417 && strongsNumber < 2717)
                         || (strongsNumber > 2717 && strongsNumber < 3203)
-                        || (strongsNumber > 3302 && strongsNumber < 5624)
-                        || (strongsNumber > 5999 && strongsNumber < 10000)))
+                        || (strongsNumber > 3302 && strongsNumber < 5625)
+                        || (strongsNumber > 5999 && strongsNumber < 10000)
+                        || (strongsNumber > 20000 && strongsNumber < 21503))) // words in LXX
         {
             return true;
         }
