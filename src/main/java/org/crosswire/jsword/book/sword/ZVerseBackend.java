@@ -685,8 +685,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             result += fromJSword.substring(resultCopyPos, posOfStrongTag);
             int posEndOfStrongTag = lcFromJSword.indexOf("\"", posOfStrongTag);
             if (posEndOfStrongTag == -1) {
-                System.out.println("Cannot find end of strong tag: \"");
-                System.exit(404);
+                System.out.println("Cannot find end of strong tag: \" at " + translation + " " + ref);
+                return fromJSword;
             }
             String strongsListedForThisWord = fromJSword.substring(posOfStrongTag, posEndOfStrongTag).trim();
             String updatedStrongs = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongParts, augStrongPos, translation, ref);
