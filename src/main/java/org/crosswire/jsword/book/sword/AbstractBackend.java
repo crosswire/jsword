@@ -262,7 +262,6 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 }
             }
         }
-
         return currentVerse;
     }
 

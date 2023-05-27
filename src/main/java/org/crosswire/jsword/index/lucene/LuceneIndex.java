@@ -20,10 +20,7 @@
  */
 package org.crosswire.jsword.index.lucene;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +58,7 @@ import org.crosswire.jsword.index.IndexPolicy;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
-import org.crosswire.jsword.passage.AbstractPassage;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
@@ -281,7 +272,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * This method may be called to apply the analyser to the search string before calling QueryParser.parse()
      *
      * @param fieldName the search field
-     * @param search the search string
+     * @param searchTerm the search string
      * @param analyzer the analyzer configured on QueryParser
      * @return search string after applying the analyzer
      * @throws IOException
