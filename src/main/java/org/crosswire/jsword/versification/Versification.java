@@ -758,6 +758,11 @@ public class Versification implements ReferenceSystem, Serializable {
         return ntMaxOrdinal;
     }
 
+    public int maximumOTOrdinal() {
+        // This is the same as the last ordinal in the Reference System.
+        return otMaxOrdinal;
+    }
+
     /**
      * Where does this verse come in the Bible. The value that this returns should be treated as opaque, useful for a bit set.
      * The introductions to the Book, OT/NT Testaments, Bible books and chapters are included here.
