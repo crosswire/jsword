@@ -280,8 +280,10 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         final Testament testament = v11n.getTestament(origOrdinal);
         int ordinalInTestament = v11n.getTestamentOrdinal(origOrdinal);
         String verseFromAugmentedFile = rafBook.getVerseFromAugmentedFile(ordinalInTestament, testament, bookMetaData.getIndexStatus());
-        if (verseFromAugmentedFile != null)
+        if (verseFromAugmentedFile != null) {
+            System.out.print(".");
             return verseFromAugmentedFile;
+        }
 
         final RandomAccessFile idxRaf;
         final RandomAccessFile compRaf;

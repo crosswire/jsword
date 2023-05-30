@@ -288,12 +288,12 @@ public class ZVerseBackendDStrong {
         try {
             num = parseInt(strong.substring(startPos, endPos)); // If the augmented Strong file has issue, it will run into an exception.
         } catch (NumberFormatException e) {
-            log.error("Strong number is not numeric at the expected positions: " + strong + " Something wrong with the tagging of Strong.");
+//            log.error("Strong number is not numeric at the expected positions: " + strong + " Something wrong with the tagging of Strong.");
             return -1;
         }
 
         if (num > 32767) {
-            log.error("Strong number has too many digits: " + strong + " Something wrong with the augmented Strong file.");
+//            log.error("Strong number has too many digits: " + strong + " Something wrong with the augmented Strong file.");
             return -1;
         }
         return num;

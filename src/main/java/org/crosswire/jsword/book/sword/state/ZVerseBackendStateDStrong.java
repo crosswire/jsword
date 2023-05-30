@@ -46,6 +46,8 @@ public class ZVerseBackendStateDStrong {
             }
         }
         catch (Exception e) {
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
             log.warn("openCacheAugmentedfiles ", e);
         }
     }
@@ -74,7 +76,8 @@ public class ZVerseBackendStateDStrong {
             return new String(dest, StandardCharsets.UTF_8);
         }
         catch (Exception e) {
-            stepCache = null;
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
             log.warn("getVerseFromAugmentedFile exception", e);
             return null;
         }
@@ -126,7 +129,8 @@ public class ZVerseBackendStateDStrong {
             }
         }
         catch (Exception e) {
-            stepCache = null;
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
             log.warn("createAugStrongCache", e);
         }
     }
@@ -143,31 +147,32 @@ public class ZVerseBackendStateDStrong {
             stepCache.posInAugFile += output.limit();
         }
         catch (Exception e) {
-            stepCache = null;
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
             log.warn("addToAugStrongCache", e);
         }
     }
 
-    public static void finalizeAugStrongCache(final SwordBookMetaData bmd, stepAugmentedBibleTextCache step,
+    public static void finalizeAugStrongCache(final SwordBookMetaData bmd, stepAugmentedBibleTextCache stepCache,
                                               final Testament testament) throws IOException {
         try {
-            if ((step == null) || (step.ordIndex2AugmentedFile == null) || (step.augFileChannel == null))
+            if ((stepCache == null) || (stepCache.ordIndex2AugmentedFile == null) || (stepCache.augFileChannel == null))
                 return;
-            step.augFileChannel.close();
-            step.augFileChannel = null;
-            int lastIndex2NonZero = step.ordIndex2AugmentedFile.length - 1;
-            for (; ((lastIndex2NonZero > 0) && (step.ordIndex2AugmentedFile[lastIndex2NonZero] == 0)); lastIndex2NonZero--) {
+            stepCache.augFileChannel.close();
+            stepCache.augFileChannel = null;
+            int lastIndex2NonZero = stepCache.ordIndex2AugmentedFile.length - 1;
+            for (; ((lastIndex2NonZero > 0) && (stepCache.ordIndex2AugmentedFile[lastIndex2NonZero] == 0)); lastIndex2NonZero--) {
             }
-            if (lastIndex2NonZero < step.ordIndex2AugmentedFile.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
-                System.out.println("ordIndex2AugmentedFile array reduced from: " + step.ordIndex2AugmentedFile.length + " to " + lastIndex2NonZero + " elements");
-                step.ordIndex2AugmentedFile = Arrays.copyOf(step.ordIndex2AugmentedFile, lastIndex2NonZero + 2);
+            if (lastIndex2NonZero < stepCache.ordIndex2AugmentedFile.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
+                System.out.println("ordIndex2AugmentedFile array reduced from: " + stepCache.ordIndex2AugmentedFile.length + " to " + lastIndex2NonZero + " elements");
+                stepCache.ordIndex2AugmentedFile = Arrays.copyOf(stepCache.ordIndex2AugmentedFile, lastIndex2NonZero + 2);
             }
-            step.ordIndex2AugmentedFile[step.ordIndex2AugmentedFile.length - 1] = step.posInAugFile;
+            stepCache.ordIndex2AugmentedFile[stepCache.ordIndex2AugmentedFile.length - 1] = stepCache.posInAugFile;
             String augmentedIndexFilePath = bmd.getLocation().getPath();
             if (augmentedIndexFilePath.indexOf("/C:") == 0)
                 augmentedIndexFilePath = augmentedIndexFilePath.substring(1);
             augmentedIndexFilePath += "/STEP_Augment/" + testament.name() + "augmentedIndex.ser";
-            stepAugmentedIndex stepIndex = compactIndex(step);
+            stepAugmentedIndex stepIndex = compactIndex(stepCache);
             if (stepIndex != null) {
                 FileOutputStream fileOutputStream;
                 fileOutputStream = new FileOutputStream(augmentedIndexFilePath);
@@ -179,27 +184,28 @@ public class ZVerseBackendStateDStrong {
             }
         }
         catch (Exception e) {
-            step = null;
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
             log.warn("finalizeAugStrongCache", e);
         }
     }
 
-    private static stepAugmentedIndex compactIndex (stepAugmentedBibleTextCache step ) {
+    private static stepAugmentedIndex compactIndex (stepAugmentedBibleTextCache stepCache ) {
         int max4 = 0;
-        int last4 = step.ordIndex2AugmentedFile[1];
+        int last4 = stepCache.ordIndex2AugmentedFile[1];
         int max8 = 0;
-        int last8 = step.ordIndex2AugmentedFile[1];
+        int last8 = stepCache.ordIndex2AugmentedFile[1];
         int max16 = 0;
-        int last16 = step.ordIndex2AugmentedFile[1];
+        int last16 = stepCache.ordIndex2AugmentedFile[1];
         int max32 = 0;
-        int last32 = step.ordIndex2AugmentedFile[1];
-        for (int i = 0; i < step.ordIndex2AugmentedFile.length; i++) {
-            if ((i % 4 == 0) || (i == step.ordIndex2AugmentedFile.length - 1)) {
-                int currentPos = step.ordIndex2AugmentedFile[i];
+        int last32 = stepCache.ordIndex2AugmentedFile[1];
+        for (int i = 0; i < stepCache.ordIndex2AugmentedFile.length; i++) {
+            if ((i % 4 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
+                int currentPos = stepCache.ordIndex2AugmentedFile[i];
                 if (currentPos == 0) {
-                    for (int j = i + 1; j < step.ordIndex2AugmentedFile.length - 1; j++) {
-                        if (step.ordIndex2AugmentedFile[j] != 0) {
-                            currentPos = step.ordIndex2AugmentedFile[j];
+                    for (int j = i + 1; j < stepCache.ordIndex2AugmentedFile.length - 1; j++) {
+                        if (stepCache.ordIndex2AugmentedFile[j] != 0) {
+                            currentPos = stepCache.ordIndex2AugmentedFile[j];
                             break;
                         }
                     }
@@ -207,16 +213,16 @@ public class ZVerseBackendStateDStrong {
                 if (max4 < (currentPos - last4))
                     max4 = currentPos - last4;
                 last4 = currentPos;
-                if ((i % 8 == 0) || (i == step.ordIndex2AugmentedFile.length - 1)) {
+                if ((i % 8 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
                     if (max8 < (currentPos - last8))
                         max8 = currentPos - last8;
                     last8 = currentPos;
-                    if ((i % 16 == 0) || (i == step.ordIndex2AugmentedFile.length - 1)) {
+                    if ((i % 16 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
                         if (max16 < (currentPos - last16)) {
                             max16 = currentPos - last16;
                         }
                         last16 = currentPos;
-                        if ((i % 32 == 0) || (i == step.ordIndex2AugmentedFile.length - 1)) {
+                        if ((i % 32 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
                             if (max32 < (currentPos - last32))
                                 max32 = currentPos - last32;
                             last32 = currentPos;
@@ -235,17 +241,17 @@ public class ZVerseBackendStateDStrong {
             log.error("compactIndex, cannot be compacted, Bible text is too large.");
             return null; // Cannot compact the index
         }
-        stepIndex.baseIndex = new int[(step.ordIndex2AugmentedFile.length / stepIndex.baseIndexDivideBy) + 2];
-        stepIndex.index2Text = new byte[(step.ordIndex2AugmentedFile.length+1) * 2];
+        stepIndex.baseIndex = new int[(stepCache.ordIndex2AugmentedFile.length / stepIndex.baseIndexDivideBy) + 2];
+        stepIndex.index2Text = new byte[(stepCache.ordIndex2AugmentedFile.length+1) * 2];
 
-        for (int i = 0; i < step.ordIndex2AugmentedFile.length; i++) {
+        for (int i = 0; i < stepCache.ordIndex2AugmentedFile.length; i++) {
             int j = i / stepIndex.baseIndexDivideBy;
             if (i % stepIndex.baseIndexDivideBy == 0) {
-                int currentPos = step.ordIndex2AugmentedFile[i];
+                int currentPos = stepCache.ordIndex2AugmentedFile[i];
                 if (currentPos == 0) {
-                    for (int k  = i + 1; k < step.ordIndex2AugmentedFile.length - 1; k++) {
-                        if (step.ordIndex2AugmentedFile[k] != 0) {
-                            currentPos = step.ordIndex2AugmentedFile[k];
+                    for (int k  = i + 1; k < stepCache.ordIndex2AugmentedFile.length - 1; k++) {
+                        if (stepCache.ordIndex2AugmentedFile[k] != 0) {
+                            currentPos = stepCache.ordIndex2AugmentedFile[k];
                             stepIndex.index2Text[i * 2] = (byte) 0xff;
                             stepIndex.index2Text[i * 2 + 1] = (byte) 0xff;;
                             break;
@@ -259,7 +265,7 @@ public class ZVerseBackendStateDStrong {
                 stepIndex.baseIndex[j] = currentPos;
             }
             else {
-                int currentPos = step.ordIndex2AugmentedFile[i];
+                int currentPos = stepCache.ordIndex2AugmentedFile[i];
                 int diff;
                 if (currentPos == 0) {
                     diff = 65535;
@@ -283,7 +289,7 @@ public class ZVerseBackendStateDStrong {
 //            if (step.ordIndex2AugmentedFile[i] != getPosOfOrdinal(i, stepIndex))
 //                System.out.println("did not match");
 //        }
-        step.ordIndex2AugmentedFile = null;
+        stepCache.ordIndex2AugmentedFile = null;
         return stepIndex;
     }
     /**
