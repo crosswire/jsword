@@ -23,15 +23,17 @@ public class ZVerseBackendStateDStrong {
 
     public static void openAndCacheAugmentedFiles(final String path, stepAugmentedBibleTextCache stepCache,
                                                   final Testament testament) {
-        stepCache.augmentedFileMBB = null;
-        String curPath = path;
-        if (curPath.charAt(curPath.length()-1) != '/')
-            curPath += "/"; // Sometimes it does not have a "/" slash character at the end so add it if necessary.
-        curPath += "STEP_Augment/";
-        File augmentedText = new File(curPath + testament.name() + "augmentedText");
-        File augmentedTextIdx = new File(curPath + testament.name() + "augmentedIndex.ser");
-        if ((augmentedText.canRead() && (augmentedTextIdx.canRead()))) {
-            try {
+        if (stepCache == null)
+            return;
+        try {
+            stepCache.augmentedFileMBB = null;
+            String curPath = path;
+            if (curPath.charAt(curPath.length() - 1) != '/')
+                curPath += "/"; // Sometimes it does not have a "/" slash character at the end so add it if necessary.
+            curPath += "STEP_Augment/";
+            File augmentedText = new File(curPath + testament.name() + "augmentedText");
+            File augmentedTextIdx = new File(curPath + testament.name() + "augmentedIndex.ser");
+            if ((augmentedText.canRead() && (augmentedTextIdx.canRead()))) {
                 // Reads the object
                 FileInputStream fileIn = new FileInputStream(curPath + testament.name() + "augmentedIndex.ser");
                 ObjectInputStream objIn = new ObjectInputStream(fileIn);
@@ -41,32 +43,41 @@ public class ZVerseBackendStateDStrong {
                 FileChannel channel = file.getChannel();
                 // Read file into mapped buffer
                 stepCache.augmentedFileMBB = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-            } catch (Exception ex) {
-                log.error("Could not open augmentedIndex.ser", ex);
             }
+        }
+        catch (Exception e) {
+            log.warn("openCacheAugmentedfiles ", e);
         }
     }
 
     public static String getVerseFromAugmentedFile(final int ordinal, final IndexStatus status,
                                                    stepAugmentedBibleTextCache stepCache) {
-        if ((status == IndexStatus.CREATING) || (stepCache.stepAugmentedIndex == null) ||
+        if ((status == IndexStatus.CREATING) || (stepCache == null) ||
+                (stepCache.stepAugmentedIndex == null) ||
                 (ordinal > stepCache.stepAugmentedIndex.index2Text.length - 2) || (stepCache.augmentedFileMBB == null))
             return null;
-        int pos = getPosOfOrdinal(ordinal, stepCache.stepAugmentedIndex);
-        if (pos == 0) return "";
-        int nextPos = getPosOfOrdinal(ordinal+1, stepCache.stepAugmentedIndex);
-        for (int i = ordinal + 2; ((nextPos == 0) && (i < stepCache.stepAugmentedIndex.index2Text.length)); i ++) {
-            nextPos = getPosOfOrdinal(i, stepCache.stepAugmentedIndex);
+        try {
+            int pos = getPosOfOrdinal(ordinal, stepCache.stepAugmentedIndex);
+            if (pos == 0) return "";
+            int nextPos = getPosOfOrdinal(ordinal + 1, stepCache.stepAugmentedIndex);
+            for (int i = ordinal + 2; ((nextPos == 0) && (i < stepCache.stepAugmentedIndex.index2Text.length)); i++) {
+                nextPos = getPosOfOrdinal(i, stepCache.stepAugmentedIndex);
+            }
+            int length = nextPos - pos;
+            if (length < 1) {
+                System.out.println("negative length in getVerseFromAugmentedFile " + length);
+                return null;
+            }
+            byte[] dest = new byte[length];
+            stepCache.augmentedFileMBB.position(pos);
+            stepCache.augmentedFileMBB.get(dest, 0, length);
+            return new String(dest, StandardCharsets.UTF_8);
         }
-        int length = nextPos - pos;
-        if (length < 1) {
-            System.out.println("negative length in getVerseFromAugmentedFile " + length);
+        catch (Exception e) {
+            stepCache = null;
+            log.warn("getVerseFromAugmentedFile exception", e);
             return null;
         }
-        byte[] dest = new byte[length];
-        stepCache.augmentedFileMBB.position(pos);
-        stepCache.augmentedFileMBB.get(dest, 0, length);
-        return new String(dest, StandardCharsets.UTF_8);
     }
 
     private static int getPosOfOrdinal(final int ordinal, final stepAugmentedIndex stepAugIndex) {
@@ -83,108 +94,94 @@ public class ZVerseBackendStateDStrong {
     public static void createAugStrongCache(final int maxOrdinal, final SwordBookMetaData bmd,
                                             stepAugmentedBibleTextCache stepCache,
                                             final Testament testament) {
-        stepCache.ordIndex2AugmentedFile = null;
-        stepCache.stepAugmentedIndex = null;
-        stepCache.augmentedFileMBB = null;
-        stepCache.posInAugFile = 0;
-        stepCache.augFileChannel = null;
-        String augmentedFilePath = bmd.getLocation().getPath();
-        if (augmentedFilePath.indexOf("/C:") == 0)
-            augmentedFilePath = augmentedFilePath.substring(1);
-        augmentedFilePath += "/STEP_Augment";
-        Path path = Paths.get(augmentedFilePath);
-        if (Files.exists(path)) {
-            augmentedFilePath += "/" + testament.name() + "augmentedText";
-            System.out.println(("Writing augmented text file at " + augmentedFilePath));
+        if (stepCache == null)
+            return;
+        try {
+            stepCache.ordIndex2AugmentedFile = null;
+            stepCache.stepAugmentedIndex = null;
+            stepCache.augmentedFileMBB = null;
+            stepCache.posInAugFile = 0;
+            stepCache.augFileChannel = null;
+            String augmentedFilePath = bmd.getLocation().getPath();
+            if (augmentedFilePath.indexOf("/C:") == 0)
+                augmentedFilePath = augmentedFilePath.substring(1);
+            augmentedFilePath += "/STEP_Augment";
+            Path path = Paths.get(augmentedFilePath);
+            if (Files.exists(path)) {
+                augmentedFilePath += "/" + testament.name() + "augmentedText";
+                System.out.println(("Writing augmented text file at " + augmentedFilePath));
 
-            Set<StandardOpenOption> options = new HashSet<>();
-            options.add(StandardOpenOption.CREATE);
-            options.add(StandardOpenOption.WRITE);
-            options.add(StandardOpenOption.TRUNCATE_EXISTING);
-            path = Paths.get(augmentedFilePath);
-            try {
+                Set<StandardOpenOption> options = new HashSet<>();
+                options.add(StandardOpenOption.CREATE);
+                options.add(StandardOpenOption.WRITE);
+                options.add(StandardOpenOption.TRUNCATE_EXISTING);
+                path = Paths.get(augmentedFilePath);
                 stepCache.augFileChannel = FileChannel.open(path, options);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-            String header = bmd.getInitials() + "\n";
-            ByteBuffer output = null; // Must output something at the beginning of the file.
-            try {
+                String header = bmd.getInitials() + "\n";
+                ByteBuffer output = null; // Must output something at the beginning of the file.
                 output = ByteBuffer.wrap(header.getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                return;
-            }
-            try {
                 stepCache.augFileChannel.write(output);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+                stepCache.posInAugFile += output.limit();
+                stepCache.ordIndex2AugmentedFile = new int[maxOrdinal + 2];
             }
-            stepCache.posInAugFile += output.limit();
-            stepCache.ordIndex2AugmentedFile = new int[maxOrdinal + 2];
+        }
+        catch (Exception e) {
+            stepCache = null;
+            log.warn("createAugStrongCache", e);
         }
     }
 
     public static void addToAugStrongCache(final int ordinal, final String augmentedString,
                                            stepAugmentedBibleTextCache stepCache) {
-        if ((stepCache.ordIndex2AugmentedFile == null) || (stepCache.augFileChannel == null) || (augmentedString.length() <= 0))
-            return;
-        ByteBuffer output;
         try {
-            output = ByteBuffer.wrap(augmentedString.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
+            if ((stepCache == null) || (stepCache.ordIndex2AugmentedFile == null) || (stepCache.augFileChannel == null) ||
+                    (augmentedString.length() <= 0))
+                return;
+            ByteBuffer output = ByteBuffer.wrap(augmentedString.getBytes("UTF-8"));
             stepCache.augFileChannel.write(output);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            stepCache.ordIndex2AugmentedFile[ordinal] = stepCache.posInAugFile;
+            stepCache.posInAugFile += output.limit();
         }
-        stepCache.ordIndex2AugmentedFile[ordinal] = stepCache.posInAugFile;
-        stepCache.posInAugFile += output.limit();
+        catch (Exception e) {
+            stepCache = null;
+            log.warn("addToAugStrongCache", e);
+        }
     }
 
-    public static void finalizeAugStrongCache(final SwordBookMetaData bmd, stepAugmentedBibleTextCache stepOT,
-                                              stepAugmentedBibleTextCache stepNT, final Testament testament) throws IOException {
-        stepAugmentedBibleTextCache step = (testament == Testament.NEW) ? stepNT : stepOT;
-        if ((step.ordIndex2AugmentedFile == null) || (step.augFileChannel == null))
-            return;
+    public static void finalizeAugStrongCache(final SwordBookMetaData bmd, stepAugmentedBibleTextCache step,
+                                              final Testament testament) throws IOException {
         try {
+            if ((step == null) || (step.ordIndex2AugmentedFile == null) || (step.augFileChannel == null))
+                return;
             step.augFileChannel.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            step.augFileChannel = null;
+            int lastIndex2NonZero = step.ordIndex2AugmentedFile.length - 1;
+            for (; ((lastIndex2NonZero > 0) && (step.ordIndex2AugmentedFile[lastIndex2NonZero] == 0)); lastIndex2NonZero--) {
+            }
+            if (lastIndex2NonZero < step.ordIndex2AugmentedFile.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
+                System.out.println("ordIndex2AugmentedFile array reduced from: " + step.ordIndex2AugmentedFile.length + " to " + lastIndex2NonZero + " elements");
+                step.ordIndex2AugmentedFile = Arrays.copyOf(step.ordIndex2AugmentedFile, lastIndex2NonZero + 2);
+            }
+            step.ordIndex2AugmentedFile[step.ordIndex2AugmentedFile.length - 1] = step.posInAugFile;
+            String augmentedIndexFilePath = bmd.getLocation().getPath();
+            if (augmentedIndexFilePath.indexOf("/C:") == 0)
+                augmentedIndexFilePath = augmentedIndexFilePath.substring(1);
+            augmentedIndexFilePath += "/STEP_Augment/" + testament.name() + "augmentedIndex.ser";
+            stepAugmentedIndex stepIndex = compactIndex(step);
+            if (stepIndex != null) {
+                FileOutputStream fileOutputStream;
+                fileOutputStream = new FileOutputStream(augmentedIndexFilePath);
+                ObjectOutputStream out;
+                out = new ObjectOutputStream(fileOutputStream);
+                out.writeObject(stepIndex);
+                out.flush();
+                out.close();
+            }
         }
-        step.augFileChannel = null;
-        int lastIndex2NonZero = step.ordIndex2AugmentedFile.length - 1;
-        for (; ((lastIndex2NonZero > 0) && (step.ordIndex2AugmentedFile[lastIndex2NonZero] == 0)); lastIndex2NonZero--) {
+        catch (Exception e) {
+            step = null;
+            log.warn("finalizeAugStrongCache", e);
         }
-        if (lastIndex2NonZero < step.ordIndex2AugmentedFile.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
-            System.out.println("ordIndex2AugmentedFile array reduced from: " + step.ordIndex2AugmentedFile.length  + " to " + lastIndex2NonZero + " elements");
-            step.ordIndex2AugmentedFile = Arrays.copyOf(step.ordIndex2AugmentedFile, lastIndex2NonZero + 2);
-        }
-        step.ordIndex2AugmentedFile[step.ordIndex2AugmentedFile.length - 1] = step.posInAugFile;
-        String augmentedIndexFilePath = bmd.getLocation().getPath();
-        if (augmentedIndexFilePath.indexOf("/C:") == 0)
-            augmentedIndexFilePath = augmentedIndexFilePath.substring(1);
-        augmentedIndexFilePath += "/STEP_Augment/" + testament.name() + "augmentedIndex.ser";
-        stepAugmentedIndex stepIndex = compactIndex(step);
-        FileOutputStream fileOutputStream;
-        try {
-            fileOutputStream = new FileOutputStream(augmentedIndexFilePath);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ObjectOutputStream out;
-        try {
-            out = new ObjectOutputStream(fileOutputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        out.writeObject(stepIndex);
-        out.flush();
-        out.close();
     }
 
     private static stepAugmentedIndex compactIndex (stepAugmentedBibleTextCache step ) {
@@ -228,14 +225,16 @@ public class ZVerseBackendStateDStrong {
                 }
             }
         }
-        System.out.println("4: " + max4 + " 8: " + max8 + " 16: " + max16 + " 32: " + max32);
         stepAugmentedIndex stepIndex = new stepAugmentedIndex();
         stepIndex.baseIndexDivideBy = 1;
         if (max32 < 65555) stepIndex.baseIndexDivideBy = 32;
         else if (max16 < 65535) stepIndex.baseIndexDivideBy = 16;
         else if (max8 < 65535) stepIndex.baseIndexDivideBy = 8;
         else if (max4 < 65535) stepIndex.baseIndexDivideBy = 4;
-        else return null; // Cannot compact the index
+        else {
+            log.error("compactIndex, cannot be compacted, Bible text is too large.");
+            return null; // Cannot compact the index
+        }
         stepIndex.baseIndex = new int[(step.ordIndex2AugmentedFile.length / stepIndex.baseIndexDivideBy) + 2];
         stepIndex.index2Text = new byte[(step.ordIndex2AugmentedFile.length+1) * 2];
 

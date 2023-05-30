@@ -254,7 +254,7 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     }
 
     public void finalizeAugStrongCache(final SwordBookMetaData bmd, final Testament testament) throws IOException {
-        ZVerseBackendStateDStrong.finalizeAugStrongCache(bmd, stepOTCache, stepNTCache, testament);
+        ZVerseBackendStateDStrong.finalizeAugStrongCache(bmd, getStepCache(testament, false), testament);
     }
 
     public boolean isBuildingOTAugStrongCache() {

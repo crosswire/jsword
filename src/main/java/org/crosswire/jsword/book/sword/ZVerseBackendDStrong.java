@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
@@ -14,6 +13,8 @@ import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.lang.Integer.parseInt;
 
@@ -34,7 +35,7 @@ public class ZVerseBackendDStrong {
                     Verse leningradKey = VerseFactory.fromString(v11nLeningrad, verse.getOsisID());
                     index = leningradKey.getOrdinal();
                 } catch (NoSuchVerseException e) {
-                    System.out.println("Unable to look up strongs " + e);
+                    log.error("Unable to look up strongs " + e);
                     return resultFromJSword;
                 }
             } else {
@@ -44,7 +45,7 @@ public class ZVerseBackendDStrong {
                     index = nrsvKey.getOrdinal();
                     index = v11nNRSV.getTestamentOrdinal(index);
                 } catch (NoSuchVerseException e) {
-                    System.out.println("Unable to look up strongs " + e);
+                    log.error("Unable to look up strongs " + e);
                     return resultFromJSword;
                 }
             }
@@ -78,31 +79,36 @@ public class ZVerseBackendDStrong {
     private static void createStepCacheForAugStrong(final Versification v11n, final Testament testament,
                                                    final int ordinalInTestament, final ZVerseBackendState rafBook,
                                                    final SwordBookMetaData bmd, final String augmentedText) {
-        int ntMaxOrdinal = v11n.maximumOrdinal() - v11n.maximumOTOrdinal(); // Max NT - max OT ordinal
-        int otMaxOrdinal = v11n.maximumOTOrdinal();
-        int maxOrdinalInTestament = (testament == Testament.NEW) ? ntMaxOrdinal : otMaxOrdinal;
-        if (bmd.getInitials().equals("SBLG_th"))
-            maxOrdinalInTestament --;
-        if (ordinalInTestament == 1) {
-            rafBook.createAugStrongCache(maxOrdinalInTestament, bmd, testament);
-        }
-        rafBook.addToAugStrongCache(ordinalInTestament, augmentedText, testament);
-        Testament testamentThatNeedToBeFinalized = testament;
-        // This is needed to detect KJVA switching from OT to NT.  KJVA has many verses in Deutro cannon which have
-        // ordinals between the OT and NT ordinals
-        boolean justGotFromOT2NT = false;
-        if ((ordinalInTestament == 1) && (testament == Testament.NEW) &&
-                rafBook.isBuildingOTAugStrongCache()) {
-            justGotFromOT2NT = true;
-            testamentThatNeedToBeFinalized = Testament.OLD;
-        }
-        if ((ordinalInTestament == maxOrdinalInTestament) || (justGotFromOT2NT)) {
-            try {
-                rafBook.finalizeAugStrongCache(bmd, testamentThatNeedToBeFinalized);
-                rafBook.openAndCacheAugmentedFiles(bmd.getLocation().getPath(), testamentThatNeedToBeFinalized);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try {
+            int ntMaxOrdinal = v11n.maximumOrdinal() - v11n.maximumOTOrdinal(); // Max NT - max OT ordinal
+            int otMaxOrdinal = v11n.maximumOTOrdinal();
+            int maxOrdinalInTestament = (testament == Testament.NEW) ? ntMaxOrdinal : otMaxOrdinal;
+            if (bmd.getInitials().equals("SBLG_th"))
+                maxOrdinalInTestament--;
+            if (ordinalInTestament == 1) {
+                rafBook.createAugStrongCache(maxOrdinalInTestament, bmd, testament);
             }
+            rafBook.addToAugStrongCache(ordinalInTestament, augmentedText, testament);
+            Testament testamentThatNeedToBeFinalized = testament;
+            // This is needed to detect KJVA switching from OT to NT.  KJVA has many verses in Deutro cannon which have
+            // ordinals between the OT and NT ordinals
+            boolean justGotFromOT2NT = false;
+            if ((ordinalInTestament == 1) && (testament == Testament.NEW) &&
+                    rafBook.isBuildingOTAugStrongCache()) {
+                justGotFromOT2NT = true;
+                testamentThatNeedToBeFinalized = Testament.OLD;
+            }
+            if ((ordinalInTestament == maxOrdinalInTestament) || (justGotFromOT2NT)) {
+                try {
+                    rafBook.finalizeAugStrongCache(bmd, testamentThatNeedToBeFinalized);
+                    rafBook.openAndCacheAugmentedFiles(bmd.getLocation().getPath(), testamentThatNeedToBeFinalized);
+                } catch (IOException e) {
+                    log.error("createStepCacheForAugStrong", e);
+                }
+            }
+        }
+        catch (Exception e) {
+            log.error("createStepCacheForAugStrong", e);
         }
     }
     private static String[] getAugStrongsForVerse(final boolean combineAugStrongOfTwoVerses, int[] ordinals, int index,
@@ -193,14 +199,12 @@ public class ZVerseBackendDStrong {
                     if (augStrongParts[j].length == 1) {
                         if (!result.equals("")) result += " strong:";
                         result += augStrongParts[j][0];
-//                        System.out.print(" " + augStrongParts[j][0]);
                         assigned = true;
                     }
                     else if ((augStrongParts[j].length == 3) &&
                             (augStrongParts[j][2].indexOf( Integer.toString(augStrongPos[j])) > -1)) {
                         if (!result.equals("")) result += " strong:";
                         result += currentStrong + augStrongParts[j][1];
-//                        System.out.print(" " + currentStrong + augStrongParts[j][1]);
                         assigned = true;
                     }
                 }
@@ -235,7 +239,7 @@ public class ZVerseBackendDStrong {
             result += fromJSword.substring(resultCopyPos, posOfStrongTag);
             int posEndOfStrongTag = lcFromJSword.indexOf("\"", posOfStrongTag);
             if (posEndOfStrongTag == -1) {
-                System.out.println("Cannot find end of strong tag: \" at " + translation + " " + ref);
+                log.info("Cannot find end of strong tag: \" at " + translation + " " + ref);
                 return fromJSword;
             }
             String strongsListedForThisWord = fromJSword.substring(posOfStrongTag, posEndOfStrongTag).trim();
@@ -284,15 +288,21 @@ public class ZVerseBackendDStrong {
         try {
             num = parseInt(strong.substring(startPos, endPos)); // If the augmented Strong file has issue, it will run into an exception.
         } catch (NumberFormatException e) {
-//            System.out.println("Strong number is not numeric at the expected positions: " + strong + " Something wrong with the tagging of Strong.");
+            log.error("Strong number is not numeric at the expected positions: " + strong + " Something wrong with the tagging of Strong.");
             return -1;
         }
 
         if (num > 32767) {
-            System.out.println("Strong number has too many digits: " + strong + " Something wrong with the augmented Strong file.");
+            log.error("Strong number has too many digits: " + strong + " Something wrong with the augmented Strong file.");
             return -1;
         }
         return num;
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(ZVerseBackendState.class);
+
 }
 
