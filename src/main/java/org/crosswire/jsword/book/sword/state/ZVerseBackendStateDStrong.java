@@ -26,7 +26,15 @@ public class ZVerseBackendStateDStrong {
         if (stepCache == null)
             return;
         try {
+            if (stepCache.posInAugFile == stepCacheErrorDoNotUse) // -512 means do not use cache, encounter error previously
+                return;
             stepCache.augmentedFileMBB = null;
+        }
+        catch (Exception e) {
+            log.error("openCacheAugmentedfiles cannot access stepCache variable augmentedFileMBB or posInAugFile", e);
+            return;
+        }
+        try {
             String curPath = path;
             if (curPath.charAt(curPath.length() - 1) != '/')
                 curPath += "/"; // Sometimes it does not have a "/" slash character at the end so add it if necessary.
@@ -43,31 +51,50 @@ public class ZVerseBackendStateDStrong {
                 FileChannel channel = file.getChannel();
                 // Read file into mapped buffer
                 stepCache.augmentedFileMBB = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                log.info("openAndCacheAugmentedFiles: open augmented files" + curPath);
+                stepCache.posInAugFile = stepCacheReady4Use;
             }
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
-            log.warn("openCacheAugmentedfiles ", e);
+            stepCache.posInAugFile = stepCacheErrorDoNotUse;  // Do not use cache
+            log.error("openCacheAugmentedfiles cannot open augmentedText or augmentedIndex.ser files", e);
         }
     }
 
     public static String getVerseFromAugmentedFile(final int ordinal, final IndexStatus status,
                                                    stepAugmentedBibleTextCache stepCache) {
-        if ((status == IndexStatus.CREATING) || (stepCache == null) ||
-                (stepCache.stepAugmentedIndex == null) ||
-                (ordinal > stepCache.stepAugmentedIndex.index2Text.length - 2) || (stepCache.augmentedFileMBB == null))
+        if ((status == IndexStatus.CREATING) || (stepCache == null))
             return null;
+        int lengthOfIndex2Text = 0;
+        try {
+            if ((stepCache.posInAugFile != stepCacheReady4Use) || (stepCache.stepAugmentedIndex == null) ||
+                    (stepCache.augmentedFileMBB == null))
+                return null;
+            if (stepCache.stepAugmentedIndex.baseIndexDivideBy == 1)
+                lengthOfIndex2Text = stepCache.stepAugmentedIndex.baseIndex.length;
+            else
+                lengthOfIndex2Text = stepCache.stepAugmentedIndex.index2Text.length - 2;
+            if (ordinal > lengthOfIndex2Text - 2) {
+                System.out.println("index got out of bound");
+                return null;
+            }
+        }
+        catch (Exception e) {
+            log.error("getVerseFromAugmentedFile cannot access stepCache variables", e);
+            return null;
+        }
         try {
             int pos = getPosOfOrdinal(ordinal, stepCache.stepAugmentedIndex);
             if (pos == 0) return "";
-            int nextPos = getPosOfOrdinal(ordinal + 1, stepCache.stepAugmentedIndex);
-            for (int i = ordinal + 2; ((nextPos == 0) && (i < stepCache.stepAugmentedIndex.index2Text.length)); i++) {
-                nextPos = getPosOfOrdinal(i, stepCache.stepAugmentedIndex);
+            int nextPos = 0;
+            for (int i = ordinal + 1; ((nextPos == 0) && (i < lengthOfIndex2Text)); i++) {
+                nextPos = getPosOfOrdinal(i, stepCache.stepAugmentedIndex); // Look for a next position that is not a 0.
             }
             int length = nextPos - pos;
             if (length < 1) {
-                System.out.println("negative length in getVerseFromAugmentedFile " + length);
+                log.error("negative length in getVerseFromAugmentedFile " + length);
                 return null;
             }
             byte[] dest = new byte[length];
@@ -78,21 +105,25 @@ public class ZVerseBackendStateDStrong {
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
-            log.warn("getVerseFromAugmentedFile exception", e);
+            stepCache.posInAugFile = stepCacheErrorDoNotUse;  // -512 means do not use cache
+            log.error("getVerseFromAugmentedFile exception", e);
             return null;
         }
     }
 
     private static int getPosOfOrdinal(final int ordinal, final stepAugmentedIndex stepAugIndex) {
-        int j = ordinal / stepAugIndex.baseIndexDivideBy;
-        int posOfIndex = ordinal * 2;
-        if ((stepAugIndex.index2Text[posOfIndex] == (byte) 0xff) && (stepAugIndex.index2Text[posOfIndex+1] == (byte) 0xff))
-            return 0;
-        int posOfText = ((stepAugIndex.index2Text[posOfIndex+1] & 0xff) << 8);
-        posOfText += stepAugIndex.index2Text[posOfIndex] & 0xff;
-        posOfText += stepAugIndex.baseIndex[j];
-        return posOfText;
-    }
+        if (stepAugIndex.baseIndexDivideBy > 1) {
+            int posOfIndex = ordinal * 2;
+            if ((stepAugIndex.index2Text[posOfIndex] == (byte) 0xff) && (stepAugIndex.index2Text[posOfIndex + 1] == (byte) 0xff))
+                return 0;
+            int posOfText = ((stepAugIndex.index2Text[posOfIndex + 1] & 0xff) << 8);
+            posOfText += stepAugIndex.index2Text[posOfIndex] & 0xff;
+            int index4BaseIndex = ordinal / stepAugIndex.baseIndexDivideBy;
+            posOfText += stepAugIndex.baseIndex[index4BaseIndex];
+            return posOfText;
+        }
+        else return stepAugIndex.baseIndex[ordinal]; // When the index is not compacted, it only use baseIndex, it does not user index2Text
+}
 
     public static void createAugStrongCache(final int maxOrdinal, final SwordBookMetaData bmd,
                                             stepAugmentedBibleTextCache stepCache,
@@ -100,11 +131,18 @@ public class ZVerseBackendStateDStrong {
         if (stepCache == null)
             return;
         try {
-            stepCache.ordIndex2AugmentedFile = null;
+            if (stepCache.posInAugFile == stepCacheErrorDoNotUse)
+                return;
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
             stepCache.posInAugFile = 0;
             stepCache.augFileChannel = null;
+        }
+        catch (Exception e) {
+            log.error("createAugStrongCache cannot access stepCache variables", e);
+            return;
+        }
+        try {
             String augmentedFilePath = bmd.getLocation().getPath();
             if (augmentedFilePath.indexOf("/C:") == 0)
                 augmentedFilePath = augmentedFilePath.substring(1);
@@ -125,49 +163,67 @@ public class ZVerseBackendStateDStrong {
                 output = ByteBuffer.wrap(header.getBytes("UTF-8"));
                 stepCache.augFileChannel.write(output);
                 stepCache.posInAugFile += output.limit();
-                stepCache.ordIndex2AugmentedFile = new int[maxOrdinal + 2];
+                stepCache.stepAugmentedIndex = new stepAugmentedIndex();
+                stepCache.stepAugmentedIndex.baseIndex = new int[maxOrdinal + 2];
             }
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
-            log.warn("createAugStrongCache", e);
+            stepCache.posInAugFile = stepCacheErrorDoNotUse; // Encounter error, -512 means do not try to open or create cache
+            log.error("createAugStrongCache", e);
         }
     }
 
     public static void addToAugStrongCache(final int ordinal, final String augmentedString,
                                            stepAugmentedBibleTextCache stepCache) {
+        if ((stepCache == null) || (augmentedString.length() <= 0))
+            return;
         try {
-            if ((stepCache == null) || (stepCache.ordIndex2AugmentedFile == null) || (stepCache.augFileChannel == null) ||
-                    (augmentedString.length() <= 0))
+            if ((stepCache.stepAugmentedIndex == null) || (stepCache.augFileChannel == null))
                 return;
+        }
+        catch (Exception e) {
+            log.error("addToAugStrongCache cannot access stepCache variables", e);
+            return;
+        }
+        try {
             ByteBuffer output = ByteBuffer.wrap(augmentedString.getBytes("UTF-8"));
             stepCache.augFileChannel.write(output);
-            stepCache.ordIndex2AugmentedFile[ordinal] = stepCache.posInAugFile;
+            stepCache.stepAugmentedIndex.baseIndex[ordinal] = stepCache.posInAugFile;
             stepCache.posInAugFile += output.limit();
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
-            log.warn("addToAugStrongCache", e);
+            stepCache.posInAugFile = stepCacheErrorDoNotUse; // Encounter error, -512 means do not try to open or create cache
+            log.error("addToAugStrongCache error in output to augmented Strong file", e);
         }
     }
 
     public static void finalizeAugStrongCache(final SwordBookMetaData bmd, stepAugmentedBibleTextCache stepCache,
-                                              final Testament testament) throws IOException {
+                                              final Testament testament) {
+        if (stepCache == null)
+            return;
         try {
-            if ((stepCache == null) || (stepCache.ordIndex2AugmentedFile == null) || (stepCache.augFileChannel == null))
+            if ((stepCache.stepAugmentedIndex == null) || (stepCache.augFileChannel == null))
                 return;
+        }
+        catch (Exception e) {
+            log.error("finalizeAugStrongCache cannot access stepCache variables", e);
+            return;
+        }
+        try {
             stepCache.augFileChannel.close();
             stepCache.augFileChannel = null;
-            int lastIndex2NonZero = stepCache.ordIndex2AugmentedFile.length - 1;
-            for (; ((lastIndex2NonZero > 0) && (stepCache.ordIndex2AugmentedFile[lastIndex2NonZero] == 0)); lastIndex2NonZero--) {
+            int index2LastNonZero = stepCache.stepAugmentedIndex.baseIndex.length - 1;
+            for (; ((index2LastNonZero > 0) && (stepCache.stepAugmentedIndex.baseIndex[index2LastNonZero] == 0)); index2LastNonZero--) {
             }
-            if (lastIndex2NonZero < stepCache.ordIndex2AugmentedFile.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
-                System.out.println("ordIndex2AugmentedFile array reduced from: " + stepCache.ordIndex2AugmentedFile.length + " to " + lastIndex2NonZero + " elements");
-                stepCache.ordIndex2AugmentedFile = Arrays.copyOf(stepCache.ordIndex2AugmentedFile, lastIndex2NonZero + 2);
+            if (index2LastNonZero < stepCache.stepAugmentedIndex.baseIndex.length - 10) { // If there are lots of zero's at the end, reduce the size.  KJVA has lots of verses in Deutro cannon that has this situation.
+                System.out.println("ordIndex2AugmentedFile array reduced from: " + stepCache.stepAugmentedIndex.baseIndex.length + " to " + index2LastNonZero + " elements");
+                stepCache.stepAugmentedIndex.baseIndex = Arrays.copyOf(stepCache.stepAugmentedIndex.baseIndex, index2LastNonZero + 2);
             }
-            stepCache.ordIndex2AugmentedFile[stepCache.ordIndex2AugmentedFile.length - 1] = stepCache.posInAugFile;
+            stepCache.stepAugmentedIndex.baseIndex[stepCache.stepAugmentedIndex.baseIndex.length - 1] = stepCache.posInAugFile;
             String augmentedIndexFilePath = bmd.getLocation().getPath();
             if (augmentedIndexFilePath.indexOf("/C:") == 0)
                 augmentedIndexFilePath = augmentedIndexFilePath.substring(1);
@@ -181,31 +237,37 @@ public class ZVerseBackendStateDStrong {
                 out.writeObject(stepIndex);
                 out.flush();
                 out.close();
+                stepCache.posInAugFile = stepCacheReady4Use;
             }
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
             stepCache.augmentedFileMBB = null;
+            stepCache.posInAugFile = stepCacheErrorDoNotUse; // Encounter error, -512 means do not try to open or create cache
             log.warn("finalizeAugStrongCache", e);
         }
     }
 
     private static stepAugmentedIndex compactIndex (stepAugmentedBibleTextCache stepCache ) {
+        // baseIndex is an array of int
+        // index2Text is an array of short.  There is an element in this array for each ordinal (verse).
+        // The sum of the two will give the position in the cached Bible text file for an ordinal
+        //
         int max4 = 0;
-        int last4 = stepCache.ordIndex2AugmentedFile[1];
+        int last4 = stepCache.stepAugmentedIndex.baseIndex[1];
         int max8 = 0;
-        int last8 = stepCache.ordIndex2AugmentedFile[1];
+        int last8 = stepCache.stepAugmentedIndex.baseIndex[1];
         int max16 = 0;
-        int last16 = stepCache.ordIndex2AugmentedFile[1];
+        int last16 = stepCache.stepAugmentedIndex.baseIndex[1];
         int max32 = 0;
-        int last32 = stepCache.ordIndex2AugmentedFile[1];
-        for (int i = 0; i < stepCache.ordIndex2AugmentedFile.length; i++) {
-            if ((i % 4 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
-                int currentPos = stepCache.ordIndex2AugmentedFile[i];
+        int last32 = stepCache.stepAugmentedIndex.baseIndex[1];
+        for (int i = 0; i < stepCache.stepAugmentedIndex.baseIndex.length; i++) {
+            if ((i % 4 == 0) || (i == stepCache.stepAugmentedIndex.baseIndex.length - 1)) {
+                int currentPos = stepCache.stepAugmentedIndex.baseIndex[i];
                 if (currentPos == 0) {
-                    for (int j = i + 1; j < stepCache.ordIndex2AugmentedFile.length - 1; j++) {
-                        if (stepCache.ordIndex2AugmentedFile[j] != 0) {
-                            currentPos = stepCache.ordIndex2AugmentedFile[j];
+                    for (int j = i + 1; j < stepCache.stepAugmentedIndex.baseIndex.length - 1; j++) {
+                        if (stepCache.stepAugmentedIndex.baseIndex[j] != 0) {
+                            currentPos = stepCache.stepAugmentedIndex.baseIndex[j];
                             break;
                         }
                     }
@@ -213,16 +275,16 @@ public class ZVerseBackendStateDStrong {
                 if (max4 < (currentPos - last4))
                     max4 = currentPos - last4;
                 last4 = currentPos;
-                if ((i % 8 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
+                if ((i % 8 == 0) || (i == stepCache.stepAugmentedIndex.baseIndex.length - 1)) {
                     if (max8 < (currentPos - last8))
                         max8 = currentPos - last8;
                     last8 = currentPos;
-                    if ((i % 16 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
+                    if ((i % 16 == 0) || (i == stepCache.stepAugmentedIndex.baseIndex.length - 1)) {
                         if (max16 < (currentPos - last16)) {
                             max16 = currentPos - last16;
                         }
                         last16 = currentPos;
-                        if ((i % 32 == 0) || (i == stepCache.ordIndex2AugmentedFile.length - 1)) {
+                        if ((i % 32 == 0) || (i == stepCache.stepAugmentedIndex.baseIndex.length - 1)) {
                             if (max32 < (currentPos - last32))
                                 max32 = currentPos - last32;
                             last32 = currentPos;
@@ -231,66 +293,64 @@ public class ZVerseBackendStateDStrong {
                 }
             }
         }
-        stepAugmentedIndex stepIndex = new stepAugmentedIndex();
-        stepIndex.baseIndexDivideBy = 1;
-        if (max32 < 65555) stepIndex.baseIndexDivideBy = 32;
-        else if (max16 < 65535) stepIndex.baseIndexDivideBy = 16;
-        else if (max8 < 65535) stepIndex.baseIndexDivideBy = 8;
-        else if (max4 < 65535) stepIndex.baseIndexDivideBy = 4;
+        stepAugmentedIndex newStepIndex = new stepAugmentedIndex();
+        newStepIndex.baseIndexDivideBy = 1;
+        if (max32 < 65555) newStepIndex.baseIndexDivideBy = 32; // reduce size by 46% would be from 128K to 68K for a Bible with OT and NT
+        else if (max16 < 65535) newStepIndex.baseIndexDivideBy = 16; // reduce size by 43%
+        else if (max8 < 65535) newStepIndex.baseIndexDivideBy = 8; // reduce size by 37%
+        else if (max4 < 65535) newStepIndex.baseIndexDivideBy = 4; // reduce size by 25%
         else {
-            log.error("compactIndex, cannot be compacted, Bible text is too large.");
-            return null; // Cannot compact the index
+            stepCache.stepAugmentedIndex.baseIndexDivideBy = 1;
+            return stepCache.stepAugmentedIndex; // Cannot compact the index, return original.
         }
-        stepIndex.baseIndex = new int[(stepCache.ordIndex2AugmentedFile.length / stepIndex.baseIndexDivideBy) + 2];
-        stepIndex.index2Text = new byte[(stepCache.ordIndex2AugmentedFile.length+1) * 2];
-
-        for (int i = 0; i < stepCache.ordIndex2AugmentedFile.length; i++) {
-            int j = i / stepIndex.baseIndexDivideBy;
-            if (i % stepIndex.baseIndexDivideBy == 0) {
-                int currentPos = stepCache.ordIndex2AugmentedFile[i];
+        newStepIndex.baseIndex = new int[(stepCache.stepAugmentedIndex.baseIndex.length / newStepIndex.baseIndexDivideBy) + 2];
+        newStepIndex.index2Text = new byte[(stepCache.stepAugmentedIndex.baseIndex.length+1) * 2];
+        for (int i = 0; i < stepCache.stepAugmentedIndex.baseIndex.length; i++) {
+            int j = i / newStepIndex.baseIndexDivideBy;
+            if (i % newStepIndex.baseIndexDivideBy == 0) {
+                int currentPos = stepCache.stepAugmentedIndex.baseIndex[i];
                 if (currentPos == 0) {
-                    for (int k  = i + 1; k < stepCache.ordIndex2AugmentedFile.length - 1; k++) {
-                        if (stepCache.ordIndex2AugmentedFile[k] != 0) {
-                            currentPos = stepCache.ordIndex2AugmentedFile[k];
-                            stepIndex.index2Text[i * 2] = (byte) 0xff;
-                            stepIndex.index2Text[i * 2 + 1] = (byte) 0xff;;
+                    for (int k  = i + 1; k < stepCache.stepAugmentedIndex.baseIndex.length - 1; k++) {
+                        if (stepCache.stepAugmentedIndex.baseIndex[k] != 0) {
+                            currentPos = stepCache.stepAugmentedIndex.baseIndex[k];
+                            newStepIndex.index2Text[i * 2] = (byte) 0xff;
+                            newStepIndex.index2Text[i * 2 + 1] = (byte) 0xff;;
                             break;
                         }
                     }
                 }
                 else {
-                    stepIndex.index2Text[i*2] = 0;
-                    stepIndex.index2Text[i*2+1] = 0;
+                    newStepIndex.index2Text[i*2] = 0;
+                    newStepIndex.index2Text[i*2+1] = 0;
                 }
-                stepIndex.baseIndex[j] = currentPos;
+                newStepIndex.baseIndex[j] = currentPos;
             }
             else {
-                int currentPos = stepCache.ordIndex2AugmentedFile[i];
+                int currentPos = stepCache.stepAugmentedIndex.baseIndex[i];
                 int diff;
                 if (currentPos == 0) {
-                    diff = 65535;
+                    diff = 65535; // 65535 is FFFF in hex for an int, it means it is zero
                 }
                 else {
-                    diff = currentPos - stepIndex.baseIndex[j];
+                    diff = currentPos - newStepIndex.baseIndex[j];
                 }
                 int pos = i * 2;
-                stepIndex.index2Text[pos] = (byte)(diff & 0xff);
-                stepIndex.index2Text[pos+1] = (byte)((diff >> 8) & 0xff);
+                newStepIndex.index2Text[pos] = (byte)(diff & 0xff);
+                newStepIndex.index2Text[pos+1] = (byte)((diff >> 8) & 0xff);
             }
         }
         // Verify the compact index.  Don't need to run this at run time.
-//        for (int i = 0; i < step.ordIndex2AugmentedFile.length; i++) {
-//            int j = i / stepIndex.baseIndexDivideBy;
-//            int pos = i * 2;
-//            if ((stepIndex.index2Text[pos] == (byte) 0xff) && (stepIndex.index2Text[pos+1] == (byte) 0xff)) {
-//                if (step.ordIndex2AugmentedFile[i] != 0)
-//                    System.out.println("did not find zero");
-//            }
-//            if (step.ordIndex2AugmentedFile[i] != getPosOfOrdinal(i, stepIndex))
-//                System.out.println("did not match");
-//        }
-        stepCache.ordIndex2AugmentedFile = null;
-        return stepIndex;
+        for (int i = 0; i < stepCache.stepAugmentedIndex.baseIndex.length; i++) {
+            int pos = i * 2;
+            if ((newStepIndex.index2Text[pos] == (byte) 0xff) && (newStepIndex.index2Text[pos+1] == (byte) 0xff)) {
+                if (stepCache.stepAugmentedIndex.baseIndex[i] != 0)
+                    System.out.println("did not find zero");
+            }
+            if (stepCache.stepAugmentedIndex.baseIndex[i] != getPosOfOrdinal(i, newStepIndex))
+                System.out.println("did not match");
+        }
+        stepCache.stepAugmentedIndex = newStepIndex;
+        return newStepIndex;
     }
     /**
      * The log stream
@@ -300,7 +360,6 @@ public class ZVerseBackendStateDStrong {
     public static class stepAugmentedBibleTextCache {
         int posInAugFile;
         stepAugmentedIndex stepAugmentedIndex;
-        int[] ordIndex2AugmentedFile;
         MappedByteBuffer augmentedFileMBB;
         FileChannel augFileChannel;
     }
@@ -310,5 +369,8 @@ public class ZVerseBackendStateDStrong {
         int[] baseIndex;
         byte[] index2Text;
     }
+
+    private static int stepCacheErrorDoNotUse = -512;
+    private static int stepCacheReady4Use = -1048;
 
 }
