@@ -22,6 +22,9 @@ package org.crosswire.jsword.book.sword.state;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
@@ -81,7 +84,8 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
-             openAndCacheAugmentedFiles(path.getPath(), Testament.OLD);
+            if (bookMetaData.getIndexStatus() == IndexStatus.DONE)
+                openAndCacheAugmentedFiles(path.getPath(), Testament.OLD);
         }
 
         // why do swallow the exception and log. Can Books have one testament
@@ -100,7 +104,8 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 assert false : ex;
                  log.error("Could not open NT", ex);
             }
-             openAndCacheAugmentedFiles(path.getPath(), Testament.NEW);
+            if (bookMetaData.getIndexStatus() == IndexStatus.DONE)
+                openAndCacheAugmentedFiles(path.getPath(), Testament.NEW);
         }
     }
 
@@ -238,23 +243,61 @@ public class ZVerseBackendState extends AbstractOpenFileState {
 	// the path of the Bible module files matches the path on the STEPBible web server.
 	
     public void openAndCacheAugmentedFiles(final String path, final Testament testament) {
-        ZVerseBackendStateDStrong.openAndCacheAugmentedFiles(path, getStepCache(testament, true), testament);
+        String curPath = path;
+        if (curPath.indexOf("/C:") == 0)
+            curPath = curPath.substring(1);
+        if (curPath.charAt(curPath.length() - 1) != '/')
+            curPath += "/"; // Sometimes it does not have a "/" slash character at the end so add it if necessary.
+        curPath += "STEP_Augment/";
+        File augmentedText = new File(curPath + testament.name() + "augmentedText");
+        File augmentedTextIdx = new File(curPath + testament.name() + "augmentedIndex.ser");
+        ZVerseBackendStateDStrong.stepAugmentedBibleTextCache curStepCache = getStepCache(testament);
+        if ((augmentedText.canRead() && (augmentedTextIdx.canRead()))) {
+            if (curStepCache == null)
+                curStepCache = new ZVerseBackendStateDStrong.stepAugmentedBibleTextCache();
+            ZVerseBackendStateDStrong.openAndCacheAugmentedFiles(curPath, curStepCache, testament);
+        }
+        else
+            curStepCache = null;
+        if (testament == Testament.OLD)
+            stepOTCache = curStepCache;
+        else
+            stepNTCache = curStepCache;
     }
 
     public String getVerseFromAugmentedFile(final int ordinal, final Testament testament, final IndexStatus status) {
-        return ZVerseBackendStateDStrong.getVerseFromAugmentedFile(ordinal, status, getStepCache(testament, false));
+        return ZVerseBackendStateDStrong.getVerseFromAugmentedFile(ordinal, status, getStepCache(testament));
     }
 
     public void createAugStrongCache(final int maxOrdinal, final SwordBookMetaData bmd, final Testament testament) {
-        ZVerseBackendStateDStrong.createAugStrongCache(maxOrdinal, bmd, getStepCache(testament, true), testament);
+        if (testament == Testament.OLD)
+            stepOTCache = null;
+        else
+            stepNTCache = null;
+        String augmentedFilePath = bmd.getLocation().getPath();
+        if (augmentedFilePath.indexOf("/C:") == 0)
+            augmentedFilePath = augmentedFilePath.substring(1);
+        augmentedFilePath += "/STEP_Augment";
+        Path path = Paths.get(augmentedFilePath);
+        if (Files.exists(path)) {
+            ZVerseBackendStateDStrong.stepAugmentedBibleTextCache curStepCache = null;
+            if (testament == Testament.OLD) {
+                stepOTCache = new ZVerseBackendStateDStrong.stepAugmentedBibleTextCache();
+                curStepCache = stepOTCache;
+            } else {
+                stepNTCache = new ZVerseBackendStateDStrong.stepAugmentedBibleTextCache();
+                curStepCache = stepNTCache;
+            }
+            ZVerseBackendStateDStrong.createAugStrongCache(maxOrdinal, bmd, curStepCache, testament);
+        }
     }
 
     public void addToAugStrongCache(final int ordinal, final String augmentedString, final Testament testament) {
-        ZVerseBackendStateDStrong.addToAugStrongCache(ordinal, augmentedString, getStepCache(testament, false));
+        ZVerseBackendStateDStrong.addToAugStrongCache(ordinal, augmentedString, getStepCache(testament));
     }
 
     public void finalizeAugStrongCache(final SwordBookMetaData bmd, final Testament testament) throws IOException {
-        ZVerseBackendStateDStrong.finalizeAugStrongCache(bmd, getStepCache(testament, false), testament);
+        ZVerseBackendStateDStrong.finalizeAugStrongCache(bmd, getStepCache(testament), testament);
     }
 
     public boolean isBuildingOTAugStrongCache() {
@@ -263,17 +306,10 @@ public class ZVerseBackendState extends AbstractOpenFileState {
         return stepOTCache.augFileChannel.isOpen();
     }
 
-    private ZVerseBackendStateDStrong.stepAugmentedBibleTextCache getStepCache(Testament testament, boolean createIfNecessary) {
-        if (testament == Testament.OLD) {
-            if ((stepOTCache == null) && (createIfNecessary))
-                stepOTCache = new ZVerseBackendStateDStrong.stepAugmentedBibleTextCache();
+    private ZVerseBackendStateDStrong.stepAugmentedBibleTextCache getStepCache(Testament testament) {
+        if (testament == Testament.OLD)
             return stepOTCache;
-        }
-        else {
-            if ((stepNTCache == null) && (createIfNecessary))
-                stepNTCache = new ZVerseBackendStateDStrong.stepAugmentedBibleTextCache();
-            return stepNTCache;
-        }
+        return stepNTCache;
     }
 
     private ZVerseBackendStateDStrong.stepAugmentedBibleTextCache stepNTCache;

@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -36,24 +35,18 @@ public class ZVerseBackendStateDStrong {
         }
         try {
             String curPath = path;
-            if (curPath.charAt(curPath.length() - 1) != '/')
-                curPath += "/"; // Sometimes it does not have a "/" slash character at the end so add it if necessary.
-            curPath += "STEP_Augment/";
             File augmentedText = new File(curPath + testament.name() + "augmentedText");
-            File augmentedTextIdx = new File(curPath + testament.name() + "augmentedIndex.ser");
-            if ((augmentedText.canRead() && (augmentedTextIdx.canRead()))) {
-                // Reads the object
-                FileInputStream fileIn = new FileInputStream(curPath + testament.name() + "augmentedIndex.ser");
-                ObjectInputStream objIn = new ObjectInputStream(fileIn);
-                // Reads the objects
-                stepCache.stepAugmentedIndex = (stepAugmentedIndex) objIn.readObject();
-                RandomAccessFile file = new RandomAccessFile(augmentedText, "r");
-                FileChannel channel = file.getChannel();
-                // Read file into mapped buffer
-                stepCache.augmentedFileMBB = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-                log.info("openAndCacheAugmentedFiles: open augmented files" + curPath);
-                stepCache.posInAugFile = stepCacheReady4Use;
-            }
+            // Reads the object
+            FileInputStream fileIn = new FileInputStream(curPath + testament.name() + "augmentedIndex.ser");
+            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            // Reads the objects
+            stepCache.stepAugmentedIndex = (stepAugmentedIndex) objIn.readObject();
+            RandomAccessFile file = new RandomAccessFile(augmentedText, "r");
+            FileChannel channel = file.getChannel();
+            // Read file into mapped buffer
+            stepCache.augmentedFileMBB = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+            log.info("openAndCacheAugmentedFiles: open augmented files" + curPath);
+            stepCache.posInAugFile = stepCacheReady4Use;
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
@@ -65,7 +58,7 @@ public class ZVerseBackendStateDStrong {
 
     public static String getVerseFromAugmentedFile(final int ordinal, final IndexStatus status,
                                                    stepAugmentedBibleTextCache stepCache) {
-        if ((status == IndexStatus.CREATING) || (stepCache == null))
+        if ((status != IndexStatus.DONE) || (stepCache == null))
             return null;
         int lengthOfIndex2Text = 0;
         try {
@@ -147,25 +140,20 @@ public class ZVerseBackendStateDStrong {
             if (augmentedFilePath.indexOf("/C:") == 0)
                 augmentedFilePath = augmentedFilePath.substring(1);
             augmentedFilePath += "/STEP_Augment";
+            augmentedFilePath += "/" + testament.name() + "augmentedText";
+            log.info("Writing augmented text file at " + augmentedFilePath);
+            Set<StandardOpenOption> options = new HashSet<>();
+            options.add(StandardOpenOption.CREATE);
+            options.add(StandardOpenOption.WRITE);
+            options.add(StandardOpenOption.TRUNCATE_EXISTING);
             Path path = Paths.get(augmentedFilePath);
-            if (Files.exists(path)) {
-                augmentedFilePath += "/" + testament.name() + "augmentedText";
-                System.out.println(("Writing augmented text file at " + augmentedFilePath));
-
-                Set<StandardOpenOption> options = new HashSet<>();
-                options.add(StandardOpenOption.CREATE);
-                options.add(StandardOpenOption.WRITE);
-                options.add(StandardOpenOption.TRUNCATE_EXISTING);
-                path = Paths.get(augmentedFilePath);
-                stepCache.augFileChannel = FileChannel.open(path, options);
-                String header = bmd.getInitials() + "\n";
-                ByteBuffer output = null; // Must output something at the beginning of the file.
-                output = ByteBuffer.wrap(header.getBytes("UTF-8"));
-                stepCache.augFileChannel.write(output);
-                stepCache.posInAugFile += output.limit();
-                stepCache.stepAugmentedIndex = new stepAugmentedIndex();
-                stepCache.stepAugmentedIndex.baseIndex = new int[maxOrdinal + 2];
-            }
+            stepCache.augFileChannel = FileChannel.open(path, options);
+            String header = bmd.getInitials() + "\n";
+            ByteBuffer output = ByteBuffer.wrap(header.getBytes("UTF-8")); // Must output something at the beginning of the file.
+            stepCache.augFileChannel.write(output);
+            stepCache.posInAugFile += output.limit();
+            stepCache.stepAugmentedIndex = new stepAugmentedIndex();
+            stepCache.stepAugmentedIndex.baseIndex = new int[maxOrdinal + 2];
         }
         catch (Exception e) {
             stepCache.stepAugmentedIndex = null;
