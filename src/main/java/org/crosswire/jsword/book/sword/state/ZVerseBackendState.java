@@ -266,7 +266,10 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     }
 
     public String getVerseFromAugmentedFile(final int ordinal, final Testament testament, final IndexStatus status) {
-        return ZVerseBackendStateDStrong.getVerseFromAugmentedFile(ordinal, status, getStepCache(testament));
+        ZVerseBackendStateDStrong.stepAugmentedBibleTextCache stepCache = getStepCache(testament);
+        if ((stepCache == null) || (status != IndexStatus.DONE))
+            return null;
+        return ZVerseBackendStateDStrong.getVerseFromAugmentedFile(ordinal, status, stepCache);
     }
 
     public void createAugStrongCache(final int maxOrdinal, final SwordBookMetaData bmd, final Testament testament) {

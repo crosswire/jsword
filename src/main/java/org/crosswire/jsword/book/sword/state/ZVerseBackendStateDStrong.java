@@ -58,9 +58,7 @@ public class ZVerseBackendStateDStrong {
 
     public static String getVerseFromAugmentedFile(final int ordinal, final IndexStatus status,
                                                    stepAugmentedBibleTextCache stepCache) {
-        if ((status != IndexStatus.DONE) || (stepCache == null))
-            return null;
-        int lengthOfIndex2Text = 0;
+        int lengthOfIndex2Text;
         try {
             if ((stepCache.posInAugFile != stepCacheReady4Use) || (stepCache.stepAugmentedIndex == null) ||
                     (stepCache.augmentedFileMBB == null))
