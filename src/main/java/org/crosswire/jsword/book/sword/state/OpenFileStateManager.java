@@ -293,6 +293,7 @@ public final class OpenFileStateManager {
     public static class OrdinalStrongArray implements Serializable {
         public int[] OHBOrdinal; // 24182
         public int[] OTRSVOrdinal; // 24114
+        public int[] OTGreekOrdinal; // 24114
         public int[] NTRSVOrdinal; // 8245
         public byte[] augStrong;
         public short[] strongsWithAugments;
