@@ -52,24 +52,31 @@ public class ZVerseBackendDStrong {
         }
         int[] ordinals;
         boolean combineAugStrongOfTwoVerses = false;
+        String translation = bmd.getInitials();
+        boolean greekInOT = false;
         if (testament == Testament.OLD) {
-            ordinals = OpenFileStateManager.osArray.OHBOrdinal;
-            if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad"))) {
-                if (index >= OpenFileStateManager.osArray.OTRSVOrdinal.length)
-                    return resultFromJSword;
-                short indexToOTRSVOrdinal = (short) OpenFileStateManager.osArray.OTRSVOrdinal[index];
-                if (indexToOTRSVOrdinal < 0) {
-                    indexToOTRSVOrdinal = (short) (indexToOTRSVOrdinal & 0x7fff);
-                    combineAugStrongOfTwoVerses = true;
+            if (translation.equals("abpen_th") || translation.equals("LXX_th")) {
+                ordinals = OpenFileStateManager.osArray.OTGreekOrdinal;
+                greekInOT = true;
+            }
+            else {
+                ordinals = OpenFileStateManager.osArray.OHBOrdinal;
+                if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad"))) {
+                    if (index >= OpenFileStateManager.osArray.OTRSVOrdinal.length)
+                        return resultFromJSword;
+                    short indexToOTRSVOrdinal = (short) OpenFileStateManager.osArray.OTRSVOrdinal[index];
+                    if (indexToOTRSVOrdinal < 0) {
+                        indexToOTRSVOrdinal = (short) (indexToOTRSVOrdinal & 0x7fff);
+                        combineAugStrongOfTwoVerses = true;
+                    }
+                    index = indexToOTRSVOrdinal;
                 }
-                index = indexToOTRSVOrdinal;
             }
         }
         else {
             ordinals = OpenFileStateManager.osArray.NTRSVOrdinal;
         }
-        String[] augmentStrongs = getAugStrongsForVerse(combineAugStrongOfTwoVerses, ordinals, index, testament);
-        String translation = bmd.getInitials();
+        String[] augmentStrongs = getAugStrongsForVerse(combineAugStrongOfTwoVerses, ordinals, index, testament, greekInOT);
         String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
@@ -112,7 +119,7 @@ public class ZVerseBackendDStrong {
         }
     }
     private static String[] getAugStrongsForVerse(final boolean combineAugStrongOfTwoVerses, int[] ordinals, int index,
-                                                  final Testament testament) {
+                                                  final Testament testament, final boolean greekInOT) {
         int currentPos = ordinals[index];
         if (currentPos > 0) {
             int lastPos = OpenFileStateManager.osArray.augStrong.length;
@@ -123,12 +130,26 @@ public class ZVerseBackendDStrong {
                 endPos = ordinals[i];
             }
             if (endPos == 0) {
-                if (testament == Testament.OLD) { // reached the end of the OHBOrdinal
-                    ordinals = OpenFileStateManager.osArray.NTRSVOrdinal; // look the first NTRSVOrdinal with a pointer
+                if (testament == Testament.OLD) {
+                    if (!greekInOT) { // reached the end of the OHBOrdinal
+                        ordinals = OpenFileStateManager.osArray.NTRSVOrdinal; // look for the first NTRSVOrdinal with a non-zero pointer
+                        for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
+                            endPos = ordinals[i];
+                        }
+                    }
+                    else
+                        endPos = lastPos;
+                }
+                else if (testament == Testament.NEW) { // reached the end of the New Testament
+                    ordinals = OpenFileStateManager.osArray.OTGreekOrdinal; // look the first OTGreekOrdinal with a non-zero pointer
                     for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
                         endPos = ordinals[i];
                     }
-                } else endPos = lastPos;
+                }
+                if (endPos == 0) {
+                    System.out.println("cannot find end pos: " + index + testament );
+                    endPos = lastPos;
+                }
             }
             int len = endPos - currentPos;
             int destPos = 0;
