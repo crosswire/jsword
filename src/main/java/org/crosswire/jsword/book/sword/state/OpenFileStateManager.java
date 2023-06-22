@@ -322,9 +322,9 @@ public final class OpenFileStateManager {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-            System.out.println("OT: " + i + " " + new String(b));
-            if (i % 8000 == 0)
-                System.out.println(i);
+//            System.out.println("OT: " + i + " " + new String(b));
+//            if (i % 8000 == 0)
+//                System.out.println(i);
         }
         for (int i = 0; i < OpenFileStateManager.osArray.NTRSVOrdinal.length; i++) {
             int beginPos = OpenFileStateManager.osArray.NTRSVOrdinal[i];
@@ -344,7 +344,7 @@ public final class OpenFileStateManager {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-            System.out.println("NT: " + i + " " + new String(b));
+//            System.out.println("NT: " + i + " " + new String(b));
         }
         for (int i = 0; i < OpenFileStateManager.osArray.OTGreekOrdinal.length; i++) {
             int beginPos = OpenFileStateManager.osArray.OTGreekOrdinal[i];
@@ -362,15 +362,15 @@ public final class OpenFileStateManager {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-            System.out.println("LXX: " + i + " " + new String(b));
+//            System.out.println("LXX: " + i + " " + new String(b));
         }
-        for (int i = 0; i < OpenFileStateManager.osArray.OTRSVOrdinal.length; i++) {
-            System.out.println("OT RSV: " + i + " " + OpenFileStateManager.osArray.OTRSVOrdinal[i]);
-        }
-        System.out.println("numOfGreek " + OpenFileStateManager.osArray.numOfGreekStrongWithAugments);
-        for (int i = 0; i < OpenFileStateManager.osArray.strongsWithAugments.length; i++) {
-            System.out.println("Strong: " + OpenFileStateManager.osArray.strongsWithAugments[i] + " " + OpenFileStateManager.osArray.defaultAugment[i]);
-        }
+//        for (int i = 0; i < OpenFileStateManager.osArray.OTRSVOrdinal.length; i++) {
+//            System.out.println("OT RSV: " + i + " " + OpenFileStateManager.osArray.OTRSVOrdinal[i]);
+//        }
+//        System.out.println("numOfGreek " + OpenFileStateManager.osArray.numOfGreekStrongWithAugments);
+//        for (int i = 0; i < OpenFileStateManager.osArray.strongsWithAugments.length; i++) {
+//            System.out.println("Strong: " + i + " " + OpenFileStateManager.osArray.strongsWithAugments[i] + " " + OpenFileStateManager.osArray.defaultAugment[i]);
+//        }
     }
     
 	public static OrdinalStrongArray osArray;
