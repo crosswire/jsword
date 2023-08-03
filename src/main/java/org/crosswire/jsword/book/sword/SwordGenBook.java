@@ -52,7 +52,7 @@ public class SwordGenBook extends AbstractBook {
      * @param sbmd the metadata that describes the book
      * @param backend the means by which the resource is accessed
      */
-    SwordGenBook(SwordBookMetaData sbmd, Backend backend) {
+    public SwordGenBook(SwordBookMetaData sbmd, Backend backend) {
         super(sbmd, backend);
 
         if (backend == null) {
