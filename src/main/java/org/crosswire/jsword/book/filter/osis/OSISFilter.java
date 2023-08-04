@@ -59,11 +59,13 @@ public class OSISFilter implements SourceFilter {
         // The following converts simple <div> and </div> to their milestoned versions.
         // Current versions of osis2mod do this already
         // Note: if the div element has attributes, it is not seen.
-        clean = DIV_START.matcher(clean).replaceAll("<div sID=\"xyz\"/>");
-        clean = DIV_END.matcher(clean).replaceAll("<div eID=\"xyz\"/>");
-        clean = CHAPTER_END.matcher(clean).replaceAll("<chapter eID=\"xyz\"/>");
-        clean = SPEECH_START.matcher(clean).replaceAll("<speech sID=\"xyz\"/>");
-        clean = SPEECH_END.matcher(clean).replaceAll("<speech eID=\"xyz\"/>");
+
+        // This potentially renders XML invalid. In AndBible we don't care about this. So commenting out.
+        // clean = DIV_START.matcher(clean).replaceAll("<div sID=\"xyz\"/>");
+        // clean = DIV_END.matcher(clean).replaceAll("<div eID=\"xyz\"/>");
+        // clean = CHAPTER_END.matcher(clean).replaceAll("<chapter eID=\"xyz\"/>");
+        // clean = SPEECH_START.matcher(clean).replaceAll("<speech sID=\"xyz\"/>");
+        // clean = SPEECH_END.matcher(clean).replaceAll("<speech eID=\"xyz\"/>");
 
         // FIXME(dms): this is a major HACK handling a problem with a badly
         // encoded module.
