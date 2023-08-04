@@ -190,8 +190,7 @@ public class OSISFilter implements SourceFilter {
         try {
             // Need to contain it in something that we remove when returning it to the user.
             in = new StringReader("<xxx>" + plain + "</xxx>");
-            InputSource is = new InputSource(in);
-            Document doc = builder.build(is);
+            Document doc = builder.build(in);
             div = doc.getRootElement();
         } finally {
             if (in != null) {
