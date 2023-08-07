@@ -56,15 +56,15 @@ public class ZVerseBackendDStrong {
         boolean greekInOT = false;
         if (testament == Testament.OLD) {
             if (translation.equals("abpen_th") || translation.equals("LXX_th")) {
-                ordinals = OpenFileStateManager.osArray.OTGreekOrdinal;
+                ordinals = OpenFileStateManager.osArray.ordinalOTGreek;
                 greekInOT = true;
             }
             else {
-                ordinals = OpenFileStateManager.osArray.OHBOrdinal;
+                ordinals = OpenFileStateManager.osArray.ordinalOTHebrewOHB;
                 if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad"))) {
-                    if (index >= OpenFileStateManager.osArray.OTRSVOrdinal.length)
+                    if (index >= OpenFileStateManager.osArray.ordinalOTHebrewRSV.length)
                         return resultFromJSword;
-                    short indexToOTRSVOrdinal = (short) OpenFileStateManager.osArray.OTRSVOrdinal[index];
+                    short indexToOTRSVOrdinal = (short) OpenFileStateManager.osArray.ordinalOTHebrewRSV[index];
                     if (indexToOTRSVOrdinal < 0) {
                         indexToOTRSVOrdinal = (short) (indexToOTRSVOrdinal & 0x7fff);
                         combineAugStrongOfTwoVerses = true;
@@ -74,7 +74,7 @@ public class ZVerseBackendDStrong {
             }
         }
         else {
-            ordinals = OpenFileStateManager.osArray.NTRSVOrdinal;
+            ordinals = OpenFileStateManager.osArray.ordinalNT;
         }
         String[] augmentStrongs = getAugStrongsForVerse(combineAugStrongOfTwoVerses, ordinals, index, testament, greekInOT);
         String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
@@ -132,7 +132,7 @@ public class ZVerseBackendDStrong {
             if (endPos == 0) {
                 if (testament == Testament.OLD) {
                     if (!greekInOT) { // reached the end of the OHBOrdinal
-                        ordinals = OpenFileStateManager.osArray.NTRSVOrdinal; // look for the first NTRSVOrdinal with a non-zero pointer
+                        ordinals = OpenFileStateManager.osArray.ordinalNT; // look for the first NTRSVOrdinal with a non-zero pointer
                         for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
                             endPos = ordinals[i];
                         }
@@ -141,7 +141,7 @@ public class ZVerseBackendDStrong {
                         endPos = lastPos;
                 }
                 else if (testament == Testament.NEW) { // reached the end of the New Testament
-                    ordinals = OpenFileStateManager.osArray.OTGreekOrdinal; // look the first OTGreekOrdinal with a non-zero pointer
+                    ordinals = OpenFileStateManager.osArray.ordinalOTGreek; // look the first OTGreekOrdinal with a non-zero pointer
                     for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
                         endPos = ordinals[i];
                     }
@@ -236,7 +236,7 @@ public class ZVerseBackendDStrong {
                 int index = binarySearchOfStrong(currentStrong);
                 String strongToReturn = currentStrong;
                 if (index > -1) {
-                    strongToReturn += new String(new byte[]{OpenFileStateManager.osArray.defaultAugment[index]});
+                    strongToReturn += new String(new byte[]{OpenFileStateManager.osArray.defaultAugmentOTHebrew[index]});
                 }
                 result += (result.equals("")) ? strongToReturn : (" strong:" + strongToReturn);
             }
@@ -278,7 +278,7 @@ public class ZVerseBackendDStrong {
         if (augStrong.length() < 2)
             return -1;
         int first = 0;
-        int last = OpenFileStateManager.osArray.strongsWithAugments.length - 1;
+        int last = OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew.length - 1;
         if (augStrong.charAt(0) == 'G') {
             last = OpenFileStateManager.osArray.numOfGreekStrongWithAugments - 1;
         }
@@ -292,8 +292,8 @@ public class ZVerseBackendDStrong {
             return -1;
         int mid = (first + last) / 2;
         while( first <= last ) {
-            if ( OpenFileStateManager.osArray.strongsWithAugments[mid] < key ) first = mid + 1;
-            else if ( OpenFileStateManager.osArray.strongsWithAugments[mid] == key ) return mid;
+            if ( OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew[mid] < key ) first = mid + 1;
+            else if ( OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew[mid] == key ) return mid;
             else last = mid - 1;
             mid = (first + last) / 2;
         }
