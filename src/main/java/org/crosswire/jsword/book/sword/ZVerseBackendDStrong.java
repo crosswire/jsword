@@ -233,7 +233,15 @@ public class ZVerseBackendDStrong {
                     break;
             }
             if (!assigned) {
-                int index = binarySearchOfStrong(currentStrong);
+                short[] strongsWithAugments;
+                if (testament == Testament.OLD) {
+                    strongsWithAugments = (currentStrong.charAt(0) == 'H') ? OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew :
+                            OpenFileStateManager.osArray.strongsWithAugmentsOTGreek;
+                }
+                else
+                    strongsWithAugments = OpenFileStateManager.osArray.strongsWithAugmentsNTGreek;
+
+                int index = binarySearchOfStrong(currentStrong, strongsWithAugments);
                 String strongToReturn = currentStrong;
                 if (index > -1) {
                     strongToReturn += new String(new byte[]{OpenFileStateManager.osArray.defaultAugmentOTHebrew[index]});
@@ -274,26 +282,18 @@ public class ZVerseBackendDStrong {
         return result;
     }
 
-    private static int binarySearchOfStrong(final String augStrong) {
+    private static int binarySearchOfStrong(final String augStrong, final short[] strongsWithAugments) {
         if (augStrong.length() < 2)
             return -1;
         int first = 0;
-        int last = OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew.length - 1;
-        if (augStrong.charAt(0) == 'G') {
-            last = OpenFileStateManager.osArray.numOfGreekStrongWithAugments - 1;
-        }
-        else if (augStrong.charAt(0) == 'H') {
-            first = OpenFileStateManager.osArray.numOfGreekStrongWithAugments;
-        }
-        else
-            return -1;
+        int last = strongsWithAugments.length - 1;
         int key = convertStrong2Short(augStrong);
         if (key == -1)
             return -1;
         int mid = (first + last) / 2;
         while( first <= last ) {
-            if ( OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew[mid] < key ) first = mid + 1;
-            else if ( OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew[mid] == key ) return mid;
+            if ( strongsWithAugments[mid] < key ) first = mid + 1;
+            else if ( strongsWithAugments[mid] == key ) return mid;
             else last = mid - 1;
             mid = (first + last) / 2;
         }

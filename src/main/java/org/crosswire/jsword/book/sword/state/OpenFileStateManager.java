@@ -326,9 +326,9 @@ public final class OpenFileStateManager {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-//            System.out.println("OT: " + i + " " + new String(b));
-//            if (i % 8000 == 0)
-//                System.out.println(i);
+            System.out.println("OT: " + i + " " + new String(b));
+            if (i % 8000 == 0)
+                System.out.println(i);
         }
         for (int i = 0; i < OpenFileStateManager.osArray.ordinalNT.length; i++) {
             int beginPos = OpenFileStateManager.osArray.ordinalNT[i];
