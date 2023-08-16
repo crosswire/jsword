@@ -231,12 +231,12 @@ public class DefaultLeafKeyList implements Key {
 
         // The real bit ...
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
-        return name.equals(that.name);
+        return osisName.equals(that.osisName);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return osisName.hashCode();
     }
 
     /* (non-Javadoc)
@@ -244,7 +244,7 @@ public class DefaultLeafKeyList implements Key {
      */
     public int compareTo(Key obj) {
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
-        return name.compareTo(that.name);
+        return osisName.compareTo(that.osisName);
     }
 
     @Override
