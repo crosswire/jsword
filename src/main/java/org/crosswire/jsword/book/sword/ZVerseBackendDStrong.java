@@ -24,8 +24,9 @@ public class ZVerseBackendDStrong {
                                         final Versification v11n, final SwordBookMetaData bmd, final Verse verse,
                                         ZVerseBackendState rafBook) {
 
-        if ((!bmd.hasFeature(FeatureType.STRONGS_NUMBERS)) || (verse.getBook().ordinal() >= 69))
-            return resultFromJSword; // If it is Deutro canon or no Strong, don't augment it.
+        if ((!bmd.hasFeature(FeatureType.STRONGS_NUMBERS)) || // No Strong in the selected Bible or
+            (verse.getBook().ordinal() >= 69))                // It is Deutro canon
+            return resultFromJSword;                          // Do not need to augment DStrong
         String versificationName = v11n.getName();
         int index = ordinalInTestament;
         if (!versificationName.equals("Leningrad") && !versificationName.equals("NRSV")) {
@@ -51,32 +52,24 @@ public class ZVerseBackendDStrong {
             }
         }
         int[] ordinals;
-        boolean combineAugStrongOfTwoVerses = false;
         String translation = bmd.getInitials();
         boolean greekInOT = false;
         if (testament == Testament.OLD) {
-            if (translation.equals("abpen_th") || translation.equals("LXX_th")) {
+            if (translation.equals("abpen_th")  || translation.equals("LXX_th")  || translation.equals("ABP") ||
+                translation.equals("abpgk_th")  || translation.equals("ABPGRK")) {
                 ordinals = OpenFileStateManager.osArray.ordinalOTGreek;
                 greekInOT = true;
             }
             else {
-                ordinals = OpenFileStateManager.osArray.ordinalOTHebrewOHB;
-                if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad"))) {
-                    if (index >= OpenFileStateManager.osArray.ordinalOTHebrewRSV.length)
-                        return resultFromJSword;
-                    short indexToOTRSVOrdinal = (short) OpenFileStateManager.osArray.ordinalOTHebrewRSV[index];
-                    if (indexToOTRSVOrdinal < 0) {
-                        indexToOTRSVOrdinal = (short) (indexToOTRSVOrdinal & 0x7fff);
-                        combineAugStrongOfTwoVerses = true;
-                    }
-                    index = indexToOTRSVOrdinal;
-                }
+                if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad")))
+                    ordinals = OpenFileStateManager.osArray.ordinalOTHebrewRSV;
+                else
+                    ordinals = OpenFileStateManager.osArray.ordinalOTHebrewOHB;
             }
         }
-        else {
+        else
             ordinals = OpenFileStateManager.osArray.ordinalNT;
-        }
-        String[] augmentStrongs = getAugStrongsForVerse(combineAugStrongOfTwoVerses, ordinals, index, testament, greekInOT);
+        String[] augmentStrongs = getAugStrongsForVerse(ordinals, index, testament, greekInOT);
         String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
@@ -118,55 +111,15 @@ public class ZVerseBackendDStrong {
             log.error("createStepCacheForAugStrong", e);
         }
     }
-    private static String[] getAugStrongsForVerse(final boolean combineAugStrongOfTwoVerses, int[] ordinals, int index,
+    private static String[] getAugStrongsForVerse(int[] ordinals, int index,
                                                   final Testament testament, final boolean greekInOT) {
         int currentPos = ordinals[index];
         if (currentPos > 0) {
-            int lastPos = OpenFileStateManager.osArray.augStrong.length;
-            int endPos = 0;
-            if (combineAugStrongOfTwoVerses)
-                index ++;
-            for (int i = index + 1; ((i < ordinals.length) && (endPos == 0)); i++) {
-                endPos = ordinals[i];
-            }
-            if (endPos == 0) {
-                if (testament == Testament.OLD) {
-                    if (!greekInOT) { // reached the end of the OHBOrdinal
-                        ordinals = OpenFileStateManager.osArray.ordinalNT; // look for the first NTRSVOrdinal with a non-zero pointer
-                        for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
-                            endPos = ordinals[i];
-                        }
-                    }
-                    else
-                        endPos = lastPos;
-                }
-                else if (testament == Testament.NEW) { // reached the end of the New Testament
-                    ordinals = OpenFileStateManager.osArray.ordinalOTGreek; // look the first OTGreekOrdinal with a non-zero pointer
-                    for (int i = 0; ((i < ordinals.length) && (endPos == 0)); i++) {
-                        endPos = ordinals[i];
-                    }
-                }
-                if (endPos == 0) {
-                    System.out.println("cannot find end pos: " + index + testament );
-                    endPos = lastPos;
-                }
-            }
-            int len = endPos - currentPos;
-            int destPos = 0;
-            if (combineAugStrongOfTwoVerses) len ++; // add one space between the 1st and 2nd string of augstrongs.
+            int len = OpenFileStateManager.osArray.augStrong[currentPos];
+            currentPos ++;
             byte[] b = new byte[len];
-            if (combineAugStrongOfTwoVerses) {
-                len = ordinals[index] - currentPos;
-                System.arraycopy(OpenFileStateManager.osArray.augStrong, currentPos, b, destPos, len);
-                b[len] = ' ';
-                destPos = len + 1;
-                currentPos = ordinals[index];
-                len = endPos - currentPos;
-            }
-            System.arraycopy(OpenFileStateManager.osArray.augStrong, currentPos, b, destPos, len);
+            System.arraycopy(OpenFileStateManager.osArray.augStrong, currentPos, b, 0, len);
             String[] augStrongs = new String(b).trim().split(" ");
-            if (combineAugStrongOfTwoVerses)
-                Arrays.sort(augStrongs);
             return augStrongs;
         }
         return new String[0];
@@ -234,17 +187,31 @@ public class ZVerseBackendDStrong {
             }
             if (!assigned) {
                 short[] strongsWithAugments;
+                byte[] defaultAugment;
+                boolean greekInOT = false;
                 if (testament == Testament.OLD) {
-                    strongsWithAugments = (currentStrong.charAt(0) == 'H') ? OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew :
-                            OpenFileStateManager.osArray.strongsWithAugmentsOTGreek;
+                    if (currentStrong.charAt(0) == 'G') {
+                        strongsWithAugments = OpenFileStateManager.osArray.strongsWithAugmentsOTGreek;
+                        defaultAugment = OpenFileStateManager.osArray.defaultAugmentOTGreek;
+                        greekInOT = true;
+                    }
+                    else {
+                        strongsWithAugments = OpenFileStateManager.osArray.strongsWithAugmentsOTHebrew;
+                        defaultAugment = OpenFileStateManager.osArray.defaultAugmentOTHebrew;
+                    }
                 }
-                else
+                else {
                     strongsWithAugments = OpenFileStateManager.osArray.strongsWithAugmentsNTGreek;
-
+                    defaultAugment = OpenFileStateManager.osArray.defaultAugmentNTGreek;
+                }
                 int index = binarySearchOfStrong(currentStrong, strongsWithAugments);
+                if ((index == -1) && (greekInOT)) {
+                    index = binarySearchOfStrong(currentStrong, OpenFileStateManager.osArray.strongsWithAugmentsNTGreek);
+                    defaultAugment = OpenFileStateManager.osArray.defaultAugmentNTGreek;
+                }
                 String strongToReturn = currentStrong;
                 if (index > -1) {
-                    strongToReturn += new String(new byte[]{OpenFileStateManager.osArray.defaultAugmentOTHebrew[index]});
+                    strongToReturn += new String(new byte[]{defaultAugment[index]});
                 }
                 result += (result.equals("")) ? strongToReturn : (" strong:" + strongToReturn);
             }

@@ -302,7 +302,6 @@ public final class OpenFileStateManager {
         public byte[] defaultAugmentOTHebrew;
         public byte[] defaultAugmentOTGreek;
         public byte[] defaultAugmentNTGreek;
-//        public int numOfGreekStrongWithAugments;
     }
 
     public static synchronized void addOrdinalStrong(OrdinalStrongArray osArray) {
@@ -311,15 +310,9 @@ public final class OpenFileStateManager {
         for (int i = 0; i < OpenFileStateManager.osArray.ordinalOTHebrewOHB.length; i++) {
             int beginPos = OpenFileStateManager.osArray.ordinalOTHebrewOHB[i];
             if (beginPos == 0) continue;
-            int endPos = 0;
-            for (int j = i + 1; ((j < OpenFileStateManager.osArray.ordinalOTHebrewOHB.length) && (endPos == 0)); j++) {
-                endPos = OpenFileStateManager.osArray.ordinalOTHebrewOHB[j];
-            }
-            if (endPos == 0) {
-                for (int k = 0; ((k < OpenFileStateManager.osArray.ordinalNT.length) && (endPos == 0)); k++) {
-                    endPos = OpenFileStateManager.osArray.ordinalNT[k];
-                }
-            }
+            int endPos = OpenFileStateManager.osArray.augStrong[beginPos];
+            beginPos++;
+            endPos += beginPos;
             byte[] b = new byte[endPos - beginPos];
             int count = 0;
             for (int j = beginPos; j < endPos; j++) {
@@ -333,41 +326,48 @@ public final class OpenFileStateManager {
         for (int i = 0; i < OpenFileStateManager.osArray.ordinalNT.length; i++) {
             int beginPos = OpenFileStateManager.osArray.ordinalNT[i];
             if (beginPos == 0) continue;
-            int endPos = 0;
-            for (int j = i + 1; ((j < OpenFileStateManager.osArray.ordinalNT.length) && (endPos == 0)); j++) {
-                endPos = OpenFileStateManager.osArray.ordinalNT[j];
-            }
-            if (endPos == 0) {
-                for (int k = 0; ((k < OpenFileStateManager.osArray.ordinalOTGreek.length) && (endPos == 0)); k++) {
-                    endPos = OpenFileStateManager.osArray.ordinalOTGreek[k];
-                }
-            }
+            int endPos = OpenFileStateManager.osArray.augStrong[beginPos];
+            beginPos++;
+            endPos += beginPos;
             byte[] b = new byte[endPos - beginPos];
             int count = 0;
             for (int j = beginPos; j < endPos; j++) {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-//            System.out.println("NT: " + i + " " + new String(b));
+            System.out.println("NT: " + i + " " + new String(b));
         }
         for (int i = 0; i < OpenFileStateManager.osArray.ordinalOTGreek.length; i++) {
             int beginPos = OpenFileStateManager.osArray.ordinalOTGreek[i];
             if (beginPos == 0) continue;
-            int endPos = 0;
-            for (int j = i + 1; ((j < OpenFileStateManager.osArray.ordinalOTGreek.length) && (endPos == 0)); j++) {
-                endPos = OpenFileStateManager.osArray.ordinalOTGreek[j];
-            }
-            if (endPos == 0) {
-                endPos = OpenFileStateManager.osArray.augStrong.length;
-            }
+            int endPos = OpenFileStateManager.osArray.augStrong[beginPos];
+            beginPos++;
+            endPos += beginPos;
             byte[] b = new byte[endPos - beginPos];
             int count = 0;
             for (int j = beginPos; j < endPos; j++) {
                 b[count] = OpenFileStateManager.osArray.augStrong[j];
                 count++;
             }
-//            System.out.println("LXX: " + i + " " + new String(b));
+            System.out.println("LXX: " + i + " " + new String(b));
         }
+        for (int i = 0; i < OpenFileStateManager.osArray.ordinalOTHebrewRSV.length; i++) {
+            int beginPos = OpenFileStateManager.osArray.ordinalOTHebrewRSV[i];
+            if (beginPos == 0) continue;
+            int endPos = OpenFileStateManager.osArray.augStrong[beginPos];
+            beginPos++;
+            endPos += beginPos;
+            byte[] b = new byte[endPos - beginPos];
+            int count = 0;
+            for (int j = beginPos; j < endPos; j++) {
+                b[count] = OpenFileStateManager.osArray.augStrong[j];
+                count++;
+            }
+            System.out.println("OT: " + i + " " + new String(b));
+            if (i % 8000 == 0)
+                System.out.println(i);
+        }
+
 //        for (int i = 0; i < OpenFileStateManager.osArray.OTRSVOrdinal.length; i++) {
 //            System.out.println("OT RSV: " + i + " " + OpenFileStateManager.osArray.OTRSVOrdinal[i]);
 //        }
