@@ -242,8 +242,8 @@ public class ZVerseBackendDStrong {
             if (strongsListedForThisWord.length() > 1) {
                 char char1 = strongsListedForThisWord.charAt(0);
                 char char2 = strongsListedForThisWord.charAt(1);
-                if (((char1 == 'H') || (char1 == 'G'))  &&
-                     ((char2 >= '0') && (char2 <= '9'))) {
+                if ( (strongsListedForThisWord.length() > 4) ||
+                     (((char1 == 'H') || (char1 == 'G')) && ((char2 >= '0') && (char2 <= '9'))) ) {
                     strongsListedForThisWord = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongParts, augStrongPos, translation, ref);
                 }
             }
@@ -300,4 +300,3 @@ public class ZVerseBackendDStrong {
     private static final Logger log = LoggerFactory.getLogger(ZVerseBackendState.class);
 
 }
-
