@@ -70,7 +70,7 @@ public class ZVerseBackendDStrong {
         else
             ordinals = OpenFileStateManager.osArray.ordinalNT;
         String[] augmentStrongs = getAugStrongsForVerse(ordinals, index, testament, greekInOT);
-        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
+        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString()) + "\n";
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
         return augmentedText;
@@ -239,8 +239,15 @@ public class ZVerseBackendDStrong {
                 return fromJSword;
             }
             String strongsListedForThisWord = fromJSword.substring(posOfStrongTag, posEndOfStrongTag).trim();
-            String updatedStrongs = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongParts, augStrongPos, translation, ref);
-            result += updatedStrongs + '"';
+            if (strongsListedForThisWord.length() > 1) {
+                char char1 = strongsListedForThisWord.charAt(0);
+                char char2 = strongsListedForThisWord.charAt(1);
+                if (((char1 == 'H') || (char1 == 'G'))  &&
+                     ((char2 >= '0') && (char2 <= '9'))) {
+                    strongsListedForThisWord = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongParts, augStrongPos, translation, ref);
+                }
+            }
+            result += strongsListedForThisWord + '"';
             posOfStrongTag = posEndOfStrongTag + 1;
             resultCopyPos = posOfStrongTag;
             posOfStrongTag = lcFromJSword.indexOf("lemma=\"strong:", posOfStrongTag);
