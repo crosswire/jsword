@@ -414,7 +414,7 @@ public final class BibleNames {
             }
 
             String altBook = getString(resources, osisName + ALT_KEY);
-            if(altBook != null && altBook.equals("-")) {
+            if(altBook != null && altBook.strip().equals("-")) {
                 altBook = "";
             }
 
