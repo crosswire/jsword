@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.ClassUtil;
@@ -39,6 +40,7 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  * @author DM Smith
  */
 public final class BibleNames {
+    public static final Pattern dashPattern = Pattern.compile("\\s*-\\s*");
     /**
      * Get the singleton instance of BibleNames.
      *
@@ -414,7 +416,7 @@ public final class BibleNames {
             }
 
             String altBook = getString(resources, osisName + ALT_KEY);
-            if(altBook != null && altBook.strip().equals("-")) {
+            if(altBook == null || dashPattern.matcher(altBook).matches()) {
                 altBook = "";
             }
 
