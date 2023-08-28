@@ -414,6 +414,9 @@ public final class BibleNames {
             }
 
             String altBook = getString(resources, osisName + ALT_KEY);
+            if(altBook != null && altBook.equals("-")) {
+                altBook = null;
+            }
 
             BookName bookName = new BookName(locale, BibleBook.fromOSIS(osisName), fullBook, shortBook, altBook);
             books.put(book, bookName);
