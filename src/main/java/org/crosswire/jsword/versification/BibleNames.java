@@ -40,7 +40,7 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  * @author DM Smith
  */
 public final class BibleNames {
-    public static final Pattern dashPattern = Pattern.compile("\\s*-\\s*");
+    public static final Pattern dashPattern = Pattern.compile("^\\s*-\\s*$");
     /**
      * Get the singleton instance of BibleNames.
      *
