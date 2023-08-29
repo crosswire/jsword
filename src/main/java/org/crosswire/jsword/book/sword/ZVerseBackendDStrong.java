@@ -70,7 +70,7 @@ public class ZVerseBackendDStrong {
         else
             ordinals = OpenFileStateManager.osArray.ordinalNT;
         String[] augmentStrongs = getAugStrongsForVerse(ordinals, index, testament, greekInOT);
-        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString()) + "\n";
+        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
         return augmentedText;
@@ -175,10 +175,10 @@ public class ZVerseBackendDStrong {
                         result += augStrongParts[j][0];
                         assigned = true;
                     }
-                    else if ((augStrongParts[j].length == 3) &&
-                            (augStrongParts[j][2].indexOf( Integer.toString(augStrongPos[j])) > -1)) {
+                    else if ((augStrongParts[j].length == 2) &&
+                            (augStrongParts[j][1].indexOf( Integer.toString(augStrongPos[j])) > -1)) {
                         if (!result.equals("")) result += " strong:";
-                        result += currentStrong + augStrongParts[j][1];
+                        result += augStrongParts[j][0];
                         assigned = true;
                     }
                 }
