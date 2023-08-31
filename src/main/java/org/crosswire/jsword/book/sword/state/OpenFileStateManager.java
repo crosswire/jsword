@@ -291,11 +291,12 @@ public final class OpenFileStateManager {
     // Therefore the NT range is from 0 to about 8245.  In that number range, 15th bit will never be on for an NT ordinal.
 
     public static class OrdinalStrongArray implements Serializable {
-        public int[] ordinalOTHebrewOHB; // 24182
-        public int[] ordinalOTHebrewRSV; // 24114
-        public int[] ordinalOTGreek; // 24114 The versification is RSV
-        public int[] ordinalNT; // 8245 The versification is RSV.  Language is Greek.
-        public byte[] augStrong;
+        public short[] ordinalOTHebrewOHB; // 24182
+        public short[] ordinalOTHebrewRSV; // 24114
+        public short[] ordinalOTGreek; // 24114 The versification is RSV
+        public short[] ordinalNT; // 8245 The versification is RSV.  Language is Greek.
+        public byte[] hebrewAugStrong;
+        public byte[] greekAugStrong;
         public short[] strongsWithAugmentsOTHebrew;
         public short[] strongsWithAugmentsOTGreek;
         public short[] strongsWithAugmentsNTGreek;

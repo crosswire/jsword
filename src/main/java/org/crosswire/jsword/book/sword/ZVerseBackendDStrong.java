@@ -1,7 +1,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,26 +51,26 @@ public class ZVerseBackendDStrong {
                 }
             }
         }
-        int[] ordinals;
+        short[] ordinals;
         String translation = bmd.getInitials();
-        boolean greekInOT = false;
+        boolean isGreek = true;
         if (testament == Testament.OLD) {
             if (translation.equals("abpen_th")  || translation.equals("LXX_th")  || translation.equals("ABP") ||
-                translation.equals("abpgk_th")  || translation.equals("ABPGRK")) {
+                translation.equals("abpgk_th") ) {
                 ordinals = OpenFileStateManager.osArray.ordinalOTGreek;
-                greekInOT = true;
             }
             else {
                 if ((!versificationName.equals("MT")) && (!versificationName.equals("Leningrad")))
                     ordinals = OpenFileStateManager.osArray.ordinalOTHebrewRSV;
                 else
                     ordinals = OpenFileStateManager.osArray.ordinalOTHebrewOHB;
+                isGreek = false;
             }
         }
         else
             ordinals = OpenFileStateManager.osArray.ordinalNT;
-        String[] augmentStrongs = getAugStrongsForVerse(ordinals, index, testament, greekInOT);
-        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, translation, verse.toString());
+        byte[] augmentStrongs = getAugStrongsForVerse(ordinals, index, isGreek);
+        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, isGreek); // translation, verse.toString());
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
         return augmentedText;
@@ -111,26 +111,26 @@ public class ZVerseBackendDStrong {
             log.error("createStepCacheForAugStrong", e);
         }
     }
-    private static String[] getAugStrongsForVerse(int[] ordinals, int index,
-                                                  final Testament testament, final boolean greekInOT) {
-        int currentPos = ordinals[index];
+    private static byte[] getAugStrongsForVerse(short[] ordinals, int index, final boolean isGreek) {
+        int currentPos = Short.toUnsignedInt(ordinals[index]);
         if (currentPos > 0) {
-            int len = OpenFileStateManager.osArray.augStrong[currentPos];
+            byte[] augStrongsForVerse = (isGreek) ? OpenFileStateManager.osArray.greekAugStrong :
+                    OpenFileStateManager.osArray.hebrewAugStrong;
+            int len = augStrongsForVerse[currentPos];
             currentPos ++;
-            byte[] b = new byte[len];
-            System.arraycopy(OpenFileStateManager.osArray.augStrong, currentPos, b, 0, len);
-            String[] augStrongs = new String(b).trim().split(" ");
-            return augStrongs;
+            byte[] result = new byte[len];
+            System.arraycopy(augStrongsForVerse, currentPos, result, 0, len);
+            return result;
         }
-        return new String[0];
+        return new byte[0];
     }
 
     private static String normalizeStrongNumber(final String input, final Testament testament) {
         String copyOfInput = input.replace("strong:", "").trim();
         Pattern pattern = Pattern.compile("^([GH])(\\d+)[!A-Z.]?", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(copyOfInput);
-        String prefix = "";
-        String number = "";
+        String prefix;
+        String number;
         if (matcher.find()) {
             prefix = matcher.group(1).toUpperCase();
             number = matcher.group(2);
@@ -156,34 +156,59 @@ public class ZVerseBackendDStrong {
         }
         return prefix + number;
     }
-    private static String augmentDStrongInWord(final String strongsListedWithWord, final Testament testament, final String[][] augStrongParts,
-                                               int[] augStrongPos, final String translation, final String ref) {
+    private static String augmentDStrongInWord(final String strongsListedWithWord, final Testament testament,
+                                               final byte[] augStrongs, int[] augStrongPos, final boolean isGreek) { // final String translation, final String ref) {
         String[] strongsWithWord = strongsListedWithWord.split(" ");
         String result = "";
         for (int i = 0; i < strongsWithWord.length; i++) {
             String currentStrong = normalizeStrongNumber(strongsWithWord[i], testament);
             boolean assigned = false;
-            for (int j = 0; j < augStrongParts.length; j++) {
-                String nonAugStrong = "";
-                if (augStrongParts[j][0].length() >= 5)
-                    nonAugStrong = augStrongParts[j][0].substring(0, 5);
+            int j = 0;
+            int pos = 0;
+            while (pos < augStrongs.length) {
+                ByteBuffer buffer = ByteBuffer.wrap(augStrongs, pos, 2);
+                pos += 2;
+                short numberPartOfStrong = buffer.getShort();
+                boolean multiOccurrences = false;
+                byte augment = augStrongs[pos];
+                pos ++;
+                byte multiOccurrencesBitmap = 0; // There are 8 bits.  Each bit is used for the occurrence of that word in a verse.  For example, 2nd occurrence of a word in a verse.
+                boolean matchForNinthOccurrence = false;
+                if (numberPartOfStrong < -1) { // If it is negative number, it is multi occurrences with uses 4 bytes
+                    numberPartOfStrong = (short) (numberPartOfStrong * -1);
+                    multiOccurrences = true;
+                    if (augment < 1) {
+                        matchForNinthOccurrence = true;
+                        augment = (byte) (augment * -1);
+                    }
+                    multiOccurrencesBitmap = augStrongs[pos];
+                    pos ++;
+                }
+                String nonAugStrong = (isGreek ? "G" : "H") + String.format("%04d", numberPartOfStrong);
                 int compareValue = currentStrong.compareTo(nonAugStrong);
                 if (compareValue == 0) {
                     augStrongPos[j] ++;
-                    if (augStrongParts[j].length == 1) {
+                    if (!multiOccurrences) {
                         if (!result.equals("")) result += " strong:";
-                        result += augStrongParts[j][0];
+                        result += nonAugStrong + (char) augment;
                         assigned = true;
                     }
-                    else if ((augStrongParts[j].length == 2) &&
-                            (augStrongParts[j][1].indexOf( Integer.toString(augStrongPos[j])) > -1)) {
-                        if (!result.equals("")) result += " strong:";
-                        result += augStrongParts[j][0];
-                        assigned = true;
+                    else {
+                        boolean match;
+                        if (augStrongPos[j] == 9)
+                            match = matchForNinthOccurrence;
+                        else
+                            match = ((0x01 << (augStrongPos[j] - 1)) & multiOccurrencesBitmap) > 0;
+                        if (match) {
+                            if (!result.equals("")) result += " strong:";
+                            result += nonAugStrong + (char) augment;
+                            assigned = true;
+                        }
                     }
                 }
                 else if (compareValue == -1) // No more match because the aug strongs are sorted
                     break;
+                j++;
             }
             if (!assigned) {
                 short[] strongsWithAugments;
@@ -219,23 +244,31 @@ public class ZVerseBackendDStrong {
         return result;
     }
 
-    private static String augmentDStrongInVerse(final String fromJSword, final String[] augStrongs, final Testament testament,
-                                                final String translation, final String ref) {
+    private static String augmentDStrongInVerse(final String fromJSword, final byte[] augStrongs,
+                                                final Testament testament, final boolean isGreek) { // final String translation, final String ref) {
         final String lcFromJSword = fromJSword.toLowerCase();
-        String[][] augStrongParts = new String[augStrongs.length][];
-        String result = "";
-        int resultCopyPos = 0;
-        int[] augStrongPos = new int[augStrongs.length];
-        for (int i = 0; i < augStrongs.length; i ++) {
-            augStrongParts[i] = augStrongs[i].split(";");
+        int pos = 0;
+        int nummOfAugStrongsForThisVerse = 0;
+        while (pos < augStrongs.length) {
+            nummOfAugStrongsForThisVerse ++;
+            ByteBuffer buffer = ByteBuffer.wrap(augStrongs, pos, 2);
+            pos += 2;
+            short numberPartOfStrong = buffer.getShort();
+            if (numberPartOfStrong < -1)
+                pos += 2;
+            else
+                pos ++;
         }
-        int posOfStrongTag = lcFromJSword.indexOf("lemma=\"strong:", 0);
+        int[] augStrongPos = new int[nummOfAugStrongsForThisVerse];
+        int posOfStrongTag = lcFromJSword.indexOf("lemma=\"strong:");
+        int resultCopyPos = 0;
+        String result = "";
         while ((posOfStrongTag > -1) && (posOfStrongTag < lcFromJSword.length())) {
             posOfStrongTag += 14;
             result += fromJSword.substring(resultCopyPos, posOfStrongTag);
             int posEndOfStrongTag = lcFromJSword.indexOf("\"", posOfStrongTag);
             if (posEndOfStrongTag == -1) {
-                log.info("Cannot find end of strong tag: \" at " + translation + " " + ref);
+//                log.info("Cannot find end of strong tag: \" at " + translation + " " + ref);
                 return fromJSword;
             }
             String strongsListedForThisWord = fromJSword.substring(posOfStrongTag, posEndOfStrongTag).trim();
@@ -244,7 +277,8 @@ public class ZVerseBackendDStrong {
                 char char2 = strongsListedForThisWord.charAt(1);
                 if ( (strongsListedForThisWord.length() > 4) ||
                      (((char1 == 'H') || (char1 == 'G')) && ((char2 >= '0') && (char2 <= '9'))) ) {
-                    strongsListedForThisWord = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongParts, augStrongPos, translation, ref);
+                    strongsListedForThisWord = augmentDStrongInWord(strongsListedForThisWord, testament, augStrongs,
+                            augStrongPos, isGreek); // translation, ref);
                 }
             }
             result += strongsListedForThisWord + '"';
