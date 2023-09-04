@@ -181,6 +181,7 @@ public class OSISFilter implements SourceFilter {
         if (builder == null) {
             //then we have no sax builders available, so let's create a new one and store
             builder = new SAXBuilder();
+            builder.setFeature("http://xml.org/sax/features/external-general-entities", false);
             // With JDom 1.x it was important to set Fast Reconfigure on re-usable SAXBuilders
             // This is the default with 2.x and this method does nothing
             // builder.setFastReconfigure(true);
