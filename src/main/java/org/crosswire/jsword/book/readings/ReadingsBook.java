@@ -123,7 +123,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return new ReadingsKey(new Date());
     }
 
-    public Iterator<Content> getOsisIterator(final Key key, final boolean allowEmpty, final boolean allowGenTitles, final boolean ignoreVersification) throws BookException {
+    public Iterator<Content> getOsisIterator(final Key key, final boolean allowEmpty, final boolean allowGenTitles) throws BookException {
         if (!(key instanceof ReadingsKey)) {
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
             throw new BookException(JSMsg.gettext("Key not found {0}", key.getName()));
