@@ -123,7 +123,7 @@ public interface Book extends Activatable, Comparable<Book> {
      * @throws BookException
      *             If anything goes wrong with this method
      */
-    Iterator<Content> getOsisIterator(Key key, boolean allowEmpty, boolean allowGenTitles) throws BookException;
+    Iterator<Content> getOsisIterator(Key key, boolean allowEmpty, boolean allowGenTitles, boolean ignoreVersification) throws BookException;
 
     /**
      * Returns <tt>true</tt> if this book contains the specified element.

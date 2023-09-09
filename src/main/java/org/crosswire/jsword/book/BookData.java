@@ -117,7 +117,7 @@ public class BookData implements BookProvider {
      */
     public Element getOsisFragment() throws BookException {
         if (fragment == null) {
-            fragment = getOsisContent(true);
+            fragment = getOsisContent(true, false);
         }
 
         return fragment;
@@ -132,7 +132,7 @@ public class BookData implements BookProvider {
      */
     public Element getOsisFragment(boolean allowGenTitles) throws BookException {
         if (fragment == null) {
-            fragment = getOsisContent(allowGenTitles);
+            fragment = getOsisContent(allowGenTitles, false);
         }
 
         return fragment;
@@ -188,11 +188,11 @@ public class BookData implements BookProvider {
         return comparingBooks;
     }
 
-    private Element getOsisContent(boolean allowGenTitles) throws BookException {
+    public Element getOsisContent(boolean allowGenTitles, boolean ignoreVersification) throws BookException {
         Element div = OSISUtil.factory().createDiv();
 
         if (books.length == 1) {
-            Iterator<Content> iter = books[0].getOsisIterator(key, false, allowGenTitles);
+            Iterator<Content> iter = books[0].getOsisIterator(key, false, allowGenTitles, ignoreVersification);
             while (iter.hasNext()) {
                 Content content = iter.next();
                 div.addContent(content);
@@ -219,7 +219,7 @@ public class BookData implements BookProvider {
                 passages[i] = VersificationsMapper.instance().map(KeyUtil.getPassage(key), getVersification(i));
 
                 //iterator takes care of versification differences here...
-                iters[i] = books[i].getOsisIterator(passages[i], true, true);
+                iters[i] = books[i].getOsisIterator(passages[i], true, true, false);
 
                 if (i == 0) {
                     //we never omit a verse for the first passage, since we're going to output everything based on that.

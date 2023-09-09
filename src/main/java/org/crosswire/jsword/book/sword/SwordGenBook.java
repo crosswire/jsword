@@ -105,7 +105,7 @@ public class SwordGenBook extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean, boolean)
      */
-    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty, final boolean allowGenTitle) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty, final boolean allowGenTitle, final boolean ignoreVersification) throws BookException {
         checkActive();
 
         assert key != null;

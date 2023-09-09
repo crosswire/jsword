@@ -63,7 +63,7 @@ public class SwordDictionary extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean, boolean)
      */
-    public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty, final boolean allowGenTitles) throws BookException {
+    public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty, final boolean allowGenTitles, final boolean ignoreVersification) throws BookException {
         assert key != null;
 
         List<Content> content = new ArrayList<Content>();
