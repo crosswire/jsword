@@ -70,7 +70,7 @@ public class ZVerseBackendDStrong {
         else
             ordinals = OpenFileStateManager.osArray.ordinalNT;
         byte[] augmentStrongs = getAugStrongsForVerse(ordinals, index, isGreek);
-        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, isGreek); // translation, verse.toString());
+        String augmentedText = augmentDStrongInVerse(resultFromJSword, augmentStrongs, testament, isGreek);
         if (bmd.getIndexStatus() == IndexStatus.CREATING)
             createStepCacheForAugStrong(v11n, testament, ordinalInTestament, rafBook, bmd, augmentedText);
         return augmentedText;
