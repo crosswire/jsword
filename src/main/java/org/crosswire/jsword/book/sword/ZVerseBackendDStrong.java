@@ -51,7 +51,7 @@ public class ZVerseBackendDStrong {
                 }
             }
         }
-        short[] ordinals;
+        int[] ordinals;
         String translation = bmd.getInitials();
         boolean isGreek = true;
         if (testament == Testament.OLD) {
@@ -111,8 +111,8 @@ public class ZVerseBackendDStrong {
             log.error("createStepCacheForAugStrong", e);
         }
     }
-    private static byte[] getAugStrongsForVerse(short[] ordinals, int index, final boolean isGreek) {
-        int currentPos = Short.toUnsignedInt(ordinals[index]);
+    private static byte[] getAugStrongsForVerse(int[] ordinals, int index, final boolean isGreek) {
+        int currentPos = ordinals[index];
         if (currentPos > 0) {
             byte[] augStrongsForVerse = (isGreek) ? OpenFileStateManager.osArray.greekAugStrong :
                     OpenFileStateManager.osArray.hebrewAugStrong;
@@ -156,16 +156,139 @@ public class ZVerseBackendDStrong {
         }
         return prefix + number;
     }
+
+    private static String lookupMorphology(final String currentStrong) {
+        if ((currentStrong.charAt(0) != 'G') || (currentStrong.charAt(1) != '5')) return "";
+        char char3 = currentStrong.charAt(2);
+        char char4 = currentStrong.charAt(3);
+        char char5 = currentStrong.charAt(4);
+        if (char3 == '6') {
+            if (char4 == '5') {
+                if (char5 == '6') return "AAI";
+                if (char5 == '7') return "AAM";
+                if (char5 == '8') return "AAN";
+                if (char5 == '9') return "AAO";
+            } else if (char4 == '6') {
+                if (char5 == '0') return "AAP";
+                if (char5 == '1') return "AAS";
+                if (char5 == '2') return "AAI";
+                if (char5 == '3') return "AAM";
+                if (char5 == '4') return "AAN";
+                if (char5 == '5') return "AAO";
+                if (char5 == '6') return "AAP";
+                if (char5 == '7') return "AAS";
+                if (char5 == '8') return "AMI";
+                if (char5 == '9') return "AMM";
+            } else if (char4 == '7') {
+                if (char5 == '0') return "AMN";
+                if (char5 == '1') return "AMP";
+                if (char5 == '2') return "AMS";
+                if (char5 == '4') return "AAP";
+                if (char5 == '5') return "AAI";
+                if (char5 == '9') return "AAP";
+            } else if (char4 == '8') {
+                if (char5 == '0') return "AAS";
+                if (char5 == '1') return "API";
+                if (char5 == '2') return "APM";
+                if (char5 == '3') return "APN";
+                if (char5 == '4') return "APO";
+                if (char5 == '5') return "APP";
+                if (char5 == '6') return "APS";
+            } else if (char4 == '9') {
+                if (char5 == '2') return "FAI";
+                if (char5 == '4') return "FAP";
+                if (char5 == '5') return "FAI";
+                if (char5 == '6') return "FAN";
+                if (char5 == '7') return "FAP";
+                if (char5 == '8') return "FMI";
+                if (char5 == '9') return "FAI";
+            }
+        }
+        else if (char3 == '7') {
+            if (char4 == '0') {
+                if (char5 == '1') return "FPI";
+                if (char5 == '2') return "FPP";
+                if (char5 == '7') return "IAI";
+                if (char5 == '8') return "IAI";
+            }
+            else if (char4 == '1') {
+                if (char5 == '0') return "IMI";
+                if (char5 == '1') return "IAI";
+                if (char5 == '2') return "IPI";
+                if (char5 == '5') return "LAI";
+                if (char5 == '7') return "LMI";
+                if (char5 == '8') return "LPI";
+                if (char5 == '9') return "PAI";
+            }
+            else if (char4 == '2') {
+                if (char5 == '0') return "PAM";
+                if (char5 == '1') return "PAN";
+                if (char5 == '2') return "PAO";
+                if (char5 == '3') return "PAP";
+                if (char5 == '5') return "PAS";
+                if (char5 == '6') return "PAP";
+                if (char5 == '7') return "PPI";
+            }
+            else if (char4 == '3') {
+                if (char5 == '1') return "PMI";
+                if (char5 == '2') return "PMM";
+                if (char5 == '3') return "PMN";
+                if (char5 == '4') return "PMP";
+                if (char5 == '5') return "PMS";
+                if (char5 == '6') return "PAI";
+                if (char5 == '7') return "PAM";
+                if (char5 == '8') return "PAI";
+                if (char5 == '9') return "PAO";
+            }
+            else if (char4 == '4') {
+                if (char5 == '0') return "PAP";
+                if (char5 == '1') return "PAS";
+                if (char5 == '2') return "PAP";
+                if (char5 == '3') return "PPI";
+                if (char5 == '4') return "PPM";
+                if (char5 == '5') return "PPI";
+                if (char5 == '6') return "PPP";
+                if (char5 == '7') return "PPS";
+            }
+            else if (char4 == '5') {
+                if (char5 == '8') return "RAI";
+                if (char5 == '9') return "RAM";
+            }
+            else if (char4 == '6') {
+                if (char5 == '0') return "RAN";
+                if (char5 == '1') return "RAP";
+                if (char5 == '2') return "RAS";
+                if (char5 == '4') return "RMI";
+                if (char5 == '5') return "RMP";
+                if (char5 == '6') return "RAI";
+                if (char5 == '8') return "RAP";
+                if (char5 == '9') return "RPI";
+            }
+            else if (char4 == '7') {
+                if (char5 == '0') return "RPM";
+                if (char5 == '1') return "RPI";
+                if (char5 == '2') return "RPP";
+            }
+        }
+        return "";
+    }
+
     private static String augmentDStrongInWord(final String strongsListedWithWord, final Testament testament,
                                                final byte[] augStrongs, int[] augStrongPos, final boolean isGreek) { // final String translation, final String ref) {
         String[] strongsWithWord = strongsListedWithWord.split(" ");
         String result = "";
+        String morphology = "";
         for (int i = 0; i < strongsWithWord.length; i++) {
             String currentStrong = normalizeStrongNumber(strongsWithWord[i], testament);
+//            if (morphology.length() > 0) {
+//                if (lookupMorphology(currentStrong).length() > 0)
+//                    System.out.println("More than one morphology");
+//            }
+//            morphology = lookupMorphology(currentStrong);
             boolean assigned = false;
             int j = 0;
             int pos = 0;
-            while (pos < augStrongs.length) {
+            while (pos  < augStrongs.length) {
                 ByteBuffer buffer = ByteBuffer.wrap(augStrongs, pos, 2);
                 pos += 2;
                 short numberPartOfStrong = buffer.getShort();
@@ -241,7 +364,9 @@ public class ZVerseBackendDStrong {
                 result += (result.equals("")) ? strongToReturn : (" strong:" + strongToReturn);
             }
         }
-        return result;
+        if (morphology.length() == 0)
+            return result;
+        return result + "\" morph=\"robinson:V-" + morphology;
     }
 
     private static String augmentDStrongInVerse(final String fromJSword, final byte[] augStrongs,
