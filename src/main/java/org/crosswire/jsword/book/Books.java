@@ -20,8 +20,12 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,10 +35,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.activate.Activator;
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.sword.SwordConstants;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.versification.custom.CustomVersification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,6 +168,43 @@ public final class Books extends AbstractBookList {
         log.debug("begin registering driver: {}", driver.getClass().getName());
 
         drivers.add(driver);
+
+        // SM =======================>>>
+        // custom versification
+        try {
+            URI stepFolder = CWProject.instance().getWriteableFrontendProjectDir();
+
+            File versificationFolder = null;
+            if (stepFolder != null) {
+                final File parent = new File(stepFolder);
+                versificationFolder = new File(parent, SwordConstants.DIR_VERSIFICATION);
+            }
+
+            if (versificationFolder != null && versificationFolder.exists()) {
+                FilenameFilter filter = new FilenameFilter() {
+                    @Override
+                    public boolean accept(final File dir, final String name) {
+                        if (name != null && name.endsWith(".json")) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+                File[] files = versificationFolder.listFiles(filter);
+                if (files != null) {
+                    CustomVersification cv = new CustomVersification();
+                    for (File f : files) {
+                        cv.loadFromJSON(f);
+                    }
+
+                }
+            }
+        }catch (NoSuchKeyException ex) {
+            log.error("Unable to parse scope from book for custom versification", ex);
+        }catch (IOException ex) {
+            log.error("Failed to process custom versification file", ex);
+        }
+        // SM <<<=======================
 
         // Go through all the books and add all the new ones.
         // Remove those that are not known to the driver, but used to be.

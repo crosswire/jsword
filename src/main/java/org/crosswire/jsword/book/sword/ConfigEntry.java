@@ -28,6 +28,7 @@ import org.crosswire.common.util.Histogram;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -237,7 +238,17 @@ public final class ConfigEntry {
                 if (type.hasChoices()) {
                     histogram.increment(confEntryName + '.' + aValue);
                 }
-                if (!isAllowed(aValue)) {
+                if(confEntryName == "Versification")
+                {
+                    // SM custom versification
+                    // need to check ith the registered versifications not with the the hard coded enum
+                    if (!Versifications.instance().isDefined(aValue)) {
+                        String defaultV = (String) type.getDefault();
+                        log.warn("Configured versification {}. is unknown. using default: {}", aValue, defaultV);
+                        aValue = defaultV;
+                    }
+                }
+                else if (!isAllowed(aValue)) {
                     log.info("Ignoring unknown config value for {} in {}: {}", confEntryName, internal, aValue);
                     return;
                 }

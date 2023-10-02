@@ -82,4 +82,8 @@ public final class SwordConstants {
      */
     public static final String DIR_CONF_OVERRIDE = "jsword-mods.d";
 
+    /**
+     * SM custom versification folder
+     */
+    public static final String DIR_VERSIFICATION = "versification";
 }
