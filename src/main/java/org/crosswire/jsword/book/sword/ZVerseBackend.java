@@ -347,7 +347,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         final byte[] chopped = new byte[verseSize];
         System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
         String resultFromJSword = SwordUtil.decode(key.getName(), chopped, charset);
-
+        if (OpenFileStateManager.osArray == null)
+            return resultFromJSword;
         return ZVerseBackendDStrong.augmentDStrong(resultFromJSword, ordinalInTestament, testament, v11n, bookMetaData,
                 verse, rafBook);
     }

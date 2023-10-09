@@ -23,7 +23,6 @@ public class ZVerseBackendDStrong {
     public static String augmentDStrong(final String resultFromJSword, final int ordinalInTestament, final Testament testament,
                                         final Versification v11n, final SwordBookMetaData bmd, final Verse verse,
                                         ZVerseBackendState rafBook) {
-
         if ((!bmd.hasFeature(FeatureType.STRONGS_NUMBERS)) || // No Strong in the selected Bible or
             (verse.getBook().ordinal() >= 69))                // It is Deutro canon
             return resultFromJSword;                          // Do not need to augment DStrong
@@ -51,6 +50,7 @@ public class ZVerseBackendDStrong {
                 }
             }
         }
+
         int[] ordinals;
         String translation = bmd.getInitials();
         boolean isGreek = true;
