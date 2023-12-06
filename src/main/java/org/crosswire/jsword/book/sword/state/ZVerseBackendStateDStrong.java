@@ -161,10 +161,11 @@ public class ZVerseBackendStateDStrong {
         }
     }
 
-    public static void addToAugStrongCache(final int ordinal, final String augmentedString,
+    public static void addToAugStrongCache(final int ordinal, String augmentedString,
                                            stepAugmentedBibleTextCache stepCache) {
         if ((stepCache == null) || (augmentedString.length() <= 0))
             return;
+        augmentedString = augmentedString + "\n";
         try {
             if ((stepCache.stepAugmentedIndex == null) || (stepCache.augFileChannel == null))
                 return;
