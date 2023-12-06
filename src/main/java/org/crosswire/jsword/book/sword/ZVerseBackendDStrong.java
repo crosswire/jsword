@@ -55,8 +55,7 @@ public class ZVerseBackendDStrong {
         String translation = bmd.getInitials();
         boolean isGreek = true;
         if (testament == Testament.OLD) {
-            if (translation.equals("abpen_th")  || translation.equals("LXX_th")  || translation.equals("ABP") ||
-                translation.equals("abpgk_th") ) {
+            if (translation.equals("abpen_sb")  || translation.equals("LXX_th")  || translation.equals("abpgk_sb") ) {
                 ordinals = OpenFileStateManager.osArray.ordinalOTGreek;
             }
             else {
