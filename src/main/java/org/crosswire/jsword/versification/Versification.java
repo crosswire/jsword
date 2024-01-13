@@ -29,6 +29,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.ReferenceSystem;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
@@ -1062,6 +1063,14 @@ public class Versification implements ReferenceSystem, Serializable {
             }
             // TRANSLATOR: The user did not supply a book for a verse reference.
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
+        }
+
+        if(!bookList.contains(book)) {
+            if (silent) {
+                return false;
+            }
+            // TRANSLATOR: The user supplied a book which does not exist in this versification.
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be present in the versification"));
         }
 
         // Check the chapter

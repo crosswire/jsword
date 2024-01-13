@@ -38,13 +38,21 @@ public interface VerseKey<T extends VerseKey> extends Key {
     Versification getVersification();
 
     /**
+     * Check if this key is valid in a different versification.
+     * @param targetVersification The versification to check for.
+     * @return True if all verses in this verse key map to existing verses in the given
+     * versification, false otherwise.
+     */
+    boolean isValidIn(Versification targetVersification);
+
+    /**
      * Cast this VerseKey into another Versification. OSIS Sub Identifiers are ignored.
      * 
      * <p>
      * Note: This is dangerous as it does not consider chapter boundaries
      * or whether the verses in this VerseKey are actually part of the
-     * new versification. It should only be used when the start and end
-     * verses are in both Versifications. You have been warned.
+     * new versification.
+     * If in doubt, always check with {@link #isValidIn(Versification)} before usage.
      * </p>
      * 
      * @param newVersification 
