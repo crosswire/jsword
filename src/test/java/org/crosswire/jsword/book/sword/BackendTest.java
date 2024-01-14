@@ -30,6 +30,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -331,9 +332,7 @@ public class BackendTest {
     private String backendTest(String version, String reference, String... assertion) throws NoSuchKeyException, BookException {
         final Book currentBook = Books.installed().getBook(version);
 
-        if (currentBook == null) {
-            return null;
-        }
+        Assume.assumeTrue("Book " + version + " is installed", currentBook != null);
 
         return backendTest(currentBook, currentBook.getKey(reference), assertion);
     }

@@ -35,6 +35,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -134,6 +135,7 @@ public class BooksTest {
     public void testBookList() throws Exception {
         //part of the pre-requisites
         AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV2011");
+        Assume.assumeTrue("ESV2011 is installed", esv != null);
         Assert.assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
     }
 
@@ -147,17 +149,18 @@ public class BooksTest {
     @Test
     public void testLinkedVersesNotDuplicated() throws Exception {
         Book turNTB = Books.installed().getBook("TurNTB");
-        if (turNTB != null) {
-            // Eph 2:4,5 are merged/linked in TurNTB
-            Key eph245 = VerseRangeFactory.fromString(Versifications.instance().getVersification("KJV"), "Eph 2:4-5");
-            BookData bookData = new BookData(turNTB, eph245);
-            final Element osisFragment = bookData.getOsisFragment();
 
-            final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-            String xml = xmlOutputter.outputString(osisFragment);
+        Assume.assumeTrue("TurNTB is installed", turNTB != null);
 
-            Assert.assertTrue("Probable duplicate text", xml.length() < 300);
-        }
+        // Eph 2:4,5 are merged/linked in TurNTB
+        Key eph245 = VerseRangeFactory.fromString(Versifications.instance().getVersification("KJV"), "Eph 2:4-5");
+        BookData bookData = new BookData(turNTB, eph245);
+        final Element osisFragment = bookData.getOsisFragment();
+
+        final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+        String xml = xmlOutputter.outputString(osisFragment);
+
+        Assert.assertTrue("Probable duplicate text", xml.length() < 300);
     }
 
     /**
