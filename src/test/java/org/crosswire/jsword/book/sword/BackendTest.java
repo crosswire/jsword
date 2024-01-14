@@ -271,9 +271,8 @@ public class BackendTest {
     public void testBackendStrongsGreekRawLd() throws Exception {
         String version = "StrongsGreek";
         String reference = "G3588";
-        String assertion = "3588  ho   ho, including the feminine";
 
-        backendTest(version, reference, assertion);
+        backendTest(version, reference, "3588", "ho");
     }
 
     /**
