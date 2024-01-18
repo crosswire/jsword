@@ -22,10 +22,7 @@ package org.crosswire.jsword.bridge;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.versification.BookName;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Test of functionality for use with DWR. This test assumes, at a minimum, that
@@ -42,6 +39,10 @@ public class DwrBridgeMissingAssetsTest {
     @Before
     public void setUp() {
         BookName.setFullBookName(true);
+
+        Assume.assumeTrue("KJV must be installed", BookInstaller.getInstalledBook("KJV") != null);
+        Assume.assumeTrue("StrongsHebrew must be installed", BookInstaller.getInstalledBook("StrongsHebrew") != null);
+        Assume.assumeTrue("StrongsGreek must be installed", BookInstaller.getInstalledBook("StrongsGreek") != null);
     }
 
     @Test

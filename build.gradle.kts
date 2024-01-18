@@ -9,6 +9,12 @@ tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
 }
 
+tasks.withType<Test>() {
+    // Enforce en-US locale, as many unit tests are locale-dependant.
+    systemProperty("user.language", "en")
+    systemProperty("user.country", "US")
+}
+
 group = "org.crosswire"
 version = "2.3"
 
@@ -28,11 +34,8 @@ dependencies {
     // implementation("org.apache.lucene:lucene-analyzers-common:x")
 
     //implementation("org.slf4j:slf4j-api:1.7.6")
-    if(project.hasProperty("tests")) {
-        implementation("org.slf4j:slf4j-api:1.7.6")
-    } else {
-        implementation("de.psdev.slf4j-android-logger:slf4j-android-logger:1.0.5")
-    }
+    implementation("org.slf4j:slf4j-api:1.7.6")
+    testImplementation("org.slf4j:slf4j-simple:1.7.6")
     testImplementation("junit:junit:4.13")
 }
 
