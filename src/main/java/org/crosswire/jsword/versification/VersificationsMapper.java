@@ -33,6 +33,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseKey;
+import org.crosswire.jsword.versification.system.SystemKJVA;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -251,7 +252,7 @@ public final class VersificationsMapper {
     }
 
     private static volatile VersificationsMapper instance;
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJV = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
     private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
 }
