@@ -5,11 +5,11 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
     tags: [ '*' ]
     
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
   workflow_dispatch:
 
 jobs:
