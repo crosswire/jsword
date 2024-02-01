@@ -26,6 +26,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
+import org.crosswire.jsword.versification.system.SystemKJVA;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Assert;
 import org.junit.Test;
@@ -229,6 +230,6 @@ public class VersificationToKJVMapperTest {
         return representation.toString();
     }
 
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJV = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
     private static final Versification NON_KJV = Versifications.instance().getVersification(SystemCatholic.V11N_NAME);
 }

@@ -100,6 +100,17 @@ public final class VerseRange implements VerseKey<VerseRange> {
         return v11n;
     }
 
+    @Override
+    public boolean isValidIn(Versification targetVersification) {
+        Iterator<Key> verseIterator = iterator();
+        while(verseIterator.hasNext()) {
+            if(!((Verse) verseIterator.next()).isValidIn(targetVersification)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.VerseKey#reversify(org.crosswire.jsword.versification.Versification)
      */

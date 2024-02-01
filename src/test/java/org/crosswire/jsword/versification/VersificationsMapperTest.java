@@ -27,11 +27,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
-import org.crosswire.jsword.versification.system.SystemCatholic;
-import org.crosswire.jsword.versification.system.SystemCatholic2;
-import org.crosswire.jsword.versification.system.SystemKJV;
-import org.crosswire.jsword.versification.system.SystemSynodal;
-import org.crosswire.jsword.versification.system.Versifications;
+import org.crosswire.jsword.versification.system.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -43,27 +39,32 @@ import org.junit.Test;
  * @author Chris Burrell
  */
 public class VersificationsMapperTest {
-    private static final Versification KJV = Versifications.instance().getVersification(SystemKJV.V11N_NAME);
+    private static final Versification KJVA = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
     private static final Versification CATHOLIC = Versifications.instance().getVersification(SystemCatholic.V11N_NAME);
     private static final Versification CATHOLIC2 = Versifications.instance().getVersification(SystemCatholic2.V11N_NAME);
     private static final Versification SYNODAL = Versifications.instance().getVersification(SystemSynodal.V11N_NAME);
 
     @Test
     public void testTwoStepVersification() throws NoSuchVerseException {
-        doTest(CATHOLIC, "Gen.1.1", CATHOLIC2, "Gen.1.4");
+        doTest(CATHOLIC2, "1Sam.20.42", SYNODAL, "1Sam.20.43");
+        doTest(CATHOLIC2, "Ps.35.1", SYNODAL, "Ps.34.1");
     }
 
     @Test
     public void testTwoStepVersificationUsesParts() throws NoSuchVerseException {
-        doTest(CATHOLIC, "Gen.1.2", CATHOLIC2, "Gen.1.2");
-        doTest(CATHOLIC, "Gen.1.3", CATHOLIC2, "Gen.1.3");
+        doTest(CATHOLIC, "Tob.7.11", CATHOLIC2, "Tob.7.11");
+        doTest(CATHOLIC, "Tob.7.12", CATHOLIC2, "Tob.7.12");
+        doTest(CATHOLIC, "Tob.10.14", CATHOLIC2, "Tob.10.14");
+        doTest(CATHOLIC, "Dan.3.52", CATHOLIC2, "Dan.3.52");
+        doTest(CATHOLIC, "Ps.35.1", CATHOLIC2, "Ps.35.1");
     }
 
     @Test
     public void testSingleStepToKJV() throws NoSuchVerseException {
-        doTest(CATHOLIC, "Gen.1.1", KJV, "Exod.1.2");
-        doTest(CATHOLIC, "Gen.1.2", KJV, "Exod.1.3");
-        doTest(CATHOLIC, "Gen.1.3", KJV, "Exod.1.3");
+        doTest(CATHOLIC2, "Gen.32.1", KJVA, "Gen.31.55");
+        doTest(CATHOLIC2, "Dan.3.60", KJVA, "PrAzar.1.38");
+        doTest(CATHOLIC2, "Esth.15.5", KJVA, "AddEsth.15.2");
+        doTest(CATHOLIC2, "Dan.3.52", KJVA, "PrAzar.1.29-PrAzar.1.30");
     }
 
     @Test
@@ -78,18 +79,19 @@ public class VersificationsMapperTest {
 
     @Test
     public void testSingleStepFromKJV() throws NoSuchVerseException {
-        doTest(KJV, "Exod.1.2", CATHOLIC, "Gen.1.1");
-        doTest(KJV, "Exod.1.3", CATHOLIC, "Gen.1.2-Gen.1.3");
+        doTest(KJVA, "Gen.31.55", CATHOLIC, "Gen.32.1");
+        doTest(KJVA, "AddEsth.13.5", CATHOLIC2, "Esth.13.5");
+        doTest(KJVA, "Tob.11.1", CATHOLIC, "Tob.10.14 Tob.11.1");
     }
 
     @Test
     public void testMapVerseZero() throws NoSuchVerseException {
-        doTest(KJV, "Gen.1.0", KJV, "Gen.1.0");
-        doTest(KJV, "Gen.1.0", SYNODAL, "Gen.1.0");
-        doTest(KJV, "Ps.50.0", KJV, "Ps.50.0");
-        doTest(KJV, "Ps.50.0", CATHOLIC, "Ps.50.0");
-        doTest(KJV, "Ps.50.0", SYNODAL, "Ps.49.1");
-        doTest(SYNODAL, "Ps.49.1", KJV, "Ps.50.0-Ps.50.1");
+        doTest(KJVA, "Gen.1.0", KJVA, "Gen.1.0");
+        doTest(KJVA, "Gen.1.0", SYNODAL, "Gen.1.0");
+        doTest(KJVA, "Ps.50.0", KJVA, "Ps.50.0");
+        doTest(KJVA, "Ps.50.0", CATHOLIC, "Ps.50.1");
+        doTest(KJVA, "Ps.50.0", SYNODAL, "Ps.49.1");
+        doTest(SYNODAL, "Ps.49.1", KJVA, "Ps.50.0-Ps.50.1");
     }
 
     /**
@@ -100,9 +102,9 @@ public class VersificationsMapperTest {
     @Test
     public void testPassageResolves() throws NoSuchKeyException {
         final VersificationsMapper mapper = VersificationsMapper.instance();
-        Key k = mapper.map(KeyUtil.getPassage(PassageKeyFactory.instance().getKey(CATHOLIC, "Gen.1.1-Gen.1.3")), CATHOLIC2);
+        Key k = mapper.map(KeyUtil.getPassage(PassageKeyFactory.instance().getKey(CATHOLIC, "Gen.32")), CATHOLIC2);
 
-        Assert.assertEquals("Gen.1.2-Gen.1.4", k.getOsisRef());
+        Assert.assertEquals("Gen.32", k.getOsisRef());
         assertVersification(CATHOLIC2, k);
     }
 
