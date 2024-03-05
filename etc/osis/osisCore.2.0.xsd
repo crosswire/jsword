@@ -1360,12 +1360,13 @@
 			<xs:element name="seg" type="segCT"/>
 		</xs:choice>
 		<xs:attribute name="canonical" type="xs:boolean" use="optional"/>
-		<xs:attribute name="gloss" type="xs:string" use="optional"/>
+		<xs:attribute name="gloss" type="attributeExtension" use="optional"/>
 		<xs:attribute name="lemma" type="osisGenType" use="optional"/>
 		<xs:attribute name="morph" type="osisGenType" use="optional"/>
 		<xs:attribute name="POS" type="osisGenType" use="optional"/>
 		<xs:attribute name="src" type="xs:string" use="optional"/>
 		<xs:attribute name="xlit" type="xs:string" use="optional"/>
+		<xs:attribute name="var" type="xs:string" use="optional"/>
 		<xs:attributeGroup ref="globalWithType"/>
 		<xs:attribute name="TEIform" fixed="w"/>
 	</xs:complexType>
