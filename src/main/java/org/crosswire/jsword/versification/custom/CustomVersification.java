@@ -31,6 +31,10 @@ public class CustomVersification {
         File f;
 
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFile.getPath()));
+        loadFromJSON(jsonData);
+    }
+
+    public void loadFromJSON(final byte[] jsonData ) throws NoSuchKeyException, BookException, IOException {
 
         //create ObjectMapper instance and allow comments
         ObjectMapper objectMapper = new ObjectMapper();
