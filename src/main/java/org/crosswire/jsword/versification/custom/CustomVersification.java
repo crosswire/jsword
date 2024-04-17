@@ -64,36 +64,28 @@ public class CustomVersification {
             vmIndex += v11n.ntbooks[i].chapmax;
         }
 
-        if(!Versifications.instance().isDefined(SystemCustomVersification.V11N_NAME)) {
-            Versifications.instance().register(new SystemCustomVersification());
-            try {
-                URI[] dirs = CWProject.instance().getProjectResourceDirs();
-                final File parent = new File(dirs[0]);
-                File mapFile = new File(parent, SystemCustomVersification.V11N_NAME + ".properties");
-                if (mapFile.exists()) mapFile.delete();
-                if(v11n.jsword_mappings.length > 0) {
-                    mapFile.createNewFile();
-                    FileWriter myWriter = new FileWriter(mapFile.getPath());
-                    for (int i = 0; i < v11n.jsword_mappings.length; i++) {
-                        myWriter.write(v11n.jsword_mappings[i]);
-                        myWriter.write("\n");
-                    }
-                    myWriter.close();
+        // SM removed check for existing versification.
+        // If the custom versification name is the same as an existing one, it will overwrite it
+        // TODO: clean up custom properties files under JSword folder.
+        Versifications.instance().register(new SystemCustomVersification());
+        try {
+            URI[] dirs = CWProject.instance().getProjectResourceDirs();
+            final File parent = new File(dirs[0]);
+            File mapFile = new File(parent, SystemCustomVersification.V11N_NAME + ".properties");
+            if (mapFile.exists()) mapFile.delete();
+            if(v11n.jsword_mappings.length > 0) {
+                mapFile.createNewFile();
+                FileWriter myWriter = new FileWriter(mapFile.getPath());
+                for (int i = 0; i < v11n.jsword_mappings.length; i++) {
+                    myWriter.write(v11n.jsword_mappings[i]);
+                    myWriter.write("\n");
                 }
-
-            } catch (IOException ex) {
-                log.error("Failed to process custom versification file", ex);
+                myWriter.close();
             }
-        }
-/*
-        final Books books = Books.installed();
-        final Book svd = books.getBook("arasvd2");
-        BookMetaData bmd = svd.getBookMetaData();
-        String v = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
-        final Versification v11nTest = Versifications.instance().getVersification("NRSV2" );
 
-        final Key key = svd.getKey("Gen.1-Mal.4");
-*/
+        } catch (IOException ex) {
+            log.error("Failed to process custom versification file", ex);
+        }
 
     }
     private static final Logger log = LoggerFactory.getLogger(CustomVersification.class);
