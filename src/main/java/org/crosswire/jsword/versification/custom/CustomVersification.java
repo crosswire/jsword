@@ -88,5 +88,37 @@ public class CustomVersification {
         }
 
     }
+
+    public void RemoveCustomVersification(String name) {
+
+        try {
+            URI stepFolder = CWProject.instance().getWriteableFrontendProjectDir();
+
+            File jsonFile = null;
+            if (stepFolder != null) {
+                final File parent = new File(stepFolder);
+                File versificationFolder = new File(parent, SwordConstants.DIR_VERSIFICATION);
+                jsonFile = new File(versificationFolder, name + ".json");
+            }
+
+            // if there is a json file
+            if (jsonFile != null && jsonFile.exists()) {
+                // delete it
+                jsonFile.delete();
+
+                // and the properties file
+                URI[] dirs = CWProject.instance().getProjectResourceDirs();
+                final File parent = new File(dirs[0]);
+                File mapFile = new File(parent, name + ".properties");
+                mapFile.delete();
+
+                // finally de-register the custom versification
+                Versifications.instance().deregiter(name);
+            }
+        } catch (Exception ex) {
+            log.error("Failed to process custom versification file", ex);
+        }
+    }
+
     private static final Logger log = LoggerFactory.getLogger(CustomVersification.class);
 }
