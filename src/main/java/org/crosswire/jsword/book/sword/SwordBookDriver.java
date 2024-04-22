@@ -42,6 +42,7 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
 import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.versification.custom.CustomVersification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -223,6 +224,7 @@ public class SwordBookDriver extends AbstractBookDriver {
     public void delete(Book dead) throws BookException {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
         File confFile = sbmd.getConfigFile();
+        String versification = (String)sbmd.getProperty(ConfigEntryType.VERSIFICATION);
 
         // We can only uninstall what we download into our download dir.
         if (confFile == null || !confFile.exists()) {
@@ -240,6 +242,10 @@ public class SwordBookDriver extends AbstractBookDriver {
                 File bookDir = new File(loc.getPath());
                 failures = FileUtil.delete(bookDir);
                 Books.installed().removeBook(dead);
+
+                CustomVersification cv = new CustomVersification();
+                // the following will do nothing if not a custom versification
+                cv.RemoveCustomVersification(versification);
             }
 
         }
