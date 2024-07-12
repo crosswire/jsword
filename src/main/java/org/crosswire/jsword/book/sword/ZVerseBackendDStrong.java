@@ -28,12 +28,10 @@ public class ZVerseBackendDStrong {
             return resultFromJSword;                          // Do not need to augment DStrong
         String versificationName = v11n.getName();
         int index = ordinalInTestament;
-        if (!versificationName.equals("Leningrad") && !versificationName.equals("NRSV")) {
-            if (versificationName.equals("MT")) {
-                final Versification v11nLeningrad = Versifications.instance().getVersification("Leningrad");
+        if ((!versificationName.equals("NRSV")) && (!versificationName.equals("MT"))) {
+            if (versificationName.equals("Leningrad")) {
                 try {
-                    Verse leningradKey = VerseFactory.fromString(v11nLeningrad, verse.getOsisID());
-                    index = leningradKey.getOrdinal();
+                    index = VerseFactory.fromString(Versifications.instance().getVersification("MT"), verse.getOsisID()).getOrdinal();
                 } catch (NoSuchVerseException e) {
                     log.error("Unable to look up strongs " + e);
                     return resultFromJSword;
