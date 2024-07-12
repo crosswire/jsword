@@ -162,6 +162,13 @@ public final class Versifications {
         known.add(rs.getName());
     }
 
+    public synchronized void deregiter(String name){
+        if(name != null){
+            if (known.contains(name)) known.remove(name);
+            if (fluffed.containsKey(name)) fluffed.remove(name);
+        }
+    }
+
     /**
      * Get an iterator over all known versifications.
      * 
