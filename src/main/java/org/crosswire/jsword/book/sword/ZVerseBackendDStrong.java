@@ -33,7 +33,7 @@ public class ZVerseBackendDStrong {
                 try {
                     index = VerseFactory.fromString(Versifications.instance().getVersification("MT"), verse.getOsisID()).getOrdinal();
                 } catch (NoSuchVerseException e) {
-                    log.error("Unable to look up strongs " + e);
+                    log.error("Unable to look up strongs in Leningrad versification" + e);
                     return resultFromJSword;
                 }
             } else {
