@@ -610,7 +610,9 @@ public final class IniSection implements Iterable {
         for (String line = bin.readLine(); line != null; line = bin.readLine()) {
             // Remove leading and trailing whitespace
             trimmed = line.trim();
-
+            if (trimmed.startsWith("\uFEFF")) {
+                trimmed = trimmed.substring(1);
+            }
             // skip blank and comment lines
             if (!isCommentLine(trimmed)) {
                 return trimmed;
