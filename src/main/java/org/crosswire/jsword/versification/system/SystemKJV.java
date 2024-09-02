@@ -41,7 +41,7 @@ public class SystemKJV extends Versification {
 
     public static final String V11N_NAME = "KJV";
 
-    /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OT;
+    /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OTA;
 
     /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
 
@@ -278,6 +278,74 @@ public class SystemKJV extends Versification {
         {
            14,  17,  18,   6,
         },
+            // I Esdras
+            {
+                    58,  30,  24,  63,  73,  34,  15,  96,  55,
+            },
+            // II Esdras
+            {
+                    40,  48,  36,  52,  56,  59,  70,  63,  47,  59,
+                    46,  51,  58,  48,  63,  78,
+            },
+            // Tobit
+            {
+                    22,  14,  17,  21,  22,  17,  18,  21,   6,  12,
+                    19,  22,  18,  15,
+            },
+            // Judith
+            {
+                    16,  28,  10,  15,  24,  21,  32,  36,  14,  23,
+                    23,  20,  20,  19,  13,  25,
+            },
+            // Additions to Esther
+            {
+                    1,   1,   1,   1,   1,   1,   1,   1,   1,  13,
+                    12,   6,  18,  19,  16,  24,
+            },
+            // Wisdom
+            {
+                    16,  24,  19,  20,  23,  25,  30,  21,  18,  21,
+                    26,  27,  19,  31,  19,  29,  21,  25,  22,
+            },
+            // Sirach
+            {
+                    30,  18,  31,  31,  15,  37,  36,  19,  18,  31,
+                    34,  18,  26,  27,  20,  30,  32,  33,  30,  32,
+                    28,  27,  28,  34,  26,  29,  30,  26,  28,  25,
+                    31,  24,  31,  26,  20,  26,  31,  34,  35,  30,
+                    24,  25,  33,  22,  26,  20,  25,  25,  16,  29,
+                    30,
+            },
+            // Baruch
+            {
+                    22,  35,  37,  37,   9,  73,
+            },
+            // Prayer of Azariah
+            {
+                    68,
+            },
+            // Susanna
+            {
+                    64,
+            },
+            // Bel and the Dragon
+            {
+                    42,
+            },
+            // Prayer of Manasses
+            {
+                    1,
+            },
+            // I Maccabees
+            {
+                    64,  70,  60,  61,  68,  63,  50,  32,  73,  89,
+                    74,  53,  53,  49,  41,  24,
+            },
+            // II Maccabees
+            {
+                    36,  32,  40,  50,  27,  31,  42,  36,  29,  38,
+                    38,  45,  26,  46,  39,
+            },
     };
 
 

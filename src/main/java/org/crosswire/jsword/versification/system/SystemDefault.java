@@ -76,6 +76,63 @@ public class SystemDefault extends Versification {
         BibleBook.REV,
     };
 
+    /* protected */ static final BibleBook[] BOOKS_OTA =
+            {
+                    BibleBook.GEN,
+                    BibleBook.EXOD,
+                    BibleBook.LEV,
+                    BibleBook.NUM,
+                    BibleBook.DEUT,
+                    BibleBook.JOSH,
+                    BibleBook.JUDG,
+                    BibleBook.RUTH,
+                    BibleBook.SAM1,
+                    BibleBook.SAM2,
+                    BibleBook.KGS1,
+                    BibleBook.KGS2,
+                    BibleBook.CHR1,
+                    BibleBook.CHR2,
+                    BibleBook.EZRA,
+                    BibleBook.NEH,
+                    BibleBook.ESTH,
+                    BibleBook.JOB,
+                    BibleBook.PS,
+                    BibleBook.PROV,
+                    BibleBook.ECCL,
+                    BibleBook.SONG,
+                    BibleBook.ISA,
+                    BibleBook.JER,
+                    BibleBook.LAM,
+                    BibleBook.EZEK,
+                    BibleBook.DAN,
+                    BibleBook.HOS,
+                    BibleBook.JOEL,
+                    BibleBook.AMOS,
+                    BibleBook.OBAD,
+                    BibleBook.JONAH,
+                    BibleBook.MIC,
+                    BibleBook.NAH,
+                    BibleBook.HAB,
+                    BibleBook.ZEPH,
+                    BibleBook.HAG,
+                    BibleBook.ZECH,
+                    BibleBook.MAL,
+                    BibleBook.ESD1,
+                    BibleBook.ESD2,
+                    BibleBook.TOB,
+                    BibleBook.JDT,
+                    BibleBook.ADD_ESTH,
+                    BibleBook.WIS,
+                    BibleBook.SIR,
+                    BibleBook.BAR,
+                    BibleBook.PR_AZAR,
+                    BibleBook.SUS,
+                    BibleBook.BEL,
+                    BibleBook.PR_MAN,
+                    BibleBook.MACC1,
+                    BibleBook.MACC2,
+            };
+
     /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
@@ -118,6 +175,7 @@ public class SystemDefault extends Versification {
         BibleBook.ZECH,
         BibleBook.MAL,
     };
+
 
     /**
      * Serialization ID
