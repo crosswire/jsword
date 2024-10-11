@@ -10,6 +10,7 @@
 *.iml
 *.orig
 .idea
+.smarttomcat
 rebel.xml
 atlassian-ide-plugin.xml
 .DS_Store
