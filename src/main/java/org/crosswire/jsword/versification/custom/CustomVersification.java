@@ -3,6 +3,9 @@ package org.crosswire.jsword.versification.custom;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.crosswire.common.util.CWProject;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -49,7 +52,14 @@ public class CustomVersification {
         SystemCustomVersification.BOOKS_OT = new BibleBook[v11n.otbooks.length - 1];
         SystemCustomVersification.LAST_VERSE_OT = new int[v11n.otbooks.length - 1][];
         for(int i = 0; i < v11n.otbooks.length - 1; i++){
-            SystemCustomVersification.BOOKS_OT[i] = BibleBook.fromOSIS(v11n.otbooks[i].osis);
+            BibleBook bb = BibleBook.fromOSIS(v11n.otbooks[i].osis);
+            if(bb == null)
+            {
+                Reporter.informUser(this, new BookException(JSMsg.gettext("Invalid OSIS name: {0}", v11n.otbooks[i].osis)));
+                return;
+            }
+            SystemCustomVersification.BOOKS_OT[i] = bb;
+            //SystemCustomVersification.BOOKS_OT[i] = BibleBook.fromOSIS(v11n.otbooks[i].osis);
             SystemCustomVersification.LAST_VERSE_OT[i] = new int[v11n.otbooks[i].chapmax];
             System.arraycopy( v11n.vm, vmIndex, SystemCustomVersification.LAST_VERSE_OT[i], 0, v11n.otbooks[i].chapmax);
             vmIndex += v11n.otbooks[i].chapmax;

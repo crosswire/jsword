@@ -121,7 +121,7 @@ public class SystemDefault extends Versification {
                     BibleBook.ESD2,
                     BibleBook.TOB,
                     BibleBook.JDT,
-                    BibleBook.ADD_ESTH,
+                    BibleBook.ESTH_GR,
                     BibleBook.WIS,
                     BibleBook.SIR,
                     BibleBook.BAR,
