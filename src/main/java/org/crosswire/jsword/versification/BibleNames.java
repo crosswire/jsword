@@ -183,6 +183,20 @@ public final class BibleNames {
         return bibleNames;
     }
 
+    public String getShortBibleNameForLocale(Locale locale, String bName) {
+        String name = bName;
+        BibleBook bBk = getBook(bName);
+        if (bBk != null) {
+            NameList  names = getBibleNamesForLocale(locale);
+            BookName bookName = names.books.get(bBk);
+            if (bookName != null) {
+                name = bookName.getShortName();
+            }
+        }
+
+        return name;
+    }
+
     /**
      * This is simply a convenience function to wrap Character.isLetter()
      *
