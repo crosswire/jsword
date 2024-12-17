@@ -173,7 +173,12 @@ public enum BibleBook {
     // Other books
     ADD_DAN("AddDan"),
     ADD_PS("AddPs"),
-    ESTH_GR("EsthGr");
+    ESTH_GR("EsthGr"),
+    // SM - Added based on Dr, David's input
+    MEQ1("1Meq"),
+    MEQ2("2Meq"),
+    MEQ3("3Meq"),
+    BAR3("3Bar");
 
     BibleBook(String osis, boolean shortBook) {
         this(osis);
