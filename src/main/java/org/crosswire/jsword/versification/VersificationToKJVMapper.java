@@ -131,7 +131,7 @@ public class VersificationToKJVMapper {
      * @param mapping the mappings from one versification to another
      */
     public VersificationToKJVMapper(Versification nonKjv, final FileVersificationMapping mapping) {
-        absentVerses = createEmptyPassage(KJV);
+        absentVerses = createEmptyPassage(KJVAPlus);
         toKJVMappings = new HashMap<VerseKey, List<QualifiedKey>>();
         fromKJVMappings = new HashMap<QualifiedKey, Passage>();
         this.nonKjv = nonKjv;
@@ -182,7 +182,7 @@ public class VersificationToKJVMapper {
 
         // The right hand side can start with ? which means that the left maps to nothing in the KJV.
         // The ? leads a section name
-        QualifiedKey kjv = getRange(KJV, kjvHand, left.getKey());
+        QualifiedKey kjv = getRange(KJVAPlus, kjvHand, left.getKey());
         addMappings(left, kjv);
     }
 
@@ -540,7 +540,7 @@ public class VersificationToKJVMapper {
                 //then we found no mapping, so we're essentially going to return the same key back...
                 //unless it's a verse 0 and then we'll check the global flag.
                 kjvKeys = new ArrayList<QualifiedKey>();
-                kjvKeys.add(qualifiedKey.reversify(KJV));
+                kjvKeys.add(qualifiedKey.reversify(KJVAPlus));
                 return kjvKeys;
             }
             return kjvKeys;
@@ -568,7 +568,7 @@ public class VersificationToKJVMapper {
         if (left == null) {
             VerseKey vk = kjvVerse.getKey();
             if (vk != null && this.absentVerses.contains(vk)) {
-                return createEmptyPassage(KJV);
+                return createEmptyPassage(KJVAPlus);
             }
             return kjvVerse.reversify(this.nonKjv).getKey();
         }
@@ -611,7 +611,7 @@ public class VersificationToKJVMapper {
             List<QualifiedKey> kjvVerses = entry.getValue();
             String osisRef = entry.getKey().getOsisRef();
             for (QualifiedKey q : kjvVerses) {
-                out.println(String.format("\t(%s) %s => (KJV) %s",
+                out.println(String.format("\t(%s) %s => (Mapper) %s",
                         nonKjvName,
                         osisRef,
                         q.toString()));
@@ -625,7 +625,7 @@ public class VersificationToKJVMapper {
         out.println("    Backwards mappings from KJV");
         out.println("    ******************************");
         for (Map.Entry<QualifiedKey, Passage> entry : this.fromKJVMappings.entrySet()) {
-            out.println(String.format("\t(KJV): %s => (%s) %s",
+            out.println(String.format("\t(Mapper): %s => (%s) %s",
                     entry.getKey().toString(),
                     nonKjvName,
                     entry.getValue().getOsisRef()));
@@ -659,6 +659,6 @@ public class VersificationToKJVMapper {
     
     private OsisParser osisParser = new OsisParser();
 
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJVAPlus = Versifications.instance().getVersification(Versifications.KJVAPLUS_V11N);
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationToKJVMapper.class);
 }

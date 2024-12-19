@@ -68,7 +68,7 @@ public final class VersificationsMapper {
     private VersificationsMapper() {
         // we have no mapper for the KJV, since everything maps map to the KJV, so we'll simply add an entry
         // in there to avoid ever trying to load it
-        MAPPERS.put(KJV, null);
+        MAPPERS.put(KJVAPlus, null);
     }
 
     /**
@@ -135,7 +135,7 @@ public final class VersificationsMapper {
             // and assume that it maps directly on to the KJV,
             // and thereby continue with the process
             kjvVerses = new ArrayList<QualifiedKey>();
-            final Verse reversifiedVerse = v.reversify(KJV);
+            final Verse reversifiedVerse = v.reversify(KJVAPlus);
             //check that the key actually exists
             if(reversifiedVerse != null) {
                 kjvVerses.add(new QualifiedKey(reversifiedVerse));
@@ -145,9 +145,9 @@ public final class VersificationsMapper {
             kjvVerses = mapper.map(new QualifiedKey(v));
         }
 
-        if (KJV.equals(targetVersification)) {
+        if (KJVAPlus.equals(targetVersification)) {
             // we're done, so simply return the key we have so far.
-            return getKeyFromQualifiedKeys(KJV, kjvVerses);
+            return getKeyFromQualifiedKeys(KJVAPlus, kjvVerses);
         }
 
         // we're continuing, so we need to unmap from the KJV qualified key onto
@@ -256,7 +256,7 @@ public final class VersificationsMapper {
     }
 
     private static volatile VersificationsMapper instance;
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJVAPlus = Versifications.instance().getVersification(Versifications.KJVAPLUS_V11N);
     private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
 }
