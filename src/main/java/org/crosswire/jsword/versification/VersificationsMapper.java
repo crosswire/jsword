@@ -256,7 +256,7 @@ public final class VersificationsMapper {
     }
 
     private static volatile VersificationsMapper instance;
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJV = Versifications.instance().getVersification(Versifications.MAPPER_V11N);
     private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
 }
