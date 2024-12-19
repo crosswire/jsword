@@ -43,7 +43,7 @@ public final class Versifications {
      * This is subject to change at any time.
      */
     public static final String DEFAULT_V11N = SystemKJV.V11N_NAME;
-    public static final String MAPPER_V11N = SystemMapper.V11N_NAME;
+    public static final String KJVAPLUS_V11N = SystemKJVAPlus.V11N_NAME;
 
     /**
      * Get the singleton instance of Versifications.
@@ -149,7 +149,7 @@ public final class Versifications {
         if (SystemVulg.V11N_NAME.equals(name)) {
             return new SystemVulg();
         }
-        if (SystemMapper.V11N_NAME.equals(name)) {
+        if (SystemKJVAPlus.V11N_NAME.equals(name)) {
             return new SystemVulg();
         }
 
@@ -208,7 +208,7 @@ public final class Versifications {
         known.add(SystemSynodal.V11N_NAME);
         known.add(SystemSynodalProt.V11N_NAME);
         known.add(SystemVulg.V11N_NAME);
-        known.add(SystemMapper.V11N_NAME);
+        known.add(SystemKJVAPlus.V11N_NAME);
         fluffed = new HashMap<String, Versification>();
     }
 

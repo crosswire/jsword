@@ -12,15 +12,15 @@ import org.crosswire.jsword.versification.Versification;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class SystemMapper  extends Versification {
+public class SystemKJVAPlus extends Versification {
     /**
      * Build the "Mapper" Versification.
      */
-    /* protected */ SystemMapper() {
+    /* protected */ SystemKJVAPlus() {
         super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static final String V11N_NAME = "Mapper";
+    public static final String V11N_NAME = "KJVAPlus";
 
     /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OTA;
 
