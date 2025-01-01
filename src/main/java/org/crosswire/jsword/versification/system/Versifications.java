@@ -150,7 +150,7 @@ public final class Versifications {
             return new SystemVulg();
         }
         if (SystemKJVAPlus.V11N_NAME.equals(name)) {
-            return new SystemVulg();
+            return new SystemKJVAPlus();
         }
 
         return null;
