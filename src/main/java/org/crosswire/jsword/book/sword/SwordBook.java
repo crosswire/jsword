@@ -270,7 +270,9 @@ public class SwordBook extends AbstractPassageBook {
             super.addOSIS(key, contentList, osisContent);
             return;
         }
-        boolean preverseIsLast = preverseFound == start -1;
+
+        // If x-preverse content is after text, it belongs before the next verse, not before this verse.
+        boolean preverseIsForNextVerse = preverseFound > textFound;
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
@@ -281,10 +283,10 @@ public class SwordBook extends AbstractPassageBook {
             everse.addContent(osisContent);
         } else {
             int startPoint = Math.min(preverseFound + 1, textFound);
-            int endPoint = osisContent.size();
-            if (preverseIsLast) {
-                endPoint --;
-            }
+            int endPoint = preverseIsForNextVerse
+                ? preverseFound - 1
+                : osisContent.size();
+
             List<Content> sublist = osisContent.subList(startPoint, endPoint);
             everse.addContent(sublist);
             // a sub list is actually part of the original list
