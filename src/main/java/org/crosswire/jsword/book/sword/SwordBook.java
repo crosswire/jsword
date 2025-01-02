@@ -270,7 +270,7 @@ public class SwordBook extends AbstractPassageBook {
             super.addOSIS(key, contentList, osisContent);
             return;
         }
-        var preverseIsLast = preverseFound == start -1;
+        boolean preverseIsLast = preverseFound == start -1;
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
@@ -280,8 +280,8 @@ public class SwordBook extends AbstractPassageBook {
         if (preverse == null) {
             everse.addContent(osisContent);
         } else {
-            var startPoint = Math.min(preverseFound + 1, textFound);
-            var endPoint = osisContent.size();
+            int startPoint = Math.min(preverseFound + 1, textFound);
+            int endPoint = osisContent.size();
             if (preverseIsLast) {
                 endPoint --;
             }
