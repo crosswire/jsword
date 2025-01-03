@@ -208,8 +208,11 @@ public final class Job implements Progress {
             workUnits += step;
 
             int oldPercent = percent;
-            // use long in arithmetic to avoid integer overflow 
-            percent = (int) (100L * workUnits / totalUnits);
+            try {
+                percent = (int) (100L * workUnits / totalUnits);
+            } catch (ArithmeticException e) {
+                log.error("Artihmetic exception", e);
+            }
             if (oldPercent == percent) {
                 return;
             }
