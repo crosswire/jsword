@@ -129,7 +129,7 @@ public final class InstalledIndex {
             }
 
         } catch (IOException e) {
-            log.error("Property file read error: " + propURI.toString(), e);
+            log.error("Property file read error: {}", propURI.toString(), e);
         }
     }
 
