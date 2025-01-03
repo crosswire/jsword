@@ -929,6 +929,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // Now we need to test the file/url to see if it exists and is a
         // directory.
         String datapath = getProperty(KEY_DATA_PATH);
+        if(datapath == null) {
+            throw new BookException(String.format("Data path for the book %s is not set", configAll.getName()));
+        }
         int lastSlash = datapath.lastIndexOf('/');
 
         // There were modules that did not have a valid DataPath.
