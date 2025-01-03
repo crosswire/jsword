@@ -217,8 +217,8 @@ public class PassageTally2Test {
 
     @Test
     public void testCountVerses() {
-        Assert.assertEquals(tally.countVerses(), 6);
-        Assert.assertEquals(empty.countVerses(), 0);
+        Assert.assertEquals(6, tally.countVerses());
+        Assert.assertEquals(0, empty.countVerses());
     }
 
     @Test
@@ -305,7 +305,7 @@ public class PassageTally2Test {
     public void testFlatten() {
         temp = tally.clone();
         temp.flatten();
-        Assert.assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1");
+        Assert.assertEquals("Gen 1:1, 3, 5, 7, 2:1, 3:1", temp.getName());
     }
 
     @Test
