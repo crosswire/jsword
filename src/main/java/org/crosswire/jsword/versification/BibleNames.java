@@ -78,6 +78,7 @@ public final class BibleNames {
      * @return The full name of the book or blank if not in this versification
      */
     public String getPreferredNameInLocale(BibleBook book, Locale locale) {
+        if (locale == null) return getPreferredName(book);
         return getBibleNamesForLocale(locale).getPreferredName(book);
     }
 
