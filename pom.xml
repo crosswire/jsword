@@ -27,7 +27,7 @@
         <lucene.version>3.0.3</lucene.version>
         <icu4j.version>59.1</icu4j.version>
         <httpcomponents-httpcore.version>4.4</httpcomponents-httpcore.version>
-        <httpcomponents-httpclient.version>4.5</httpcomponents-httpclient.version>
+        <httpcomponents-httpclient.version>4.5.13</httpcomponents-httpclient.version>
 
         <!-- maven plugin versions -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
