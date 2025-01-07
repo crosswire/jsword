@@ -55,7 +55,7 @@ public class CustomHandler extends DefaultHandler {
     public CustomHandler(Book book, Key key) {
         this.book = book;
         this.key = key;
-        this.stack = new LinkedList<Content>();
+        this.stack = new LinkedList<>();
     }
 
     /* (non-Javadoc)
@@ -226,7 +226,7 @@ public class CustomHandler extends DefaultHandler {
     /**
      * The known tag types
      */
-    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>();
+    private static final Map<String, Tag> TAG_MAP = new HashMap<>();
 
     static {
         /*

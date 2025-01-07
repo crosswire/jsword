@@ -62,7 +62,7 @@ public class StrongsAnalysis {
             return;
         }
 
-        List<Key> errors = new ArrayList<Key>();
+        List<Key> errors = new ArrayList<>();
         StrongsMapSet sms = new StrongsMapSet();
         analyze(sms, bible, errors, bible.getGlobalKeyList());
     }

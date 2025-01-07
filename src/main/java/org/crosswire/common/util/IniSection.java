@@ -94,7 +94,7 @@ public final class IniSection implements Iterable {
      */
     public IniSection(String name) {
         this.name = name;
-        section = new HashMap<String, List<String>>();
+        section = new HashMap<>();
         warnings = new StringBuilder();
     }
 
@@ -105,7 +105,7 @@ public final class IniSection implements Iterable {
      */
     public IniSection(IniSection config) {
         this.name = config.getName();
-        section = new HashMap<String, List<String>>();
+        section = new HashMap<>();
         for (String key : config.getKeys()) {
             for (String value : config.getValues(key)) {
                 add(key, value);
@@ -541,7 +541,7 @@ public final class IniSection implements Iterable {
     private Collection<String> getOrCreateValues(final String key) {
         List<String> values = section.get(key);
         if (values == null) {
-            values = new ArrayList<String>();
+            values = new ArrayList<>();
             section.put(key, values);
         }
         return values;

@@ -42,7 +42,7 @@ public class TreeKey extends AbstractKeyList {
     public TreeKey(String name, Key parent) {
         super(name);
         this.parent = parent;
-        this.children = new ArrayList<Key>();
+        this.children = new ArrayList<>();
     }
 
     /**

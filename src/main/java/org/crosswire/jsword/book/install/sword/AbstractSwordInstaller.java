@@ -148,16 +148,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             // We need to create a List from the Set returned by
             // entries.values() so the underlying list is not modified.
-            return new ArrayList<Book>(entries.values());
+            return new ArrayList<>(entries.values());
         } catch (InstallException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         } catch (IOException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         } catch (BookException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         }
     }
 
@@ -688,7 +688,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * A map of the books in this download area
      */
-    protected Map<String, Book> entries = new HashMap<String, Book>();
+    protected Map<String, Book> entries = new HashMap<>();
 
     /**
      * The remote hostname.

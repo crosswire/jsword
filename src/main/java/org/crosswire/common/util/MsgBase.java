@@ -141,7 +141,7 @@ public class MsgBase {
             synchronized (MsgBase.class) {
                 localisedResourceMap = localeToResourceMap.get(currentUserLocale);
                 if (localisedResourceMap == null) {
-                    localisedResourceMap = new HashMap<String, ResourceBundle>(512);
+                    localisedResourceMap = new HashMap<>(512);
                     localeToResourceMap.put(currentUserLocale, localisedResourceMap);
                 }
             }
@@ -149,7 +149,7 @@ public class MsgBase {
         return localisedResourceMap;
     }
 
-    private static Map<Locale, Map<String, ResourceBundle>> localeToResourceMap = new HashMap<Locale, Map<String, ResourceBundle>>();
+    private static Map<Locale, Map<String, ResourceBundle>> localeToResourceMap = new HashMap<>();
 
     /** Internationalize numbers */
     private NumberShaper shaper;

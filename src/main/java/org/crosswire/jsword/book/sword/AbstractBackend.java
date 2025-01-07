@@ -171,7 +171,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      */
     public List<Content> readToOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
 
-        final List<Content> content = new ArrayList<Content>();
+        final List<Content> content = new ArrayList<>();
 
         T openFileState = null;
 

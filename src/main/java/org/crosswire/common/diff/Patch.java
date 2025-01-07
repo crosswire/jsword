@@ -40,7 +40,7 @@ public class Patch {
      * Create an empty patch.
      */
     public Patch() {
-        patches = new ArrayList<PatchEntry>();
+        patches = new ArrayList<>();
         margin = PatchEntry.getMargin();
     }
 

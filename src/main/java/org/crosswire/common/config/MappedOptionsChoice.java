@@ -67,7 +67,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
     public Map<Object, Object> getOptions() {
-        return new TreeMap<Object, Object>(options);
+        return new TreeMap<>(options);
     }
 
     /*

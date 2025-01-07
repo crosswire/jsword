@@ -128,7 +128,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     private TreeNode find(Key key) throws IOException {
         // We need to search from the root, so navigate to the root, saving as
         // we go.
-        List<String> path = new ArrayList<String>();
+        List<String> path = new ArrayList<>();
         for (Key parentKey = key; parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
             path.add(parentKey.getName());
         }
