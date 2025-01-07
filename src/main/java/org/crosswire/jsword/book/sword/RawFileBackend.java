@@ -229,15 +229,9 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
     protected void updateDataFile(long ordinal, File txtFile) throws IOException {
         String fileName = String.format("%07d\r\n", Long.valueOf(ordinal));
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(txtFile, true));
-            bos.write(fileName.getBytes(getBookMetaData().getBookCharset()));
-        } finally {
-            if (bos != null) {
-                bos.close();
-            }
-        }
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(txtFile, true))) {
+			bos.write(fileName.getBytes(getBookMetaData().getBookCharset()));
+		}
     }
 
     private void checkAndIncrementIncfile(RawFileBackendState state, int index) throws IOException {
@@ -315,23 +309,17 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         Versification v11n = Versifications.instance().getVersification(v11nName);
         int otCount = v11n.getCount(Testament.OLD);
         int ntCount = v11n.getCount(Testament.NEW) + 1;
-        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.OLD), false));
-        try {
-            for (int i = 0; i < otCount; i++) {
-                writeInitialIndex(otIdxBos);
-            }
-        } finally {
-            otIdxBos.close();
-        }
+		try (BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.OLD), false))) {
+			for (int i = 0; i < otCount; i++) {
+				writeInitialIndex(otIdxBos);
+			}
+		}
 
-        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.NEW), false));
-        try {
-            for (int i = 0; i < ntCount; i++) {
-                writeInitialIndex(ntIdxBos);
-            }
-        } finally {
-            ntIdxBos.close();
-        }
+		try (BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(state.getIdxFile(Testament.NEW), false))) {
+			for (int i = 0; i < ntCount; i++) {
+				writeInitialIndex(ntIdxBos);
+			}
+		}
     }
 
     private void createIncfile(RawFileBackendState state) throws IOException, BookException {
@@ -347,17 +335,11 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     private void writeIncfile(RawFileBackendState state, int value) throws IOException {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(state.getIncfile(), false);
-            fos.write(littleEndian32BitByteArrayFromInt(value));
-        } catch (FileNotFoundException e) {
-            log.error("Error on writing to incfile, file should exist already!", e);
-        } finally {
-            if (fos != null) {
-                fos.close();
-            }
-        }
+		try (FileOutputStream fos = new FileOutputStream(state.getIncfile(), false)) {
+			fos.write(littleEndian32BitByteArrayFromInt(value));
+		} catch (FileNotFoundException e) {
+			log.error("Error on writing to incfile, file should exist already!", e);
+		}
     }
 
     private void writeInitialIndex(BufferedOutputStream outStream) throws IOException {
@@ -387,15 +369,9 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     private void writeTextDataFile(File dataFile, byte[] textData) throws IOException {
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(dataFile, false));
-            bos.write(textData);
-        } finally {
-            if (bos != null) {
-                bos.close();
-            }
-        }
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dataFile, false))) {
+			bos.write(textData);
+		}
     }
 
     private byte[] littleEndian32BitByteArrayFromInt(int val) {

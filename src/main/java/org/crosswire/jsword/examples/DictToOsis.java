@@ -81,15 +81,9 @@ public class DictToOsis {
 
         buildDocumentClose(buf);
 
-        Writer writer = null;
-        try {
-            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8");
-            writer.write(buf.toString());
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8")) {
+			writer.write(buf.toString());
+		}
         XMLProcess parser = new XMLProcess();
         // parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv");
         parser.parse(bmd.getInitials() + ".xml");
