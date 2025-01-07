@@ -178,5 +178,5 @@ public class RawLDBackendState extends AbstractOpenFileState  {
     /**
      * The log stream
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RawLDBackend.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawLDBackendState.class);
 }
