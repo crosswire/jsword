@@ -229,7 +229,7 @@ public class SetKeyList extends AbstractKeyList {
     /**
      * The Set that we are proxying to
      */
-    private List<Key> list = new ArrayList<Key>();
+    private List<Key> list = new ArrayList<>();
 
     /**
      * Serialization ID

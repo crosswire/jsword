@@ -265,7 +265,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     private Set<BibleBook> fromString(String list) {
-        Set<BibleBook> books = new LinkedHashSet<BibleBook>(list.length() / 2);
+        Set<BibleBook> books = new LinkedHashSet<>(list.length() / 2);
         final String[] bookOsis = StringUtil.split(list, ' ');
         for (String s : bookOsis) {
             books.add(BibleBook.fromExactOSIS(s));
@@ -293,10 +293,10 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final BookMetaData bookMetaData = this.getBookMetaData();
         final VerseKey scope = (VerseKey) getScope();
         if (scope == null) {
-            return new HashSet<BibleBook>();
+            return new HashSet<>();
         }
 
-        final Set<BibleBook> bookList = new LinkedHashSet<BibleBook>();
+        final Set<BibleBook> bookList = new LinkedHashSet<>();
 
         // iterate over all book possible in this document
         final Versification v11n = Versifications.instance().getVersification(bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION));

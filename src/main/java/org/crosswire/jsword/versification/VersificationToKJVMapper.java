@@ -131,8 +131,8 @@ public class VersificationToKJVMapper {
      */
     public VersificationToKJVMapper(Versification nonKjv, final FileVersificationMapping mapping) {
         absentVerses = createEmptyPassage(KJV);
-        toKJVMappings = new HashMap<VerseKey, List<QualifiedKey>>();
-        fromKJVMappings = new HashMap<QualifiedKey, Passage>();
+        toKJVMappings = new HashMap<>();
+        fromKJVMappings = new HashMap<>();
         this.nonKjv = nonKjv;
         processMappings(mapping);
         trace();
@@ -396,7 +396,7 @@ public class VersificationToKJVMapper {
     private <T, S> List<S> getNonEmptyMappings(final Map<T, List<S>> mappings, final T key) {
         List<S> matchingVerses = mappings.get(key);
         if (matchingVerses == null) {
-            matchingVerses = new ArrayList<S>();
+            matchingVerses = new ArrayList<>();
             mappings.put(key, matchingVerses);
         }
         return matchingVerses;
@@ -532,14 +532,14 @@ public class VersificationToKJVMapper {
             if (kjvKeys == null || kjvKeys.size() == 0) {
                 //then we found no mapping, so we're essentially going to return the same key back...
                 //unless it's a verse 0 and then we'll check the global flag.
-                kjvKeys = new ArrayList<QualifiedKey>();
+                kjvKeys = new ArrayList<>();
                 kjvKeys.add(qualifiedKey.reversify(KJV));
                 return kjvKeys;
             }
             return kjvKeys;
         }
 
-        return new ArrayList<QualifiedKey>();
+        return new ArrayList<>();
     }
 
     /**

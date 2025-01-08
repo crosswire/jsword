@@ -64,7 +64,7 @@ public abstract class AbstractBook implements Book {
     public AbstractBook(BookMetaData bmd, Backend backend) {
         this.bmd = bmd;
         this.backend = backend;
-        this.listeners = new CopyOnWriteArrayList<IndexStatusListener>();
+        this.listeners = new CopyOnWriteArrayList<>();
     }
 
     /* (non-Javadoc)
@@ -361,7 +361,7 @@ public abstract class AbstractBook implements Book {
      */
     public void addIndexStatusListener(IndexStatusListener listener) {
         if (listeners == null) {
-            listeners = new CopyOnWriteArrayList<IndexStatusListener>();
+            listeners = new CopyOnWriteArrayList<>();
         }
         listeners.add(listener);
     }

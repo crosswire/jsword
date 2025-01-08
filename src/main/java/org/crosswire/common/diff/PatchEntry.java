@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class PatchEntry implements Iterable<Difference> {
     // Constructor for a patch object.
     public PatchEntry() {
-        this.diffs = new ArrayList<Difference>();
+        this.diffs = new ArrayList<>();
         this.sourceStart = 0;
         this.targetStart = 0;
         this.sourceLength = 0;

@@ -238,8 +238,8 @@ public enum BibleBook {
     private boolean isShortBook;
 
     /** A quick lookup based on OSIS name for the book */
-    private static Map<String, BibleBook> osisMap = new HashMap<String, BibleBook>(128);
-    private static Map<String, BibleBook> exactMatches = new HashMap<String, BibleBook>(128);
+    private static Map<String, BibleBook> osisMap = new HashMap<>(128);
+    private static Map<String, BibleBook> exactMatches = new HashMap<>(128);
 
      static {
         for (BibleBook book : BibleBook.values()) {

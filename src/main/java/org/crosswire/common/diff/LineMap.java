@@ -49,10 +49,10 @@ public class LineMap {
 
         // "\x00" is a valid character, but various debuggers don't like it.
         // So we'll insert a junk entry to avoid generating a null character.
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
         lines.add("");
 
-        Map<String, Integer> linehash = new HashMap<String, Integer>();
+        Map<String, Integer> linehash = new HashMap<>();
         sourceMap = linesToCharsMunge(source, lines, linehash);
         targetMap = linesToCharsMunge(target, lines, linehash);
     }

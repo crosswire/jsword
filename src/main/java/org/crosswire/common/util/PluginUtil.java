@@ -59,7 +59,7 @@ public final class PluginUtil {
      */
     public static <T> Class<T>[] getImplementors(Class<T> clazz) {
         try {
-            List<Class<T>> matches = new ArrayList<Class<T>>();
+            List<Class<T>> matches = new ArrayList<>();
             PropertyMap props = getPlugin(clazz);
             for (String key : props.keySet()) {
                 String name = props.get(key);
@@ -98,7 +98,7 @@ public final class PluginUtil {
      * @see PluginUtil#getImplementors(Class)
      */
     public static <T> Map<String, Class<T>> getImplementorsMap(Class<T> clazz) {
-        Map<String, Class<T>> matches = new HashMap<String, Class<T>>();
+        Map<String, Class<T>> matches = new HashMap<>();
 
         try {
             PropertyMap props = getPlugin(clazz);

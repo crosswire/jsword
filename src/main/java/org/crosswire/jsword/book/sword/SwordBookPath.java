@@ -87,7 +87,7 @@ public final class SwordBookPath {
      * @return the array of Book locations.
      */
     public static File[] getSwordPath() {
-        ArrayList<File> swordPath = new ArrayList<File>();
+        ArrayList<File> swordPath = new ArrayList<>();
 
         // The first place to look for Books
         swordPath.add(getSwordDownloadDir());
@@ -135,7 +135,7 @@ public final class SwordBookPath {
         // If possible migrate the old location to the new one
         migrateBookDir();
 
-        List<File> bookDirs = new ArrayList<File>();
+        List<File> bookDirs = new ArrayList<>();
 
         String home = System.getProperty(PROPERTY_USER_HOME);
 

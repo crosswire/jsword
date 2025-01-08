@@ -151,7 +151,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
      */
     private String stemmerName;
 
-    private static Map<String, String> languageCodeToStemmerLanguageNameMap = new HashMap<String, String>();
+    private static Map<String, String> languageCodeToStemmerLanguageNameMap = new HashMap<>();
     static {
         languageCodeToStemmerLanguageNameMap.put("da", "Danish");
         languageCodeToStemmerLanguageNameMap.put("nl", "Dutch");
@@ -168,7 +168,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
     }
 
     // Maps StemmerName > String array of standard stop words
-    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap<String, Set<?>>();
+    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap<>();
     static {
         defaultStopWordMap.put("fr", FrenchAnalyzer.getDefaultStopSet());
         defaultStopWordMap.put("de", GermanAnalyzer.getDefaultStopSet());

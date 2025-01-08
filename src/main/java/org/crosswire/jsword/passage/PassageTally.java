@@ -888,7 +888,7 @@ public class PassageTally extends AbstractPassage {
          */
         protected OrderedVerseIterator(Versification v11n, int[] board) {
             referenceSystem = v11n;
-            TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
+            TreeSet<TalliedVerse> output = new TreeSet<>();
 
             int vib = board.length - 1;
             for (int i = 0; i <= vib; i++) {
@@ -1032,7 +1032,7 @@ public class PassageTally extends AbstractPassage {
          * @param board 
          */
         protected OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
-            Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
+            Set<TalliedVerseRange> output = new TreeSet<>();
 
             Iterator<VerseRange> rit = new VerseRangeIterator(v11n, vit, RestrictionType.NONE);
             while (rit.hasNext()) {

@@ -104,7 +104,7 @@ public class DistinctPassage extends AbstractPassage {
         // copy.store = (SortedSet) store.clone();
         // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet<Key>();
+        copy.store = new TreeSet<>();
         copy.store.addAll(store);
 
         return copy;
@@ -223,7 +223,7 @@ public class DistinctPassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new TreeSet<Key>();
+        store = new TreeSet<>();
 
         in.defaultReadObject();
 
@@ -238,5 +238,5 @@ public class DistinctPassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    private transient SortedSet<Key> store = new TreeSet<Key>();
+    private transient SortedSet<Key> store = new TreeSet<>();
 }

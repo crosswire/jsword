@@ -38,7 +38,7 @@ public abstract class AbstractBookList implements BookList {
      * Build a default BookList
      */
     public AbstractBookList() {
-        listeners = new CopyOnWriteArrayList<BooksListener>();
+        listeners = new CopyOnWriteArrayList<>();
     }
 
     /* (non-Javadoc)
@@ -87,5 +87,5 @@ public abstract class AbstractBookList implements BookList {
     /**
      * The list of listeners
      */
-    private List<BooksListener> listeners = new CopyOnWriteArrayList<BooksListener>();
+    private List<BooksListener> listeners = new CopyOnWriteArrayList<>();
 }

@@ -239,7 +239,7 @@ public final class Reporter {
     /**
      * The list of listeners
      */
-    private static final List<ReporterListener> LISTENERS = new CopyOnWriteArrayList<ReporterListener>();
+    private static final List<ReporterListener> LISTENERS = new CopyOnWriteArrayList<>();
 
     /**
      * The log stream

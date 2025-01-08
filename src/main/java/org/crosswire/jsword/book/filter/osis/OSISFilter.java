@@ -207,7 +207,7 @@ public class OSISFilter implements SourceFilter {
     }
 
     // space for 32 re-usable sax builders, but doesn't bound the number available to the callers
-    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<>(32);
 
     /**
      * Pattern to find the start of a div. Used to convert to a milestoned version.

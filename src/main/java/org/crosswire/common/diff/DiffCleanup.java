@@ -48,7 +48,7 @@ public final class DiffCleanup {
      */
     public static void cleanupSemantic(final List<Difference> diffs) {
         boolean changes = false;
-        Stack<Difference> equalities = new Stack<Difference>(); // Stack of indices where equalities are
+        Stack<Difference> equalities = new Stack<>(); // Stack of indices where equalities are
         // found.
         String lastEquality = null; // Always equal to
         // equalities.lastElement().getText()
@@ -130,7 +130,7 @@ public final class DiffCleanup {
         }
 
         boolean changes = false;
-        Stack<Difference> equalities = new Stack<Difference>(); // Stack of indices where equalities are
+        Stack<Difference> equalities = new Stack<>(); // Stack of indices where equalities are
         // found.
         String lastEquality = null; // Always equal to
         // equalities.lastElement().getText();

@@ -266,7 +266,7 @@ public final class XMLUtil {
             result = result.substring(0, result.lastIndexOf('<'));
         }
         // close tags again
-        List<String> openTags = new ArrayList<String>();
+        List<String> openTags = new ArrayList<>();
         Matcher m = Pattern.compile("</?[a-zA-Z]+").matcher(result);
         boolean lTagFound = false;
         boolean lgTagFound = false;
@@ -424,7 +424,7 @@ public final class XMLUtil {
     }
 
     // Map entities to their unicode equivalent
-    private static Set<String> goodEntities = new HashSet<String>();
+    private static Set<String> goodEntities = new HashSet<>();
     private static PropertyMap badEntities = new PropertyMap();
     static {
         // pre-defined XML entities
