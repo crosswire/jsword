@@ -337,8 +337,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     private void writeIncfile(RawFileBackendState state, int value) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(state.getIncfile(), false)) {
             fos.write(littleEndian32BitByteArrayFromInt(value));
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             log.error("Error on writing to incfile, file should exist already!", e);
         }
     }
