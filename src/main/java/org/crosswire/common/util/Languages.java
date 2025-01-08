@@ -207,5 +207,5 @@ public final class Languages {
     /**
      * The log stream
      */
-    protected static final Logger log = LoggerFactory.getLogger(Books.class);
+    protected static final Logger log = LoggerFactory.getLogger(Languages.class);
 }
