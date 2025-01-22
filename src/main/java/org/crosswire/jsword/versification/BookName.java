@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
 
+import static java.lang.Math.min;
+
 /**
  * BookName represents the different ways a book of the bible is named.
  * 
@@ -59,6 +61,18 @@ public final class BookName {
         }
     }
 
+    public static Boolean isTruncateShortName() {
+        return truncateShortName > 0;
+    }
+
+    public static Integer getTruncateShortName() {
+        return truncateShortName;
+    }
+
+    public static void setTruncateShortName(Integer truncateShortName) {
+        BookName.truncateShortName = truncateShortName;
+    }
+
     /**
      * Get the BibleBook to which this set of names is tied.
      * 
@@ -75,7 +89,9 @@ public final class BookName {
      * @return The preferred name of the book
      */
     public String getPreferredName() {
-        if (BookName.isFullBookName()) {
+        if(BookName.isTruncateShortName()) {
+            return getTruncatedShortName();
+        } else if (BookName.isFullBookName()) {
             return getLongName();
         }
         return getShortName();
@@ -119,6 +135,10 @@ public final class BookName {
         }
 
         return shortName;
+    }
+
+    public String getTruncatedShortName() {
+        return getShortName().substring(0, min(truncateShortName, getShortName().length()));
     }
 
     /**
@@ -316,4 +336,6 @@ public final class BookName {
     /** Whether long or short, full or abbreviated names are used. */
     private static boolean fullBookName = true;
 
+    // Even shorter version than abbreviated (max N letters). 0 to disable.
+    private static Integer truncateShortName = 0;
 }

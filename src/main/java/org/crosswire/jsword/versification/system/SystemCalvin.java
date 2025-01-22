@@ -23,8 +23,8 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * Versification for French Olivétan and derivatives Bibles.
- * (Bible de Genève, D. Martin, F. Ostervald..)
+ * Versification for French Olivetan and derivatives Bibles.
+ * (Bible de Geneve, D. Martin, F. Ostervald..)
  * Because Bibles employing this versification system introduced by
  * Robert 'Stephanus' Estienne in 1553 differ subtly in versification,
  * this is not based on any single edition although some may eventually match,

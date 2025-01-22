@@ -111,6 +111,8 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         return false;
     }
 
+    public void resetLock() {}
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
      */
@@ -236,7 +238,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
         return getName().hashCode();
     }
 
-    /* 
+    /*
      * The sort order should be based on initials rather than name because name often begins with general words like 'The ...'
      * (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
@@ -244,7 +246,8 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     public int compareTo(BookMetaData obj) {
         int result = this.getBookCategory().compareTo(obj.getBookCategory());
         if (result == 0) {
-            result = this.getAbbreviation().compareTo(obj.getAbbreviation());
+            // module names normally (always?) use English characters so ignore case should be fine
+            result = this.getAbbreviation().compareToIgnoreCase(obj.getAbbreviation());
         }
         if (result == 0) {
             result = this.getInitials().compareTo(obj.getInitials());

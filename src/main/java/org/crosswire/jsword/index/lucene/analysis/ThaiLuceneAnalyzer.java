@@ -35,7 +35,7 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author sijo cherian
  */
-public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
 
     public ThaiLuceneAnalyzer() {
     }

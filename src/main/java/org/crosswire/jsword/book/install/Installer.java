@@ -111,6 +111,8 @@ public interface Installer extends BookList {
      */
     void reloadBookList() throws InstallException;
 
+    public Long indexLastUpdated();
+
     /**
      * Download and install a book locally. The name should be one from an index
      * list retrieved from getIndex() or reloadIndex()
@@ -122,6 +124,7 @@ public interface Installer extends BookList {
      * @throws InstallException 
      */
     void install(final Book book) throws InstallException;
+    void install(final Book book, String jobId) throws InstallException;
 
     /**
      * Download a search index for the given Book. The installation of the

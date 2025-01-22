@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.ClassUtil;
@@ -39,6 +40,7 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  * @author DM Smith
  */
 public final class BibleNames {
+    public static final Pattern undefinedPattern = Pattern.compile("^#.*");
     /**
      * Get the singleton instance of BibleNames.
      *
@@ -124,11 +126,11 @@ public final class BibleNames {
                 book = englishBibleNames.getBook(find, false);
             }
 
-            if (book == null) {
+            if (book == null && enableFuzzy) {
                 book = getLocalizedBibleNames().getBook(find, true);
             }
 
-            if (book == null) {
+            if (book == null && enableFuzzy) {
                 book = englishBibleNames.getBook(find, true);
             }
         }
@@ -211,6 +213,14 @@ public final class BibleNames {
         }
 
         return false;
+    }
+
+    public Boolean getEnableFuzzy() {
+        return enableFuzzy;
+    }
+
+    public void setEnableFuzzy(Boolean enableFuzzy) {
+        this.enableFuzzy = enableFuzzy;
     }
 
     /**
@@ -406,6 +416,9 @@ public final class BibleNames {
             }
 
             String altBook = getString(resources, osisName + ALT_KEY);
+            if(altBook == null || undefinedPattern.matcher(altBook).matches()) {
+                altBook = "";
+            }
 
             BookName bookName = new BookName(locale, BibleBook.fromOSIS(osisName), fullBook, shortBook, altBook);
             books.put(book, bookName);
@@ -502,6 +515,7 @@ public final class BibleNames {
 
     /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */
     private transient Map<Locale, NameList> localizedBibleNames;
+    private Boolean enableFuzzy = true;
 
     /** English BibleNames, or null when using the program's default locale */
     private static NameList englishBibleNames;

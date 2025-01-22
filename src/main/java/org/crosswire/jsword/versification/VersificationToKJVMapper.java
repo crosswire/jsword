@@ -43,6 +43,7 @@ import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.versification.system.SystemKJVA;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,9 @@ import org.slf4j.LoggerFactory;
 /**
  * A Versification mapper allows you to a map a given verse to the KJV versification,
  * or unmap it from the KJV versification into your own versification.
+ * Note : in order to allow for all known bible contents (including deuterocanonical texts) to be mapped, within this
+ * class "KJV" actually stands for the "KJVA" versification system.
+ *
  * <p>
  * A properties-like file will contain the non-KJV versification as they key, and the KJV versification value
  * as the target value... Duplicate keys are allowed.
@@ -529,14 +533,19 @@ public class VersificationToKJVMapper {
         VerseKey key = qualifiedKey.getKey();
         if (key instanceof Verse) {
             List<QualifiedKey> kjvKeys = this.getQualifiedKeys(key);
-            if (kjvKeys == null || kjvKeys.size() == 0) {
-                //then we found no mapping, so we're essentially going to return the same key back...
-                //unless it's a verse 0 and then we'll check the global flag.
+            if(kjvKeys != null && !kjvKeys.isEmpty()) {
+                // Found an explicit mapping to KJV, return it.
+                return kjvKeys;
+            }
+            else if(key.isValidIn(KJV)) {
+                // No explicit mapping, but key is valid in KJV : implicit straight mapping.
+                // Safe to reversify.
                 kjvKeys = new ArrayList<QualifiedKey>();
                 kjvKeys.add(qualifiedKey.reversify(KJV));
                 return kjvKeys;
             }
-            return kjvKeys;
+            // Else, verses just don't map to KJV : return the empty list.
+            return new ArrayList<QualifiedKey>();
         }
 
         return new ArrayList<QualifiedKey>();
@@ -557,14 +566,22 @@ public class VersificationToKJVMapper {
             left = this.fromKJVMappings.get(new QualifiedKey(kjvVerse.getVerse().getWhole()));
         }
 
-        //if we have no mapping, then we are in 1 of two scenarios
-        //the verse is either totally absent, or the verse is not part of the mappings, meaning it is a straight map
         if (left == null) {
+            // We didn't find a mapped passage in the left (non-KJV) versification.
             VerseKey vk = kjvVerse.getKey();
             if (vk != null && this.absentVerses.contains(vk)) {
+                // If the verse was explicitly listed as absent, return an empty passage.
                 return createEmptyPassage(KJV);
             }
-            return kjvVerse.reversify(this.nonKjv).getKey();
+            else if(vk != null && vk.isValidIn(this.nonKjv)) {
+                // If the verse is not explicitly absent, and exists in the left versification,
+                // then it's a straight mapping, safe to cast to reversify.
+                return kjvVerse.reversify(this.nonKjv).getKey();
+            }
+            else {
+                // No explicit mapping, and invalid direct cast : these KJV verses do not map to anything.
+                return createEmptyPassage(KJV);
+            }
         }
         return left;
     }
@@ -652,9 +669,9 @@ public class VersificationToKJVMapper {
     private Map<VerseKey, List<QualifiedKey>> toKJVMappings;
     private Map<QualifiedKey, Passage> fromKJVMappings;
     private boolean hasErrors;
-
+    
     private OsisParser osisParser = new OsisParser();
 
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification KJV = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationToKJVMapper.class);
 }

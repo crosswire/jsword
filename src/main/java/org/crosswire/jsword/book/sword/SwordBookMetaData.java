@@ -70,13 +70,13 @@ import org.slf4j.LoggerFactory;
  * In addition, the SwordBookMetaData is hierarchical. The Level
  * indicates where the file originates from. The full hierarchy could be laid
  * out as followed:
- * 
+ *
  * <pre>
  *     - sword
  *         - jsword
  *            - front-end
  * </pre>
- * 
+ *
  * Various rules govern where attributes are read from. The general rule is that
  * the highest level (front-end write) will override values from the lowest
  * common denominator (sword). Various parts of the tree may be missing as the
@@ -155,6 +155,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public static final String KEY_SWORD_VERSION_DATE = "SwordVersionDate";
     public static final String KEY_TEXT_SOURCE = "TextSource";
     public static final String KEY_UNLOCK_URL = "UnlockURL";
+    public static final String KEY_UNLOCK_INFO = "UnlockInfo";
     public static final String KEY_VERSION = "Version";
 
     // Some keys have defaults
@@ -303,9 +304,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean unlock(String unlockKey) {
-        // Persist the unlock key so that all can see it
-        putProperty(KEY_CIPHER_KEY, unlockKey, false);
+        setProperty(KEY_CIPHER_KEY, unlockKey);
         return true;
+    }
+
+    @Override
+    public void resetLock() {
+       setProperty(KEY_CIPHER_KEY, "");
     }
 
     /*
@@ -374,7 +379,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Get the book conf which is a name such as kjv.conf.
-     * 
+     *
      * @return the book conf
      */
     public String getBookConf() {
@@ -597,6 +602,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         configAll.replace(key, value);
     }
 
+    public void removeProperty(String key) {
+        configAll.remove(key);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String, boolean)
      */
@@ -607,7 +616,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * Allow specification of a specific SwordMetaDataLocator when saving a property.
-     * 
+     *
      * @param key the entry that we are saving
      * @param value the value of the entry
      * @param metaDataLocator Place to save - front end storage, shared storage, or don't save(transient)
@@ -660,7 +669,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Allow for partial loading of a minimum set of keys, saving time and space.
      * If partial, call reload(null) to fill it in before showing the conf contents to a user.
-     * 
+     *
      * @param partial
      */
     public static void setPartialLoading(boolean partial) {
@@ -896,7 +905,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         bookType = BookType.fromString(modTypeName);
         if (bookType == null) {
-            LOGGER.error("Book not supported: malformed conf file for [{}] no book type found", configAll.getName());
+            LOGGER.error("Book not supported: malformed conf file for [{}] no book type {} found", configAll.getName(), modTypeName);
             supported = false;
             return;
         }
@@ -1018,6 +1027,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             for (int i = 0; i < count; i++) {
                 String value = config.get(key, i);
 
+                if(key.startsWith("AndBible")) {
+                    // Disable all checking for AndBible custom keys.
+                    continue;
+                }
                 // If it is still unknown, report and skip
                 if (type == null) {
                     buf.append("Unknown entry: ").append(key).append(" = ").append(value).append('\n');
@@ -1171,7 +1184,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
         }
         public boolean test(String key) {
-            return keepers.contains(key);
+            return keepers.contains(key) || key.startsWith("AndBible");
         }
         private Set keepers;
     }

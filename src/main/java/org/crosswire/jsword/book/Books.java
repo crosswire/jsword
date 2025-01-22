@@ -122,7 +122,16 @@ public final class Books extends AbstractBookList {
      * @param book the book to add to this book list
      */
     public synchronized void addBook(Book book) {
-        if (book != null && books.add(book)) {
+        if (book == null) return;
+
+        // If we are upgrading module, we need to remove existing data first.
+        if (books.contains(book)) {
+            initials.remove(book.getInitials());
+            names.remove(book.getName());
+            books.remove(book);
+        }
+
+        if (books.add(book)) {
             initials.put(book.getInitials(), book);
             names.put(book.getName(), book);
             fireBooksChanged(instance, book, true);

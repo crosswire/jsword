@@ -29,6 +29,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.ReferenceSystem;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
@@ -299,13 +300,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * Get the BookName.
      *
      * @param book the desired book
-     * @return The requested BookName or null if not in this versification
+     * @return The requested BookName
      */
     public BookName getBookName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getBookName(book);
-        }
-        return null;
+        return BibleNames.instance().getBookName(book);
     }
 
     /**
@@ -313,13 +311,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * setBookCase() and isFullBookName())
      *
      * @param book the desired book
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     public String getPreferredName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getPreferredName(book);
-        }
-        return null;
+        return BibleNames.instance().getPreferredName(book);
       }
 
     /**
@@ -345,13 +340,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     public String getLongName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getLongName(book);
-        }
-        return null;
+        return BibleNames.instance().getLongName(book);
       }
 
     /**
@@ -359,13 +351,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The short name of the book or null if not in this versification
+     * @return The short name of the book
      */
     public String getShortName(BibleBook book) {
-        if (containsBook(book)) {
-            return BibleNames.instance().getShortName(book);
-        }
-        return null;
+        return BibleNames.instance().getShortName(book);
       }
 
     /**
@@ -422,6 +411,13 @@ public class Versification implements ReferenceSystem, Serializable {
         }
     }
 
+    public Verse getLastVerse() {
+        BibleBook lastBook = getLastBook();
+        int lastChapter = getLastChapter(lastBook);
+        int lastVerse = getLastVerse(lastBook, lastChapter);
+        return new Verse(this, lastBook, lastChapter, lastVerse);
+    }
+
     /**
      * Get the number of chapters in the Bible not counting Chapter 0.
      * which is the one per book and one for the INTRO_BIBLE, INTRO_OT and INTRO_NT;
@@ -458,9 +454,7 @@ public class Versification implements ReferenceSystem, Serializable {
      */
     public VerseRange getAllVerses() {
         Verse first = new Verse(this, bookList.getFirstBook(), 0, 0);
-        BibleBook book = bookList.getLastBook();
-        int chapter = getLastChapter(book);
-        Verse last = new Verse(this, book, chapter, getLastVerse(book, chapter));
+        Verse last = getLastVerse();
         return new VerseRange(this, first, last);
     }
 
@@ -1072,6 +1066,14 @@ public class Versification implements ReferenceSystem, Serializable {
             }
             // TRANSLATOR: The user did not supply a book for a verse reference.
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
+        }
+
+        if(!bookList.contains(book)) {
+            if (silent) {
+                return false;
+            }
+            // TRANSLATOR: The user supplied a book which does not exist in this versification.
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be present in the versification"));
         }
 
         // Check the chapter

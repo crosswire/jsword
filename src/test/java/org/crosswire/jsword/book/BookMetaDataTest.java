@@ -19,6 +19,10 @@
  */
 package org.crosswire.jsword.book;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,5 +89,4 @@ public class BookMetaDataTest {
             e.printStackTrace();
         }
     }
-
 }

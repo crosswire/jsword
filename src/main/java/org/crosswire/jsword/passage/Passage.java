@@ -19,6 +19,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.versification.Versification;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -185,6 +187,18 @@ public interface Passage extends VerseKey<Passage> {
      * @return A list enumerator
      */
     Iterator<VerseRange> rangeIterator(RestrictionType restrict);
+
+    @Override
+    default boolean isValidIn(Versification targetVersification) {
+        Iterator<VerseRange> rangeIterator = rangeIterator(RestrictionType.NONE);
+        while(rangeIterator.hasNext()) {
+            if(!rangeIterator.next().isValidIn(targetVersification)) {
+                // If any of the included ranges is invalid, this passage is invalid.
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Returns true if this collection contains all the specified Verse
