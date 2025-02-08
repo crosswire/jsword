@@ -134,9 +134,9 @@ public class BooksTest {
     @Test
     public void testBookList() throws Exception {
         //part of the pre-requisites
-        AbstractPassageBook esv = (AbstractPassageBook) Books.installed().getBook("ESV2011");
-        Assume.assumeTrue("ESV2011 is installed", esv != null);
-        Assert.assertTrue(esv.getBibleBooks().contains(BibleBook.ACTS));
+        AbstractPassageBook kjv = (AbstractPassageBook) Books.installed().getBook("KJV");
+        Assume.assumeTrue("KJV is installed", kjv != null);
+        Assert.assertTrue(kjv.getBibleBooks().contains(BibleBook.ACTS));
     }
 
 

@@ -72,11 +72,10 @@ public class BackendTest {
      *             an uncaught, failing, exception
      */
     @Test
-    public void testBackendESV() throws Exception {
-        String version = "ESV2011";
+    public void testBackendKJV() throws Exception {
+        String version = "KJV";
         String reference = "Romans 1:1-3";
-        //need to specify individual words to cope with tagged ESV
-        backendTest(version, reference, "set", "apart", "for", "the", "gospel", "of", "God");
+        backendTest(version, reference, "separated", "unto", "the gospel", "of", "God");
     }
 
     /**
@@ -86,13 +85,13 @@ public class BackendTest {
      *             an uncaught, failing, exception
      */
     @Test
-    public void testBackendESVFullChapter() throws Exception {
-        String version = "ESV2011";
+    public void testBackendFullChapter() throws Exception {
+        String version = "KJV";
         String reference = "Romans 1";
 
         backendTest(version, reference, " <title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal",
-                "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
-    }
+                "separated", "unto", "the gospel", "of", "God", "but", "have pleasure in", "them that", "do them");
+            }
 
     /**
      * Z Text - cos it's important
@@ -101,13 +100,13 @@ public class BackendTest {
      *             an uncaught, failing, exception
      */
     @Test
-    public void testBackendESV1AndFollowing() throws Exception {
-        String version = "ESV2011";
+    public void testBackend1AndFollowing() throws Exception {
+        String version = "KJV";
         String reference = "Romans 1:1-ff";
 
         backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal",
-                "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
-    }
+                 "separated", "unto", "the gospel", "of", "God", "but", "have pleasure in", "them that", "do them");
+   }
 
     /**
      * Z Text - cos it's important
@@ -117,7 +116,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendCrossChapterBoundary() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:32-Rom:2:2";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.32\" verseOrdinal", "<title type=\"x-gen\">Romans 2:0-2</title>", "<verse osisID=\"Rom.2.1\" verseOrdinal",
@@ -136,7 +135,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendMiddleChapter() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:2-1:31";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.2\" verseOrdinal", "<verse osisID=\"Rom.1.31\" verseOrdinal");
@@ -154,7 +153,7 @@ public class BackendTest {
      */
     @Test
     public void testBackendMiddleToEnd() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:5-ff";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\" verseOrdinal", "<verse osisID=\"Rom.1.31\" verseOrdinal", "<verse osisID=\"Rom.1.32\" verseOrdinal");
@@ -173,7 +172,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartMiddle() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:5-3:14";
 
         String xml = backendTest(version, reference, "<verse osisID=\"Rom.1.5\" verseOrdinal",
@@ -194,7 +193,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartVerse1() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:1-3:14";
 
         String xml = backendTest(version, reference,
@@ -217,7 +216,7 @@ public class BackendTest {
      */
     @Test
     public void testBackend2ChaptersStartVerse0() throws Exception {
-        String version = "ESV2011";
+        String version = "KJV";
         String reference = "Rom 1:0-3:14";
 
         String xml = backendTest(version, reference,
