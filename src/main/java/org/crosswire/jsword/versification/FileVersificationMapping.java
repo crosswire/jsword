@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 /**
  * This reads a file up front and creates the key value pairs. Because
@@ -56,21 +57,25 @@ public class FileVersificationMapping {
      * @throws ConfigException error parsing the contents of the file
      */
     public FileVersificationMapping(Versification versification) throws IOException, ConfigException {
-        //TODO(CJB): deal with Missing Resource Exceptions
-        InputStream s = ResourceUtil.getResourceAsStream(getClass(), versification.getName() + ".properties");
-        BufferedReader lineReader = new BufferedReader(new InputStreamReader(s));
-        String line;
-        while ((line = lineReader.readLine()) != null) {
-            if (line.length() == 0 || line.charAt(0) == '#') {
-                continue;
-            }
+        // It is fine for a mapping to not exist if the Versification is a strict subset of the intermediate mapping.
+        try {
+            InputStream s = ResourceUtil.getResourceAsStream(getClass(), versification.getName() + ".properties");
+            BufferedReader lineReader = new BufferedReader(new InputStreamReader(s));
+            String line;
+            while ((line = lineReader.readLine()) != null) {
+                if (line.length() == 0 || line.charAt(0) == '#') {
+                    continue;
+                }
 
-            int firstEqual = line.indexOf('=');
-            if (firstEqual == -1) {
-                this.addProperty(line, null);
-            } else {
-                this.addProperty(line.substring(0, firstEqual), line.substring(firstEqual + 1));
-            }
+                int firstEqual = line.indexOf('=');
+                if (firstEqual == -1) {
+                    this.addProperty(line, null);
+                } else {
+                    this.addProperty(line.substring(0, firstEqual), line.substring(firstEqual + 1));
+                }
+        }
+        } catch (MissingResourceException e) {
+            return;
         }
     }
 

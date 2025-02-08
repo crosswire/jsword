@@ -85,14 +85,17 @@ public class VersificationConverter {
     private Verse convertVerseStrictly(Verse verse, Versification toVersification) {
         try {
             Key key = versificationsMapper.mapVerse(verse, toVersification);
-            Verse mappedVerse = KeyUtil.getVerse(key);
-            // If target v11n does not contain mapped verse then an exception normally occurs and the ordinal is set to 0
-            if (mappedVerse.getOrdinal()>0) {
-                return mappedVerse;
+            if (!key.isEmpty()) {
+                Verse mappedVerse = KeyUtil.getVerse(key);
+                // If target v11n does not contain mapped verse then an exception normally occurs and the ordinal is set to 0
+                if (mappedVerse.getOrdinal() > 0) {
+                    return mappedVerse;
+                }
             }
         } catch (Exception e) {
             // unexpected problem during mapping
             log.warn("JSword Versification mapper failed to map "+verse.getOsisID()+" from "+verse.getVersification().getName()+" to "+toVersification.getName());
+            throw e;
         }
         return null;
     }
