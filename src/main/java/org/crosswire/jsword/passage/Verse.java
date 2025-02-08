@@ -322,7 +322,8 @@ public final class Verse implements VerseKey<Verse> {
     @Override
     public boolean isValidIn(Versification targetVersification) {
         try {
-            return targetVersification.validate(book, chapter, verse, false);
+            // Pass true for silent so it won't throw an exception.
+            return targetVersification.validate(book, chapter, verse, true);
         } catch (NoSuchVerseException e) {
             return false;
         }

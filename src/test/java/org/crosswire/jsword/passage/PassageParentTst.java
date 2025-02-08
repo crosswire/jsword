@@ -383,7 +383,6 @@ import org.junit.Test;
         Assert.assertEquals("Gen 1:26, 3:22, 11:7, 20:13, 31:7, 53, 35:7", keyf.getKey(v11n, "Ge 1:26  3:22  11:7  20:13  31:7, 53  35:7").getName());
     }
 
-    @Ignore
     @Test
     public void testWriteBlur() throws Exception {
         temp = (Passage) genC1V135r.clone();
@@ -409,19 +408,19 @@ import org.junit.Test;
         Assert.assertEquals(temp, keyf.getKey(v11n, "Gen 1:0-17"));
         temp = (Passage) genC1V135r.clone();
         temp.blur(12, RestrictionType.NONE);
-        Assert.assertEquals(temp, keyf.getKey(v11n, "Intro.OT 0:0-Gen 1:17"));
+        Assert.assertEquals(temp, keyf.getKey(v11n, "Bible.Intro-Gen 1:17"));
         temp = (Passage) genC1V135r.clone();
         temp.blur(26, RestrictionType.CHAPTER);
         Assert.assertEquals(temp, keyf.getKey(v11n, "Gen 1:0-31"));
         temp = (Passage) genC1V135r.clone();
         temp.blur(26, RestrictionType.NONE);
-        Assert.assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Gen 1:31"));
+        Assert.assertEquals(temp, keyf.getKey(v11n, "Bible.Intro-Gen 1:31"));
         temp = (Passage) genC1V135r.clone();
         temp.blur(27, RestrictionType.CHAPTER);
         Assert.assertEquals(temp, keyf.getKey(v11n, "Gen 1:0-31"));
         temp = (Passage) genC1V135r.clone();
         temp.blur(27, RestrictionType.NONE);
-        Assert.assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Gen 2:0"));
+        Assert.assertEquals(temp, keyf.getKey(v11n, "Bible.Intro-Gen 2:0"));
         temp = (Passage) exoC2V1To10C2V1To11r.clone();
         temp.blur(0, RestrictionType.CHAPTER);
         Assert.assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
@@ -469,7 +468,7 @@ import org.junit.Test;
         Assert.assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
         temp = (Passage) exoC2V1To10C2V1To11r.clone();
         temp.blur(99999, RestrictionType.NONE);
-        Assert.assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Rev 22:21"));
+        Assert.assertEquals(temp, keyf.getKey(v11n, "Bible.Intro-Rev 22:21"));
     }
 
     @Test
@@ -724,7 +723,6 @@ import org.junit.Test;
         Assert.assertEquals("", temp.getName());
     }
 
-    @Ignore
     @Test
     public void testWriteRetainAllCollection() throws Exception {
         temp = keyf.getKey(v11n, "Gen 1:1-5");

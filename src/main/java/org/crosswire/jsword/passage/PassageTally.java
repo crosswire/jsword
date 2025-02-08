@@ -587,8 +587,6 @@ public class PassageTally extends AbstractPassage {
         raiseNormalizeProtection();
 
         if (!restrict.equals(RestrictionType.NONE)) {
-            log.warn("Restrict={} is not properly supported.", restrict);
-
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version
             PassageTally temp = this.clone();
@@ -625,7 +623,7 @@ public class PassageTally extends AbstractPassage {
 
                     for (int j = 1; j <= (blurUp ? verses : 0); j++) {
                         int k = i + j;
-                        if (k < board.length - 1) {
+                        if (k < board.length) {
                             newBoard[k] += board[i] + verses - j;
                         }
                     }

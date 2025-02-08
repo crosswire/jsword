@@ -695,6 +695,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The new Verse
      */
     public Verse subtract(Verse verse, int n) {
+        // Check to see if we are blurring 
+        if (n == 0) {
+            return verse;
+        }
         int newVerse = verse.getVerse() - n;
         // Try the simple case of the verse being in the same chapter
         if (newVerse >= 0) {
@@ -753,6 +757,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The new verse
      */
     public Verse add(Verse verse, int n) {
+        // Check to see if we are blurring 
+        if (n == 0) {
+            return verse;
+        }
         int newVerse = verse.getVerse() + n;
         // Try the simple case of the verse being in the same chapter
         if (newVerse <= getLastVerse(verse.getBook(), verse.getChapter())) {
