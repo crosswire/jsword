@@ -16,7 +16,7 @@ tasks.withType<Test>() {
 }
 
 group = "org.crosswire"
-version = "2.3"
+version = "2.3-SNAPSHOT"
 
 repositories {
     mavenCentral()
