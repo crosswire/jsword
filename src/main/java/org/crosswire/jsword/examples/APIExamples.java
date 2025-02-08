@@ -321,7 +321,7 @@ public class APIExamples {
 
         // If you are wanting to get really fancy you can implement your own
         // BookFilter easily
-        List<Book> test = Books.installed().getBooks(new MyBookFilter("ESV2011"));
+        List<Book> test = Books.installed().getBooks(new MyBookFilter("KJV"));
         book = test.get(0);
 
         if (book != null) {
