@@ -71,7 +71,10 @@ public enum BookCategory {
 
     /** Books that are not any of the above. This is a catch all for new book categories. */
     // TRANSLATOR: The name for the book category consisting of books not in any of the other categories.
-    OTHER("Other", JSMsg.gettext("Other"));
+    OTHER("Other", JSMsg.gettext("Other")),
+
+    /** And Bible custom category (Addons, fonts etc) */
+    AND_BIBLE("And Bible", JSMsg.gettext("And Bible"));
 
     /**
      * @param name

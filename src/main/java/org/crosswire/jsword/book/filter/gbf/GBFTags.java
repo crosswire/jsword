@@ -104,9 +104,6 @@ public final class GBFTags {
        }
    }
 
-    /**
-     *
-     */
     public static final class CrossRefStartTag extends AbstractTag {
         public CrossRefStartTag(String name) {
             super(name);

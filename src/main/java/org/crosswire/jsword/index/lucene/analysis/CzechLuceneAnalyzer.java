@@ -37,7 +37,7 @@ import org.apache.lucene.util.Version;
  * @author Sijo Cherian
  * @author DM SMITH
  */
-public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
     public CzechLuceneAnalyzer() {
         stopSet = CzechAnalyzer.getDefaultStopSet();
     }

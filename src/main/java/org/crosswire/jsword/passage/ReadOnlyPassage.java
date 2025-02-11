@@ -324,6 +324,14 @@ final class ReadOnlyPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
+        blur(by, restrict, true, true);
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType, boolean, boolean)
+     */
+    public synchronized void blur(int by, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         if (ignore) {
             return;
         }

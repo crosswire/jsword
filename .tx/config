@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[o:mjdenham:p:andbible:r:biblenames]
+minimum_perc = 20
+file_filter = src/main/resources/BibleNames_<lang>.properties
+lang_map = az@latin: az, he:iw, hi:in, sr_RS: sr, sr@latin: sr_LT, zh_TW: zh, en_GB: en_XX
+source_file = src/main/resources/BibleNames.keys
+source_lang = en

@@ -163,6 +163,8 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      */
     boolean unlock(String unlockKey);
 
+    void resetLock();
+
     /**
      * Gets the unlock key for the module.
      * 

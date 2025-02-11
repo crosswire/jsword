@@ -54,6 +54,11 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
         return NetUtil.getSize(toRemoteURI(book), proxyHost, proxyPort);
     }
 
+    @Override
+    public Long indexLastUpdated() {
+        return 0L;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#toRemoteURI(org.crosswire.jsword.book.Book)
      */

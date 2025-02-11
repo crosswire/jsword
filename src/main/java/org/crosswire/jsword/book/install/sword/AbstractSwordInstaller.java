@@ -216,10 +216,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         return null;
     }
 
+    public void install(final Book book) throws InstallException {
+        install(book, null);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */
-    public void install(final Book book) {
+    public void install(final Book book, String jobId) throws InstallException {
         // // Is the book already installed? Then nothing to do.
         // if (Books.installed().getBook(book.getName()) != null)
         // {
@@ -230,9 +234,13 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
         String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
-        Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, Thread.currentThread());
+        if(jobId == null) {
+            jobId = String.format(Progress.INSTALL_BOOK, book.getInitials());
+        }
+        Progress job = JobManager.createJob(jobId, jobName, Thread.currentThread());
 
         URI temp = null;
+        String fileName = null;
         try {
             // Don't bother setting a size, we'll do it later.
             job.beginJob(jobName);
@@ -243,6 +251,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             job.setSectionName(JSMsg.gettext("Initializing"));
 
             temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
+
+            fileName = packageDirectory + "/" + sbmd.getInitials() + ZIP_SUFFIX;
 
             download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
@@ -263,14 +273,15 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
         } catch (IOException e) {
-            Reporter.informUser(this, e);
+            log.error("Error in downloading " + fileName);
             job.cancel();
+            throw new InstallException("Error in downloading " + fileName, e);
         } catch (InstallException e) {
-            Reporter.informUser(this, e);
             job.cancel();
+            throw e;
         } catch (BookException e) {
-            Reporter.informUser(this, e);
             job.cancel();
+            throw new InstallException("Something went wrong with the book ", e);
         } finally {
             job.done();
             // tidy up after ourselves
@@ -292,7 +303,9 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public void reloadBookList() throws InstallException {
         // TRANSLATOR: Progress label for downloading one or more files.
         String jobName = JSMsg.gettext("Downloading files");
-        Progress job = JobManager.createJob(Progress.RELOAD_BOOK_LIST, jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(Progress.RELOAD_BOOK_LIST, jobName, null);
+
+        job.setNotifyUser(false);
         job.beginJob(jobName);
 
         List<File> errors = null;

@@ -575,6 +575,11 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void blur(int verses, RestrictionType restrict) {
+        blur(verses, restrict, true, true);
+    }
+
+    @Override
+    public void blur(int verses, RestrictionType restrict, boolean blurDown, boolean blurUp) {
         assert verses >= 0;
 
         optimizeWrites();
@@ -582,8 +587,6 @@ public class PassageTally extends AbstractPassage {
         raiseNormalizeProtection();
 
         if (!restrict.equals(RestrictionType.NONE)) {
-            log.warn("Restrict={} is not properly supported.", restrict);
-
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version
             PassageTally temp = this.clone();
@@ -592,7 +595,7 @@ public class PassageTally extends AbstractPassage {
             while (it.hasNext()) {
                 VerseRange range = it.next();
                 for (int i = 0; i <= verses; i++) {
-                    add(restrict.blur(getVersification(), range, i, i));
+                    add(restrict.blur(getVersification(), range, blurDown ? verses : 0, blurUp ? verses : 0));
                 }
             }
         } else {
@@ -609,7 +612,7 @@ public class PassageTally extends AbstractPassage {
                     // }
                     // However splitting the loop in 2 will speed it up quite a bit.
 
-                    for (int j = -verses; j < 0; j++) {
+                    for (int j = (blurDown ? -verses : 0); j < 0; j++) {
                         int k = i + j;
                         if (k >= 0) {
                             newBoard[k] += board[i] + verses + j;
@@ -618,9 +621,9 @@ public class PassageTally extends AbstractPassage {
 
                     newBoard[i] += board[i] + verses;
 
-                    for (int j = 1; j <= verses; j++) {
+                    for (int j = 1; j <= (blurUp ? verses : 0); j++) {
                         int k = i + j;
-                        if (k < board.length - 1) {
+                        if (k < board.length) {
                             newBoard[k] += board[i] + verses - j;
                         }
                     }

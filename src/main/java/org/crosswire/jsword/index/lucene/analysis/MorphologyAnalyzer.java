@@ -31,7 +31,7 @@ import org.apache.lucene.analysis.WhitespaceAnalyzer;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class MorphologyAnalyzer extends AbstractBookAnalyzer {
+final public class MorphologyAnalyzer extends AbstractBookAnalyzer {
 
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {

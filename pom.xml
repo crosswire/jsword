@@ -13,21 +13,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.config.location>${basedir}/JSword.checkstyle.xml</checkstyle.config.location>
-        <java.version>1.7</java.version>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- version management -->
-        <slf4j.version>1.7.25</slf4j.version>
-        <commons-codec.version>1.10</commons-codec.version>
-        <commons-net.version>3.9.0</commons-net.version>
+        <slf4j.version>1.7.6</slf4j.version>
+<!--    <commons-codec.version>1.10</commons-codec.version> -->
+<!--    <commons-net.version>3.9.0</commons-net.version> -->
         <commons-compress.version>1.26.0</commons-compress.version>
-        <xz.version>1.6</xz.version>
-        <jdom.version>2.0.6</jdom.version>
-        <lucene.version>3.0.3</lucene.version>
-        <icu4j.version>59.1</icu4j.version>
-        <httpcomponents-httpcore.version>4.4</httpcomponents-httpcore.version>
-        <httpcomponents-httpclient.version>4.5.13</httpcomponents-httpclient.version>
+<!--    <xz.version>1.6</xz.version> xz is impl within commons-compress -->
+        <jdom.version>2.0.6.1</jdom.version>
+        <lucene.version>3.6.2</lucene.version>
+<!--    <icu4j.version>59.1</icu4j.version> Brought in by lucene -->
+<!--    <httpcomponents-httpcore.version>4.4</httpcomponents-httpcore.version> replaced with javax impl -->
+<!--    <httpcomponents-httpclient.version>4.5.13</httpcomponents-httpclient.version> replace with javax impl -->
 
         <!-- maven plugin versions -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -38,6 +38,7 @@
         <mockito.version>1.9.5</mockito.version>
     </properties>
 
+<!--
     <repositories>
         <repository>
             <releases>
@@ -51,6 +52,7 @@
             <layout>default</layout>
         </repository>
     </repositories>
+-->
 
     <dependencies>
         <dependency>
@@ -70,6 +72,7 @@
             <scope>test</scope>
         </dependency>
 
+<!--
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
@@ -85,11 +88,24 @@
             <artifactId>lucene-smartcn</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+-->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+<dependency>
+    <groupId>com.chenlb.mmseg4j</groupId>
+    <artifactId>mmseg4j-analysis</artifactId>
+    <version>1.8.6</version>
+</dependency>
+<dependency>
+    <groupId>com.chenlb.mmseg4j</groupId>
+    <artifactId>mmseg4j-dic</artifactId>
+    <version>1.8.6</version>
+</dependency>
+
+<!--
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
@@ -105,22 +121,26 @@
             <artifactId>commons-net</artifactId>
             <version>${commons-net.version}</version>
         </dependency>
+-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons-compress.version}</version>
         </dependency>
+<!--
         <dependency>
             <groupId>org.tukaani</groupId>
             <artifactId>xz</artifactId>
             <version>${xz.version}</version>
         </dependency>
+-->
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
             <version>${jdom.version}</version>
         </dependency>
 
+<!--
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
@@ -137,7 +157,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+-->
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>

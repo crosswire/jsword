@@ -505,7 +505,8 @@ import org.crosswire.jsword.book.BookMetaData;
         "Biblical Texts",
         "Commentaries",
         "Lexicons / Dictionaries",
-        "Generic Books"
+        "Generic Books",
+        "And Bible"
     )
     {
         @Override
@@ -758,6 +759,7 @@ import org.crosswire.jsword.book.BookMetaData;
      * Contains the URL (a bare URL, not an HTML &lt;a&gt; link) of a web page for unlocking instructions/payment.
      */
     UNLOCK_URL(SwordBookMetaData.KEY_UNLOCK_URL),
+    UNLOCK_INFO(SwordBookMetaData.KEY_UNLOCK_INFO),
 
     /**
      * Deliberately not in wiki. Similar to DataPath. It gives where on the CrossWire server the book can

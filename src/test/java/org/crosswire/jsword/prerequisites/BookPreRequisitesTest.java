@@ -29,6 +29,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.Assert.fail;
+
 /**
  * JUnit Test.
  * 
@@ -65,6 +67,11 @@ public class BookPreRequisitesTest {
     private BookInstaller underTest;
     private Books installedBooks;
 
-    private static final String[] BOOKS = new String[]{"KJV", "ESV"};
+    /**
+     * All books referenced in these unit tests that can be retrieved from the Crosswire repository.
+     * Currently missing : ESV2011, MHCC, ot1nt2
+     * Tests that reference a currently missing book are automatically skipped unless the book was installed externally.
+     */
+    private static final String[] BOOKS = new String[]{"KJV", "StrongsHebrew", "StrongsGreek", "Josephus", "Nave", "Geneva", "TurNTB"};
     private static final Logger LOGGER = LoggerFactory.getLogger(BookPreRequisitesTest.class);
 }

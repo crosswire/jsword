@@ -69,7 +69,7 @@ import org.crosswire.jsword.book.Book;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author sijo cherian
  */
-public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
+final public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
     public ConfigurableSnowballAnalyzer() {
     }
 

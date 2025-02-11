@@ -38,7 +38,7 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author sijo cherian
  */
-public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
 
     public EnglishLuceneAnalyzer() {
         stopSet = StopAnalyzer.ENGLISH_STOP_WORDS_SET;

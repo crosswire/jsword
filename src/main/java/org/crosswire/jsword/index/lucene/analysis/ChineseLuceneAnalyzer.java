@@ -35,7 +35,7 @@ import org.apache.lucene.analysis.cn.ChineseAnalyzer;
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author Sijo Cherian
  */
-public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+final public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     public ChineseLuceneAnalyzer() {
         myAnalyzer = new ChineseAnalyzer();
     }

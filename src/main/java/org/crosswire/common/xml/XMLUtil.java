@@ -84,7 +84,7 @@ public final class XMLUtil {
      * @param provider
      *            The source of SAX events
      * @return a serialized string
-     * @throws SAXException 
+     * @throws SAXException
      */
     public static String writeToString(SAXEventProvider provider) throws SAXException {
         ContentHandler ser = new PrettySerializingContentHandler();
@@ -111,7 +111,7 @@ public final class XMLUtil {
 
     /**
      * Show the attributes of an element as debug
-     * @param attrs 
+     * @param attrs
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
@@ -121,7 +121,7 @@ public final class XMLUtil {
 
     /**
      * Normalizes the given string
-     * @param s 
+     * @param s
      * @return the escaped string
      */
     public static String escape(String s) {
@@ -253,7 +253,7 @@ public final class XMLUtil {
     /**
      * Strip all closing tags from the end of the XML fragment, and then
      * re-close all tags that are open at the end of the string.
-     * 
+     *
      * @param broken
      *            the string to be cleaned.
      * @return cleaned string, or {@code null} if the string could not be
@@ -268,39 +268,29 @@ public final class XMLUtil {
         // close tags again
         List<String> openTags = new ArrayList<String>();
         Matcher m = Pattern.compile("</?[a-zA-Z]+").matcher(result);
-        boolean lTagFound = false;
-        boolean lgTagFound = false;
+        boolean lTagFound = false, lgTagFound = false;
         while (m.find()) {
             String match = m.group();
             if (match.startsWith("</")) {
-                if (openTags.size() == 0 && "</l".equals(match) && !lTagFound) {
-                    return recloseTags("<l>" + broken);
+                if (openTags.size() == 0 && match.equals("</l") && !lTagFound) {
+                    return recloseTags("<l>"+broken);
                 }
-                if (openTags.size() == 0 && "</lg".equals(match) && !lgTagFound) {
-                    return recloseTags("<lg>" + broken);
+                if (openTags.size() == 0 && match.equals("</lg") && !lgTagFound) {
+                    return recloseTags("<lg>"+broken);
                 }
-                if (openTags.size() == 0) {
+                if (openTags.size() == 0)
                     return null;
-                }
                 String lastTag = openTags.remove(openTags.size() - 1);
-                if (!("</" + lastTag).equals(match)) {
+                if (!match.equals("</" + lastTag))
                     return null;
-                }
             } else {
                 int closePos = result.indexOf('>', m.end());
-                if (closePos == -1) {
+                if (closePos == -1)
                     return null;
-                }
-                while (Character.isWhitespace(result.charAt(closePos - 1))) {
-                    --closePos;
-                }
-                if (result.charAt(closePos - 1) != '/') {
-                    if ("<l".equals(match)) {
-                        lTagFound = true;
-                    }
-                    if ("<lg".equals(match)) {
-                        lgTagFound = true;
-                    }
+                while (Character.isWhitespace(result.charAt(closePos-1))) closePos--;
+                if (result.charAt(closePos-1) != '/') {
+                    if(match.equals("<l")) lTagFound = true;
+                    if(match.equals("<lg")) lgTagFound = true;
                     openTags.add(match.substring(1));
                 }
             }
@@ -333,7 +323,7 @@ public final class XMLUtil {
      * another go. We define a tag to start at a &lt; and end at the end of the
      * next word (where a word is what comes in between spaces) that does not
      * contain an = sign, or at a >, whichever is earlier.
-     * @param broken 
+     * @param broken
      * @return the string without any tags
      */
     public static String cleanAllTags(String broken) {

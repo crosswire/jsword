@@ -59,11 +59,13 @@ public class OSISFilter implements SourceFilter {
         // The following converts simple <div> and </div> to their milestoned versions.
         // Current versions of osis2mod do this already
         // Note: if the div element has attributes, it is not seen.
-        clean = DIV_START.matcher(clean).replaceAll("<div sID=\"xyz\"/>");
-        clean = DIV_END.matcher(clean).replaceAll("<div eID=\"xyz\"/>");
-        clean = CHAPTER_END.matcher(clean).replaceAll("<chapter eID=\"xyz\"/>");
-        clean = SPEECH_START.matcher(clean).replaceAll("<speech sID=\"xyz\"/>");
-        clean = SPEECH_END.matcher(clean).replaceAll("<speech eID=\"xyz\"/>");
+
+        // This potentially renders XML invalid. In AndBible we don't care about this. So commenting out.
+        // clean = DIV_START.matcher(clean).replaceAll("<div sID=\"xyz\"/>");
+        // clean = DIV_END.matcher(clean).replaceAll("<div eID=\"xyz\"/>");
+        // clean = CHAPTER_END.matcher(clean).replaceAll("<chapter eID=\"xyz\"/>");
+        // clean = SPEECH_START.matcher(clean).replaceAll("<speech sID=\"xyz\"/>");
+        // clean = SPEECH_END.matcher(clean).replaceAll("<speech eID=\"xyz\"/>");
 
         // FIXME(dms): this is a major HACK handling a problem with a badly
         // encoded module.
@@ -82,12 +84,11 @@ public class OSISFilter implements SourceFilter {
                 clean = "<div><div><div><div>"+clean;
             }
         } else */
-        if ("MapM".equals(book.getInitials())) {
-            for (String tag : Arrays.asList("cell", "row", "table")) {
-                int startPos = clean.indexOf("<" + tag + ">");
-                int endPos = clean.indexOf("</" + tag + ">");
+        if (book.getInitials().equals("MapM")) {
+            for(String tag : Arrays.asList("cell", "row", "table")) {
+                int startPos = clean.indexOf("<"+tag+">"), endPos = clean.indexOf("</"+tag+">");
                 if (endPos != -1 && (startPos == -1 || startPos > endPos)) {
-                    clean = "<" + tag + ">" + clean;
+                    clean = "<"+tag+">"+clean;
                 }
             }
         }
@@ -180,6 +181,7 @@ public class OSISFilter implements SourceFilter {
         if (builder == null) {
             //then we have no sax builders available, so let's create a new one and store
             builder = new SAXBuilder();
+            builder.setFeature("http://xml.org/sax/features/external-general-entities", false);
             // With JDom 1.x it was important to set Fast Reconfigure on re-usable SAXBuilders
             // This is the default with 2.x and this method does nothing
             // builder.setFastReconfigure(true);
@@ -191,8 +193,7 @@ public class OSISFilter implements SourceFilter {
         try {
             // Need to contain it in something that we remove when returning it to the user.
             in = new StringReader("<xxx>" + plain + "</xxx>");
-            InputSource is = new InputSource(in);
-            Document doc = builder.build(is);
+            Document doc = builder.build(in);
             div = doc.getRootElement();
         } finally {
             if (in != null) {

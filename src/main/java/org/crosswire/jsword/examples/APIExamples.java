@@ -19,43 +19,27 @@
  */
 package org.crosswire.jsword.examples;
 
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.TransformerException;
-
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.TransformingSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookCategory;
-import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookFilter;
-import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.BooksEvent;
-import org.crosswire.jsword.book.BooksListener;
-import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.book.*;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.index.search.DefaultSearchModifier;
 import org.crosswire.jsword.index.search.DefaultSearchRequest;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.RestrictionType;
-import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
+
+import javax.xml.transform.TransformerException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * All the methods in this class highlight some are of the API and how to use
@@ -90,8 +74,8 @@ public class APIExamples {
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
      * @return the plain text for the reference
-     * @throws BookException 
-     * @throws NoSuchKeyException 
+     * @throws BookException
+     * @throws NoSuchKeyException
      */
     public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException {
         Book book = getBook(bookInitials);
@@ -112,10 +96,10 @@ public class APIExamples {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
-     * @param maxKeyCount 
+     * @param maxKeyCount
      * @return a SAX Event Provider to retrieve the reference
-     * @throws BookException 
-     * @throws NoSuchKeyException 
+     * @throws BookException
+     * @throws NoSuchKeyException
      */
     public SAXEventProvider getOSIS(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException {
         if (bookInitials == null || reference == null) {
@@ -152,12 +136,12 @@ public class APIExamples {
      *            the book to use
      * @param reference
      *            a reference, appropriate for the book, of one or more entries
-     * @param maxKeyCount 
+     * @param maxKeyCount
      * @return the styled text
-     * @throws NoSuchKeyException 
-     * @throws BookException 
-     * @throws TransformerException 
-     * @throws SAXException 
+     * @throws NoSuchKeyException
+     * @throws BookException
+     * @throws TransformerException
+     * @throws SAXException
      * @see Book
      * @see SAXEventProvider
      */
@@ -189,7 +173,7 @@ public class APIExamples {
      * slightly different way. It is also worth looking at the JavaDoc for Book
      * that has a way of treating Bible, Commentary and Dictionary the same.
      * 
-     * @throws BookException 
+     * @throws BookException
      * @see Book
      */
     public void readDictionary() throws BookException {
@@ -213,8 +197,8 @@ public class APIExamples {
 
     /**
      * An example of how to search for various bits of data.
-     * 
-     * @throws BookException 
+     *
+     * @throws BookException
      */
     public void search() throws BookException {
         Book bible = Books.installed().getBook(BIBLE_NAME);
@@ -337,7 +321,7 @@ public class APIExamples {
 
         // If you are wanting to get really fancy you can implement your own
         // BookFilter easily
-        List<Book> test = Books.installed().getBooks(new MyBookFilter("ESV"));
+        List<Book> test = Books.installed().getBooks(new MyBookFilter("KJV"));
         book = test.get(0);
 
         if (book != null) {
@@ -461,8 +445,8 @@ public class APIExamples {
 
     /**
      * Quick Demo
-     * @param args 
-     * 
+     * @param args
+     *
      * @throws NoSuchKeyException
      * @throws BookException
      * @throws SAXException

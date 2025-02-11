@@ -102,6 +102,10 @@ public final class JobManager {
         return job;
     }
 
+    public static Progress findJob(String jobID) {
+        return jobs.stream().filter(progress -> progress.getJobID().equals(jobID)).findFirst().orElse(null);
+    }
+
     /**
      * Add a listener to the list
      * 

@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.AbstractBackend;
 import org.crosswire.jsword.book.sword.Backend;
 import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
@@ -302,9 +303,14 @@ public abstract class AbstractBook implements Book {
         boolean state = bmd.unlock(unlockKey);
         if (state) {
             // Double check.
-            return isUnlockKeyValid();
+            if(isUnlockKeyValid()) {
+                return true;
+            } else {
+                bmd.resetLock();
+                return false;
+            }
         }
-        return state;
+        return false;
     }
 
     /**
@@ -315,21 +321,27 @@ public abstract class AbstractBook implements Book {
      */
     private boolean isUnlockKeyValid() {
         try {
-            Key key = getGlobalKeyList();
-            if (key == null) {
+            Key keys = getGlobalKeyList();
+            Key key = keys;
+            if (keys == null) {
                 // weird key == null, assume it is valid
                 return true;
             }
 
-            if (key.getCardinality() > 0) {
-                key = key.get(0);
+            if (keys.getCardinality() > 0) {
+                key = keys.get(0);
             }
-
+            if(backend instanceof AbstractBackend) {
+                ((AbstractBackend<?>) backend).setIgnoreReadErrors(false);
+            }
             getOsis(key, new NoOpRawTextProcessor());
-
             return true;
         } catch (BookException ex) {
             return false;
+        } finally {
+            if(backend instanceof AbstractBackend) {
+                ((AbstractBackend<?>) backend).setIgnoreReadErrors(true);
+            }
         }
     }
 

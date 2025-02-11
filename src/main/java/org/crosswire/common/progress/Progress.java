@@ -189,4 +189,8 @@ public interface Progress {
      */
     void setCancelable(boolean newCancelable);
 
+    boolean isNotifyUser();
+
+    void setNotifyUser(boolean notifyUser);
+
 }

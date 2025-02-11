@@ -12,3 +12,6 @@
 .idea
 rebel.xml
 
+/.gradle/
+/build/
+atlassian-ide-plugin.xml

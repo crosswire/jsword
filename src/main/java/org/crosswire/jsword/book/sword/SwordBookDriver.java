@@ -22,6 +22,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,8 +81,8 @@ public class SwordBookDriver extends AbstractBookDriver {
 
     private void getBooks(Set<Book> valid, File bookDir) {
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
-        if (!mods.isDirectory()) {
-            LOGGER.debug("mods.d directory at {} does not exist", mods);
+        if (!(mods.isDirectory() && mods.canRead())) {
+            LOGGER.debug("mods.d directory at {} does not exist or can't be read", mods);
             return;
         }
 
@@ -160,7 +161,7 @@ public class SwordBookDriver extends AbstractBookDriver {
             throw new BookException(JSMsg.gettext("Unable to delete: {0}", confFile));
         }
 
-        // Delete the conf
+        // Delete all conf files
         List<File> failures = FileUtil.delete(confFile);
         if (failures.isEmpty()) {
             URI loc = sbmd.getLocation();

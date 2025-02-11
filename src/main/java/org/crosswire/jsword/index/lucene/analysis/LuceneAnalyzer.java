@@ -70,7 +70,23 @@ public class LuceneAnalyzer extends Analyzer {
         // XRefs are normalized from ranges into a list of osisIDs
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
 
+        //add stemmers if available
+        try {
+            ConfigurableSnowballAnalyzer configurableSnowballAnalyzer = new ConfigurableSnowballAnalyzer();
+            configurableSnowballAnalyzer.setBook(book);
 
+            //for some languages we may be stemming the body twice as the 'natural language analyzer'
+            // may or may not be configured to use stemming, with different stemmers. There seem to be a mix
+            //of using the snowball stemmer with the default lucene stemmers. Most internet posts seem to suggest
+            //that snowball stemmers are better.
+            analyzer.addAnalyzer(LuceneIndex.FIELD_BODY_STEM, configurableSnowballAnalyzer);
+            analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO_STEM, configurableSnowballAnalyzer);
+            analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING_STEM, configurableSnowballAnalyzer);
+        } catch(IllegalArgumentException ex) {
+            //no stepper available
+            log.info("No snowball stemmer available for book [{}]", book);
+            log.trace(ex.getMessage(), ex);
+        }
     }
 
     @Override

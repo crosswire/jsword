@@ -82,7 +82,7 @@ public final class OsisParser {
         }
 
         // manipulate first osis id to 3 parts, padding with first chapter or verse
-        while (startOsisIDParts.size() < 3) {
+        while (startOsisIDParts.size()<3) {
             startOsisIDParts.add(START_CHAPTER_OR_VERSE);
         }
         // now we have a full 3 part start OSIS id
@@ -97,7 +97,7 @@ public final class OsisParser {
 
         // Add end chapter/verse if missing
         int endOsisIDPartCount = endOsisIDParts.size();
-        if (endOsisIDPartCount < 3) {
+        if (endOsisIDPartCount<3) {
             // need to calculate chapter and verse for osis id 2
 
             // there will always be a book
@@ -106,7 +106,7 @@ public final class OsisParser {
 
             // can asssume last chapter if unspecified because this is the trailing osis Id
             int chapter;
-            if (endOsisIDPartCount == 1) {
+            if (endOsisIDPartCount==1) {
                 chapter = v11n.getLastChapter(book);
                 endOsisIDParts.add(Integer.toString(chapter));
             } else {
@@ -115,13 +115,14 @@ public final class OsisParser {
 
             // can asssume last verse if unspecified because this is the trailing osis Id
             int verse;
-            if (endOsisIDPartCount < 3) {
+            if (endOsisIDPartCount<3) {
                 verse = v11n.getLastVerse(book, chapter);
                 endOsisIDParts.add(Integer.toString(verse));
             }
         }
 
         // Now there is exactly 1 beginning and 1 ending 3-part verse only beyond this point
+
         Verse start = parseOsisID(v11n, startOsisIDParts);
         if (start == null) {
             return null;
@@ -189,7 +190,7 @@ public final class OsisParser {
      */
     private static boolean isAnEmptyPart(List<String> parts) {
         for (String part : parts) {
-            if (part.length() == 0) {
+            if (part.length()==0) {
                 return true;
             }
         }
