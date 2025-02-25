@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.crosswire.jsword.index.lucene.IndexMetadata;
+import org.junit.Assert;
 
 /**
  * Test the Thai Analyzer

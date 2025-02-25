@@ -20,14 +20,11 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.util.Version;
-import static org.junit.Assert.assertTrue;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.crosswire.jsword.index.lucene.IndexMetadata;

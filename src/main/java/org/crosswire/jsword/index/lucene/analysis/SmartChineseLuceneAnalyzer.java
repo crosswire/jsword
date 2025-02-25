@@ -20,12 +20,9 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
-import org.apache.lucene.util.Version;
 import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
@@ -42,7 +39,6 @@ public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
 
     public SmartChineseLuceneAnalyzer() {
         myAnalyzer = new SmartChineseAnalyzer(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING);
-
     }
 
     /* (non-Javadoc)
@@ -52,14 +48,6 @@ public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     public  TokenStreamComponents createComponents(String fieldName, Reader reader) {
         return myAnalyzer.createComponents(fieldName, reader);
     }
-
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
-     */
-    //@Override
-    /*public final TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        return myAnalyzer.reusableTokenStream(fieldName, reader);
-    }*/
 
     private SmartChineseAnalyzer myAnalyzer;
 }

@@ -20,7 +20,6 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.StopFilter;
@@ -79,7 +78,6 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
         stopSet = StopFilter.makeStopSet(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, stopWords );
 
     }
-
 
     public void setDoStemming(boolean stemming) {
         doStemming = stemming;

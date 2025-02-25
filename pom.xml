@@ -72,16 +72,6 @@
             <scope>test</scope>
         </dependency>
 
-<dependency>
-    <groupId>com.chenlb.mmseg4j</groupId>
-    <artifactId>mmseg4j-analysis</artifactId>
-    <version>1.8.6</version>
-</dependency>
-<dependency>
-    <groupId>com.chenlb.mmseg4j</groupId>
-    <artifactId>mmseg4j-dic</artifactId>
-    <version>1.8.6</version>
-</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>

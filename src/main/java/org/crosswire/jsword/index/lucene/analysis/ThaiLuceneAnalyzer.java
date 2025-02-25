@@ -19,7 +19,6 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Tokenizer;
@@ -52,28 +51,6 @@ final public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
 
         return new TokenStreamComponents(source, result);
     }
-
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
-     */
-    /*@Override
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        SavedStreams streams = (SavedStreams) getPreviousTokenStream();
-        if (streams == null) {
-            streams = new SavedStreams(new StandardTokenizer(matchVersion, reader));
-            streams.setResult(new ThaiWordFilter(streams.getResult()));
-
-            if (doStopWords && stopSet != null) {
-                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
-            }
-
-            setPreviousTokenStream(streams);
-        } else {
-            streams.getSource().reset(reader);
-            streams.getResult().reset(); // reset the ThaiWordFilter's state
-        }
-        return streams.getResult();
-    }*/
 
     private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }

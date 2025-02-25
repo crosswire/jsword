@@ -19,14 +19,12 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.index.lucene.IndexMetadata;
 import org.crosswire.jsword.index.lucene.InstalledIndex;
@@ -48,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class LuceneAnalyzer  {
 
     public LuceneAnalyzer(Book book) {
-        Map<String,Analyzer> analyzerPerField = new HashMap<String,Analyzer>();
+        Map<String,Analyzer> analyzerPerField = new HashMap<>();
         if (InstalledIndex.instance().getInstalledIndexDefaultVersion() > IndexMetadata.INDEX_VERSION_1_1) {
             // Content is analyzed using natural language analyzer
             // (stemming, stopword etc)
@@ -71,10 +69,6 @@ public class LuceneAnalyzer  {
         // XRefs are normalized from ranges into a list of osisIDs
         analyzerPerField.put(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
 
-        // SimpleAnalyzer: default analyzer
-        analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING),
-                analyzerPerField);
-
 
         //add stemmers if available
         try {
@@ -85,15 +79,19 @@ public class LuceneAnalyzer  {
             // may or may not be configured to use stemming, with different stemmers. There seem to be a mix
             //of using the snowball stemmer with the default lucene stemmers. Most internet posts seem to suggest
             //that snowball stemmers are better.
-            analyzer.addAnalyzer(LuceneIndex.FIELD_BODY_STEM, configurableSnowballAnalyzer);
-            analyzer.addAnalyzer(LuceneIndex.FIELD_INTRO_STEM, configurableSnowballAnalyzer);
-            analyzer.addAnalyzer(LuceneIndex.FIELD_HEADING_STEM, configurableSnowballAnalyzer);
+            analyzerPerField.put(LuceneIndex.FIELD_BODY_STEM, configurableSnowballAnalyzer);
+            analyzerPerField.put(LuceneIndex.FIELD_INTRO_STEM, configurableSnowballAnalyzer);
+            analyzerPerField.put(LuceneIndex.FIELD_HEADING_STEM, configurableSnowballAnalyzer);
         } catch(IllegalArgumentException ex) {
             //no stepper available
             log.info("No snowball stemmer available for book [{}]", book);
             log.trace(ex.getMessage(), ex);
         }
-    }
+
+        // SimpleAnalyzer: default analyzer
+        analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING),
+                analyzerPerField);
+   }
 
     public Analyzer getBookAnalyzer() {
         return analyzer;

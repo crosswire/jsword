@@ -19,7 +19,6 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Tokenizer;
@@ -73,36 +72,5 @@ final public class PersianLuceneAnalyzer extends AbstractBookAnalyzer {
 
     }
 
-    /**
-     * Returns a (possibly reused) {@link TokenStream} which tokenizes all the
-     * text in the provided {@link Reader}.
-     * 
-     * @return A {@link TokenStream} built from a {@link ArabicLetterTokenizer}
-     *         filtered with {@link LowerCaseFilter},
-     *         {@link ArabicNormalizationFilter},
-     *         {@link PersianNormalizationFilter} and Persian Stop words
-     */
-    /*@Override
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        SavedStreams streams = (SavedStreams) getPreviousTokenStream();
-        if (streams == null) {
-            streams = new SavedStreams(new ArabicLetterTokenizer(reader));
-            streams.setResult(new LowerCaseFilter(streams.getResult()));
-            streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
-            *//* additional persian-specific normalization *//*
-            streams.setResult(new PersianNormalizationFilter(streams.getResult()));
-            *//*
-             * the order here is important: the stop set is normalized with the
-             * above!
-             *//*
-            if (doStopWords && stopSet != null) {
-                streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
-            }
-            setPreviousTokenStream(streams);
-        } else {
-            streams.getSource().reset(reader);
-        }
-        return streams.getResult();
-    }*/
     private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }
