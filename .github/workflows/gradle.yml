@@ -42,27 +42,16 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.sword
-        key: ${{ runner.os }}-test-modules # cache auto-removes if not accessed in 7 days. If data needs to refresh, change key name here (till https://github.com/actions/cache/issues/2 is addressed)
+        key: ${{ runner.os }}-test-modules # cache auto-removes if not accessed in 7 days. If data needs to refresh, use 'gh cache delete -a'
 
 
     - name: Download test modules if not cached
       if: steps.cache-test-modules.outputs.cache-hit != 'true'
       run: |
-          echo "Checking if test modules are cached..."
-          echo "Download URL: ${{ vars.DOWNLOAD_TEST_MODULES_URL }}"
           wget ${{ vars.DOWNLOAD_TEST_MODULES_URL }} -O ./testmods.zip.enc
-          echo "Downloaded testmods.zip.enc, listing files:"
-          ls -lh ./testmods.zip.enc
-          echo "Decrypting test modules..."
           openssl aes-256-cbc -d -a -pbkdf2 -in ./testmods.zip.enc -out ./testmods.zip -pass 'pass:${{ secrets.TEST_MODULE_ENCRYPTION_KEY }}'
-          echo "Decrypted to testmods.zip, listing files:"
-          ls -lh ./testmods.zip
-          echo "Creating .sword directory at $HOME/.sword"
           mkdir -p $HOME/.sword
-          echo "Unzipping testmods.zip to $HOME/.sword"
           unzip -o -d $HOME/.sword ./testmods.zip
-          echo "Contents of $HOME/.sword:"
-          ls -lh $HOME/.sword
 
     - name: Build with Gradle
       run: ./gradlew --console plain build -Ptests=true
