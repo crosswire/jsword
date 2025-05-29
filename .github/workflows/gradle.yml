@@ -49,8 +49,8 @@ jobs:
       if: steps.cache-test-modules.outputs.cache-hit != 'true'
       run: |
           echo "Checking if test modules are cached..."
-          echo "Download URL: ${{ secrets.DOWNLOAD_TEST_MODULES_URL }}"
-          wget ${{ secrets.DOWNLOAD_TEST_MODULES_URL }} -O ./testmods.zip.enc
+          echo "Download URL: ${{ vars.DOWNLOAD_TEST_MODULES_URL }}"
+          wget ${{ vars.DOWNLOAD_TEST_MODULES_URL }} -O ./testmods.zip.enc
           echo "Downloaded testmods.zip.enc, listing files:"
           ls -lh ./testmods.zip.enc
           echo "Decrypting test modules..."
