@@ -28,7 +28,6 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

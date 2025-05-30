@@ -43,7 +43,6 @@ import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;

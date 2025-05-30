@@ -29,7 +29,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

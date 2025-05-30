@@ -1,6 +1,5 @@
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.system.SystemKJVA;
 import org.crosswire.jsword.versification.system.Versifications;
