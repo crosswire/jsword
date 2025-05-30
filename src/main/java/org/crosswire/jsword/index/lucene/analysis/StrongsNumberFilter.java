@@ -22,7 +22,7 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.study.StrongsNumber;
@@ -54,7 +54,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
      */
     public StrongsNumberFilter(Book book, TokenStream in) {
         super(book, in);
-        termAtt = addAttribute(TermAttribute.class);
+        //termAtt = addAttribute(TermAttribute.class);
     }
 
     /*
@@ -63,14 +63,17 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
     @Override
-    public boolean incrementToken() throws IOException {
+    public final boolean incrementToken() throws IOException {
         // If the term is suffixed with '!a' or 'a', where 'a' is a sequence of
         // 1 or more letters
         // then create a token without the suffix and also for the whole.
         if (number == null) {
             // Need to loop over invalid tokens
             while (input.incrementToken()) {
-                String tokenText = termAtt.term();
+
+                final char[] buffer = termAtt.buffer();
+                String tokenText = new String(buffer);
+                //final int length = termAtt.length();
 
                 number = new StrongsNumber(tokenText);
 
@@ -85,7 +88,8 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
                 }
 
                 String s = number.getStrongsNumber();
-                termAtt.setTermBuffer(s);
+                //termAtt.setTermBuffer(s);
+                termAtt.copyBuffer(s.toCharArray(), 0, s.length());
 
                 // If the number had a part keep it around for the next call
                 // TODO(DMS): if there is a part, then treat as a synonym,
@@ -103,7 +107,9 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
         }
 
         // Process the Strong's number with the !a
-        termAtt.setTermBuffer(number.getFullStrongsNumber());
+        //termAtt.setTermBuffer(number.getFullStrongsNumber());
+        String fullStrongs = number.getFullStrongsNumber();
+        termAtt.copyBuffer(fullStrongs.toCharArray(), 0, fullStrongs.length());
         // We are done with the Strong's Number so mark it as used
         number = null;
         // We are working on a value returned by incrementToken.
@@ -123,7 +129,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
         return super.hashCode();
     }
 
-    private TermAttribute termAtt;
+    private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     private StrongsNumber number;
 
     /**
