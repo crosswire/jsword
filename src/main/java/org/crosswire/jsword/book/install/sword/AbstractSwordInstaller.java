@@ -273,7 +273,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
         } catch (IOException e) {
-            log.error("Error in downloading " + fileName);
+            log.error("Error in downloading {}", fileName);
             job.cancel();
             throw new InstallException("Error in downloading " + fileName, e);
         } catch (InstallException e) {
