@@ -134,7 +134,7 @@ public final class VersificationsMapper {
             // and return the equivalent verse
             // and assume that it maps directly on to the KJV,
             // and thereby continue with the process
-            kjvVerses = new ArrayList<QualifiedKey>();
+            kjvVerses = new ArrayList<>();
             final Verse reversifiedVerse = v.reversify(KJV);
             //check that the key actually exists
             if (reversifiedVerse != null) {
@@ -253,6 +253,6 @@ public final class VersificationsMapper {
 
     private static volatile VersificationsMapper instance;
     private static final Versification KJV = Versifications.instance().getVersification(SystemKJVA.V11N_NAME);
-    private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
+    private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
 }

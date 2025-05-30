@@ -65,7 +65,7 @@ public final class CWClassLoader extends ClassLoader {
      * @return the CrossWire Class Loader
      */
     public static CWClassLoader instance(Class<?> resourceOwner) {
-        return AccessController.doPrivileged(new PrivilegedLoader<CWClassLoader>(resourceOwner));
+        return AccessController.doPrivileged(new PrivilegedLoader<>(resourceOwner));
     }
 
     /**

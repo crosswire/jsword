@@ -72,7 +72,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         File[] dirs = SwordBookPath.getSwordPath();
         //initial size based on Guava's  newHashMapWithExpectedSize method:
         //http://docs.guava-libraries.googlecode.com/git/javadoc/src-html/com/google/common/collect/Maps.html#line.201
-        Set<Book> valid = new HashSet<Book>(dirs.length + dirs.length / 3);
+        Set<Book> valid = new HashSet<>(dirs.length + dirs.length / 3);
         for (int j = 0; j < dirs.length; j++) {
             getBooks(valid, dirs[j]);
         }

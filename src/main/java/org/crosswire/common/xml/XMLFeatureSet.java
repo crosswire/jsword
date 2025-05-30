@@ -59,8 +59,8 @@ public final class XMLFeatureSet {
      * An XMLFeatureSet with default settings.
      */
     public XMLFeatureSet() {
-        features = new TreeMap<String, XMLFeatureState>();
-        states = new TreeMap<XMLFeature, String>();
+        features = new TreeMap<>();
+        states = new TreeMap<>();
         features.put("n", new XMLFeatureState(XMLFeature.NAMESPACES, true));
         features.put("np", new XMLFeatureState(XMLFeature.NAMESPACE_PREFIX));
         features.put("v", new XMLFeatureState(XMLFeature.VALIDATION));

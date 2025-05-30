@@ -32,7 +32,7 @@ import java.util.Stack;
  */
 public class KeyIterator implements Iterator<Key> {
     public KeyIterator(Key key) {
-        stack = new Stack<Locator>();
+        stack = new Stack<>();
         stack.push(new Locator(key));
     }
 

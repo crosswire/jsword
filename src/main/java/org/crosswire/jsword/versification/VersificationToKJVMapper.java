@@ -135,8 +135,8 @@ public class VersificationToKJVMapper {
      */
     public VersificationToKJVMapper(Versification nonKjv, final FileVersificationMapping mapping) {
         absentVerses = createEmptyPassage(KJV);
-        toKJVMappings = new HashMap<VerseKey, List<QualifiedKey>>();
-        fromKJVMappings = new HashMap<QualifiedKey, Passage>();
+        toKJVMappings = new HashMap<>();
+        fromKJVMappings = new HashMap<>();
         this.nonKjv = nonKjv;
         processMappings(mapping);
         trace();
@@ -400,7 +400,7 @@ public class VersificationToKJVMapper {
     private <T, S> List<S> getNonEmptyMappings(final Map<T, List<S>> mappings, final T key) {
         List<S> matchingVerses = mappings.get(key);
         if (matchingVerses == null) {
-            matchingVerses = new ArrayList<S>();
+            matchingVerses = new ArrayList<>();
             mappings.put(key, matchingVerses);
         }
         return matchingVerses;
@@ -540,15 +540,15 @@ public class VersificationToKJVMapper {
             else if(key.isValidIn(KJV)) {
                 // No explicit mapping, but key is valid in KJV : implicit straight mapping.
                 // Safe to reversify.
-                kjvKeys = new ArrayList<QualifiedKey>();
+                kjvKeys = new ArrayList<>();
                 kjvKeys.add(qualifiedKey.reversify(KJV));
                 return kjvKeys;
             }
             // Else, verses just don't map to KJV : return the empty list.
-            return new ArrayList<QualifiedKey>();
+            return new ArrayList<>();
         }
 
-        return new ArrayList<QualifiedKey>();
+        return new ArrayList<>();
     }
 
     /**

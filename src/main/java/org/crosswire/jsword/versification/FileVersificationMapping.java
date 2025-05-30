@@ -42,7 +42,7 @@ import java.util.MissingResourceException;
 public class FileVersificationMapping {
     //unsure what a typical value would be, so leaving at 16 - best to optimize for memory,
     //than speed upon reading the first time.
-    private List<KeyValuePair> pairs = new ArrayList<KeyValuePair>(16);
+    private List<KeyValuePair> pairs = new ArrayList<>(16);
 
     /**
      * Allow a default initialising if someone wants to create a mapping file dynamically.

@@ -47,7 +47,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
 
         String prefix = getKey() + ".alternative.";
 
-        options = new TreeMap<Integer, String>();
+        options = new TreeMap<>();
         Iterator<Element> iter = option.getChildren("alternative").iterator();
         while (iter.hasNext()) {
             Element alternative = iter.next();
@@ -63,7 +63,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
     public Map<Integer, String> getOptions() {
-        return new TreeMap<Integer, String>(options);
+        return new TreeMap<>(options);
     }
 
     /*

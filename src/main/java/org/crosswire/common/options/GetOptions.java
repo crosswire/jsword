@@ -71,8 +71,8 @@ public class GetOptions {
         this.args = args.clone();
         this.programOptions = programOptions;
         // Initially, we have not started to process an argument
-        this.nonOptionArgs = new ArrayList<String>();
-        this.suppliedOptions = new LinkedHashMap<Option, String>();
+        this.nonOptionArgs = new ArrayList<>();
+        this.suppliedOptions = new LinkedHashMap<>();
 
         parse();
     }

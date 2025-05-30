@@ -55,7 +55,7 @@ public class DwrBridge {
      * @see BookInstaller#getInstalledBook(String)
      */
     public String[][] getInstalledBooks(String filter) {
-        List<String[]> reply = new ArrayList<String[]>();
+        List<String[]> reply = new ArrayList<>();
 
         for (Book book : BookInstaller.getInstalledBooks(filter)) {
             String[] rbook = new String[] {
@@ -186,7 +186,7 @@ public class DwrBridge {
         // 3) Caching the whole list here is dumb.
         // What is needed is that all this be pushed into JSword proper.
         // TODO(dms): Push this into Book interface.
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         int count = 0;
         for (Key key : book.getGlobalKeyList()) {
             String entry = key.getName().toLowerCase(sortLocale);

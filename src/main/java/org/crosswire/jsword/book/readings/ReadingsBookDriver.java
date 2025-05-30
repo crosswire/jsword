@@ -43,7 +43,7 @@ public class ReadingsBookDriver extends AbstractBookDriver {
      * Setup the array of BookMetaDatas
      */
     public ReadingsBookDriver() {
-        List<Book> bookList = new ArrayList<Book>();
+        List<Book> bookList = new ArrayList<>();
         String[] installedBooks = getInstalledReadingsSets();
         for (int i = 0; i < installedBooks.length; i++) {
             bookList.add(new ReadingsBook(this, installedBooks[i], BookCategory.DAILY_DEVOTIONS));

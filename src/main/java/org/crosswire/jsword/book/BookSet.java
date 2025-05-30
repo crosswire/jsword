@@ -51,7 +51,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
      * @return the set of all keys which can be used for grouping.
      */
     public Set<String> getGroups() {
-        Set<String> results = new TreeSet<String>();
+        Set<String> results = new TreeSet<>();
         for (Book book : this) {
             results.addAll(book.getPropertyKeys());
         }
@@ -69,7 +69,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
      * @return the values for a particular key.
      */
     public Set<Object> getGroup(String key) {
-        Set<Object> results = new TreeSet<Object>();
+        Set<Object> results = new TreeSet<>();
         for (Book book : this) {
             Object property = book.getProperty(key);
             if (property != null) {

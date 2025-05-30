@@ -167,7 +167,7 @@ public final class BibleNames {
      * This class is a singleton, enforced by a private constructor.
      */
     private BibleNames() {
-        localizedBibleNames = new HashMap<Locale, NameList>();
+        localizedBibleNames = new HashMap<>();
         englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH);
         localizedBibleNames.put(Locale.ENGLISH, englishBibleNames);
     }
@@ -371,31 +371,31 @@ public final class BibleNames {
             }
 
             // Create the book name maps
-            books = new LinkedHashMap<BibleBook, BookName>(ntCount + otCount + ncCount);
+            books = new LinkedHashMap<>(ntCount + otCount + ncCount);
 
             String className = BibleNames.class.getName();
             String shortClassName = ClassUtil.getShortClassName(className);
             ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
-            fullNT = new HashMap<String, BookName>(ntCount);
-            shortNT = new HashMap<String, BookName>(ntCount);
-            altNT = new HashMap<String, BookName>(ntCount);
+            fullNT = new HashMap<>(ntCount);
+            shortNT = new HashMap<>(ntCount);
+            altNT = new HashMap<>(ntCount);
             for (int i = BibleBook.MATT.ordinal(); i <= BibleBook.REV.ordinal(); ++i) {
                 BibleBook book = bibleBooks[i];
                 store(resources, book, fullNT, shortNT, altNT);
             }
 
-            fullOT = new HashMap<String, BookName>(otCount);
-            shortOT = new HashMap<String, BookName>(otCount);
-            altOT = new HashMap<String, BookName>(otCount);
+            fullOT = new HashMap<>(otCount);
+            shortOT = new HashMap<>(otCount);
+            altOT = new HashMap<>(otCount);
             for (int i = BibleBook.GEN.ordinal(); i <= BibleBook.MAL.ordinal(); ++i) {
                 BibleBook book = bibleBooks[i];
                 store(resources, book, fullOT, shortOT, altOT);
             }
 
-            fullNC = new HashMap<String, BookName>(ncCount);
-            shortNC = new HashMap<String, BookName>(ncCount);
-            altNC = new HashMap<String, BookName>(ncCount);
+            fullNC = new HashMap<>(ncCount);
+            shortNC = new HashMap<>(ncCount);
+            altNC = new HashMap<>(ncCount);
             store(resources, BibleBook.INTRO_BIBLE, fullNC, shortNC, altNC);
             store(resources, BibleBook.INTRO_OT, fullNC, shortNC, altNC);
             store(resources, BibleBook.INTRO_NT, fullNC, shortNC, altNC);

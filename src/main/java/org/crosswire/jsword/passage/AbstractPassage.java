@@ -74,7 +74,7 @@ public abstract class AbstractPassage implements Passage {
     protected AbstractPassage(Versification v11n, String passageName) {
         this.v11n = v11n;
         this.originalName = passageName;
-        this.listeners = new ArrayList<PassageListener>();
+        this.listeners = new ArrayList<>();
     }
 
     /* (non-Javadoc)
@@ -139,7 +139,7 @@ public abstract class AbstractPassage implements Passage {
 
         try {
             copy = (AbstractPassage) super.clone();
-            copy.listeners = new ArrayList<PassageListener>();
+            copy.listeners = new ArrayList<>();
             copy.listeners.addAll(listeners);
 
             copy.originalName = originalName;
@@ -823,7 +823,7 @@ public abstract class AbstractPassage implements Passage {
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
         synchronized (listeners) {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList<>();
             temp.addAll(listeners);
         }
 
@@ -858,7 +858,7 @@ public abstract class AbstractPassage implements Passage {
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
         synchronized (listeners) {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList<>();
             temp.addAll(listeners);
         }
 
@@ -893,7 +893,7 @@ public abstract class AbstractPassage implements Passage {
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
         synchronized (listeners) {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList<>();
             temp.addAll(listeners);
         }
 
@@ -1239,7 +1239,7 @@ public abstract class AbstractPassage implements Passage {
      * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
-        listeners = new ArrayList<PassageListener>();
+        listeners = new ArrayList<>();
         originalName = null;
         parent = null;
         skipNormalization = 0;

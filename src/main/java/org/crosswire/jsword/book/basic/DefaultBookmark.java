@@ -40,7 +40,7 @@ public class DefaultBookmark implements Bookmark {
      * Create an empty default bookmark
      */
     public DefaultBookmark() {
-        books = new ArrayList<Book>();
+        books = new ArrayList<>();
     }
 
     /* (non-Javadoc)

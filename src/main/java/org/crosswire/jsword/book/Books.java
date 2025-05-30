@@ -52,9 +52,9 @@ public final class Books extends AbstractBookList {
      */
     private Books() {
         super();
-        initials = new HashMap<String, Book>();
-        names = new HashMap<String, Book>();
-        drivers = new HashSet<BookDriver>();
+        initials = new HashMap<>();
+        names = new HashMap<>();
+        drivers = new HashSet<>();
         books = new TreeSet();
     }
 
@@ -209,7 +209,7 @@ public final class Books extends AbstractBookList {
      * @return matching BookDrivers
      */
     public synchronized BookDriver[] getDriversByClass(Class<? extends BookDriver> type) {
-        List<BookDriver> matches = new ArrayList<BookDriver>();
+        List<BookDriver> matches = new ArrayList<>();
         for (BookDriver driver : drivers) {
             if (driver.getClass() == type) {
                 matches.add(driver);

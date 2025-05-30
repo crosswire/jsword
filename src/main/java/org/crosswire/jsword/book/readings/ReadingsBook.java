@@ -73,7 +73,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type) {
         super(null, null); // set the book metadata later and no backend
 
-        hash = new TreeMap<Key, String>();
+        hash = new TreeMap<>();
 
         //although we're getting this from the LocaleProviderManager, we're still setting 
         //the language on the metadata once, so won't cope for dynamic changes
@@ -130,7 +130,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         }
 
         // TODO(DMS): make the iterator be demand driven
-        List<Content> content = new ArrayList<Content>();
+        List<Content> content = new ArrayList<>();
 
         Element title = OSISUtil.factory().createTitle();
         title.addContent(key.getName());
