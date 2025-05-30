@@ -38,7 +38,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.xml.sax.InputSource;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
