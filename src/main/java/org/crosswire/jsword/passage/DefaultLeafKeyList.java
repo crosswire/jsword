@@ -140,7 +140,7 @@ public class DefaultLeafKeyList implements Key {
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
-        return new ItemIterator<Key>(this);
+        return new ItemIterator<>(this);
     }
 
     /* (non-Javadoc)

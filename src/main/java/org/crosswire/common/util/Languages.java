@@ -202,7 +202,7 @@ public final class Languages {
         }
     }
 
-    private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
+    private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<>();
 
     /**
      * The log stream

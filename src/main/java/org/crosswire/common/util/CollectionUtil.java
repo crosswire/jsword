@@ -49,7 +49,7 @@ public final class CollectionUtil {
      * @return List
      */
    public static <T> List<T> createList(Iterable<T> it) {
-        List<T> reply = new ArrayList<T>();
+        List<T> reply = new ArrayList<>();
         for (T obj : it) {
             reply.add(obj);
         }
@@ -65,7 +65,7 @@ public final class CollectionUtil {
      * @return the created set
      */
     public static <T> Set<T> createSet(Iterable<T> it) {
-        Set<T> reply = new HashSet<T>();
+        Set<T> reply = new HashSet<>();
         for (T obj : it) {
             reply.add(obj);
         }

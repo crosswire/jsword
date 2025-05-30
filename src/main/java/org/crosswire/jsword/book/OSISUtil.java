@@ -319,8 +319,8 @@ public final class OSISUtil {
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible.";
 
-    private static final Set<String> EXTRA_BIBLICAL_ELEMENTS = new HashSet<String>(Arrays.asList(new String[] {
-            OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
+    private static final Set<String> EXTRA_BIBLICAL_ELEMENTS = new HashSet<>(Arrays.asList(new String[] {
+                    OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
     }));
 
     /**
@@ -618,7 +618,7 @@ public final class OSISUtil {
                 return content.getContent();
             }
         }
-        return new ArrayList<Content>();
+        return new ArrayList<>();
     }
 
     /**
@@ -940,7 +940,7 @@ public final class OSISUtil {
      * @return the collection of matching content
      */
     public static Collection<Content> getDeepContent(Element div, String name) {
-        List<Content> reply = new ArrayList<Content>();
+        List<Content> reply = new ArrayList<>();
         recurseDeepContent(div, name, reply);
         return reply;
     }
@@ -1036,7 +1036,7 @@ public final class OSISUtil {
 
     public static List<Content> rtfToOsis(String rtf) {
         Element div = factory().createDiv();
-        Stack<Content> stack = new Stack<Content>();
+        Stack<Content> stack = new Stack<>();
         stack.push(div);
 
         int strlen = rtf.length();

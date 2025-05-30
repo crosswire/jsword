@@ -166,12 +166,12 @@ public final class JobManager {
     /**
      * List of listeners using thread safe list
      */
-    private static List<WorkListener> listeners = new CopyOnWriteArrayList<WorkListener>();
+    private static List<WorkListener> listeners = new CopyOnWriteArrayList<>();
 
     /**
      * List of current jobs
      */
-    private static Set<Progress> jobs = new CopyOnWriteArraySet<Progress>();
+    private static Set<Progress> jobs = new CopyOnWriteArraySet<>();
 
     /**
      * The log stream

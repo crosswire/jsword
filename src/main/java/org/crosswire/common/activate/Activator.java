@@ -87,7 +87,7 @@ public final class Activator {
     /**
      * The list of things that we have activated
      */
-    private static Set<Activatable> activated = new HashSet<Activatable>();
+    private static Set<Activatable> activated = new HashSet<>();
 
     /**
      * The object we use to prevent others from

@@ -76,7 +76,7 @@ public class Diff {
         // Check for equality (speedup)
         List<Difference> diffs;
         if (source.equals(target)) {
-            diffs = new ArrayList<Difference>();
+            diffs = new ArrayList<>();
             diffs.add(new Difference(EditType.EQUAL, source));
             return diffs;
         }
@@ -116,7 +116,7 @@ public class Diff {
      * @return List of Difference objects
      */
     private List<Difference> compute() {
-        List<Difference> diffs = new ArrayList<Difference>();
+        List<Difference> diffs = new ArrayList<>();
 
         if ("".equals(source)) {
             // Just add some text (speedup)
@@ -173,7 +173,7 @@ public class Diff {
 
         if (diffs == null) {
             // No acceptable result.
-            diffs = new ArrayList<Difference>();
+            diffs = new ArrayList<>();
             diffs.add(new Difference(EditType.DELETE, source));
             diffs.add(new Difference(EditType.INSERT, target));
         }

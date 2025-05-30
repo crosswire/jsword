@@ -39,7 +39,7 @@ public class StrongsMapSet {
      * Build an empty Strong's Map Set.
      */
     public StrongsMapSet() {
-        map = new HashMap<String, Set<String>>();
+        map = new HashMap<>();
     }
 
     /**
@@ -54,7 +54,7 @@ public class StrongsMapSet {
     public void add(String strongsNumber, String representation) {
         Set<String> reps = map.get(strongsNumber);
         if (reps == null) {
-            reps = new TreeSet<String>();
+            reps = new TreeSet<>();
             map.put(strongsNumber, reps);
         }
         reps.add(representation.toLowerCase(Locale.ENGLISH));
