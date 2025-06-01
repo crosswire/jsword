@@ -29,7 +29,6 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.ReferenceSystem;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.passage.VerseRange;
 
 /**
