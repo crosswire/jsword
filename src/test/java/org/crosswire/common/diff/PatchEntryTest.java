@@ -59,6 +59,7 @@ public class PatchEntryTest {
         Assert.assertEquals("Patch: toString.", strp, p.toString());
     }
 
+    @Test
     public void testMatchFromText() {
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n";
         Assert.assertEquals("PatchEntry.fromText: #1.", strp, new PatchEntry(strp).toString());
@@ -74,6 +75,7 @@ public class PatchEntryTest {
         Assert.assertEquals("PatchEntry.fromText: #11.", "@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n", new PatchEntry("@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n").toString());
     }
 
+    @Test
     public void testMatchAddContext() {
         PatchEntry.setMargin(4);
         PatchEntry p = new PatchEntry("@@ -21,4 +21,10 @@\n-jump\n+somersault\n");
