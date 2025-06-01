@@ -193,7 +193,7 @@ public class DefaultKeyList extends AbstractKeyList {
     /**
      * The store of Keys
      */
-    private List<Key> keys = new ArrayList<Key>();
+    private List<Key> keys = new ArrayList<>();
 
     /**
      * Serialization ID

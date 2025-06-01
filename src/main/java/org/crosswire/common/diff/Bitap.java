@@ -47,7 +47,7 @@ public class Bitap implements Locator {
         this.text = text;
         this.pattern = pattern;
         this.loc = loc;
-        alphabet = new HashMap<Character, Integer>();
+        alphabet = new HashMap<>();
     }
 
     /*

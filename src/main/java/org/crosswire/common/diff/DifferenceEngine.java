@@ -69,16 +69,16 @@ public class DifferenceEngine {
     public List<Difference> generate() {
         long msEnd = System.currentTimeMillis() + (long) (timeout * 1000);
         int maxD = (this.sourceLength + this.targetLength) / 2;
-        List<Set<String>> vMap1 = new ArrayList<Set<String>>();
-        List<Set<String>> vMap2 = new ArrayList<Set<String>>();
-        Map<Integer, Integer> v1 = new HashMap<Integer, Integer>();
-        Map<Integer, Integer> v2 = new HashMap<Integer, Integer>();
+        List<Set<String>> vMap1 = new ArrayList<>();
+        List<Set<String>> vMap2 = new ArrayList<>();
+        Map<Integer, Integer> v1 = new HashMap<>();
+        Map<Integer, Integer> v2 = new HashMap<>();
         v1.put(Integer.valueOf(1), Integer.valueOf(0));
         v2.put(Integer.valueOf(1), Integer.valueOf(0));
         int x;
         int y;
         String footstep; // Used to track overlapping paths.
-        Map<String, Integer> footsteps = new HashMap<String, Integer>();
+        Map<String, Integer> footsteps = new HashMap<>();
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
@@ -90,7 +90,7 @@ public class DifferenceEngine {
             }
 
             // Walk the front path one step.
-            vMap1.add(new HashSet<String>()); // Adds at index 'd'.
+            vMap1.add(new HashSet<>()); // Adds at index 'd'.
             for (int k = -d; k <= d; k += 2) {
                 Integer kPlus1Key = Integer.valueOf(k + 1);
                 Integer kPlus1Value = v1.get(kPlus1Key);
@@ -134,7 +134,7 @@ public class DifferenceEngine {
             }
 
             // Walk the reverse path one step.
-            vMap2.add(new HashSet<String>()); // Adds at index 'd'.
+            vMap2.add(new HashSet<>()); // Adds at index 'd'.
             for (int k = -d; k <= d; k += 2) {
                 Integer kPlus1Key = Integer.valueOf(k + 1);
                 Integer kPlus1Value = v2.get(kPlus1Key);
@@ -195,7 +195,7 @@ public class DifferenceEngine {
      * @return List of Difference objects
      */
     protected List<Difference> path1(final List<Set<String>> vMap, final String newSource, final String newTarget) {
-        List<Difference> path = new ArrayList<Difference>();
+        List<Difference> path = new ArrayList<>();
         int x = newSource.length();
         int y = newTarget.length();
         EditType lastEditType = null;
@@ -251,7 +251,7 @@ public class DifferenceEngine {
      * @return List of Difference objects
      */
     protected List<Difference> path2(final List<Set<String>> vMap, final String newSource, final String newTarget) {
-        List<Difference> path = new ArrayList<Difference>();
+        List<Difference> path = new ArrayList<>();
 
         //cached versions of length from immutable strings
         final int cachedNewSourceLength = newSource.length();

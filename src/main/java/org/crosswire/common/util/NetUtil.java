@@ -587,7 +587,7 @@ public final class NetUtil {
             din = new BufferedReader(new InputStreamReader(in), 8192);
 
             // We still need to do the filtering
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
 
             while (true) {
                 String line = din.readLine();

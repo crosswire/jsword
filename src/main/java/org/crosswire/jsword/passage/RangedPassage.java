@@ -64,7 +64,7 @@ public class RangedPassage extends AbstractPassage {
      */
     public RangedPassage(Versification refSystem) {
         super(refSystem);
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<>();
     }
 
     /**
@@ -89,7 +89,7 @@ public class RangedPassage extends AbstractPassage {
     protected RangedPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
 
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<>();
         addVerses(refs, basis);
         normalize();
     }
@@ -107,7 +107,7 @@ public class RangedPassage extends AbstractPassage {
         // copy.store = (SortedSet) store.clone();
         // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet<VerseRange>();
+        copy.store = new TreeSet<>();
         copy.store.addAll(store);
 
         return copy;
@@ -213,7 +213,7 @@ public class RangedPassage extends AbstractPassage {
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        Set<Key> newStore = new TreeSet<Key>();
+        Set<Key> newStore = new TreeSet<>();
         newStore.addAll(store);
 
         // go through all the VerseRanges
@@ -248,7 +248,7 @@ public class RangedPassage extends AbstractPassage {
     public void retainAll(Key key) {
         optimizeWrites();
 
-        Set<VerseRange> newStore = new TreeSet<VerseRange>();
+        Set<VerseRange> newStore = new TreeSet<>();
 
         if (key instanceof RangedPassage) {
             Iterator<VerseRange> thatIter = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
@@ -313,7 +313,7 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange last = null;
         VerseRange next = null;
-        Set<VerseRange> newStore = new TreeSet<VerseRange>();
+        Set<VerseRange> newStore = new TreeSet<>();
 
         Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
@@ -353,7 +353,7 @@ public class RangedPassage extends AbstractPassage {
          * @param it 
          */
         protected VerseIterator(Versification v11n, Iterator<VerseRange> it) {
-            Set<Key> temp = new TreeSet<Key>();
+            Set<Key> temp = new TreeSet<>();
 
             while (it.hasNext()) {
                 VerseRange range = it.next();
@@ -513,7 +513,7 @@ public class RangedPassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<>();
 
         in.defaultReadObject();
 

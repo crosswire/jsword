@@ -34,7 +34,7 @@ public class Histogram {
      * Create an empty histogram
      */
     public Histogram() {
-        hist = new HashMap<String, Counter>();
+        hist = new HashMap<>();
     }
 
     /**

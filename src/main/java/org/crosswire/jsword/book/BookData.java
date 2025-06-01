@@ -283,7 +283,7 @@ public class BookData implements BookProvider {
                         //if the book simply did not contain that reference (say Greek book, with Gen.1 as a reference)
                         //then we end up with a key that doesn't exist in the map. Therefore, we need to cope for this.
                         if (xmlContent == null) {
-                            xmlContent = new ArrayList<Content>(0);
+                            xmlContent = new ArrayList<>(0);
                         }
 
                         addText(doDiffs, newText, xmlContent);
@@ -398,13 +398,13 @@ public class BookData implements BookProvider {
         Verse currentVerse = null;
         Content content;
 
-        List<Content> contents = new ArrayList<Content>();
+        List<Content> contents = new ArrayList<>();
         while (iter.hasNext()) {
             content = iter.next();
             if (content instanceof Element && OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName())) {
                 if (currentVerse != null) {
                     contentsByOsisID.put(currentVerse, contents);
-                    contents = new ArrayList<Content>();
+                    contents = new ArrayList<>();
                 }
 
                 currentVerse = OSISUtil.getVerse(v11n, (Element) content);
@@ -416,7 +416,7 @@ public class BookData implements BookProvider {
                 if (contents.size() > 0) {
                     Verse previousVerse = new Verse(currentVerse.getVersification(), currentVerse.getOrdinal() - 1);
                     contentsByOsisID.put(previousVerse, contents);
-                    contents = new ArrayList<Content>();
+                    contents = new ArrayList<>();
                 }
             }
 

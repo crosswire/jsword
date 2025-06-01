@@ -46,7 +46,7 @@ public class GBFFilter implements SourceFilter {
      */
     public List<Content> toOSIS(Book book, Key key, String plain) {
         Element ele = OSISUtil.factory().createDiv();
-        LinkedList<Content> stack = new LinkedList<Content>();
+        LinkedList<Content> stack = new LinkedList<>();
         stack.addFirst(ele);
 
         List<Tag> taglist = parseTags(book, key, plain.trim());
@@ -80,7 +80,7 @@ public class GBFFilter implements SourceFilter {
      */
     private List<Tag> parseTags(Book book, Key key, String aRemains) {
         String remains = aRemains;
-        List<Tag> taglist = new ArrayList<Tag>();
+        List<Tag> taglist = new ArrayList<>();
 
         // A GBF code is of the form <XY...> or <Xy...>
         // where the first letter is always capitalized and

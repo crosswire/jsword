@@ -44,7 +44,7 @@ public final class FileUtil {
      * @return the list of files that could not be deleted
      */
     public static List<File> delete(File file) {
-        List<File> failures = new ArrayList<File>();
+        List<File> failures = new ArrayList<>();
         if (file.isDirectory()) {
             deleteContents(file, failures);
         }

@@ -64,7 +64,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         this.xsluri = xsluri;
         this.xmlsep = xmlsep;
         this.outputs = new Properties();
-        this.params = new HashMap<String, Object>();
+        this.params = new HashMap<>();
     }
 
     /**
@@ -356,7 +356,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * A cache of transformers
      */
-    private static Map<URI, TemplateInfo> txers = new HashMap<URI, TemplateInfo>();
+    private static Map<URI, TemplateInfo> txers = new HashMap<>();
 
     /**
      * The log stream

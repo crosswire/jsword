@@ -56,7 +56,7 @@ public final class Job implements Progress {
         this.jobName = jobName;
         this.jobID = jobID;
         this.workerThread = worker;
-        this.listeners = new ArrayList<WorkListener>();
+        this.listeners = new ArrayList<>();
         this.cancelable = workerThread != null;
         this.jobMode = ProgressMode.PREDICTIVE;
     }
@@ -115,7 +115,7 @@ public final class Job implements Progress {
             }
 
             // And the predictions for next time
-            nextPredictionMap = new HashMap<String, Integer>();
+            nextPredictionMap = new HashMap<>();
         }
 
         // Report that the Job has started.
@@ -339,7 +339,7 @@ public final class Job implements Progress {
      * @param li the interested listener
      */
     public synchronized void addWorkListener(WorkListener li) {
-        List<WorkListener> temp = new ArrayList<WorkListener>();
+        List<WorkListener> temp = new ArrayList<>();
         temp.addAll(listeners);
 
         if (!temp.contains(li)) {
@@ -355,7 +355,7 @@ public final class Job implements Progress {
      */
     public synchronized void removeWorkListener(WorkListener li) {
         if (listeners.contains(li)) {
-            List<WorkListener> temp = new ArrayList<WorkListener>();
+            List<WorkListener> temp = new ArrayList<>();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -368,7 +368,7 @@ public final class Job implements Progress {
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List<WorkListener> temp = new ArrayList<WorkListener>();
+        final List<WorkListener> temp = new ArrayList<>();
         synchronized (this) {
             if (listeners != null) {
                 temp.addAll(listeners);
@@ -412,7 +412,7 @@ public final class Job implements Progress {
     private int loadPredictions() {
         int maxAge = UNKNOWN;
         try {
-            currentPredictionMap = new HashMap<String, Integer>();
+            currentPredictionMap = new HashMap<>();
             PropertyMap temp = NetUtil.loadProperties(predictionMapURI);
 
             // Determine the predicted time from the current prediction map
