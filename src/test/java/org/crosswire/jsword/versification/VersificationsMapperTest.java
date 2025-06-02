@@ -27,7 +27,11 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
-import org.crosswire.jsword.versification.system.*;
+import org.crosswire.jsword.versification.system.SystemCatholic;
+import org.crosswire.jsword.versification.system.SystemCatholic2;
+import org.crosswire.jsword.versification.system.SystemKJVA;
+import org.crosswire.jsword.versification.system.SystemSynodal;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Assert;
 import org.junit.Test;
 

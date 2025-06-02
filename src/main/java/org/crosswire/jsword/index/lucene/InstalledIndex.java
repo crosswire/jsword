@@ -19,7 +19,10 @@
  */
 package org.crosswire.jsword.index.lucene;
 
-import org.crosswire.common.util.*;
+import org.crosswire.common.util.CWProject;
+import org.crosswire.common.util.FileUtil;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.book.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

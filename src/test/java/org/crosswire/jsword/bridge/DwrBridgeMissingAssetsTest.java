@@ -22,7 +22,11 @@ package org.crosswire.jsword.bridge;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.versification.BookName;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Test of functionality for use with DWR. This test assumes, at a minimum, that
