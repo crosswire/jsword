@@ -2,8 +2,6 @@ package org.crosswire.jsword.versification;
 
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.SystemCalvin;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.SystemCatholic2;
