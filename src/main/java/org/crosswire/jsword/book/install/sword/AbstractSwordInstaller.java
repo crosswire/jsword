@@ -43,7 +43,6 @@ import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
@@ -148,16 +147,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             // We need to create a List from the Set returned by
             // entries.values() so the underlying list is not modified.
-            return new ArrayList<Book>(entries.values());
+            return new ArrayList<>(entries.values());
         } catch (InstallException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         } catch (IOException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         } catch (BookException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         }
     }
 
@@ -273,7 +272,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
         } catch (IOException e) {
-            log.error("Error in downloading " + fileName);
+            log.error("Error in downloading {}", fileName);
             job.cancel();
             throw new InstallException("Error in downloading " + fileName, e);
         } catch (InstallException e) {
@@ -701,7 +700,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * A map of the books in this download area
      */
-    protected Map<String, Book> entries = new HashMap<String, Book>();
+    protected Map<String, Book> entries = new HashMap<>();
 
     /**
      * The remote hostname.

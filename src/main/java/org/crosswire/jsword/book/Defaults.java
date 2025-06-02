@@ -523,7 +523,7 @@ public final class Defaults {
      * @return matching books
      */
     private static Map<Book, String> getBookMap(BookFilter filter) {
-        Map<Book, String> books = new TreeMap<Book, String>(BookComparators.getDefault());
+        Map<Book, String> books = new TreeMap<>(BookComparators.getDefault());
 
         for (Book book : Books.installed().getBooks(filter)) {
             books.put(book, book.getName());

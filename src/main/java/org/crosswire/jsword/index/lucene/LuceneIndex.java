@@ -191,7 +191,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
-        List<Key> errors = new ArrayList<Key>();
+        List<Key> errors = new ArrayList<>();
         // Build to another location and rename in the end.
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 

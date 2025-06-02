@@ -58,8 +58,8 @@ public final class InstallManager {
     }
 
     public InstallManager() {
-        listeners = new CopyOnWriteArrayList<InstallerListener>();
-        installers = new LinkedHashMap<String, Installer>();
+        listeners = new CopyOnWriteArrayList<>();
+        installers = new LinkedHashMap<>();
 
         try {
             PropertyMap sitemap = preloadedSitemap != null ? preloadedSitemap : PluginUtil.getPlugin(getClass());

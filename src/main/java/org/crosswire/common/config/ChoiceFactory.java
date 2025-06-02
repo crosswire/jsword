@@ -84,7 +84,7 @@ public final class ChoiceFactory {
     /**
      * Storage of various registered objects
      */
-    private static Map<String, Object> datamap = new HashMap<String, Object>();
+    private static Map<String, Object> datamap = new HashMap<>();
 
     /**
      * Store of the known ChoiceTypes

@@ -189,7 +189,7 @@ public final class Versifications {
      * This class is a singleton, enforced by a private constructor.
      */
     private Versifications() {
-        known = new HashSet<String>();
+        known = new HashSet<>();
         known.add(SystemCalvin.V11N_NAME);
         known.add(SystemCatholic.V11N_NAME);
         known.add(SystemCatholic2.V11N_NAME);
@@ -208,7 +208,7 @@ public final class Versifications {
         known.add(SystemSynodal.V11N_NAME);
         known.add(SystemSynodalProt.V11N_NAME);
         known.add(SystemVulg.V11N_NAME);
-        fluffed = new HashMap<String, Versification>();
+        fluffed = new HashMap<>();
     }
 
     /**
