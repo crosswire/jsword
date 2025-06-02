@@ -1,5 +1,4 @@
 # JSword - Free Bible Study Software
-# JSword
 
 [![Build Status](https://github.com/crosswire/jsword/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/crosswire/jsword/actions)
 [![JitPack](https://jitpack.io/v/crosswire/jsword.svg)](https://jitpack.io/#crosswire/jsword)

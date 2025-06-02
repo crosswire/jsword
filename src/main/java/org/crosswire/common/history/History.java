@@ -39,9 +39,9 @@ public class History {
      * 
      */
     public History() {
-        nav = new ArrayList<Object>();
-        history = new HashMap<Object, Long>();
-        listeners = new CopyOnWriteArrayList<HistoryListener>();
+        nav = new ArrayList<>();
+        history = new HashMap<>();
+        listeners = new CopyOnWriteArrayList<>();
     }
 
     /**

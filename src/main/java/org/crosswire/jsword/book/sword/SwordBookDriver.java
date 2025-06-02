@@ -22,7 +22,6 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,7 +71,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         File[] dirs = SwordBookPath.getSwordPath();
         //initial size based on Guava's  newHashMapWithExpectedSize method:
         //http://docs.guava-libraries.googlecode.com/git/javadoc/src-html/com/google/common/collect/Maps.html#line.201
-        Set<Book> valid = new HashSet<Book>(dirs.length + dirs.length / 3);
+        Set<Book> valid = new HashSet<>(dirs.length + dirs.length / 3);
         for (int j = 0; j < dirs.length; j++) {
             getBooks(valid, dirs[j]);
         }

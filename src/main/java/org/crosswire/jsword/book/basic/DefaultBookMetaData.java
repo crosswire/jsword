@@ -54,7 +54,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
      * @param type the type of this book
      */
     public DefaultBookMetaData(BookDriver driver, String name, BookCategory type) {
-        props = new HashMap<String, String>();
+        props = new HashMap<>();
         setDriver(driver);
         setName(name);
         setBookCategory(type);

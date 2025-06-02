@@ -161,7 +161,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     // Some keys have defaults
     public static final Map<String, String> DEFAULTS;
     static {
-        Map<String, String> tempMap = new HashMap<String, String>();
+        Map<String, String> tempMap = new HashMap<>();
         tempMap.put(KEY_COMPRESS_TYPE, "LZSS");
         tempMap.put(KEY_BLOCK_TYPE, "CHAPTER");
         tempMap.put(KEY_BLOCK_COUNT, "200");

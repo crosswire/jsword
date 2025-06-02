@@ -38,7 +38,7 @@ public class VersificationConverter {
             }
         } catch (Exception e) {
             // unexpected problem during mapping
-            log.warn("JSword Versification mapper failed to map "+key.getOsisID()+" to "+toVersification.getName());
+            log.warn("JSword Versification mapper failed to map {} to {}", key.getOsisID(), toVersification.getName());
         }
         return PassageKeyFactory.instance().createEmptyKeyList(toVersification);
     }
@@ -94,7 +94,8 @@ public class VersificationConverter {
             }
         } catch (Exception e) {
             // unexpected problem during mapping
-            log.warn("JSword Versification mapper failed to map "+verse.getOsisID()+" from "+verse.getVersification().getName()+" to "+toVersification.getName());
+            log.warn("JSword Versification mapper failed to map {} from {} to {}", verse.getOsisID(), verse.getVersification().getName(),
+                     toVersification.getName());
             throw e;
         }
         return null;

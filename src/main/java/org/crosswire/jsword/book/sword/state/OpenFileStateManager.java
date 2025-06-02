@@ -221,7 +221,7 @@ public final class OpenFileStateManager {
         Queue<OpenFileState> availableStates = metaToStates.get(metadata);
         if (availableStates == null) {
             synchronized (OpenFileState.class) {
-                availableStates = new ConcurrentLinkedQueue<OpenFileState>();
+                availableStates = new ConcurrentLinkedQueue<>();
                 metaToStates.put(metadata, availableStates);
             }
         }
@@ -271,7 +271,7 @@ public final class OpenFileStateManager {
     }
 
     private final ScheduledFuture<?> monitoringThread;
-    private final Map<BookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<BookMetaData, Queue<OpenFileState>>();
+    private final Map<BookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<>();
     private volatile boolean shuttingDown;
 
     private static volatile OpenFileStateManager manager;

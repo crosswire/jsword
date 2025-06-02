@@ -86,7 +86,7 @@ final class Ini {
      * Create an empty INI Config.
      */
     Ini() {
-        sectionMap = new TreeMap<String, IniSection>(String.CASE_INSENSITIVE_ORDER);
+        sectionMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         list = new ArrayList();
     }
 

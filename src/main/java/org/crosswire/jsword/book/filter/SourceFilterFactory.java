@@ -80,7 +80,7 @@ public final class SourceFilterFactory {
     /**
      * The lookup table of filters
      */
-    private static Map<String, SourceFilter> filters = new HashMap<String, SourceFilter>();
+    private static Map<String, SourceFilter> filters = new HashMap<>();
 
     /**
      * The log stream

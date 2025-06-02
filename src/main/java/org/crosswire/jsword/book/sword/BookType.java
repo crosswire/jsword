@@ -19,7 +19,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;

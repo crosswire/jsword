@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.zip.ZipException;
 
 import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.JSMsg;
@@ -172,7 +171,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      */
     public List<Content> readToOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
 
-        final List<Content> content = new ArrayList<Content>();
+        final List<Content> content = new ArrayList<>();
 
         T openFileState = null;
 

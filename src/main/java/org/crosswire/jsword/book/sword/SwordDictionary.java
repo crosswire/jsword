@@ -66,7 +66,7 @@ public class SwordDictionary extends AbstractBook {
     public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty, final boolean allowGenTitles) throws BookException {
         assert key != null;
 
-        List<Content> content = new ArrayList<Content>();
+        List<Content> content = new ArrayList<>();
         Element title = OSISUtil.factory().createGeneratedTitle();
         title.addContent(key.getName());
         content.add(title);

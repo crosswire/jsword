@@ -86,10 +86,10 @@ public class Config implements Iterable<Choice> {
      */
     public Config(String title) {
         this.title = title;
-        keys = new ArrayList<String>();
-        models = new ArrayList<Choice>();
+        keys = new ArrayList<>();
+        models = new ArrayList<>();
         local = new PropertyMap();
-        listeners = new CopyOnWriteArrayList<ConfigListener>();
+        listeners = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -492,12 +492,12 @@ public class Config implements Iterable<Choice> {
     /**
      * The array that stores the keys
      */
-    protected List<String> keys = new ArrayList<String>();
+    protected List<String> keys = new ArrayList<>();
 
     /**
      * The array that stores the models
      */
-    protected List<Choice> models = new ArrayList<Choice>();
+    protected List<Choice> models = new ArrayList<>();
 
     /**
      * The set of local values

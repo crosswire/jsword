@@ -555,7 +555,7 @@ public final class Verse implements VerseKey<Verse> {
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
-        return new ItemIterator<Key>(this);
+        return new ItemIterator<>(this);
     }
 
     /* (non-Javadoc)

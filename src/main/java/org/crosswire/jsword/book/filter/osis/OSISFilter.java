@@ -38,7 +38,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.xml.sax.InputSource;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
@@ -208,7 +207,7 @@ public class OSISFilter implements SourceFilter {
     }
 
     // space for 32 re-usable sax builders, but doesn't bound the number available to the callers
-    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<>(32);
 
     /**
      * Pattern to find the start of a div. Used to convert to a milestoned version.
