@@ -489,10 +489,7 @@ final class Ini {
             }
 
             String sectionName = "";
-            StringBuilder buf = new StringBuilder();
             while (true) {
-                // Empty out the buffer
-                buf.setLength(0);
                 String line = advance(bin);
                 if (line == null) {
                     break;
