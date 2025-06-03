@@ -25,21 +25,37 @@ import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.TransformingSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
-import org.crosswire.jsword.book.*;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.BooksEvent;
+import org.crosswire.jsword.book.BooksListener;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.index.search.DefaultSearchModifier;
 import org.crosswire.jsword.index.search.DefaultSearchRequest;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
-import javax.xml.transform.TransformerException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.transform.TransformerException;
 
 /**
  * All the methods in this class highlight some are of the API and how to use
