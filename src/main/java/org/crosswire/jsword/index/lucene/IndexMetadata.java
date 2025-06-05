@@ -21,6 +21,7 @@ package org.crosswire.jsword.index.lucene;
 
 import java.io.IOException;
 
+import org.apache.lucene.util.Version;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
@@ -52,6 +53,13 @@ public final class IndexMetadata {
 
     public static final String LATEST_INDEX_VERSION = "Latest.Index.Version";
     public static final String LUCENE_VERSION = "Lucene.Version";
+
+    /*This is the LuceneVersion actually used for indexing & query-parsing. Tested with:
+        LUCENE_30 : I have not found any compatibility issue using JSword created indexes
+        LUCENE_31 : Tested with French FreSegond & Chinese ChiNCVs bible. Some differences found. So index is not back compatible
+        LUCENE_48 : Same as LUCENE_31
+    */
+    public static final org.apache.lucene.util.Version LUCENE_IDXVERSION_FOR_INDEXING = Version.LUCENE_30; //Change this create index with newer Version format
 
     public static final String PREFIX_LATEST_INDEX_VERSION_BOOK_OVERRIDE = "Latest.Index.Version.Book.";
     /**

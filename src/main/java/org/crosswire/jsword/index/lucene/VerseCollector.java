@@ -22,10 +22,11 @@ package org.crosswire.jsword.index.lucene;
 import java.io.IOException;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.AtomicReaderContext;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.Collector;
 import org.apache.lucene.search.Scorer;
-import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.IndexSearcher;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.VerseFactory;
@@ -46,8 +47,8 @@ public class VerseCollector extends Collector {
      * @param searcher 
      * @param results 
      */
-    public VerseCollector(Versification v11n, Searcher searcher, Key results) {
-        this.v11n = v11n;
+    public VerseCollector(Versification refSystem, IndexSearcher searcher, Key results) {
+        this.v11n = refSystem;
         this.searcher = searcher;
         this.results = results;
     }
@@ -93,9 +94,12 @@ public class VerseCollector extends Collector {
      * .IndexReader, int)
      */
     @Override
-    public void setNextReader(IndexReader reader, int docBase) throws IOException {
-        this.docBase = docBase;
+    public void setNextReader(AtomicReaderContext context) throws IOException {
+        this.docBase = context.docBase;
+
     }
+
+
 
     /*
      * (non-Javadoc)
@@ -111,6 +115,6 @@ public class VerseCollector extends Collector {
 
     private int docBase;
     private Versification v11n;
-    private Searcher searcher;
+    private IndexSearcher searcher;
     private Key results;
 }

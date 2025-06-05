@@ -19,15 +19,16 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.el.GreekAnalyzer;
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.util.Version;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * Uses org.apache.lucene.analysis.el.GreekAnalyzer to do lowercasing and
@@ -48,37 +49,18 @@ final public class GreekLuceneAnalyzer extends AbstractBookAnalyzer {
      *                  {@link GreekLowerCaseFilter} and {@link StopFilter}
      */
     @Override
-    public TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream result = new StandardTokenizer(matchVersion, reader);
-        result = new GreekLowerCaseFilter(result);
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer source = new StandardTokenizer(matchVersion, reader) ;
+        TokenStream result = source;
+        result = new GreekLowerCaseFilter(matchVersion,result);
         if (doStopWords && stopSet != null) {
-            result = new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), result, stopSet);
+            result = new StopFilter(matchVersion, result, stopSet);
         }
-        return result;
+
+
+        return new TokenStreamComponents(source, result);
+
     }
 
-    /**
-     * Returns a (possibly reused) {@link TokenStream} which tokenizes all the text 
-     * in the provided {@link Reader}.
-     *
-     * @return  A {@link TokenStream} built from a {@link StandardTokenizer} filtered with
-     *                  {@link GreekLowerCaseFilter} and {@link StopFilter}
-     */
-    @Override
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
-        SavedStreams streams = (SavedStreams) getPreviousTokenStream();
-        if (streams == null) {
-            streams = new SavedStreams(new StandardTokenizer(matchVersion, reader));
-            streams.setResult(new GreekLowerCaseFilter(streams.getResult()));
-            if (doStopWords && stopSet != null) {
-                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
-            }
-            setPreviousTokenStream(streams);
-        } else {
-            streams.getSource().reset(reader);
-        }
-        return streams.getResult();
-    }
-
-    private final Version matchVersion = Version.LUCENE_29;
+    private final Version matchVersion = IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING;
 }
