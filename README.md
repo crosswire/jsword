@@ -79,6 +79,49 @@ System.out.println(text);
 ```
 
 ---
+## Opening JSword in Popular IDEs
+
+JSword uses **Gradle** as its build tool. This makes it easy to open and build the project in all modern Java IDEs.  
+Follow the instructions below for your preferred environment:
+
+### Eclipse
+
+1. Open Eclipse.
+2. Select **File > Import... > Gradle > Existing Gradle Project**.
+3. Navigate to the JSword directory and follow the prompts.
+4. Eclipse will automatically configure the project using the `build.gradle` file.
+
+### IntelliJ IDEA
+
+1. Open IntelliJ IDEA.
+2. Select **File > Open...** and choose the JSword project directory.
+3. IntelliJ will detect the `build.gradle` file and prompt you to import the Gradle project.
+4. Accept the defaults and complete the import.
+
+### Visual Studio Code
+
+1. Open Visual Studio Code.
+2. Install the **Java Extension Pack** (if not already installed).
+3. Use **File > Open Folder...** to open the JSword project directory.
+4. VS Code will recognize the Gradle build and provide Java project features.
+
+---
+
+**Note:**  
+There is no need to generate or commit IDE-specific files (such as `.project`, `.classpath`, `.settings/`, `.idea/`, or `.vscode/`). All required project structure and dependencies are managed by Gradle.
+
+For command-line builds, use:
+
+```sh
+./gradlew build
+```
+
+or on Windows:
+
+```sh
+gradlew.bat build
+```
+---
 
 ## Contributing
 
