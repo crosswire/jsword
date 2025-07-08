@@ -25,15 +25,13 @@ import org.crosswire.jsword.versification.Versification;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * JUnit test.
  *
  * @see gnu.lgpl.License The GNU Lesser General Public License for details.
  * @author DM Smith
  */
-public class VersificationsTest extends TestCase {
+public class VersificationsTest {
     @Test
     public void testFluff() {
         Versification v11n = null;
