@@ -214,7 +214,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     protected DataIndex getIndex(RawLDBackendState state, long entry) throws IOException {
         // Read the offset and size for this key from the index
         byte[] buffer = SwordUtil.readRAF(state.getIdxRaf(), entry * entrysize, entrysize);
-        int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
+        long entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0) & 0xFFFFFFFFL;
         int entrySize = -1;
         switch (datasize) {
         case 2:
@@ -534,7 +534,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             System.out.println("index\toffset\tsize\tkey\tvalue");
             for (long i = 0; i < end; ++i) {
                 DataIndex index = getIndex(state, i);
-                int offset = index.getOffset();
+                long offset = index.getOffset();
                 int size   = index.getSize();
                 buf.setLength(0);
                 buf.append(i);
@@ -585,7 +585,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             StringBuilder buf = new StringBuilder();
             for (long i = 0; i < end; ++i) {
                 DataIndex index = getIndex(state, i);
-                int offset = index.getOffset();
+                long offset = index.getOffset();
                 int size   = index.getSize();
                 buf.setLength(0);
                 buf.append("$$$");

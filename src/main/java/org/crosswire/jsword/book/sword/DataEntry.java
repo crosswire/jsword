@@ -163,7 +163,7 @@ public class DataEntry {
      */
     public DataIndex getBlockIndex() {
         int start = keyEnd + 1;
-        return new DataIndex(SwordUtil.decodeLittleEndian32(data, start), SwordUtil.decodeLittleEndian32(data, start + 4));
+        return new DataIndex(SwordUtil.decodeLittleEndian32(data, start) & 0xFFFFFFFFL, SwordUtil.decodeLittleEndian32(data, start + 4));
     }
 
     /**

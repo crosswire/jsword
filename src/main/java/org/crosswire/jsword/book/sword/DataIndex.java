@@ -35,7 +35,7 @@ public class DataIndex {
      * @param size
      *            The number of bytes to read from the file.
      */
-    public DataIndex(int offset, int size) {
+    public DataIndex(long offset, int size) {
         this.offset = offset;
         this.size = size;
     }
@@ -43,7 +43,7 @@ public class DataIndex {
     /**
      * @return the offset
      */
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -54,6 +54,6 @@ public class DataIndex {
         return size;
     }
 
-    private int offset;
+    private long offset;
     private int size;
 }

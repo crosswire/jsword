@@ -247,7 +247,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             return new DataIndex(0, 0);
         }
 
-        int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
+        long entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0) & 0xFFFFFFFFL;
         int entrySize = -1;
         switch (datasize) {
         case 2:

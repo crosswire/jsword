@@ -84,7 +84,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
                     return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
                 }
 
-                int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+                long blockStart = SwordUtil.decodeLittleEndian32(temp, 0) & 0xFFFFFFFFL;
                 int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
 
                 temp = SwordUtil.readRAF(state.getZdtRaf(), blockStart, blockSize);
@@ -147,7 +147,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
             System.out.println("index\toffset\tsize\tkey\tvalue");
             for (long i = 0; i < end; ++i) {
                 DataIndex index = getIndex(state, i);
-                int offset = index.getOffset();
+                long offset = index.getOffset();
                 int size   = index.getSize();
                 buf.setLength(0);
                 buf.append(i);

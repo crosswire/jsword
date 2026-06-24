@@ -334,7 +334,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         // The data is little endian - extract the blockNum, verseStart
         // and
         // verseSize
-        final long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+        final long blockNum = SwordUtil.decodeLittleEndian32(temp, 0) & 0xFFFFFFFFL;
         final int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
         final int verseSize;
         if (datasize == 2) {
@@ -354,7 +354,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 return "";
             }
 
-            final int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+            final long blockStart = SwordUtil.decodeLittleEndian32(temp, 0) & 0xFFFFFFFFL;
             final int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
             final int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
 
