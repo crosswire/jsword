@@ -19,13 +19,15 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.util.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.crosswire.jsword.index.lucene.IndexMetadata;
 
 /**
  * Test the Greek Analyzer
@@ -40,7 +42,7 @@ public class GreekLuceneAnalyzerTest {
     public void setUp() throws Exception {
         myAnalyzer = new GreekLuceneAnalyzer();
 
-        parser = new QueryParser(Version.LUCENE_29, FIELD, myAnalyzer);
+        parser = new QueryParser(IndexMetadata.LUCENE_IDXVERSION_FOR_INDEXING, FIELD, myAnalyzer);
     }
 
     @Test

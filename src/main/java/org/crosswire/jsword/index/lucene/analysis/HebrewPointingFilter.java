@@ -1,29 +1,32 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
-
 import java.io.IOException;
+
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 /**
  * Simply removes pointing from the given term
  */
 public class HebrewPointingFilter extends AbstractBookTokenFilter {
-    private final TermAttribute termAtt;
+    private final CharTermAttribute termAtt;
 
     /**
      * @param input the token stream
      */
     public HebrewPointingFilter(final TokenStream input) {
         super(input);
-        this.termAtt = addAttribute(TermAttribute.class);
+        this.termAtt = addAttribute(CharTermAttribute.class);
     }
 
     @Override
     public boolean incrementToken() throws IOException {
         if (this.input.incrementToken()) {
-            final String unaccentedForm = unPoint(this.termAtt.term(), false);
-            this.termAtt.setTermBuffer(unaccentedForm);
+            final char[] buffer = termAtt.buffer();
+            final String tokenText = new String(buffer);
+            final String unaccentedForm = unPoint(tokenText, false);
+            //this.termAtt.setTermBuffer(unaccentedForm);
+            termAtt.copyBuffer(unaccentedForm.toCharArray(), 0, unaccentedForm.length());
             return true;
         } else {
             return false;

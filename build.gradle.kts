@@ -25,16 +25,14 @@ repositories {
 dependencies {
 //    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.apache.commons:commons-compress:1.12")
-    implementation("com.chenlb.mmseg4j:mmseg4j-analysis:1.8.6")
-    implementation("com.chenlb.mmseg4j:mmseg4j-dic:1.8.6")
 
     implementation("org.jdom:jdom2:2.0.6.1")
-    implementation("org.apache.lucene:lucene-analyzers:3.6.2")
-    // To upgrade Lucene, change to
-    // implementation("org.apache.lucene:lucene-analyzers-common:x")
+    implementation("org.apache.lucene:lucene-analyzers-common:4.7.0")
+    implementation("org.apache.lucene:lucene-queryparser:4.7.0")
+    implementation("org.apache.lucene:lucene-analyzers-smartcn:4.7.0")
 
-    //implementation("org.slf4j:slf4j-api:1.7.6")
     implementation("org.slf4j:slf4j-api:1.7.6")
+
     testImplementation("org.slf4j:slf4j-simple:1.7.6")
     testImplementation("junit:junit:4.13")
 }
